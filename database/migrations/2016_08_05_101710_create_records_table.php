@@ -21,7 +21,7 @@ class CreateRecordsTable extends Migration
                 ->onDelete('cascade');
             $table->integer('ttl')->unsigned();
             $table->string('type', 10);
-            $table->integer('priority', 3)->nullable();
+            $table->integer('priority')->length(3)->nullable();
             $table->string('data');
             $table->timestamps();
         });
