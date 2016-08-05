@@ -32,19 +32,19 @@
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
-                        <img src="{{ auth()->user()->profile->avatar->url() }}" class="user-image"
+                        <img src="{{-- auth()->user()->profile->avatar->url() --}}" class="user-image"
                              alt="{{ trans('user/profile.avatar') }}"/>
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        <span class="hidden-xs">{{ auth()->user()->name }}</span>
+                        <span class="hidden-xs">{{-- auth()->user()->name --}} username</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
-                            <img src="{{ auth()->user()->profile->avatar->url() }}" class="img-circle"
+                            <img src="{{-- auth()->user()->profile->avatar->url() --}}" class="img-circle"
                                  alt="{{ trans('user/profile.avatar') }}"/>
                             <p>
-                                {{ auth()->user()->name }} - {{ auth()->user()->getLevelName() }}
-                                <small>Member since {{ date("M Y", strtotime(auth()->user()->created_at)) }}</small>
+                                {{-- auth()->user()->name --}} username - Admin
+                                <small>Member since {{-- date("M Y", strtotime(auth()->user()->created_at)) --}}</small>
                             </p>
                         </li>
                         <!-- Menu Body -->
@@ -56,7 +56,7 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="{{ route('profiles.show', Auth::user()->username) }}" class="btn btn-default btn-flat">
+                                <a href="{{-- route('profiles.show', Auth::user()->username) --}}" class="btn btn-default btn-flat">
                                     {{ trans('site.my_profile') }}
                                 </a>
                             </div>
