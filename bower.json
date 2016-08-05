@@ -1,0 +1,24 @@
+{
+  "name": "probind",
+  "description": "Professional DNS Management",
+  "main": "",
+  "authors": [
+    "Paco Orozco <paco@pacoorozco.info>"
+  ],
+  "license": "GPLv2",
+  "keywords": [
+    "dns"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "AdminLTE": "admin-lte#^2.3.6"
+  }
+}
