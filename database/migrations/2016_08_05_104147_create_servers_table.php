@@ -22,6 +22,7 @@ class CreateServersTable extends Migration
             $table->string('directory');
             $table->string('template');
             $table->string('script');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

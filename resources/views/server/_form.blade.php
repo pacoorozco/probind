@@ -32,7 +32,7 @@
         <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
             {!! Form::label('type', trans('server/model.type'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::select('type', array('master' => trans('server/model.type.master'), 'slave' => trans('server/model.type.slave')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {!! Form::select('type', array('master' => trans('server/model.types.master'), 'slave' => trans('server/model.types.slave')), null, array('class' => 'form-control', 'required' => 'required')) !!}
                 {{ $errors->first('type', '<span class="help-inline">:message</span>') }}
             </div>
         </div>
@@ -87,6 +87,16 @@
             </div>
         </div>
         <!-- ./ script -->
+
+        <!-- active -->
+        <div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
+            {!! Form::label('active', trans('server/model.active'), array('class' => 'control-label required')) !!}
+            <div class="controls">
+                {!! Form::select('active', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {{ $errors->first('active', '<span class="help-inline">:message</span>') }}
+            </div>
+        </div>
+        <!-- ./ active -->
     </div>
 
     <div class="box-footer">

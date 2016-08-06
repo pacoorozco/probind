@@ -20,7 +20,8 @@ class Server extends Model
         'ns_record'    => 'required|boolean',
         'directory'    => 'required|string',
         'template'     => 'string',
-        'script'       => 'string'
+        'script'       => 'required_if:push_updates,1|string',
+        'active'       => 'required|boolean'
     ];
     /**
      * The database table used by the model.
@@ -34,7 +35,8 @@ class Server extends Model
         'ns_record',
         'directory',
         'template',
-        'script'
+        'script',
+        'active'
     ];
     /**
      * The attributes that should be casted to native types.
@@ -45,8 +47,6 @@ class Server extends Model
         'hostname'     => 'string',
         'ip_address'   => 'string',
         'type'         => 'string',
-        'push_updates' => 'boolean',
-        'ns_record'    => 'boolean',
         'directory'    => 'string',
         'template'     => 'string',
         'script'       => 'string'

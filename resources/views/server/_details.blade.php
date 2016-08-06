@@ -72,6 +72,15 @@
             </div>
         </div>
         <!-- ./ script -->
+
+        <!-- active -->
+        <div class="form-group">
+            {!! Form::label('active', trans('server/model.active'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {{ $server->active }}
+            </div>
+        </div>
+        <!-- ./ active -->
         
     </div>
 </div>
