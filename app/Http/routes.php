@@ -14,3 +14,6 @@
 Route::get('/', ['as' => 'home', 'uses' => 'DashboardController@index']);
 
 Route::resource('servers', 'ServerController');
+// Our special delete confirmation route - uses the show/details view.
+Route::get('servers/{level}/delete',
+    ['as' => 'servers.delete', 'uses' => 'ServerController@delete']);

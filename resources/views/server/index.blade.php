@@ -8,7 +8,7 @@
 {{-- Content Header --}}
 @section('header')
     {{ trans('server/title.server_management') }}
-    <small>create and edit servers</small>
+    <small>{{ trans('server/title.server_management_subtitle') }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}

@@ -2,39 +2,39 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('admin/level/title.create_a_new_level') }} :: @parent
+    {{ trans('server/title.create_new') }} :: @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('admin/level/title.create_a_new_level') }}
-    <small>create a new level</small>
+    {{ trans('server/title.create_new') }}
+    <small>{{ trans('server/title.create_new_subtitle') }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
 @section('breadcrumbs')
     <li>
-        <a href="{{ route('admin-home') }}">
-            <i class="fa fa-dashboard"></i> {{ trans('admin/site.dashboard') }}
+        <a href="{{ route('home') }}">
+            <i class="fa fa-dashboard"></i> {{ trans('site.dashboard') }}
         </a>
     </li>
     <li>
-        <a href="{{ route('admin.levels.index') }}">
-            {{ trans('admin/site.levels') }}
+        <a href="{{ route('servers.index') }}">
+            {{ trans('site.servers') }}
         </a>
     </li>
     <li class="active">
-        {{ trans('admin/level/title.create_a_new_level') }}
+        {{ trans('server/title.create_new') }}
     </li>
-    @endsection
+@endsection
 
-    {{-- Content --}}
-    @section('content')
+{{-- Content --}}
+@section('content')
 
-            <!-- Notifications -->
+    <!-- Notifications -->
     @include('partials.notifications')
-            <!-- ./ notifications -->
+    <!-- ./ notifications -->
 
-    @include('admin/level/_form')
+    @include('server/_form')
 
 @endsection

@@ -1,114 +1,115 @@
-{{-- Create / Edit Level Form --}}
-@if (isset($level))
-    {!! Form::model($level, array(
-            'route' => array('admin.levels.update', $level),
-            'method' => 'put',
-            'files' => true,
-
-            )) !!}
+{{-- Create / Edit Server Form --}}
+@if (isset($server))
+    {!! Form::model($server, ['route' => ['servers.update', $server], 'method' => 'put']) !!}
 @else
-    {!! Form::open(array(
-            'route' => array('admin.levels.store'),
-            'method' => 'post',
-            'files' => true,
-
-            )) !!}
+    {!! Form::open(['route' => 'servers.store']) !!}
 @endif
 
 <div class="box box-solid">
     <div class="box-body">
 
-        <div class="row">
-            <div class="col-xs-6">
-
-                <!-- name -->
-                <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-                    {!! Form::label('name', trans('admin/level/model.name'), array('class' => 'control-label required')) !!}
-                    <div class="controls">
-                        {!! Form::text('name', null, array('class' => 'form-control', 'required' => 'required')) !!}
-                        <span class="help-block">{{ $errors->first('name', ':message') }}</span>
-                    </div>
-                </div>
-                <!-- ./ name -->
-
-                <!-- amount_needed -->
-                <div class="form-group {{ $errors->has('amount_needed') ? 'has-error' : '' }}">
-                    {!! Form::label('amount_needed', trans('admin/level/model.amount_needed'), array('class' => 'control-label required')) !!}
-                    <div class="controls">
-                        {!! Form::number('amount_needed', null, array('class' => 'form-control', 'required' => 'required', 'min' => '1')) !!}
-                        <span class="help-block">{{ $errors->first('amount_needed', ':message') }}</span>
-                    </div>
-                </div>
-                <!-- ./ amount_needed -->
-
-                <!-- activation status -->
-                <div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
-                    {!! Form::label('active', trans('admin/level/model.active'), array('class' => 'control-label required')) !!}
-                    <div class="controls">
-                        {!! Form::select('active', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
-                        {{ $errors->first('active', '<span class="help-inline">:message</span>') }}
-                    </div>
-                </div>
-                <!-- ./ activation status -->
-
+        <!-- hostname -->
+        <div class="form-group {{ $errors->has('hostname') ? 'has-error' : '' }}">
+            {!! Form::label('hostname', trans('server/model.hostname'), array('class' => 'control-label required')) !!}
+            <div class="controls">
+                {!! Form::text('hostname', null, array('class' => 'form-control', 'required' => 'required')) !!}
+                <span class="help-block">{{ $errors->first('hostname', ':message') }}</span>
             </div>
-            <div class="col-xs-6">
-
-                <!-- image -->
-                <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
-                    {!! Form::label('image', trans('admin/level/model.image'), array('class' => 'control-label required')) !!}
-                    <p class="text-muted">{{ trans('admin/level/model.image_help') }}</p>
-                    <div class="controls">
-                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                            <div class="fileinput-preview thumbnail" data-trigger="fileinput"
-                                 style="width: 150px; height: 150px;">
-                                @if (isset($level))
-                                    <img src="{{ $level->image->url() }}">
-                                @endif
-                            </div>
-                            <p>
-                            <span class="btn btn-default btn-file">
-                                <span class="fileinput-new"><i
-                                            class="fa fa-picture-o"></i> {{ trans('button.pick_image') }}</span>
-                                <span class="fileinput-exists"><i
-                                            class="fa fa-picture-o"></i> {{ trans('button.upload_image') }}</span>
-                                {!! Form::file('image') !!}
-                            </span>
-                                <a href="#" class="btn fileinput-exists btn-default" data-dismiss="fileinput">
-                                    <i class="fa fa-times"></i> {{ trans('button.delete_image') }}
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-                    <span class="help-block">{{ $errors->first('image', ':message') }}</span>
-                </div>
-            </div>
-            <!-- ./ image -->
-
         </div>
+        <!-- ./ hostname -->
+
+        <!-- ip_address -->
+        <div class="form-group {{ $errors->has('ip_address') ? 'has-error' : '' }}">
+            {!! Form::label('ip_address', trans('server/model.ip_address'), array('class' => 'control-label required')) !!}
+            <div class="controls">
+                {!! Form::text('ip_address', null, array('class' => 'form-control', 'required' => 'required')) !!}
+                <span class="help-block">{{ $errors->first('ip_address', ':message') }}</span>
+            </div>
+        </div>
+        <!-- ./ ip_address -->
+
+        <!-- type -->
+        <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
+            {!! Form::label('type', trans('server/model.type'), array('class' => 'control-label required')) !!}
+            <div class="controls">
+                {!! Form::select('type', array('master' => trans('server/model.type.master'), 'slave' => trans('server/model.type.slave')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {{ $errors->first('type', '<span class="help-inline">:message</span>') }}
+            </div>
+        </div>
+        <!-- ./ type -->
+
+        <!-- push_updates -->
+        <div class="form-group {{ $errors->has('push_updates') ? 'has-error' : '' }}">
+            {!! Form::label('push_updates', trans('server/model.push_updates'), array('class' => 'control-label required')) !!}
+            <div class="controls">
+                {!! Form::select('push_updates', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {{ $errors->first('push_updates', '<span class="help-inline">:message</span>') }}
+            </div>
+        </div>
+        <!-- ./ push_updates -->
+
+        <!-- ns_record -->
+        <div class="form-group {{ $errors->has('ns_record') ? 'has-error' : '' }}">
+            {!! Form::label('ns_record', trans('server/model.ns_record'), array('class' => 'control-label required')) !!}
+            <div class="controls">
+                {!! Form::select('ns_record', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {{ $errors->first('ns_record', '<span class="help-inline">:message</span>') }}
+            </div>
+        </div>
+        <!-- ./ ns_record -->
+
+        <!-- directory -->
+        <div class="form-group {{ $errors->has('directory') ? 'has-error' : '' }}">
+            {!! Form::label('directory', trans('server/model.directory'), array('class' => 'control-label required')) !!}
+            <div class="controls">
+                {!! Form::text('directory', null, array('class' => 'form-control', 'required' => 'required')) !!}
+                <span class="help-block">{{ $errors->first('directory', ':message') }}</span>
+            </div>
+        </div>
+        <!-- ./ directory -->
+
+        <!-- template -->
+        <div class="form-group {{ $errors->has('template') ? 'has-error' : '' }}">
+            {!! Form::label('template', trans('server/model.template'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {!! Form::text('template', null, array('class' => 'form-control')) !!}
+                <span class="help-block">{{ $errors->first('template', ':message') }}</span>
+            </div>
+        </div>
+        <!-- ./ template -->
+
+        <!-- script -->
+        <div class="form-group {{ $errors->has('script') ? 'has-error' : '' }}">
+            {!! Form::label('script', trans('server/model.script'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {!! Form::text('script', null, array('class' => 'form-control')) !!}
+                <span class="help-block">{{ $errors->first('script', ':message') }}</span>
+            </div>
+        </div>
+        <!-- ./ script -->
     </div>
 
     <div class="box-footer">
         <!-- Form Actions -->
-        <a href="{{ route('admin.levels.index') }}">
+        <a href="{{ route('servers.index') }}">
             <button type="button" class="btn btn-primary">
                 <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
             </button>
         </a>
-        {!! Form::button(trans('button.save'), array('type' => 'submit', 'class' => 'btn btn-success')) !!}
-                <!-- ./ form actions -->
+    {!! Form::button('<i class="fa fa-floppy-o"></i> ' . trans('general.save'), array('type' => 'submit', 'class' => 'btn btn-success')) !!}
+    <!-- ./ form actions -->
     </div>
 </div>
 {!! Form::close() !!}
 
 {{-- Styles --}}
 @section('styles')
-        <!-- File Input -->
-{!! HTML::style('vendor/jasny-bootstrap/dist/css/jasny-bootstrap.min.css') !!}
+    <!-- File Input -->
+    {!! HTML::style('vendor/jasny-bootstrap/dist/css/jasny-bootstrap.min.css') !!}
 @endsection
 
 {{-- Scripts --}}
 @section('scripts')
-        <!-- File Input -->
-{!! HTML::script('vendor/jasny-bootstrap/dist/js/jasny-bootstrap.min.js') !!}
+    <!-- File Input -->
+    {!! HTML::script('vendor/jasny-bootstrap/dist/js/jasny-bootstrap.min.js') !!}
 @endsection

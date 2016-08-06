@@ -1,66 +1,94 @@
 <div class="box">
     <div class="box-body">
 
-        <div class="row">
-            <div class="col-xs-6">
-
-                <!-- name -->
-                <div class="form-group">
-                    {!! Form::label('name', trans('admin/level/model.name'), array('class' => 'control-label')) !!}
-                    <div class="controls">
-                        {{ $level->name }}
-                    </div>
-                </div>
-                <!-- ./ name -->
-
-                <!-- amount_needed -->
-                <div class="form-group">
-                    {!! Form::label('amount_needed', trans('admin/level/model.amount_needed'), array('class' => 'control-label')) !!}
-                    <div class="controls">
-                        {{ $level->amount_needed }}
-                    </div>
-                </div>
-                <!-- ./ amount_needed -->
-
-                <!-- Activation Status -->
-                <div class="form-group">
-                    {!! Form::label('active', trans('admin/level/model.active'), array('class' => 'control-label')) !!}
-                    <div class="controls">
-                        {{ ($level->active ? trans('general.yes') : trans('general.no')) }}
-                    </div>
-                </div>
-                <!-- ./ activation status -->
-
-            </div>
-            <div class="col-xs-6">
-
-                <!-- image -->
-                <div class="form-group">
-                    {!! Form::label('image', trans('admin/level/model.image'), array('class' => 'control-label')) !!}
-                    <div class="controls">
-                        @if (isset($level))
-                            <img src="{{ $level->image->url('big') }}" class="img-thumbnail" alt="Big size">
-                        @endif
-                    </div>
-                </div>
-                <!-- ./ image -->
+        <!-- hostname -->
+        <div class="form-group">
+            {!! Form::label('name', trans('server/model.hostname'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {{ $server->hostname }}
             </div>
         </div>
+        <!-- ./ hostname -->
+
+        <!-- ip_address -->
+        <div class="form-group">
+            {!! Form::label('ip_address', trans('server/model.ip_address'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {{ $server->ip_address }}
+            </div>
+        </div>
+        <!-- ./ ip_address -->
+
+        <!-- type -->
+        <div class="form-group">
+            {!! Form::label('type', trans('server/model.type'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {{ $server->type }}
+            </div>
+        </div>
+        <!-- ./ type -->
+
+        <!-- push_updates -->
+        <div class="form-group">
+            {!! Form::label('push_updates', trans('server/model.push_updates'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {{ $server->push_updates }}
+            </div>
+        </div>
+        <!-- ./ push_updates -->
+
+        <!-- ns_record -->
+        <div class="form-group">
+            {!! Form::label('ns_record', trans('server/model.ns_record'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {{ $server->ns_record }}
+            </div>
+        </div>
+        <!-- ./ ns_record -->
+
+        <!-- directory -->
+        <div class="form-group">
+            {!! Form::label('directory', trans('server/model.directory'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {{ $server->directory }}
+            </div>
+        </div>
+        <!-- ./ directory -->
+
+        <!-- template -->
+        <div class="form-group">
+            {!! Form::label('template', trans('server/model.template'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {{ $server->template }}
+            </div>
+        </div>
+        <!-- ./ template -->
+
+        <!-- script -->
+        <div class="form-group">
+            {!! Form::label('script', trans('server/model.script'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {{ $server->script }}
+            </div>
+        </div>
+        <!-- ./ script -->
+        
     </div>
-    <div class="box-footer">
-        <a href="{{ route('admin.levels.index') }}">
+</div>
+<div class="box-footer">
+    <a href="{{ route('servers.index') }}">
+        <button type="button" class="btn btn-primary">
+            <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
+        </button>
+    </a>
+    @if ($action == 'show')
+        <a href="{{ route('servers.edit', $server) }}">
             <button type="button" class="btn btn-primary">
-                <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
+                <i class="fa fa-pencil"></i> {{ trans('general.edit') }}
             </button>
         </a>
-        @if ($action == 'show')
-            <a href="{{ route('admin.levels.edit', $level) }}">
-                <button type="button" class="btn btn-primary">
-                    <i class="fa fa-pencil"></i> {{ trans('general.edit') }}
-                </button>
-            </a>
-        @else
-            {!! Form::button('<i class="fa fa-trash-o"></i>' . trans('general.delete'), array('type' => 'submit', 'class' => 'btn btn-danger')) !!}
-        @endif
-    </div>
+    @else
+        {!! Form::button('<i class="fa fa-trash-o"></i>' . trans('general.delete'), array('type' => 'submit', 'class' => 'btn btn-danger')) !!}
+    @endif
+</div>
 </div>

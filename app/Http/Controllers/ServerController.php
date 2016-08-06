@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Server;
-use App\Http\Requests;
 use App\Http\Requests\ServerCreateRequest;
 use App\Http\Requests\ServerUpdateRequest;
 
@@ -31,7 +28,7 @@ class ServerController extends Controller
      */
     public function create()
     {
-        //
+        return view('server.create');
     }
 
     /**
@@ -42,7 +39,10 @@ class ServerController extends Controller
      */
     public function store(ServerCreateRequest $request)
     {
-        //
+        Server::create($request->all());
+
+        return redirect()->route('servers.index')
+            ->with('success', trans('server/messages.create.success'));
     }
 
     /**
@@ -53,7 +53,8 @@ class ServerController extends Controller
      */
     public function show($id)
     {
-        //
+        $server = Server::findOrFail($id);
+        return view('server.show')->with('server', $server);
     }
 
     /**
@@ -64,7 +65,8 @@ class ServerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $server = Server::findOrFail($id);
+        return view('server.edit')->with('server', $server);
     }
 
     /**
@@ -76,17 +78,37 @@ class ServerController extends Controller
      */
     public function update(ServerUpdateRequest $request, $id)
     {
-        //
+        $server = Server::findOrFail($id);
+        $server->fill($request->all())->save();
+
+        return redirect()->route('servers.index')
+            ->with('success', trans('server/messages.update.success'));
+    }
+
+    /**
+     * Remove level page.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $server = Server::findOrFail($id);
+        return view('server/delete')->with('server', $server);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $server = Server::findOrFail($id);
+        $server->delete();
+
+        return redirect()->route('servers.index')
+            ->with('success', trans('server/messages.delete.success'));
     }
 }
