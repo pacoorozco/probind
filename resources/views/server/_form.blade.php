@@ -111,15 +111,3 @@
     </div>
 </div>
 {!! Form::close() !!}
-
-{{-- Styles --}}
-@section('styles')
-    <!-- File Input -->
-    {!! HTML::style('vendor/jasny-bootstrap/dist/css/jasny-bootstrap.min.css') !!}
-@endsection
-
-{{-- Scripts --}}
-@section('scripts')
-    <!-- File Input -->
-    {!! HTML::script('vendor/jasny-bootstrap/dist/js/jasny-bootstrap.min.js') !!}
-@endsection
