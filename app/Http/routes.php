@@ -17,3 +17,8 @@ Route::resource('servers', 'ServerController');
 // Our special delete confirmation route - uses the show/details view.
 Route::get('servers/{level}/delete',
     ['as' => 'servers.delete', 'uses' => 'ServerController@delete']);
+
+Route::resource('zones', 'ZoneController');
+// Our special delete confirmation route - uses the show/details view.
+Route::get('zones/{zone}/delete',
+    ['as' => 'zones.delete', 'uses' => 'ZoneController@delete']);

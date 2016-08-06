@@ -6,10 +6,14 @@
             <i class="fa fa-dashboard"></i><span>{{ trans('site.dashboard') }}</span>
         </a>
     </li>
-
     <li {!! (Request::is('servers') ? ' class="active"' : '') !!}>
         <a href="{{ route('servers.index') }}">
             <i class="fa fa-server"></i><span>{{ trans('site.servers') }}</span>
+        </a>
+    </li>
+    <li {!! (Request::is('zones') ? ' class="active"' : '') !!}>
+        <a href="{{ route('zones.index') }}">
+            <i class="fa fa-database"></i><span>{{ trans('site.zones') }}</span>
         </a>
     </li>
 </ul>

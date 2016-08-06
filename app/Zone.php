@@ -3,40 +3,46 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Zone extends Model
 {
+
+    use SoftDeletes;
+
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'domain' => 'required|string',
+        'master' => 'ip',
+    ];
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
     /**
      * The database table used by the model.
      */
     protected $table = 'zones';
     protected $fillable = [
         'domain',
-        'serial',
-        'refresh',
-        'retry',
-        'expire',
         'master',
-        'file',
-        'updated',
-        'status'
     ];
-
     /**
      * The attributes that should be casted to native types.
      *
      * @var array
      */
     protected $casts = [
-        'domain' => 'string',
-        'serial' => 'integer',
-        'refresh' => 'integer',
-        'retry' => 'integer',
-        'expire' => 'integer',
-        'master' => 'string',
-        'file' => 'string',
+        'domain'  => 'string',
+        'serial'  => 'integer',
+        'master'  => 'string',
         'updated' => 'boolean',
-        'status' => 'string'
     ];
 
     /**
