@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Zone;
+use Illuminate\Http\Request;
 use App\Http\Requests\ZoneCreateRequest;
 use App\Http\Requests\ZoneUpdateRequest;
+use Yajra\Datatables\Datatables;
 
 class ZoneController extends Controller
 {
@@ -114,5 +116,43 @@ class ZoneController extends Controller
 
         return redirect()->route('zones.index')
             ->with('success', trans('zone/messages.delete.success'));
+    }
+
+    /**
+     * Show a list of all the levels formatted for Datatables.
+     *
+     * @param Request $request
+     * @param Datatables $dataTable
+     * @return Datatables JsonResponse
+     */
+    public function data(Request $request, Datatables $dataTable)
+    {
+        // Disable this query if isn't AJAX
+        if ( ! $request->ajax()) {
+            abort(400);
+        }
+
+        $zones = Zone::select([
+            'id',
+            'domain',
+            'master',
+            'updated'
+        ]);
+
+        return $dataTable::of($zones)
+            ->addColumn('type', function (Zone $zone) {
+                return (! $zone->master) ? trans('zone/model.types.master') : trans('zone/model.types.slave');
+            })
+            ->editColumn('updated', function (Zone $zone) {
+                return ($zone->updated) ? trans('general.yes') : trans('general.no');
+            })
+            ->addColumn('actions', function (Zone $zone) {
+                return view('partials.actions_dd', [
+                    'model' => 'zones',
+                    'id'    => $zone->id,
+                ])->render();
+            })
+            ->removeColumn('id')
+            ->make(true);
     }
 }

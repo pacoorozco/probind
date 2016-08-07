@@ -79,7 +79,7 @@
     </div>
     <!-- end: MAIN CONTAINER -->
     <!-- start: GLOBAL JAVASCRIPT -->
-    {!! HTML::script('vendor/AdminLTE/plugins/jQuery/jQuery-2.1.4.min.js') !!}
+    {!! HTML::script('vendor/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js') !!}
     {!! HTML::script('vendor/AdminLTE/bootstrap/js/bootstrap.min.js') !!}
     <!-- end: GLOBAL JAVASCRIPT -->
     <!-- start: JAVASCRIPT REQUIRED FOR THIS PAGE ONLY -->

@@ -1,3 +1,8 @@
+{{-- Styles --}}
+@push('styles')
+{!! HTML::style('vendor/AdminLTE/plugins/datatables/dataTables.bootstrap.css') !!}
+@endpush
+
 <table id="servers-table" class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -9,20 +14,6 @@
         <th class="col-md-2">{{ trans('general.actions') }}</th>
     </tr>
     </thead>
-    <tbody>
-    @foreach($servers as $server)
-        <tr>
-            <td>{{ $server->hostname }}</td>
-            <td>{{ $server->ip_address }}</td>
-            <td>{{ $server->type }}</td>
-            <td>{{ $server->push_updates }}</td>
-            <td>{{ $server->ns_record }}</td>
-            <td>
-                @include('partials.actions_dd', ['model' => 'servers', 'id' => $server->id])
-            </td>
-        </tr>
-    @endforeach
-    </tbody>
     <tfoot>
     <tr>
         <th class="col-md-4">{{ trans('server/table.hostname') }}</th>
@@ -34,3 +25,31 @@
     </tr>
     </tfoot>
 </table>
+
+{{-- Scripts --}}
+@push('scripts')
+{!! HTML::script('vendor/AdminLTE/plugins/datatables/jquery.dataTables.min.js') !!}
+{!! HTML::script('vendor/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js') !!}
+
+<script>
+    $(function () {
+        $('#servers-table').DataTable({
+            "ajax": "{{ route('servers.data') }}",
+            "columns": [
+                {data: "hostname"},
+                {data: "ip_address"},
+                {data: "type"},
+                {data: "push_updates", "orderable": false, "searchable": false},
+                {data: "ns_record", "orderable": false, "searchable": false},
+                {data: "actions", "orderable": false, "searchable": false}
+            ],
+            "aLengthMenu": [
+                [5, 10, 15, 20, -1],
+                [5, 10, 15, 20, "{{ trans('general.all') }}"]
+            ],
+            // set the initial value
+            "iDisplayLength": 10
+        });
+    });
+</script>
+@endpush

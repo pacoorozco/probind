@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Server;
+use Illuminate\Http\Request;
 use App\Http\Requests\ServerCreateRequest;
 use App\Http\Requests\ServerUpdateRequest;
+use Yajra\Datatables\Datatables;
 
 class ServerController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -34,7 +37,7 @@ class ServerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ServerCreateRequest  $request
+     * @param  ServerCreateRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(ServerCreateRequest $request)
@@ -48,32 +51,34 @@ class ServerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $server = Server::findOrFail($id);
+
         return view('server.show')->with('server', $server);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $server = Server::findOrFail($id);
+
         return view('server.edit')->with('server', $server);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  ServerUpdateRequest  $request
-     * @param  int  $id
+     * @param  ServerUpdateRequest $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(ServerUpdateRequest $request, $id)
@@ -94,6 +99,7 @@ class ServerController extends Controller
     public function delete($id)
     {
         $server = Server::findOrFail($id);
+
         return view('server/delete')->with('server', $server);
     }
 
@@ -111,4 +117,45 @@ class ServerController extends Controller
         return redirect()->route('servers.index')
             ->with('success', trans('server/messages.delete.success'));
     }
+
+    /**
+     * Show a list of all the levels formatted for Datatables.
+     *
+     * @param Request $request
+     * @param Datatables $dataTable
+     * @return Datatables JsonResponse
+     */
+    public function data(Request $request, Datatables $dataTable)
+    {
+        // Disable this query if isn't AJAX
+        if ( ! $request->ajax()) {
+            abort(400);
+        }
+
+        $servers = Server::select([
+            'id',
+            'hostname',
+            'type',
+            'ip_address',
+            'push_updates',
+            'ns_record'
+        ]);
+
+        return $dataTable::of($servers)
+            ->editColumn('push_updates', function (Server $server) {
+                return ($server->push_updates) ? trans('general.yes') : trans('general.no');
+            })
+            ->editColumn('ns_record', function (Server $server) {
+                return ($server->ns_record) ? trans('general.yes') : trans('general.no');
+            })
+            ->addColumn('actions', function (Server $server) {
+                return view('partials.actions_dd', [
+                    'model' => 'servers',
+                    'id'    => $server->id,
+                ])->render();
+            })
+            ->removeColumn('id')
+            ->make(true);
+    }
+
 }
