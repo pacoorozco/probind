@@ -3,9 +3,9 @@
 {{-- Web site Title --}}
 @section('title'){{ trans('auth.login') }}@endsection
 
-@section('styles')
+@push('styles')
 {!! HTML::style('vendor/AdminLTE/plugins/iCheck/square/blue.css') !!}
-@endsection
+@endpush
 
 {{-- Content --}}
 @section('content')
@@ -57,7 +57,7 @@
 <!-- end: LOGIN BOX -->
 @endsection
 
-@section('scripts')
+@push('scripts')
     {!! HTML::script('vendor/AdminLTE/plugins/iCheck/icheck.min.js') !!}
     <script>
         $(function () {
@@ -68,4 +68,4 @@
             });
         });
     </script>
-@endsection
+@endpush

@@ -17,7 +17,7 @@
     {!! HTML::style('//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') !!}
     <!-- end: GLOBAL CSS -->
     <!-- start: CSS REQUIRED FOR THIS PAGE ONLY -->
-    @yield('styles')
+    @stack('styles')
     <!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
     <!-- start: MAIN CSS -->
     {!! HTML::style('vendor/AdminLTE/dist/css/AdminLTE.min.css') !!}
@@ -56,7 +56,7 @@
 {!! HTML::script('vendor/AdminLTE/bootstrap/js/bootstrap.min.js') !!}
 <!-- end: GLOBAL JAVASCRIPT -->
 <!-- start: JAVASCRIPT REQUIRED FOR THIS PAGE ONLY -->
-@yield('scripts')
+@stack('scripts')
 <!-- end: JAVASCRIPT REQUIRED FOR THIS PAGE ONLY -->
 <!-- start: MAIN JAVASCRIPT -->
 {!! HTML::script('vendor/AdminLTE/dist/js/app.min.js') !!}
