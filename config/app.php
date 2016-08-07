@@ -163,6 +163,7 @@ return [
          * Third Party Service Providers...
          */
         Collective\Html\HtmlServiceProvider::class,  // HTML helpers
+        Yajra\Datatables\DatatablesServiceProvider::class, // DataTables helpers
 
         /*
          * Application Service Providers...
@@ -223,6 +224,8 @@ return [
          */
         'Form'      => Collective\Html\FormFacade::class,  // HTML Form helpers
         'HTML'      => Collective\Html\HtmlFacade::class,  // HTML helpers
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class, // DataTables helpers
+
     ],
 
 ];
