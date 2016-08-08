@@ -11,6 +11,17 @@ class ZonesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Zone::class, 25)->create();
+        factory(App\Zone::class, 25)
+            ->create()
+            ->each(function ($zone) {
+                $records = factory(App\Record::class, 'A', 10)->make();
+                foreach ($records as $record) {
+                    $zone->records()->save($record);
+                }
+                $records = factory(App\Record::class, 'CNAME', 2)->make();
+                foreach ($records as $record) {
+                    $zone->records()->save($record);
+                }
+            });
     }
 }

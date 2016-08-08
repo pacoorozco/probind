@@ -36,3 +36,22 @@ $factory->define(App\Zone::class, function (Faker\Generator $faker) {
         'master' => $faker->optional()->ipv4,
     ];
 });
+
+$factory->defineAs(App\Record::class, 'A', function (Faker\Generator $faker) {
+    // Return an A record
+    return [
+        'name' => $faker->domainWord,
+        'type' => 'A',
+        'data' => $faker->ipv4,
+    ];
+});
+
+$factory->defineAs(App\Record::class, 'CNAME', function (Faker\Generator $faker) {
+    // Return a CNAME record
+    return [
+        'name' => $faker->domainWord,
+        'type' => 'CNAME',
+        'data' => $faker->domainWord . '.' . $faker->domainName . '.',
+    ];
+});
+
