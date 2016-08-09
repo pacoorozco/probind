@@ -34,11 +34,7 @@
     <!-- Notifications -->
     @include('partials.notifications')
     <!-- ./ notifications -->
-
-    @if (! $zone->master)
-        @include('zone._form_master')
-    @else
-        @include('zone._form_slave')
-    @endif
+    
+    @include('zone/_form')
 
 @endsection

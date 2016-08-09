@@ -26,21 +26,15 @@
     <li class="active">
         {{ trans('zone/title.create_new') }}
     </li>
-    @endsection
+@endsection
 
-    {{-- Content --}}
-    @section('content')
+{{-- Content --}}
+@section('content')
 
-            <!-- Notifications -->
+    <!-- Notifications -->
     @include('partials.notifications')
-            <!-- ./ notifications -->
+    <!-- ./ notifications -->
 
-    <div class="row">
-        <div class="col-md-6">
-            @include('zone/_form_master')
-        </div>
-        <div class="col-md-6">
-            @include('zone/_form_slave')
-        </div>
-    </div>
+    @include('zone/_form')
+
 @endsection

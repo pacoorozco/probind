@@ -147,10 +147,9 @@ class ZoneController extends Controller
                 return ($zone->updated) ? trans('general.yes') : trans('general.no');
             })
             ->addColumn('actions', function (Zone $zone) {
-                return view('partials.actions_dd', [
-                    'model' => 'zones',
-                    'id'    => $zone->id,
-                ])->render();
+                return view('zone._actions')
+                ->with('zone', $zone)
+                ->render();
             })
             ->removeColumn('id')
             ->make(true);
