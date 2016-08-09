@@ -34,6 +34,18 @@ class Record extends Model
         'priority' => 'integer',
         'data' => 'string'
     ];
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'name' => 'required|string',
+        'ttl' => 'integer',
+        'type' => 'required|string',
+        'priority' => 'integer',
+        'data' => 'required|string'
+    ];
 
     /**
      * A record belongs to a zone.

@@ -51,26 +51,22 @@ class ServerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  Server $server
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Server $server)
     {
-        $server = Server::findOrFail($id);
-
         return view('server.show')->with('server', $server);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  Server $server
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Server $server)
     {
-        $server = Server::findOrFail($id);
-
         return view('server.edit')->with('server', $server);
     }
 
@@ -78,12 +74,11 @@ class ServerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  ServerUpdateRequest $request
-     * @param  int $id
+     * @param  Server $server
      * @return \Illuminate\Http\Response
      */
-    public function update(ServerUpdateRequest $request, $id)
+    public function update(ServerUpdateRequest $request, Server $server)
     {
-        $server = Server::findOrFail($id);
         $server->fill($request->all())->save();
 
         return redirect()->route('servers.index')
@@ -93,25 +88,22 @@ class ServerController extends Controller
     /**
      * Remove level page.
      *
-     * @param int $id
+     * @param Server $server
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete(Server $server)
     {
-        $server = Server::findOrFail($id);
-
         return view('server/delete')->with('server', $server);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param Server $server
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Server $server)
     {
-        $server = Server::findOrFail($id);
         $server->delete();
 
         return redirect()->route('servers.index')
@@ -128,7 +120,7 @@ class ServerController extends Controller
     public function data(Request $request, Datatables $dataTable)
     {
         // Disable this query if isn't AJAX
-        if ( ! $request->ajax()) {
+        if (!$request->ajax()) {
             abort(400);
         }
 
@@ -151,7 +143,7 @@ class ServerController extends Controller
             ->addColumn('actions', function (Server $server) {
                 return view('partials.actions_dd', [
                     'model' => 'servers',
-                    'id'    => $server->id,
+                    'id' => $server->id,
                 ])->render();
             })
             ->removeColumn('id')

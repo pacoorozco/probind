@@ -35,6 +35,6 @@
     @include('partials.notifications')
     <!-- ./ notifications -->
 
-    @include('zone/_details', ['action' => 'show'])
+    @include('record/_details', ['action' => 'show'])
 
 @endsection

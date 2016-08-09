@@ -37,7 +37,7 @@
 
     {{-- Delete zone Form --}}
     {!! Form::open(array('route' => array('zones.destroy', $zone), 'method' => 'delete', )) !!}
-    @include('zone/_details', ['action' => 'delete'])
+    @include('record/_details', ['action' => 'delete'])
     {!! Form::close() !!}
 
 @endsection

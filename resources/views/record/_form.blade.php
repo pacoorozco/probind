@@ -1,32 +1,51 @@
 {{-- Create / Edit Server Form --}}
-@if (isset($zone))
-    {!! Form::model($zone, ['route' => ['zones.update', $zone], 'method' => 'put']) !!}
+@if (isset($record))
+    {!! Form::model($record, ['route' => ['zones.records.update', $record->zone], 'method' => 'put']) !!}
 @else
-    {!! Form::open(['route' => 'zones.store']) !!}
+    {!! Form::open(['route' => ['zones.records.store', $zone]]) !!}
 @endif
 
 <div class="box box-solid">
     <div class="box-body">
 
-        <!-- domain -->
-        <div class="form-group {{ $errors->has('domain') ? 'has-error' : '' }}">
-            {!! Form::label('domain', trans('zone/model.domain'), array('class' => 'control-label required')) !!}
+        <!-- zone -->
+        <div class="form-group">
+            {!! Form::label('zone', trans('zone/model.domain'), array('class' => 'control-label')) !!}
             <div class="controls">
-                {!! Form::text('domain', null, array('class' => 'form-control', 'required' => 'required')) !!}
-                <span class="help-block">{{ $errors->first('domain', ':message') }}</span>
+                {{ $zone->domain }}
             </div>
         </div>
-        <!-- ./ domain -->
+        <!-- ./ zone -->
 
-        <!-- master -->
-        <div class="form-group {{ $errors->has('master') ? 'has-error' : '' }}">
-            {!! Form::label('master', trans('zone/model.master'), array('class' => 'control-label')) !!}
+        <!-- name -->
+        <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+            {!! Form::label('name', trans('record/model.name'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::text('master', null, array('class' => 'form-control')) !!}
-                <span class="help-block">{{ $errors->first('master', ':message') }}</span>
+                {!! Form::text('name', null, array('class' => 'form-control', 'required' => 'required')) !!}
+                <span class="help-block">{{ $errors->first('name', ':message') }}</span>
             </div>
         </div>
-        <!-- ./ master -->
+        <!-- ./ name -->
+
+        <!-- type -->
+        <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
+            {!! Form::label('type', trans('record/model.type'), array('class' => 'control-label required')) !!}
+            <div class="controls">
+                {!! Form::text('type', null, array('class' => 'form-control', 'required' => 'required')) !!}
+                <span class="help-block">{{ $errors->first('type', ':message') }}</span>
+            </div>
+        </div>
+        <!-- ./ type -->
+
+        <!-- data -->
+        <div class="form-group {{ $errors->has('data') ? 'has-error' : '' }}">
+            {!! Form::label('data', trans('record/model.data'), array('class' => 'control-label required')) !!}
+            <div class="controls">
+                {!! Form::text('data', null, array('class' => 'form-control', 'required' => 'required')) !!}
+                <span class="help-block">{{ $errors->first('data', ':message') }}</span>
+            </div>
+        </div>
+        <!-- ./ data -->
     </div>
 
     <div class="box-footer">

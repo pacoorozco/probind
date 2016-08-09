@@ -2,13 +2,13 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('zone/title.create_new') }} :: @parent
+    {{ trans('record/title.create_new') }} :: @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('zone/title.create_new') }}
-    <small>{{ trans('zone/title.create_new_subtitle') }}</small>
+    {{ trans('record/title.create_new') }}
+    <small>{{ trans('record/title.create_new_subtitle') }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
@@ -20,11 +20,11 @@
     </li>
     <li>
         <a href="{{ route('zones.index') }}">
-            {{ trans('site.zones') }}
+            {{ trans('site.records') }}
         </a>
     </li>
     <li class="active">
-        {{ trans('zone/title.create_new') }}
+        {{ trans('record/title.create_new') }}
     </li>
 @endsection
 
@@ -35,6 +35,6 @@
     @include('partials.notifications')
     <!-- ./ notifications -->
 
-    @include('zone/_form')
+    @include('record/_form')
 
 @endsection

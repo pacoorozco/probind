@@ -2,13 +2,13 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('zone/title.zone_management') }} :: @parent
+    {{ trans('record/title.view_records') }} :: @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('zone/title.zone_management') }}
-    <small>{{ trans('zone/title.zone_management_subtitle') }}</small>
+    {{ trans('record/title.view_records') }}
+    <small>{{ $zone->domain }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
@@ -19,30 +19,28 @@
         </a>
     </li>
     <li class="active">
-        <a href="{{route('zones.index') }}">
-            {{ trans('site.zones') }}
-        </a>
+        {{ trans('record/title.view_records') }}
     </li>
-@endsection
+    @endsection
 
 
-{{-- Content --}}
-@section('content')
+    {{-- Content --}}
+    @section('content')
 
-    <!-- Notifications -->
+            <!-- Notifications -->
     @include('partials.notifications')
-    <!-- ./ notifications -->
+            <!-- ./ notifications -->
 
     <!-- actions -->
-    <a href="{{ route('zones.create') }}">
+    <a href="{{ route('zones.records.create', $zone->id) }}">
         <button type="button" class="btn btn-success margin-bottom">
-            <i class="fa fa-plus"></i> {{ trans('zone/title.create_new') }}
+            <i class="fa fa-plus"></i> {{ trans('record/title.create_new') }}
         </button>
     </a>
     <!-- /.actions -->
     <div class="box">
         <div class="box-body">
-            @include('zone._table')
+            @include('record._table')
         </div>
     </div>
 @endsection

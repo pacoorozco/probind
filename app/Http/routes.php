@@ -11,6 +11,8 @@
 |
 */
 
+Route::singularResourceParameters();
+
 Route::get('/', ['as' => 'home', 'uses' => 'DashboardController@index']);
 
 /* ------------------------------------------
@@ -40,3 +42,17 @@ Route::get('zones/data',
 Route::get('zones/{zone}/delete',
     ['as' => 'zones.delete', 'uses' => 'ZoneController@delete']);
 Route::resource('zones', 'ZoneController');
+
+/* ------------------------------------------
+ *  Record management
+ *  ------------------------------------------
+ */
+// Datatables Ajax route.
+// NOTE: We must define this route first as it is more specific than
+// the default show resource route for /zones/{zone}
+Route::get('zones/{zone}/records/data',
+    ['as' => 'zones.records.data', 'uses' => 'RecordController@data']);
+// Our special delete confirmation route - uses the show/details view.
+Route::get('zones/{zone}/records/{record}/delete',
+    ['as' => 'zones.records.delete', 'uses' => 'ZoneController@delete']);
+Route::resource('zones.records', 'RecordController');

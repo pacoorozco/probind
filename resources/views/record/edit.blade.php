@@ -2,13 +2,13 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('zone/title.zone_edit') }} :: @parent
+    {{ trans('record/title.record_edit') }} :: @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('zone/title.zone_edit') }}
-    <small>{{ $zone->domain }}</small>
+    {{ trans('record/title.record_edit') }}
+    <small>{{ $record->name }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
@@ -24,7 +24,7 @@
         </a>
     </li>
     <li class="active">
-        {{ trans('zone/title.zone_edit') }}
+        {{ trans('record/title.record_edit') }}
     </li>
 @endsection
 
@@ -35,6 +35,6 @@
     @include('partials.notifications')
     <!-- ./ notifications -->
     
-    @include('zone/_form')
+    @include('record/_form')
 
 @endsection
