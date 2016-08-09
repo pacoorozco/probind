@@ -15,35 +15,45 @@
     <li class="active">
         <i class="fa fa-dashboard"></i> {{ trans('site.dashboard') }}
     </li>
-@endsection
+    @endsection
 
-@section('content')
-        <!-- Info boxes -->
+    @section('content')
+            <!-- Info boxes -->
     <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="fa fa-trophy"></i></span>
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>{{ $data['servers'] }}</h3>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Test 1</span>
-                    <span class="info-box-number">11</span>
+                    <p>{{ trans('site.servers') }}</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon">
+                    <i class="fa fa-server"></i>
+                </div>
+                <a href="{{ route('servers.index') }}" class="small-box-footer">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
             </div>
-            <!-- /.info-box -->
+            <!-- /.small-box -->
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="fa fa-comments"></i></span>
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{ $data['zones'] }}</h3>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Test 2</span>
-                    <span class="info-box-number">22</span>
+                    <p>{{ trans('site.zones') }}</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon">
+                    <i class="fa fa-database"></i>
+                </div>
+                <a href="{{ route('zones.index') }}" class="small-box-footer">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
             </div>
-            <!-- /.info-box -->
+            <!-- /.small-box -->
         </div>
         <!-- /.col -->
 
@@ -51,31 +61,53 @@
         <div class="clearfix visible-sm-block"></div>
 
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-bank"></i></span>
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>{{ $data['records'] }}</h3>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Test 3</span>
-                    <span class="info-box-number">33</span>
+                    <p>{{ trans('site.records') }}</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon">
+                    <i class="fa fa-bullseye"></i>
+                </div>
+                <a href="{{-- route('records.index') --}}" class="small-box-footer">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
             </div>
-            <!-- /.info-box -->
+            <!-- /.small-box -->
         </div>
         <!-- /.col -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+            <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>{{ $data['users'] }}</h3>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Test 4</span>
-                    <span class="info-box-number">44</span>
+                    <p>{{ trans('site.users') }}</p>
                 </div>
-                <!-- /.info-box-content -->
+                <div class="icon">
+                    <i class="fa fa-users"></i>
+                </div>
+                <a href="{{-- route('users.index') --}}" class="small-box-footer">
+                    More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
             </div>
-            <!-- /.info-box -->
+            <!-- /.small-box -->
         </div>
         <!-- /.col -->
     </div>
     <!-- /.row -->
+
+    <div class="row">
+        <!-- monthly records statistics -->
+        <div class="col-md-8 col-sm-12 col-xs-12">
+            @include('dashboard._monthly_records_stats')
+        </div>
+
+        <!-- record types statistics -->
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            @include('dashboard._record_types_stats')
+        </div>
+    </div>
 @endsection
