@@ -18,9 +18,20 @@ class Record extends Model
         'data'
     ];
 
-    /*
-     * $aa = ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV', 'TXT']
-    */
+    /**
+     * Valid Record Types. These will be used to validation.
+     * @var array
+     */
+    public static $validInputTypes = [
+        'A'     => 'A',
+        'AAAA'  => 'AAAA',
+        'CNAME' => 'CNAME',
+        'MX'    => 'MX',
+        'NS'    => 'NS',
+        'PTR'   => 'PTR',
+        'SRV'   => 'SRV',
+        'TXT'   => 'TXT'
+    ];
 
     /**
      * The attributes that should be casted to native types.
@@ -28,24 +39,45 @@ class Record extends Model
      * @var array
      */
     protected $casts = [
-        'name' => 'string',
-        'ttl' => 'integer',
-        'type' => 'string',
+        'name'     => 'string',
+        'ttl'      => 'integer',
+        'type'     => 'string',
         'priority' => 'integer',
-        'data' => 'string'
+        'data'     => 'string'
     ];
+
     /**
-     * Validation rules
+     * Set the Record's type uppercase.
      *
-     * @var array
+     * @param  string $value
+     * @return string
      */
-    public static $rules = [
-        'name' => 'required|string',
-        'ttl' => 'integer',
-        'type' => 'required|string',
-        'priority' => 'integer',
-        'data' => 'required|string'
-    ];
+    public function setTypeAttribute($value)
+    {
+        $this->attributes['type'] = strtoupper($value);
+    }
+
+    /**
+     * Set the Record's name lowercase.
+     *
+     * @param  string $value
+     * @return string
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtolower($value);
+    }
+
+    /**
+     * Set the Record's data lowercase.
+     *
+     * @param  string $value
+     * @return string
+     */
+    public function setDataAttribute($value)
+    {
+        $this->attributes['data'] = strtolower($value);
+    }
 
     /**
      * A record belongs to a zone.

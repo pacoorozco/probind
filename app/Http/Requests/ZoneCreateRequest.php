@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
-use App\Zone;
 
 class ZoneCreateRequest extends Request
 {
@@ -24,6 +23,9 @@ class ZoneCreateRequest extends Request
      */
     public function rules()
     {
-        return Zone::$rules;
+        return [
+            'domain' => 'required|string|unique:zones',
+            'master' => 'ip',
+        ];
     }
 }

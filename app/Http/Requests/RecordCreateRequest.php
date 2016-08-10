@@ -25,6 +25,14 @@ class RecordCreateRequest extends Request
      */
     public function rules()
     {
-        return Record::$rules;
+        $validInputTypes = join(',', array_keys(Record::$validInputTypes));
+
+        return [
+            'name'     => 'required|string',
+            'ttl'      => 'integer',
+            'type'     => 'required|string|in:' . $validInputTypes,
+            'priority' => 'integer',
+            'data'     => 'required|string'
+        ];
     }
 }

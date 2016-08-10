@@ -24,6 +24,11 @@ class ZoneUpdateRequest extends Request
      */
     public function rules()
     {
-        return Zone::$rules;
+        $zone = $this->route('zone');
+
+        return [
+            'domain' => 'required|string|unique:zones,domain,' . $zone->id,
+            'master' => 'ip',
+        ];
     }
 }

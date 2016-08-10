@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
-use App\Server;
 
 class ServerCreateRequest extends Request
 {
@@ -24,6 +23,16 @@ class ServerCreateRequest extends Request
      */
     public function rules()
     {
-        return Server::$rules;
+        return [
+            'hostname'     => 'required|string|unique:servers',
+            'ip_address'   => 'required|ip|unique:servers',
+            'type'         => 'required|in:master,slave',
+            'push_updates' => 'required|boolean',
+            'ns_record'    => 'required|boolean',
+            'directory'    => 'required|string',
+            'template'     => 'string',
+            'script'       => 'required_if:push_updates,1|string',
+            'active'       => 'required|boolean'
+        ];
     }
 }

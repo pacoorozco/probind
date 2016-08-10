@@ -11,15 +11,6 @@ class Zone extends Model
     use SoftDeletes;
 
     /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'domain' => 'required|string',
-        'master' => 'ip',
-    ];
-    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
@@ -44,6 +35,28 @@ class Zone extends Model
         'master'  => 'string',
         'updated' => 'boolean',
     ];
+
+    /**
+     * Set the Zone's domain lowercase.
+     *
+     * @param  string $value
+     * @return string
+     */
+    public function setDomainAttribute($value)
+    {
+        $this->attributes['domain'] = strtolower($value);
+    }
+
+    /**
+     * Set the Zone's master lowercase.
+     *
+     * @param  string $value
+     * @return string
+     */
+    public function setMasterAttribute($value)
+    {
+        $this->attributes['master'] = strtolower($value);
+    }
 
     /**
      * A zone will have some records.
