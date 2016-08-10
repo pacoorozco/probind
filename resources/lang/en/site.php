@@ -5,6 +5,7 @@ return [
     'dashboard' => 'Dashboard',
     'servers'   => 'Servers',
     'zones'     => 'Zones',
+    'records'   => 'Records',
 
 
 ];

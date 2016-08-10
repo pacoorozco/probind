@@ -8,7 +8,7 @@
 {{-- Content Header --}}
 @section('header')
     {{ trans('record/title.record_edit') }}
-    <small>{{ $record->name }}</small>
+    <small>{{ trans('record/title.record_edit_subtitle', ['record' => $record->name]) }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
@@ -19,7 +19,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('zones.index') }}">
+        <a href="{{ route('zones.records.index', $zone) }}">
             {{ trans('site.zones') }}
         </a>
     </li>

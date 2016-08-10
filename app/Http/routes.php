@@ -54,5 +54,5 @@ Route::get('zones/{zone}/records/data',
     ['as' => 'zones.records.data', 'uses' => 'RecordController@data']);
 // Our special delete confirmation route - uses the show/details view.
 Route::get('zones/{zone}/records/{record}/delete',
-    ['as' => 'zones.records.delete', 'uses' => 'ZoneController@delete']);
+    ['as' => 'zones.records.delete', 'uses' => 'RecordController@delete']);
 Route::resource('zones.records', 'RecordController');

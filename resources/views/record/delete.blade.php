@@ -2,13 +2,13 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('zone/title.zone_delete') }} :: @parent
+    {{ trans('record/title.record_delete') }} :: @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('zone/title.zone_delete') }}
-    <small>{{ $zone->domain }}</small>
+    {{ trans('record/title.record_delete') }}
+    <small>{{ trans('record/title.record_delete_subtitle', ['record' => $record->name]) }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
@@ -19,12 +19,12 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('zones.index') }}">
-            {{ trans('site.zones') }}
+        <a href="{{ route('zones.records.index', $zone) }}">
+            {{ trans('site.records') }}
         </a>
     </li>
     <li class="active">
-        {{ trans('zone/title.zone_delete') }}
+        {{ trans('record/title.record_delete') }}
     </li>
 @endsection
 
@@ -36,7 +36,7 @@
     <!-- ./ notifications -->
 
     {{-- Delete zone Form --}}
-    {!! Form::open(array('route' => array('zones.destroy', $zone), 'method' => 'delete', )) !!}
+    {!! Form::open(['route' => ['zones.records.destroy', $zone, $record], 'method' => 'delete']) !!}
     @include('record/_details', ['action' => 'delete'])
     {!! Form::close() !!}
 

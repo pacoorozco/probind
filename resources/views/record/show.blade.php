@@ -2,13 +2,13 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('zone/title.zone_show') }} :: @parent
+    {{ trans('record/title.record_show') }} :: @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('zone/title.zone_show') }}
-    <small>{{ $zone->domain }}</small>
+    {{ trans('record/title.record_show') }}
+    <small>{{ trans('record/title.record_show_subtitle', ['record' => $record->name]) }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
@@ -19,12 +19,12 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('zones.index') }}">
-            {{ trans('site.zones') }}
+        <a href="{{ route('zones.records.index', $zone) }}">
+            {{ trans('site.records') }}
         </a>
     </li>
     <li class="active">
-        {{ trans('zone/title.zone_show') }}
+        {{ trans('record/title.record_show') }}
     </li>
 @endsection
 

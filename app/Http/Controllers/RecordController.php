@@ -48,19 +48,22 @@ class RecordController extends Controller
     {
         $zone->records()->create($request->all());
 
-        return redirect()->route('zones.index')
+        return redirect()->route('zones.records.index', $zone)
             ->with('success', trans('record/messages.create.success'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  Zone $zone
+     * @param  Record $record
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Zone $zone, Record $record)
     {
-        //
+        return view('record.show')
+            ->with('zone', $zone)
+            ->with('record', $record);
     }
 
     /**
@@ -87,9 +90,9 @@ class RecordController extends Controller
      */
     public function update(RecordUpdateRequest $request, Zone $zone, Record $record)
     {
-        //$server->fill($request->all())->save();
+        $record->fill($request->all())->save();
 
-        return redirect()->route('zones.index')
+        return redirect()->route('zones.records.index', $zone)
             ->with('success', trans('record/messages.update.success'));
     }
 
@@ -102,7 +105,7 @@ class RecordController extends Controller
      */
     public function delete(Zone $zone, Record $record)
     {
-        return view('record/delete')
+        return view('record.delete')
             ->with('zone', $zone)
             ->with('record', $record);
     }
@@ -116,9 +119,9 @@ class RecordController extends Controller
      */
     public function destroy(Zone $zone, Record $record)
     {
-        // $server->delete();
+        $record->delete();
 
-        return redirect()->route('zones.index')
+        return redirect()->route('zones.records.index', $zone)
             ->with('success', trans('record/messages.delete.success'));
     }
 

@@ -1,6 +1,6 @@
 {{-- Create / Edit Server Form --}}
 @if (isset($record))
-    {!! Form::model($record, ['route' => ['zones.records.update', $record->zone], 'method' => 'put']) !!}
+    {!! Form::model($record, ['route' => ['zones.records.update', $zone, $record], 'method' => 'put']) !!}
 @else
     {!! Form::open(['route' => ['zones.records.store', $zone]]) !!}
 @endif
@@ -50,13 +50,13 @@
 
     <div class="box-footer">
         <!-- Form Actions -->
-        <a href="{{ route('zones.index') }}">
+        <a href="{{ route('zones.records.index', $zone) }}">
             <button type="button" class="btn btn-primary">
                 <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
             </button>
         </a>
-    {!! Form::button('<i class="fa fa-floppy-o"></i> ' . trans('general.save'), array('type' => 'submit', 'class' => 'btn btn-success')) !!}
-    <!-- ./ form actions -->
+        {!! Form::button('<i class="fa fa-floppy-o"></i> ' . trans('general.save'), array('type' => 'submit', 'class' => 'btn btn-success')) !!}
+                <!-- ./ form actions -->
     </div>
 </div>
 {!! Form::close() !!}

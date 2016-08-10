@@ -8,7 +8,7 @@
 {{-- Content Header --}}
 @section('header')
     {{ trans('record/title.view_records') }}
-    <small>{{ $zone->domain }}</small>
+    <small>{{ trans('record/title.view_records_subtitle', ['domain' => $zone->domain]) }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
@@ -21,18 +21,18 @@
     <li class="active">
         {{ trans('record/title.view_records') }}
     </li>
-    @endsection
+@endsection
 
 
-    {{-- Content --}}
-    @section('content')
+{{-- Content --}}
+@section('content')
 
-            <!-- Notifications -->
+    <!-- Notifications -->
     @include('partials.notifications')
-            <!-- ./ notifications -->
+    <!-- ./ notifications -->
 
     <!-- actions -->
-    <a href="{{ route('zones.records.create', $zone->id) }}">
+    <a href="{{ route('zones.records.create', $zone) }}">
         <button type="button" class="btn btn-success margin-bottom">
             <i class="fa fa-plus"></i> {{ trans('record/title.create_new') }}
         </button>

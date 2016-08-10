@@ -8,7 +8,7 @@
 {{-- Content Header --}}
 @section('header')
     {{ trans('record/title.create_new') }}
-    <small>{{ trans('record/title.create_new_subtitle') }}</small>
+    <small>{{ trans('record/title.create_new_subtitle', ['domain' => $zone->domain]) }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
@@ -19,7 +19,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('zones.index') }}">
+        <a href="{{ route('zones.records.index', $zone) }}">
             {{ trans('site.records') }}
         </a>
     </li>
