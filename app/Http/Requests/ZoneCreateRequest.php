@@ -25,7 +25,7 @@ class ZoneCreateRequest extends Request
     {
         return [
             'domain' => 'required|string|unique:zones',
-            'master' => 'ip',
+            'master' => 'sometimes|required|ip',
         ];
     }
 }

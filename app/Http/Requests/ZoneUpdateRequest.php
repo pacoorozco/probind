@@ -28,7 +28,7 @@ class ZoneUpdateRequest extends Request
 
         return [
             'domain' => 'required|string|unique:zones,domain,' . $zone->id,
-            'master' => 'ip',
+            'master' => 'sometimes|required|ip',
         ];
     }
 }
