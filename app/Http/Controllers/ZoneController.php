@@ -51,39 +51,36 @@ class ZoneController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  Zone $zone
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Zone $zone)
     {
-        $zone = Zone::findOrFail($id);
-
-        return view('zone.show')->with('zone', $zone);
+        return view('zone.show')
+            ->with('zone', $zone);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  Zone $zone
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Zone $zone)
     {
-        $zone = Zone::findOrFail($id);
-
-        return view('zone.edit')->with('zone', $zone);
+        return view('zone.edit')
+            ->with('zone', $zone);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  ZoneUpdateRequest $request
-     * @param  int $id
+     * @param  Zone $zone
      * @return \Illuminate\Http\Response
      */
-    public function update(ZoneUpdateRequest $request, $id)
+    public function update(ZoneUpdateRequest $request, Zone $zone)
     {
-        $zone = Zone::findOrFail($id);
         $zone->fill($request->all())->save();
 
         return redirect()->route('zones.index')
@@ -93,25 +90,23 @@ class ZoneController extends Controller
     /**
      * Remove zone page.
      *
-     * @param int $id
+     * @param Zone $zone
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete(Zone $zone)
     {
-        $zone = Zone::findOrFail($id);
-
-        return view('zone/delete')->with('zone', $zone);
+        return view('zone/delete')
+            ->with('zone', $zone);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param Zone $zone
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Zone $zone)
     {
-        $zone = Zone::findOrFail($id);
         $zone->delete();
 
         return redirect()->route('zones.index')
