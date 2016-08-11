@@ -9,8 +9,8 @@ return [
         'master' => 'Master',
         'slave'  => 'Slave'
     ],
-    'push_updates' => 'Push Updates',
-    'ns_record'    => 'NS Record',
+    'push_updates' => 'Push DNS changes to this server',
+    'ns_record'    => 'Include this server in NS record',
     'directory'    => 'Path',
     'template'     => 'Template',
     'script'       => 'Script',

@@ -23,14 +23,14 @@ class Record extends Model
      * @var array
      */
     public static $validInputTypes = [
-        'A'     => 'A',
-        'AAAA'  => 'AAAA',
-        'CNAME' => 'CNAME',
-        'MX'    => 'MX',
-        'NS'    => 'NS',
-        'PTR'   => 'PTR',
-        'SRV'   => 'SRV',
-        'TXT'   => 'TXT'
+        'A'     => 'A (IPv4 address)',
+        'AAAA'  => 'AAAA (IPv6 address)',
+        'CNAME' => 'CNAME (canonical name)',
+        'MX'    => 'MX (mail exchange)',
+        'NS'    => 'NS (name server)',
+        'PTR'   => 'PTR (pointer)',
+        'SRV'   => 'SRV (service locator)',
+        'TXT'   => 'TXT (text)',
     ];
 
     /**

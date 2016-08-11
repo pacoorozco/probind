@@ -3,7 +3,7 @@
 
         <!-- hostname -->
         <div class="form-group">
-            {!! Form::label('name', trans('server/model.hostname'), array('class' => 'control-label')) !!}
+            {!! Form::label('hostname', trans('server/model.hostname'), array('class' => 'control-label')) !!}
             <div class="controls">
                 {{ $server->hostname }}
             </div>
@@ -23,7 +23,7 @@
         <div class="form-group">
             {!! Form::label('type', trans('server/model.type'), array('class' => 'control-label')) !!}
             <div class="controls">
-                {{ $server->type }}
+                {{ trans('server/model.types.' . $server->type) }}
             </div>
         </div>
         <!-- ./ type -->
@@ -32,7 +32,7 @@
         <div class="form-group">
             {!! Form::label('push_updates', trans('server/model.push_updates'), array('class' => 'control-label')) !!}
             <div class="controls">
-                {{ $server->push_updates }}
+                {{ ($server->push_updates) ? trans('general.yes') : trans('general.no') }}
             </div>
         </div>
         <!-- ./ push_updates -->
@@ -41,7 +41,7 @@
         <div class="form-group">
             {!! Form::label('ns_record', trans('server/model.ns_record'), array('class' => 'control-label')) !!}
             <div class="controls">
-                {{ $server->ns_record }}
+                {{ $server->ns_record ? trans('general.yes') : trans('general.no') }}
             </div>
         </div>
         <!-- ./ ns_record -->
@@ -77,7 +77,7 @@
         <div class="form-group">
             {!! Form::label('active', trans('server/model.active'), array('class' => 'control-label')) !!}
             <div class="controls">
-                {{ $server->active }}
+                {{ $server->active ? trans('general.yes') : trans('general.no') }}
             </div>
         </div>
         <!-- ./ active -->

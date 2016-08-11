@@ -27,12 +27,13 @@ class ServerCreateRequest extends Request
             'hostname'     => 'required|string|unique:servers',
             'ip_address'   => 'required|ip|unique:servers',
             'type'         => 'required|in:master,slave',
-            'push_updates' => 'required|boolean',
-            'ns_record'    => 'required|boolean',
-            'directory'    => 'required|string',
-            'template'     => 'string',
+            'ns_record'    => 'sometimes|boolean',
+            'active'       => 'required|boolean',
+            'push_updates' => 'sometimes|boolean',
+            'directory'    => 'required_if:push_updates,1|string',
+            'template'     => 'required_if:push_updates,1|string',
             'script'       => 'required_if:push_updates,1|string',
-            'active'       => 'required|boolean'
+
         ];
     }
 }

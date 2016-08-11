@@ -2,25 +2,26 @@
 
 return [
 
-    'zone_default'       => [
-        'mname'      => 'Hostname for SOA record',
-        'mname_help' => 'The origin of domains managed in this database, as published in the SOA records. This would usually be the hostname of the master DNS server, e.g. ns1.mydomain.net.',
+    'zone_default'            => [
+        'mname'      => 'SOA Primary Server',
+        'mname_help' => 'The fully qualified domain name for the name server.',
 
-        'rname'      => 'Email address for SOA record',
-        'rname_help' => 'If you have a "hostmaster" alias which forwards to the DNS staff, put "hostmaster" in here. e.g. hostmaster@mydomain.net.',
+        'rname'      => 'Responsible Person',
+        'rname_help' => ' The e-mail address of the person in charge of the domain.',
 
-        'refresh'      => 'Refresh',
-        'refresh_help' => '',
+        'refresh'      => 'Refresh Interval',
+        'refresh_help' => 'The interval at which a secondary server checks for zone updates.',
 
-        'retry'      => 'Retry',
-        'retry_help' => '',
+        'retry'      => 'Retry Interval',
+        'retry_help' => 'The time the secondary server waits after a failure to download the zone database.',
 
-        'expire'      => 'Expire',
-        'expire_help' => '',
+        'expire'      => 'Expires After',
+        'expire_help' => 'The period of time for which zone information is valid on the secondary server.',
 
-        'minimum_ttl'      => 'Minimum TTL',
-        'minimum_ttl_help' => '',
+        'minimum_ttl'      => 'Minimum (Default) TTL',
+        'minimum_ttl_help' => 'The minimum time-to-live value for cached records on a DNS server.',
     ],
-    'record_ttl_default' => 'TTL',
+    'record_ttl_default'      => 'TTL',
+    'record_ttl_default_help' => 'The default time-to-live value for all resource records.',
 
 ];

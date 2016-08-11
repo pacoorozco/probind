@@ -8,7 +8,7 @@
 {{-- Content Header --}}
 @section('header')
     {{ trans('server/title.server_show') }}
-    <small>{{ $server->hostname }}</small>
+    <small>{{ trans('server/title.server_show_subtitle', ['server' => $server->hostname]) }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}

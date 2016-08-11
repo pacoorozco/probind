@@ -3,7 +3,7 @@
 return [
 
     'name' => 'Name',
-    'ttl' => 'TTL',
+    'ttl'  => 'TTL',
     'type' => 'Type',
     'data' => 'Data',
 

@@ -38,31 +38,45 @@
         </div>
         <!-- ./ type -->
 
-        <!-- push_updates -->
-        <div class="form-group {{ $errors->has('push_updates') ? 'has-error' : '' }}">
-            {!! Form::label('push_updates', trans('server/model.push_updates'), array('class' => 'control-label required')) !!}
-            <div class="controls">
-                {!! Form::select('push_updates', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
-                {{ $errors->first('push_updates', '<span class="help-inline">:message</span>') }}
-            </div>
-        </div>
-        <!-- ./ push_updates -->
-
         <!-- ns_record -->
         <div class="form-group {{ $errors->has('ns_record') ? 'has-error' : '' }}">
-            {!! Form::label('ns_record', trans('server/model.ns_record'), array('class' => 'control-label required')) !!}
-            <div class="controls">
-                {!! Form::select('ns_record', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
-                {{ $errors->first('ns_record', '<span class="help-inline">:message</span>') }}
+            <div class="checkbox">
+                <label class="control-label">
+                    {{ Form::checkbox('ns_record', true, null) }}
+                    {{ trans('server/model.ns_record') }}
+                </label>
             </div>
         </div>
         <!-- ./ ns_record -->
 
+        <!-- active -->
+        <div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
+            {!! Form::label('active', trans('server/model.active'), array('class' => 'control-label required')) !!}
+            <div class="controls">
+                {!! Form::select('active', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {{ $errors->first('active', '<span class="help-inline">:message</span>') }}
+            </div>
+        </div>
+        <!-- ./ active -->
+
+        <h4>{{ trans('server/title.push_updates_configuration') }}</h4>
+
+        <!-- push_updates -->
+        <div class="form-group {{ $errors->has('push_updates') ? 'has-error' : '' }}">
+            <div class="checkbox">
+                <label class="control-label">
+                    {{ Form::checkbox('push_updates', true, null) }}
+                    {{ trans('server/model.push_updates') }}
+                </label>
+            </div>
+        </div>
+        <!-- ./ push_updates -->
+
         <!-- directory -->
         <div class="form-group {{ $errors->has('directory') ? 'has-error' : '' }}">
-            {!! Form::label('directory', trans('server/model.directory'), array('class' => 'control-label required')) !!}
+            {!! Form::label('directory', trans('server/model.directory'), array('class' => 'control-label')) !!}
             <div class="controls">
-                {!! Form::text('directory', null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {!! Form::text('directory', null, array('class' => 'form-control')) !!}
                 <span class="help-block">{{ $errors->first('directory', ':message') }}</span>
             </div>
         </div>
@@ -88,15 +102,6 @@
         </div>
         <!-- ./ script -->
 
-        <!-- active -->
-        <div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
-            {!! Form::label('active', trans('server/model.active'), array('class' => 'control-label required')) !!}
-            <div class="controls">
-                {!! Form::select('active', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
-                {{ $errors->first('active', '<span class="help-inline">:message</span>') }}
-            </div>
-        </div>
-        <!-- ./ active -->
     </div>
 
     <div class="box-footer">
@@ -111,3 +116,24 @@
     </div>
 </div>
 {!! Form::close() !!}
+
+@push('scripts')
+<script>
+    $('#push_updates').change(function(){
+
+
+        if ($('#push_updates').is(':checked') == true){
+            $( "#directory" ).prop( "disabled", false );
+            $( "#template" ).prop( "disabled", false );
+            $( "#script" ).prop( "disabled", false );
+            console.log('checked');
+        } else {
+            $( "#directory" ).prop( "disabled", true );
+            $( "#template" ).prop( "disabled", true );
+            $( "#script" ).prop( "disabled", true );
+            console.log('unchecked');
+        }
+
+    });
+</script>
+@endpush

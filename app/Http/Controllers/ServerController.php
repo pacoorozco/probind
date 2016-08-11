@@ -42,7 +42,14 @@ class ServerController extends Controller
      */
     public function store(ServerCreateRequest $request)
     {
-        Server::create($request->all());
+        $server = new Server();
+
+        // Deal with checkboxes
+        $server->push_updates = $request->get('push_updates', false);
+        $server->ns_record = $request->get('ns_record', false);
+        $server->active = $request->get('active', false);
+
+        $server->fill($request->all())->save();
 
         return redirect()->route('servers.index')
             ->with('success', trans('server/messages.create.success'));
@@ -79,6 +86,11 @@ class ServerController extends Controller
      */
     public function update(ServerUpdateRequest $request, Server $server)
     {
+        // First, deal with checkboxes
+        $server->push_updates = $request->get('push_updates', false);
+        $server->ns_record = $request->get('ns_record', false);
+        $server->active = $request->get('active', false);
+
         $server->fill($request->all())->save();
 
         return redirect()->route('servers.index')

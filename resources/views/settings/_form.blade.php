@@ -24,6 +24,8 @@
                 <!-- Zone's defaults settings -->
                 <div class="tab-pane active" id="panel_settings_tab1">
 
+                    <p>{{ trans('settings/messages.zone_defaults_information') }}</p>
+
                     <!-- zone_default.mname -->
                     <div class="form-group {{ $errors->has('zone_default.mname') ? 'has-error' : '' }}">
                         {!! Form::label('zone_default.mname', trans('settings/model.zone_default.mname'), array('class' => 'control-label')) !!}
@@ -51,6 +53,7 @@
                         {!! Form::label('zone_default.refresh', trans('settings/model.zone_default.refresh'), array('class' => 'control-label')) !!}
                         <div class="controls">
                             {!! Form::number('zone_default.refresh', Registry::get('zone_default.refresh'), array('class' => 'form-control')) !!}
+                            <span class="help-block">{{ trans('settings/model.zone_default.refresh_help') }}</span>
                             <span class="help-block">{{ $errors->first('zone_default.refresh', ':message') }}</span>
                         </div>
                     </div>
@@ -61,6 +64,7 @@
                         {!! Form::label('zone_default.retry', trans('settings/model.zone_default.retry'), array('class' => 'control-label')) !!}
                         <div class="controls">
                             {!! Form::number('zone_default.retry', Registry::get('zone_default.retry'), array('class' => 'form-control')) !!}
+                            <span class="help-block">{{ trans('settings/model.zone_default.retry_help') }}</span>
                             <span class="help-block">{{ $errors->first('zone_default.retry', ':message') }}</span>
                         </div>
                     </div>
@@ -71,6 +75,7 @@
                         {!! Form::label('zone_default.expire', trans('settings/model.zone_default.expire'), array('class' => 'control-label')) !!}
                         <div class="controls">
                             {!! Form::number('zone_default.expire', Registry::get('zone_default.expire'), array('class' => 'form-control')) !!}
+                            <span class="help-block">{{ trans('settings/model.zone_default.expire_help') }}</span>
                             <span class="help-block">{{ $errors->first('zone_default.expire', ':message') }}</span>
                         </div>
                     </div>
@@ -81,6 +86,7 @@
                         {!! Form::label('zone_default.minimum_ttl', trans('settings/model.zone_default.minimum_ttl'), array('class' => 'control-label')) !!}
                         <div class="controls">
                             {!! Form::number('zone_default.minimum_ttl', Registry::get('zone_default.minimum_ttl'), array('class' => 'form-control')) !!}
+                            <span class="help-block">{{ trans('settings/model.zone_default.minimum_ttl_help') }}</span>
                             <span class="help-block">{{ $errors->first('zone_default.minimum_ttl', ':message') }}</span>
                         </div>
                     </div>
@@ -95,6 +101,7 @@
                         {!! Form::label('record_ttl_default', trans('settings/model.record_ttl_default'), array('class' => 'control-label')) !!}
                         <div class="controls">
                             {!! Form::number('record_ttl_default', Registry::get('record_ttl_default'), array('class' => 'form-control')) !!}
+                            <span class="help-block">{{ trans('settings/model.record_ttl_default_help') }}</span>
                             <span class="help-block">{{ $errors->first('record_ttl_default', ':message') }}</span>
                         </div>
                     </div>
