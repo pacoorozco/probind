@@ -56,3 +56,12 @@ Route::get('zones/{zone}/records/data',
 Route::get('zones/{zone}/records/{record}/delete',
     ['as' => 'zones.records.delete', 'uses' => 'RecordController@delete']);
 Route::resource('zones.records', 'RecordController');
+
+/* ------------------------------------------
+ *  Tools management
+ *  ------------------------------------------
+ */
+Route::get('tools/push',
+    ['as' => 'tools.view_updates', 'uses' => 'ToolsController@viewUpdates']);
+Route::post('tools/push',
+    ['as' => 'tools.push_updates', 'uses' => 'ToolsController@pushUpdates']);

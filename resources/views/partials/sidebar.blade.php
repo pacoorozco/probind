@@ -22,16 +22,32 @@
         </a>
     </li>
     <li {!! (Request::is('push') ? ' class="active"' : '') !!}>
-        <a href="{{-- route('push.index') --}}">
+        <a href="{{ route('tools.view_updates') }}">
             <i class="fa fa-download"></i><span>{{ trans('site.push_updates') }}</span>
         </a>
     </li>
-    <li {!! (Request::is('tools') ? ' class="active"' : '') !!}>
-        <a href="{{-- route('tools.index') --}}">
+
+    <li {!! (Request::is('tools/*') ? ' class="treeview active"' : 'treeview') !!}>
+        <a href="#">
             <i class="fa fa-wrench"></i><span>{{ trans('site.tools') }}</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
         </a>
+        <ul class="treeview-menu">
+            <li {!! (Request::is('tools/update') ? ' class="active"' : '') !!}>
+                <a href="#">
+                    <i class="fa fa-circle-o"></i> {{ trans('site.bulk_update') }}
+                </a>
+            </li>
+            <li {!! (Request::is('tools/push') ? ' class="active"' : '') !!}>
+                <a href="{{ route('tools.view_updates') }}">
+                    <i class="fa fa-circle-o"></i> {{ trans('site.push_updates') }}
+                </a>
+            </li>
+        </ul>
     </li>
-    
+
     <li class="header">{{ trans('site.configure') }}</li>
     <li {!! (Request::is('settings') ? ' class="active"' : '') !!}>
         <a href="{{-- route('users.index') --}}">

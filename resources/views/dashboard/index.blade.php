@@ -15,10 +15,15 @@
     <li class="active">
         <i class="fa fa-dashboard"></i> {{ trans('site.dashboard') }}
     </li>
-    @endsection
+@endsection
 
-    @section('content')
-            <!-- Info boxes -->
+@section('content')
+
+    <!-- Notifications -->
+    @include('partials.notifications')
+    <!-- ./ notifications -->
+
+    <!-- Info boxes -->
     <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
             <!-- small box -->

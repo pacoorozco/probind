@@ -65,4 +65,15 @@ class Zone extends Model
     {
         return $this->hasMany('App\Record');
     }
+
+    /**
+     * Scope a query to only include updated zones.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeUpdated($query)
+    {
+        return $query->where('updated', 1);
+    }
 }
