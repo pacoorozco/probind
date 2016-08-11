@@ -65,3 +65,11 @@ Route::get('tools/push',
     ['as' => 'tools.view_updates', 'uses' => 'ToolsController@viewUpdates']);
 Route::post('tools/push',
     ['as' => 'tools.push_updates', 'uses' => 'ToolsController@pushUpdates']);
+
+/*
+ * ------------------------------------------
+ * Settings
+ * ------------------------------------------
+ */
+Route::get('settings', ['as' => 'settings.index', 'uses' => 'SettingsController@index']);
+Route::put('settings', ['as' => 'settings.update', 'uses' => 'SettingsController@update']);

@@ -49,13 +49,13 @@
     </li>
 
     <li class="header">{{ trans('site.configure') }}</li>
-    <li {!! (Request::is('settings') ? ' class="active"' : '') !!}>
+    <li {!! (Request::is('users') ? ' class="active"' : '') !!}>
         <a href="{{-- route('users.index') --}}">
             <i class="fa fa-users"></i><span>{{ trans('site.users') }}</span>
         </a>
     </li>
-    <li {!! (Request::is('users') ? ' class="active"' : '') !!}>
-        <a href="{{-- route('settings.index') --}}">
+    <li {!! (Request::is('settings') ? ' class="active"' : '') !!}>
+        <a href="{{ route('settings.index') }}">
             <i class="fa fa-gears"></i><span>{{ trans('site.settings') }}</span>
         </a>
     </li>
