@@ -8,7 +8,8 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "laravelcollective/html": "5.2.*",
-        "yajra/laravel-datatables-oracle": "^6.16"
+        "yajra/laravel-datatables-oracle": "^6.16",
+        "torann/registry": "0.2.*@dev"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
