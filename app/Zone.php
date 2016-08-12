@@ -112,7 +112,7 @@ class Zone extends Model
      */
     public function isMasterZone()
     {
-        return (! $this->master);
+        return (!$this->master);
     }
 
     /**

@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Server;
 use App\Zone;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 
 class ToolsController extends Controller
 {
