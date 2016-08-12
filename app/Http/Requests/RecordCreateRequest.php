@@ -29,9 +29,9 @@ class RecordCreateRequest extends Request
 
         return [
             'name'     => 'required|string',
-            'ttl'      => 'integer',
+            'ttl'      => 'integer|min:0|max:2147483647',
             'type'     => 'required|string|in:' . $validInputTypes,
-            'priority' => 'integer',
+            'priority' => 'required_if:type,MX,SRV|integer|min:0|max:65535',
             'data'     => 'required|string'
         ];
     }

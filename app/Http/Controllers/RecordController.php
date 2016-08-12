@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Zone;
-use App\Record;
-use App\Http\Requests;
 use App\Http\Requests\RecordCreateRequest;
 use App\Http\Requests\RecordUpdateRequest;
+use App\Record;
+use App\Zone;
+use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 class RecordController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -46,7 +45,21 @@ class RecordController extends Controller
      */
     public function store(RecordCreateRequest $request, Zone $zone)
     {
-        $zone->records()->create($request->all());
+        $record = new Record();
+
+        // If user doesn't supply a TTL we must use default's one
+        $record->ttl = ($request->ttl == '')
+            ? \Registry::get('record_ttl_default')
+            : $request->ttl;
+
+        // Only MX & SRV types use Priority
+        $record->priority = ($request->type == 'MX' || $request->type == 'SRV')
+            ? $request->priority
+            : null;
+
+        $record->fill($request->all());
+
+        $zone->records()->save($record);
 
         return redirect()->route('zones.records.index', $zone)
             ->with('success', trans('record/messages.create.success'));
@@ -90,6 +103,16 @@ class RecordController extends Controller
      */
     public function update(RecordUpdateRequest $request, Zone $zone, Record $record)
     {
+        // If user doesn't supply a TTL we must use default's one
+        $record->ttl = ($request->ttl == '')
+            ? \Registry::get('record_ttl_default')
+            : $request->ttl;
+
+        // Only MX & SRV types use Priority
+        $record->priority = ($record->type == 'MX' || $record->type == 'SRV')
+            ? $request->priority
+            : null;
+
         $record->fill($request->all())->save();
 
         return redirect()->route('zones.records.index', $zone)
@@ -136,7 +159,7 @@ class RecordController extends Controller
     public function data(Request $request, Datatables $dataTable, Zone $zone)
     {
         // Disable this query if isn't AJAX
-        if (!$request->ajax()) {
+        if ( ! $request->ajax()) {
             abort(400);
         }
 

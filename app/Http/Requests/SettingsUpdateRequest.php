@@ -29,8 +29,8 @@ class SettingsUpdateRequest extends Request
             'zone_default.refresh'     => 'required|integer',
             'zone_default.retry'       => 'required|integer',
             'zone_default.expire'      => 'required|integer',
-            'zone_default.minimum_ttl' => 'required|integer',
-            'record_ttl_default'       => 'required|integer'
+            'zone_default.minimum_ttl' => 'required|integer|min:0|max:2147483647',
+            'record_ttl_default'       => 'required|integer|min:0|max:2147483647'
         ];
     }
 }

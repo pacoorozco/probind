@@ -17,5 +17,6 @@ return [
     'actions'  => 'Actions',
     'save'     => 'Save data',
     'inactive' => 'disabled',
+    'help'     => 'Show / Hide help',
 
 ];

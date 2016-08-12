@@ -12,9 +12,7 @@ class Record extends Model
     protected $table = 'records';
     protected $fillable = [
         'name',
-        'ttl',
         'type',
-        'priority',
         'data'
     ];
 
