@@ -119,14 +119,16 @@
 
 @push('scripts')
 <script>
-    $("#directory").prop("disabled", !$("#push_updates").prop("checked"));
-    $("#template").prop("disabled", !$("#push_updates").prop("checked"));
-    $("#script").prop("disabled", !$("#push_updates").prop("checked"));
+    $(function () {
+        $("#directory").prop("disabled", !$("#push_updates").prop("checked"));
+        $("#template").prop("disabled", !$("#push_updates").prop("checked"));
+        $("#script").prop("disabled", !$("#push_updates").prop("checked"));
 
-    $("#push_updates").change(function () {
-        $("#directory").prop("disabled", !this.checked);
-        $("#template").prop("disabled", !this.checked);
-        $("#script").prop("disabled", !this.checked);
+        $("#push_updates").change(function () {
+            $("#directory").prop("disabled", !this.checked);
+            $("#template").prop("disabled", !this.checked);
+            $("#script").prop("disabled", !this.checked);
+        });
     });
 </script>
 @endpush
