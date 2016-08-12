@@ -14,7 +14,7 @@
         <div class="form-group">
             {!! Form::label('master', trans('zone/model.master'), array('class' => 'control-label')) !!}
             <div class="controls">
-                This is an Slave zone of {{ $zone->master }} server
+                {{ trans('zone/model.types.slave') }} (Primary: {{ $zone->master }})
             </div>
         </div>
         <!-- ./ master -->

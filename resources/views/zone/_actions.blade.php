@@ -6,7 +6,7 @@
         </button>
     </a>
 
-    @if(! $zone->master)
+    @if($zone->isMasterZone())
         <a href="{{ route('zones.records.index', $zone) }}">
             <button type="button" class="btn btn-xs btn-primary"
                     data-toggle="tooltip" data-placement="top" title="{{ trans('record/title.view_records') }}"><i

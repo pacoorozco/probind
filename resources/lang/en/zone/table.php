@@ -3,6 +3,6 @@
 return [
     'domain'  => 'Domain',
     'master'  => 'Master DNS',
-    'updated' => 'Updated',
+    'updated' => 'Modified',
     'type'    => 'Type',
 ];

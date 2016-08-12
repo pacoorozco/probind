@@ -19,9 +19,7 @@
         </a>
     </li>
     <li class="active">
-        <a href="{{route('zones.index') }}">
-            {{ trans('site.zones') }}
-        </a>
+        {{ trans('site.zones') }}
     </li>
 @endsection
 

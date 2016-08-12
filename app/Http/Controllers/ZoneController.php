@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Zone;
-use Illuminate\Http\Request;
 use App\Http\Requests\ZoneCreateRequest;
 use App\Http\Requests\ZoneUpdateRequest;
+use App\Zone;
+use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 class ZoneController extends Controller
@@ -42,7 +42,15 @@ class ZoneController extends Controller
      */
     public function store(ZoneCreateRequest $request)
     {
-        Zone::create($request->all());
+        $zone = new Zone();
+
+        // assign new serial and flag as updated
+        if ($request->type == 'master') {
+            $zone->serial = Zone::createSerialNumber();
+            $zone->updated = true;
+        }
+
+        $zone->fill($request->all())->save();
 
         return redirect()->route('zones.index')
             ->with('success', trans('zone/messages.create.success'));
@@ -81,6 +89,11 @@ class ZoneController extends Controller
      */
     public function update(ZoneUpdateRequest $request, Zone $zone)
     {
+        if ($zone->type == 'master') {
+            // assign new serial and flag as updated
+            $zone->setSerialNumber();
+            $zone->updated = true;
+        }
         $zone->fill($request->all())->save();
 
         return redirect()->route('zones.index')
@@ -123,7 +136,7 @@ class ZoneController extends Controller
     public function data(Request $request, Datatables $dataTable)
     {
         // Disable this query if isn't AJAX
-        if ( ! $request->ajax()) {
+        if (!$request->ajax()) {
             abort(400);
         }
 
@@ -136,15 +149,15 @@ class ZoneController extends Controller
 
         return $dataTable::of($zones)
             ->addColumn('type', function (Zone $zone) {
-                return (! $zone->master) ? trans('zone/model.types.master') : trans('zone/model.types.slave');
+                return ($zone->isMasterZone()) ? trans('zone/model.types.master') : trans('zone/model.types.slave');
             })
             ->editColumn('updated', function (Zone $zone) {
-                return ($zone->updated) ? trans('general.yes') : trans('general.no');
+                return ($zone->hasPendingChanges()) ? trans('general.yes') : trans('general.no');
             })
             ->addColumn('actions', function (Zone $zone) {
                 return view('zone._actions')
-                ->with('zone', $zone)
-                ->render();
+                    ->with('zone', $zone)
+                    ->render();
             })
             ->removeColumn('id')
             ->make(true);

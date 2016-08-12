@@ -26,18 +26,18 @@
     <li class="active">
         {{ trans('zone/title.zone_show') }}
     </li>
-    @endsection
+@endsection
 
-    {{-- Content --}}
-    @section('content')
+{{-- Content --}}
+@section('content')
 
-            <!-- Notifications -->
+    <!-- Notifications -->
     @include('partials.notifications')
-            <!-- ./ notifications -->
+    <!-- ./ notifications -->
 
     <div class="row">
         <div class="col-md-8">
-            @if (!$zone->master)
+            @if ($zone->isMasterZone())
                 @include('zone/_details_master')
             @else
                 @include('zone/_details_slave')

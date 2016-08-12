@@ -40,7 +40,7 @@
                 {data: "updated", "orderable": false, "searchable": false},
                 {data: "actions", "orderable": false, "searchable": false}
             ],
-            "order": [[ 1, 'asc' ], [ 0, 'asc' ]],
+            "order": [[1, 'asc'], [0, 'asc']],
             "aLengthMenu": [
                 [5, 10, 15, 20, -1],
                 [5, 10, 15, 20, "{{ trans('general.all') }}"]

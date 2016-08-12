@@ -14,7 +14,7 @@
         <div class="form-group">
             {!! Form::label('master', trans('zone/model.type'), array('class' => 'control-label')) !!}
             <div class="controls">
-                This is a Master zone
+                {{ trans('zone/model.types.master') }}
             </div>
         </div>
         <!-- ./ master -->

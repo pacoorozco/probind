@@ -17,7 +17,7 @@ class CreateZonesTable extends Migration
             $table->string('domain', 253)->unique();
             $table->integer('serial')->unsigned();
             $table->string('master', 45)->nullable();
-            $table->boolean('updated')->default(false);
+            $table->boolean('updated')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });
