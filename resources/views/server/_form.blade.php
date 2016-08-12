@@ -65,7 +65,7 @@
         <div class="form-group {{ $errors->has('push_updates') ? 'has-error' : '' }}">
             <div class="checkbox">
                 <label class="control-label">
-                    {{ Form::checkbox('push_updates', true, null) }}
+                    {{ Form::checkbox('push_updates', true, null, ['id' => 'push_updates']) }}
                     {{ trans('server/model.push_updates') }}
                 </label>
             </div>
@@ -119,21 +119,14 @@
 
 @push('scripts')
 <script>
-    $('#push_updates').change(function(){
+    $("#directory").prop("disabled", !$("#push_updates").prop("checked"));
+    $("#template").prop("disabled", !$("#push_updates").prop("checked"));
+    $("#script").prop("disabled", !$("#push_updates").prop("checked"));
 
-
-        if ($('#push_updates').is(':checked') == true){
-            $( "#directory" ).prop( "disabled", false );
-            $( "#template" ).prop( "disabled", false );
-            $( "#script" ).prop( "disabled", false );
-            console.log('checked');
-        } else {
-            $( "#directory" ).prop( "disabled", true );
-            $( "#template" ).prop( "disabled", true );
-            $( "#script" ).prop( "disabled", true );
-            console.log('unchecked');
-        }
-
+    $("#push_updates").change(function () {
+        $("#directory").prop("disabled", !this.checked);
+        $("#template").prop("disabled", !this.checked);
+        $("#script").prop("disabled", !this.checked);
     });
 </script>
 @endpush

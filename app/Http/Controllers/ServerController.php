@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Server;
-use Illuminate\Http\Request;
 use App\Http\Requests\ServerCreateRequest;
 use App\Http\Requests\ServerUpdateRequest;
+use App\Server;
+use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 class ServerController extends Controller
@@ -63,7 +63,8 @@ class ServerController extends Controller
      */
     public function show(Server $server)
     {
-        return view('server.show')->with('server', $server);
+        return view('server.show')
+            ->with('server', $server);
     }
 
     /**
@@ -74,7 +75,8 @@ class ServerController extends Controller
      */
     public function edit(Server $server)
     {
-        return view('server.edit')->with('server', $server);
+        return view('server.edit')
+            ->with('server', $server);
     }
 
     /**
@@ -105,7 +107,8 @@ class ServerController extends Controller
      */
     public function delete(Server $server)
     {
-        return view('server/delete')->with('server', $server);
+        return view('server/delete')
+            ->with('server', $server);
     }
 
     /**
@@ -142,10 +145,17 @@ class ServerController extends Controller
             'type',
             'ip_address',
             'push_updates',
-            'ns_record'
+            'ns_record',
+            'active'
         ]);
 
         return $dataTable::of($servers)
+            ->editColumn('hostname', function (Server $server) {
+                $label = (!$server->active)
+                    ? ' <span class="label label-default">' . trans('general.inactive') . '</span>'
+                    : '';
+                return $server->hostname . $label;
+            })
             ->editColumn('push_updates', function (Server $server) {
                 return ($server->push_updates) ? trans('general.yes') : trans('general.no');
             })
@@ -155,11 +165,10 @@ class ServerController extends Controller
             ->addColumn('actions', function (Server $server) {
                 return view('partials.actions_dd', [
                     'model' => 'servers',
-                    'id' => $server->id,
+                    'id'    => $server->id,
                 ])->render();
             })
             ->removeColumn('id')
             ->make(true);
     }
-
 }

@@ -27,7 +27,7 @@
         </a>
     </li>
 
-    <li {!! (Request::is('tools/*') ? ' class="treeview active"' : 'treeview') !!}>
+    <li class="{!! (Request::is('tools/*') ? 'treeview active' : 'treeview') !!}">
         <a href="#">
             <i class="fa fa-wrench"></i><span>{{ trans('site.tools') }}</span>
             <span class="pull-right-container">

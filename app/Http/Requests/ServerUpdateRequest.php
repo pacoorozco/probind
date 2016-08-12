@@ -35,6 +35,7 @@ class ServerUpdateRequest extends Request
             'directory'    => 'required_if:push_updates,1|string',
             'template'     => 'required_if:push_updates,1|string',
             'script'       => 'required_if:push_updates,1|string',
+            'active'       => 'required|boolean'
         ];
     }
 }

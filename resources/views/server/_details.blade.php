@@ -6,6 +6,9 @@
             {!! Form::label('hostname', trans('server/model.hostname'), array('class' => 'control-label')) !!}
             <div class="controls">
                 {{ $server->hostname }}
+                {!! (!$server->active)
+                    ? ' <span class="label label-default">' . trans('general.inactive') . '</span>'
+                    : '' !!}
             </div>
         </div>
         <!-- ./ hostname -->
@@ -28,15 +31,6 @@
         </div>
         <!-- ./ type -->
 
-        <!-- push_updates -->
-        <div class="form-group">
-            {!! Form::label('push_updates', trans('server/model.push_updates'), array('class' => 'control-label')) !!}
-            <div class="controls">
-                {{ ($server->push_updates) ? trans('general.yes') : trans('general.no') }}
-            </div>
-        </div>
-        <!-- ./ push_updates -->
-
         <!-- ns_record -->
         <div class="form-group">
             {!! Form::label('ns_record', trans('server/model.ns_record'), array('class' => 'control-label')) !!}
@@ -45,6 +39,17 @@
             </div>
         </div>
         <!-- ./ ns_record -->
+
+        <h4>{{ trans('server/title.push_updates_configuration') }}</h4>
+
+        <!-- push_updates -->
+        <div class="form-group">
+            {!! Form::label('push_updates', trans('server/model.push_updates'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {{ ($server->push_updates) ? trans('general.yes') : trans('general.no') }}
+            </div>
+        </div>
+        <!-- ./ push_updates -->
 
         <!-- directory -->
         <div class="form-group">
@@ -72,15 +77,6 @@
             </div>
         </div>
         <!-- ./ script -->
-
-        <!-- active -->
-        <div class="form-group">
-            {!! Form::label('active', trans('server/model.active'), array('class' => 'control-label')) !!}
-            <div class="controls">
-                {{ $server->active ? trans('general.yes') : trans('general.no') }}
-            </div>
-        </div>
-        <!-- ./ active -->
 
     </div>
     <div class="box-footer">
