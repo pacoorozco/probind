@@ -6,15 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Record extends Model
 {
-    /**
-     * The database table used by the model.
-     */
-    protected $table = 'records';
-    protected $fillable = [
-        'name',
-        'type',
-        'data'
-    ];
 
     /**
      * Valid Record Types. These will be used to validation.
@@ -30,7 +21,15 @@ class Record extends Model
         'SRV'   => 'SRV (service locator)',
         'TXT'   => 'TXT (text)',
     ];
-
+    /**
+     * The database table used by the model.
+     */
+    protected $table = 'records';
+    protected $fillable = [
+        'name',
+        'type',
+        'data'
+    ];
     /**
      * The attributes that should be casted to native types.
      *
@@ -43,6 +42,12 @@ class Record extends Model
         'priority' => 'integer',
         'data'     => 'string'
     ];
+    /**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['zone'];
 
     /**
      * Set the Record's type uppercase.

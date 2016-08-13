@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Record;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +14,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Touch Zone when save/delete a Record
+        Record::saving(function ($record) {
+            $zone = $record->zone()->first();
+            $zone->setPendingChanges();
+        });
+        Record::deleting(function ($record) {
+            $zone = $record->zone()->first();
+            $zone->setPendingChanges();
+        });
     }
 
     /**

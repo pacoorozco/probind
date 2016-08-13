@@ -68,16 +68,6 @@ class Zone extends Model
     }
 
     /**
-     * Create a new Serial Number based on a specified format
-     *
-     * @return int
-     */
-    public static function createSerialNumber()
-    {
-        return (int)Carbon::now()->format('Ymd') . '01';
-    }
-
-    /**
      * Set Zone's serial parameter if needed.
      *
      * We only need to modify this field is has been pushed to a server.
@@ -87,7 +77,7 @@ class Zone extends Model
      */
     public function setSerialNumber($force = false)
     {
-        if ($this->updated and !$force) {
+        if ($this->updated and ! $force) {
             return $this->serial;
         }
 
@@ -103,6 +93,16 @@ class Zone extends Model
     }
 
     /**
+     * Create a new Serial Number based on a specified format
+     *
+     * @return int
+     */
+    public static function createSerialNumber()
+    {
+        return (int)Carbon::now()->format('Ymd') . '01';
+    }
+
+    /**
      * Returns if this is a master zone.
      *
      * The DNS server is the primary source for information about this zone, and it stores
@@ -112,7 +112,23 @@ class Zone extends Model
      */
     public function isMasterZone()
     {
-        return (!$this->master);
+        return ( ! $this->master);
+    }
+
+    /**
+     * Marks / unmark pending changes on a zone.
+     *
+     * @param bool $value
+     * @return bool
+     */
+    public function setPendingChanges($value = true)
+    {
+        if ($this->hasPendingChanges() != $value) {
+            $this->updated = $value;
+            $this->save();
+        }
+
+        return $this->updated;
     }
 
     /**

@@ -37,6 +37,17 @@
         </div>
         <!-- ./ type -->
 
+        @if($record->type == 'MX' || $record->type =='SRV')
+        <!-- priority -->
+        <div class="form-group">
+            {!! Form::label('priority', trans('record/model.priority'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {{ $record->priority }}
+            </div>
+        </div>
+        <!-- ./ priority -->
+        @endif
+
         <!-- data -->
         <div class="form-group">
             {!! Form::label('data', trans('record/model.data'), array('class' => 'control-label')) !!}
