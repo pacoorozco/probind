@@ -36,7 +36,7 @@
         </a>
         <ul class="treeview-menu">
             <li {!! (Request::is('tools/update') ? ' class="active"' : '') !!}>
-                <a href="#">
+                <a href="{{ route('tools.bulk_update') }}">
                     <i class="fa fa-circle-o"></i> {{ trans('site.bulk_update') }}
                 </a>
             </li>

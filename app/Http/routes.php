@@ -65,7 +65,10 @@ Route::get('tools/push',
     ['as' => 'tools.view_updates', 'uses' => 'ToolsController@viewUpdates']);
 Route::post('tools/push',
     ['as' => 'tools.push_updates', 'uses' => 'ToolsController@pushUpdates']);
-
+Route::get('tools/update',
+    ['as' => 'tools.bulk_update', 'uses' => 'ToolsController@showBulkUpdate']);
+Route::post('tools/update',
+    ['as' => 'tools.do_bulk_update', 'uses' => 'ToolsController@doBulkUpdate']);
 /*
  * ------------------------------------------
  * Settings

@@ -59,4 +59,30 @@ class ToolsController extends Controller
         return redirect()->route('home')
             ->with('success', trans('tools/messages.push_updates.success'));
     }
+
+    /**
+     * Show the summary page before bulk update.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showBulkUpdate()
+    {
+        return view('tools.bulk_update');
+    }
+
+    /**
+     * Push updates to servers.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function doBulkUpdate()
+    {
+        $zones = Zone::all();
+        foreach ($zones as $zone) {
+            $zone->setPendingChanges();
+        }
+
+        return redirect()->route('home')
+            ->with('success', trans('tools/messages.bulk_update_success'));
+    }
 }
