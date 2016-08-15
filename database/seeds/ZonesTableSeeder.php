@@ -13,7 +13,7 @@ class ZonesTableSeeder extends Seeder
     {
         factory(App\Zone::class, 25)
             ->create()
-            ->each(function ($zone) {
+            ->each(function($zone) {
                 $records = factory(App\Record::class, 'A', 10)->make();
                 foreach ($records as $record) {
                     $zone->records()->save($record);

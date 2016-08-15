@@ -47,7 +47,7 @@ class ToolsController extends Controller
     /**
      * Push updates to servers.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function pushUpdates()
     {
@@ -73,7 +73,7 @@ class ToolsController extends Controller
     /**
      * Push updates to servers.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function doBulkUpdate()
     {

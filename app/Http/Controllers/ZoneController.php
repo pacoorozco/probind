@@ -38,7 +38,7 @@ class ZoneController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  ZoneCreateRequest $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ZoneCreateRequest $request)
     {
@@ -85,7 +85,7 @@ class ZoneController extends Controller
      *
      * @param  ZoneUpdateRequest $request
      * @param  Zone $zone
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ZoneUpdateRequest $request, Zone $zone)
     {
@@ -116,7 +116,7 @@ class ZoneController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Zone $zone
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Zone $zone)
     {
@@ -148,13 +148,13 @@ class ZoneController extends Controller
         ]);
 
         return $dataTable::of($zones)
-            ->addColumn('type', function (Zone $zone) {
+            ->addColumn('type', function(Zone $zone) {
                 return ($zone->isMasterZone()) ? trans('zone/model.types.master') : trans('zone/model.types.slave');
             })
-            ->editColumn('updated', function (Zone $zone) {
+            ->editColumn('updated', function(Zone $zone) {
                 return ($zone->hasPendingChanges()) ? trans('general.yes') : trans('general.no');
             })
-            ->addColumn('actions', function (Zone $zone) {
+            ->addColumn('actions', function(Zone $zone) {
                 return view('zone._actions')
                     ->with('zone', $zone)
                     ->render();

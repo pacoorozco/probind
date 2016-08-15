@@ -12,7 +12,7 @@ class CreateServersTable extends Migration
      */
     public function up()
     {
-        Schema::create('servers', function (Blueprint $table) {
+        Schema::create('servers', function(Blueprint $table) {
             $table->increments('id');
             $table->string('hostname')->unique();
             $table->string('ip_address', 45);

@@ -150,19 +150,19 @@ class ServerController extends Controller
         ]);
 
         return $dataTable::of($servers)
-            ->editColumn('hostname', function (Server $server) {
+            ->editColumn('hostname', function(Server $server) {
                 $label = (!$server->active)
                     ? ' <span class="label label-default">' . trans('general.inactive') . '</span>'
                     : '';
                 return $server->hostname . $label;
             })
-            ->editColumn('push_updates', function (Server $server) {
+            ->editColumn('push_updates', function(Server $server) {
                 return ($server->push_updates) ? trans('general.yes') : trans('general.no');
             })
-            ->editColumn('ns_record', function (Server $server) {
+            ->editColumn('ns_record', function(Server $server) {
                 return ($server->ns_record) ? trans('general.yes') : trans('general.no');
             })
-            ->addColumn('actions', function (Server $server) {
+            ->addColumn('actions', function(Server $server) {
                 return view('partials.actions_dd', [
                     'model' => 'servers',
                     'id'    => $server->id,
