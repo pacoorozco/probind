@@ -6,9 +6,6 @@ use App\Record;
 use App\Server;
 use App\User;
 use App\Zone;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 
 class DashboardController extends Controller
 {

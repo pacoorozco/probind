@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(App\User::class, function(Faker\Generator $faker) {
     return [
         'name'           => $faker->name,
         'email'          => $faker->safeEmail,
@@ -20,7 +20,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Server::class, function (Faker\Generator $faker) {
+$factory->define(App\Server::class, function(Faker\Generator $faker) {
     return [
         'hostname'   => $faker->unique()->domainWord . '.local',
         'ip_address' => $faker->ipv4,
@@ -30,14 +30,14 @@ $factory->define(App\Server::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Zone::class, function (Faker\Generator $faker) {
+$factory->define(App\Zone::class, function(Faker\Generator $faker) {
     return [
         'domain' => $faker->unique()->domainName,
         'master' => $faker->optional()->ipv4,
     ];
 });
 
-$factory->defineAs(App\Record::class, 'A', function (Faker\Generator $faker) {
+$factory->defineAs(App\Record::class, 'A', function(Faker\Generator $faker) {
     // Return an A record
     return [
         'name' => $faker->domainWord,
@@ -46,7 +46,7 @@ $factory->defineAs(App\Record::class, 'A', function (Faker\Generator $faker) {
     ];
 });
 
-$factory->defineAs(App\Record::class, 'CNAME', function (Faker\Generator $faker) {
+$factory->defineAs(App\Record::class, 'CNAME', function(Faker\Generator $faker) {
     // Return a CNAME record
     return [
         'name' => $faker->domainWord,

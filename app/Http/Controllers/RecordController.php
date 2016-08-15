@@ -41,7 +41,7 @@ class RecordController extends Controller
      *
      * @param  RecordCreateRequest $request
      * @param  Zone $zone
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(RecordCreateRequest $request, Zone $zone)
     {
@@ -159,14 +159,14 @@ class RecordController extends Controller
     public function data(Request $request, Datatables $dataTable, Zone $zone)
     {
         // Disable this query if isn't AJAX
-        if ( ! $request->ajax()) {
+        if (!$request->ajax()) {
             abort(400);
         }
 
         $records = $zone->records();
 
         return $dataTable::of($records)
-            ->addColumn('actions', function (Record $record) {
+            ->addColumn('actions', function(Record $record) {
                 return view('record._actions')
                     ->with('zone', $record->zone)
                     ->with('record', $record)

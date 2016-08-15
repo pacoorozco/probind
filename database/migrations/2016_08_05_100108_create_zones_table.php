@@ -12,7 +12,7 @@ class CreateZonesTable extends Migration
      */
     public function up()
     {
-        Schema::create('zones', function (Blueprint $table) {
+        Schema::create('zones', function(Blueprint $table) {
             $table->increments('id');
             $table->string('domain', 253)->unique();
             $table->integer('serial')->unsigned();
