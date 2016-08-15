@@ -15,11 +15,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // Touch Zone when save/delete a Record
-        Record::saving(function ($record) {
+        Record::saving(function($record) {
             $zone = $record->zone()->first();
             $zone->setPendingChanges();
         });
-        Record::deleting(function ($record) {
+        Record::deleting(function($record) {
             $zone = $record->zone()->first();
             $zone->setPendingChanges();
         });
