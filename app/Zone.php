@@ -77,7 +77,7 @@ class Zone extends Model
      */
     public function setSerialNumber($force = false)
     {
-        if ($this->update && ! $force) {
+        if ($this->updated && ! $force) {
             return $this->serial;
         }
 
