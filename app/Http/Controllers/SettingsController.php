@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Requests\SettingsUpdateRequest;
 use Torann\Registry\Facades\Registry;
 
 class SettingsController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -26,8 +24,8 @@ class SettingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  SettingsUpdateRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param  SettingsUpdateRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(SettingsUpdateRequest $request)
     {

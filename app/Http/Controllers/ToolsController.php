@@ -33,7 +33,7 @@ class ToolsController extends Controller
             ->get();
 
         // Test if there are zones to be pushed
-        if ($zonesToUpdate->isEmpty() and $zonesToDelete->isEmpty()) {
+        if ($zonesToUpdate->isEmpty() && $zonesToDelete->isEmpty()) {
             return redirect()->route('home')
                 ->with('warning', trans('tools/messages.push_updates.nothing_to_do'));
         }

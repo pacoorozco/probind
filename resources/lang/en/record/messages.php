@@ -14,7 +14,7 @@ return [
         'success' => 'Record updated successfully.',
     ],
 
-    'delete' => [
+    'delete'       => [
         'error'   => 'There was an issue deleting the record. Please try again.',
         'success' => 'The record was deleted successfully.',
     ],

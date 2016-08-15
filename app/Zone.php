@@ -77,7 +77,7 @@ class Zone extends Model
      */
     public function setSerialNumber($force = false)
     {
-        if ($this->updated and !$force) {
+        if ($this->update && ! $force) {
             return $this->serial;
         }
 
@@ -89,7 +89,7 @@ class Zone extends Model
             : $nowSerial;
         $this->save();
 
-        return $this->serial;
+        return (int)$this->serial;
     }
 
     /**
@@ -112,7 +112,7 @@ class Zone extends Model
      */
     public function isMasterZone()
     {
-        return (!$this->master);
+        return ( ! $this->master);
     }
 
     /**

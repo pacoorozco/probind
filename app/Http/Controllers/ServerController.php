@@ -38,7 +38,7 @@ class ServerController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  ServerCreateRequest $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ServerCreateRequest $request)
     {
@@ -84,7 +84,7 @@ class ServerController extends Controller
      *
      * @param  ServerUpdateRequest $request
      * @param  Server $server
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ServerUpdateRequest $request, Server $server)
     {
@@ -115,7 +115,7 @@ class ServerController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Server $server
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Server $server)
     {
