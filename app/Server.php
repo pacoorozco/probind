@@ -4,6 +4,19 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Server model
+ *
+ * @property string $hostname
+ * @property string $ip_address
+ * @property string $type
+ * @property boolean $push_updates
+ * @property boolean $ns_record
+ * @property string $directory
+ * @property string $template
+ * @property string $script
+ * @property boolean active *
+ */
 class Server extends Model
 {
 

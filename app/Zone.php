@@ -6,6 +6,14 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Zone model, represents a DNS domain / subdomain.
+ *
+ * @property string $domain
+ * @property integer $serial
+ * @property string $master
+ * @property boolean $updated
+ */
 class Zone extends Model
 {
 

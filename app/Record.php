@@ -4,11 +4,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Record model, represents a DNS entry on a specified zone.
+ *
+ * @property string $name
+ * @property integer $ttl
+ * @property string $type
+ * @property integer $priority
+ * @property string $data
+ */
 class Record extends Model
 {
 
     /**
      * Valid Record Types. These will be used to validation.
+     *
      * @var array
      */
     public static $validInputTypes = [
