@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $type
  * @property integer $priority
  * @property string $data
+ * @property object $zone
  */
 class Record extends Model
 {
