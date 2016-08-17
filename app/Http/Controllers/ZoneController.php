@@ -45,7 +45,7 @@ class ZoneController extends Controller
         $zone = new Zone();
 
         // assign new serial and flag as updated
-        if ($request->type == 'master') {
+        if ($request->input('type') == 'master') {
             $zone->serial = Zone::createSerialNumber();
             $zone->updated = true;
         }
@@ -136,7 +136,7 @@ class ZoneController extends Controller
     public function data(Request $request, Datatables $dataTable)
     {
         // Disable this query if isn't AJAX
-        if (!$request->ajax()) {
+        if ( ! $request->ajax()) {
             abort(400);
         }
 
@@ -148,13 +148,13 @@ class ZoneController extends Controller
         ]);
 
         return $dataTable::of($zones)
-            ->addColumn('type', function(Zone $zone) {
+            ->addColumn('type', function (Zone $zone) {
                 return ($zone->isMasterZone()) ? trans('zone/model.types.master') : trans('zone/model.types.slave');
             })
-            ->editColumn('updated', function(Zone $zone) {
+            ->editColumn('updated', function (Zone $zone) {
                 return ($zone->hasPendingChanges()) ? trans('general.yes') : trans('general.no');
             })
-            ->addColumn('actions', function(Zone $zone) {
+            ->addColumn('actions', function (Zone $zone) {
                 return view('zone._actions')
                     ->with('zone', $zone)
                     ->render();
