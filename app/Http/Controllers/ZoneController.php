@@ -89,7 +89,7 @@ class ZoneController extends Controller
      */
     public function update(ZoneUpdateRequest $request, Zone $zone)
     {
-        if ($zone->type == 'master') {
+        if ($zone->isMasterZone()) {
             // assign new serial and flag as updated
             $zone->setSerialNumber();
             $zone->updated = true;
