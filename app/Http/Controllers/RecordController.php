@@ -99,7 +99,7 @@ class RecordController extends Controller
      * @param  RecordUpdateRequest $request
      * @param  Zone $zone
      * @param  Record $record
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(RecordUpdateRequest $request, Zone $zone, Record $record)
     {
@@ -138,7 +138,7 @@ class RecordController extends Controller
      *
      * @param  Zone $zone
      * @param Record $record
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Zone $zone, Record $record)
     {
