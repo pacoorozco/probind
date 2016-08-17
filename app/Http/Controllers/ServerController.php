@@ -45,9 +45,9 @@ class ServerController extends Controller
         $server = new Server();
 
         // Deal with checkboxes
-        $server->push_updates = $request->get('push_updates', false);
-        $server->ns_record = $request->get('ns_record', false);
-        $server->active = $request->get('active', false);
+        $server->push_updates = $request->input('push_updates', false);
+        $server->ns_record = $request->input('ns_record', false);
+        $server->active = $request->input('active', false);
 
         $server->fill($request->all())->save();
 
@@ -89,9 +89,9 @@ class ServerController extends Controller
     public function update(ServerUpdateRequest $request, Server $server)
     {
         // First, deal with checkboxes
-        $server->push_updates = $request->get('push_updates', false);
-        $server->ns_record = $request->get('ns_record', false);
-        $server->active = $request->get('active', false);
+        $server->push_updates = $request->input('push_updates', false);
+        $server->ns_record = $request->input('ns_record', false);
+        $server->active = $request->input('active', false);
 
         $server->fill($request->all())->save();
 
@@ -135,7 +135,7 @@ class ServerController extends Controller
     public function data(Request $request, Datatables $dataTable)
     {
         // Disable this query if isn't AJAX
-        if (!$request->ajax()) {
+        if ( ! $request->ajax()) {
             abort(400);
         }
 
@@ -150,19 +150,20 @@ class ServerController extends Controller
         ]);
 
         return $dataTable::of($servers)
-            ->editColumn('hostname', function(Server $server) {
-                $label = (!$server->active)
+            ->editColumn('hostname', function (Server $server) {
+                $label = ( ! $server->active)
                     ? ' <span class="label label-default">' . trans('general.inactive') . '</span>'
                     : '';
+
                 return $server->hostname . $label;
             })
-            ->editColumn('push_updates', function(Server $server) {
+            ->editColumn('push_updates', function (Server $server) {
                 return ($server->push_updates) ? trans('general.yes') : trans('general.no');
             })
-            ->editColumn('ns_record', function(Server $server) {
+            ->editColumn('ns_record', function (Server $server) {
                 return ($server->ns_record) ? trans('general.yes') : trans('general.no');
             })
-            ->addColumn('actions', function(Server $server) {
+            ->addColumn('actions', function (Server $server) {
                 return view('partials.actions_dd', [
                     'model' => 'servers',
                     'id'    => $server->id,
