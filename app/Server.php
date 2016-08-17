@@ -54,7 +54,7 @@ class Server extends Model
      * Set the Server's hostname lowercase.
      *
      * @param  string $value
-     * @return string
+     * @return string|null
      */
     public function setHostnameAttribute($value)
     {
@@ -65,7 +65,7 @@ class Server extends Model
      * Set the Server's ip_address lowercase.
      *
      * @param  string $value
-     * @return string
+     * @return string|null
      */
     public function setIpAddressAttribute($value)
     {
@@ -76,7 +76,7 @@ class Server extends Model
      * Set the Server's type lowercase.
      *
      * @param  string $value
-     * @return string
+     * @return string|null
      */
     public function setTypeAttribute($value)
     {

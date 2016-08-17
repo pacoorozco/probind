@@ -65,7 +65,7 @@ class Record extends Model
      * Set the Record's type uppercase.
      *
      * @param  string $value
-     * @return string
+     * @return string|null
      */
     public function setTypeAttribute($value)
     {
@@ -76,7 +76,7 @@ class Record extends Model
      * Set the Record's name lowercase.
      *
      * @param  string $value
-     * @return string
+     * @return string|null
      */
     public function setNameAttribute($value)
     {
@@ -87,7 +87,7 @@ class Record extends Model
      * Set the Record's data lowercase.
      *
      * @param  string $value
-     * @return string
+     * @return string|null
      */
     public function setDataAttribute($value)
     {

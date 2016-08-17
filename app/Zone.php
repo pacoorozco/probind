@@ -50,7 +50,7 @@ class Zone extends Model
      * Set the Zone's domain lowercase.
      *
      * @param  string $value
-     * @return string
+     * @return string|null
      */
     public function setDomainAttribute($value)
     {
@@ -61,7 +61,7 @@ class Zone extends Model
      * Set the Zone's master lowercase.
      *
      * @param  string $value
-     * @return string
+     * @return string|null
      */
     public function setMasterAttribute($value)
     {
