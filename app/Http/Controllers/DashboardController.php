@@ -9,6 +9,7 @@ use App\Zone;
 
 class DashboardController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +22,8 @@ class DashboardController extends Controller
         $data['zones'] = Zone::all()->count();
         $data['records'] = Record::all()->count();
         $data['users'] = User::all()->count();
-        
-        return view('dashboard.index')->with('data', $data);
+
+        return view('dashboard.index')
+            ->with('data', $data);
     }
 }

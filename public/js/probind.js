@@ -27,8 +27,7 @@
  * @link       https://github.com/pacoorozco/probind
  */
 
-ProBIND = {
+var ProBIND = {
     init: function () {
     }
 };
-

@@ -1,9 +1,10 @@
 filter:
-    excluded_paths: [tests/*]
+    paths: ["app/*"]
 
 checks:
     php:
         code_rating: true
+        duplication: true
         remove_extra_empty_lines: true
         remove_php_closing_tag: true
         remove_trailing_whitespace: true
@@ -17,10 +18,24 @@ checks:
         fix_line_ending: true
         fix_identation_4spaces: true
         fix_doc_comments: true
+
 tools:
     external_code_coverage: false
     php_analyzer: true
     php_code_coverage: false
     php_code_sniffer:
+        enable: true
         config:
             standard: PSR2
+
+    # PHP CS Fixer (http://http://cs.sensiolabs.org/).
+    php_cs_fixer:
+        enabled: true
+        config:
+            level: psr2
+
+    # Analyzes the size and structure of a PHP project.
+    php_loc: true
+
+    # Security Advisory Checker
+    sensiolabs_security_checker: true

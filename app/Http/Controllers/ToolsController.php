@@ -7,10 +7,11 @@ use App\Zone;
 
 class ToolsController extends Controller
 {
+
     /**
      * Show the summary page before push updates to servers.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function viewUpdates()
     {
