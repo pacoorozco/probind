@@ -48,13 +48,13 @@ class RecordController extends Controller
         $record = new Record();
 
         // If user doesn't supply a TTL we must use default's one
-        $record->ttl = ($request->ttl == '')
+        $record->ttl = ($request->input('ttl') == '')
             ? \Registry::get('record_ttl_default')
-            : $request->ttl;
+            : $request->input('ttl');
 
         // Only MX & SRV types use Priority
-        $record->priority = ($request->type == 'MX' || $request->type == 'SRV')
-            ? $request->priority
+        $record->priority = ($request->input('type') == 'MX' || $request->input('type') == 'SRV')
+            ? $request->input('priority')
             : null;
 
         $record->fill($request->all());
@@ -104,13 +104,13 @@ class RecordController extends Controller
     public function update(RecordUpdateRequest $request, Zone $zone, Record $record)
     {
         // If user doesn't supply a TTL we must use default's one
-        $record->ttl = ($request->ttl == '')
+        $record->ttl = ($request->input('ttl') == '')
             ? \Registry::get('record_ttl_default')
-            : $request->ttl;
+            : $request->input('ttl');
 
         // Only MX & SRV types use Priority
         $record->priority = ($record->type == 'MX' || $record->type == 'SRV')
-            ? $request->priority
+            ? $request->input('priority')
             : null;
 
         $record->fill($request->all())->save();
@@ -159,14 +159,14 @@ class RecordController extends Controller
     public function data(Request $request, Datatables $dataTable, Zone $zone)
     {
         // Disable this query if isn't AJAX
-        if (!$request->ajax()) {
+        if ( ! $request->ajax()) {
             abort(400);
         }
 
         $records = $zone->records();
 
         return $dataTable::of($records)
-            ->addColumn('actions', function(Record $record) {
+            ->addColumn('actions', function (Record $record) {
                 return view('record._actions')
                     ->with('zone', $record->zone)
                     ->with('record', $record)
