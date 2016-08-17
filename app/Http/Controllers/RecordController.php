@@ -113,7 +113,7 @@ class RecordController extends Controller
             ? $request->input('priority')
             : null;
 
-        $record->fill($request->all())->save();
+        $record->fill($request->except('type'))->save();
 
         return redirect()->route('zones.records.index', $zone)
             ->with('success', trans('record/messages.update.success'));
