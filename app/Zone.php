@@ -82,7 +82,7 @@ class Zone extends Model
      * We only need to modify this field is has been pushed to a server.
      *
      * @param  boolean $force
-     * @return int
+     * @return integer
      */
     public function setSerialNumber($force = false)
     {
@@ -90,7 +90,7 @@ class Zone extends Model
             return $this->serial;
         }
 
-        $currentSerial = (int)$this->serial;
+        $currentSerial = $this->serial;
         $nowSerial = Zone::createSerialNumber();
 
         $this->serial = ($currentSerial >= $nowSerial)
@@ -98,17 +98,17 @@ class Zone extends Model
             : $nowSerial;
         $this->save();
 
-        return (int)$this->serial;
+        return $this->serial;
     }
 
     /**
      * Create a new Serial Number based on a specified format
      *
-     * @return int
+     * @return integer
      */
     public static function createSerialNumber()
     {
-        return (int)Carbon::now()->format('Ymd') . '01';
+        return intval(Carbon::now()->format('Ymd') . '01');
     }
 
     /**
