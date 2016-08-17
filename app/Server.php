@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Server model
  *
+ * @property integer $id
  * @property string $hostname
  * @property string $ip_address
  * @property string $type

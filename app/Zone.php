@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Zone model, represents a DNS domain / subdomain.
  *
+ * @property integer $id
  * @property string $domain
  * @property integer $serial
  * @property string $master

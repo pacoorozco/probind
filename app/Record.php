@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Record model, represents a DNS entry on a specified zone.
  *
+ * @property integer $id
  * @property string $name
  * @property integer $ttl
  * @property string $type
