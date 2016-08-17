@@ -25,7 +25,7 @@ tools:
     php_code_coverage: false
     php_code_sniffer: true
         config:
-            standard: PSR2
+            standard: "PSR2"
 
     # PHP CS Fixer (http://http://cs.sensiolabs.org/).
     php_cs_fixer:
