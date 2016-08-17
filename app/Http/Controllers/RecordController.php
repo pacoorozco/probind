@@ -61,7 +61,7 @@ class RecordController extends Controller
 
         $zone->records()->save($record);
 
-        return redirect()->route('zones.records.index', $zone)
+        return redirect()->route('zones.records.index', ['zone' => $zone])
             ->with('success', trans('record/messages.create.success'));
     }
 
@@ -115,7 +115,7 @@ class RecordController extends Controller
 
         $record->fill($request->except('type'))->save();
 
-        return redirect()->route('zones.records.index', $zone)
+        return redirect()->route('zones.records.index', ['zone' => $zone])
             ->with('success', trans('record/messages.update.success'));
     }
 
@@ -144,7 +144,7 @@ class RecordController extends Controller
     {
         $record->delete();
 
-        return redirect()->route('zones.records.index', $zone)
+        return redirect()->route('zones.records.index', ['zone' => $zone])
             ->with('success', trans('record/messages.delete.success'));
     }
 
