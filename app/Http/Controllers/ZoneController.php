@@ -94,7 +94,7 @@ class ZoneController extends Controller
         if ($zone->isMasterZone()) {
             // assign new serial and flag as updated
             $zone->setSerialNumber();
-            $zone->updated = true;
+            $zone->setPendingChanges(true);
         }
         // deal with checkboxes
         $zone->custom_settings = $request->input('custom_settings', 0);

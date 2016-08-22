@@ -43,6 +43,7 @@ class ProBINDPushZones extends Command
     public function handle()
     {
         $zonesToUpdate = Zone::where('updated', 1)
+            ->where('master', '')
             ->orderBy('domain')
             ->get();
 
@@ -62,12 +63,12 @@ class ProBINDPushZones extends Command
 
         foreach ($servers as $server) {
             // Send updates via BASH file
-            $command = storage_path('app/scripts/push.bash') . ' --server=' . $server->hostname;
+            $command = storage_path('app/scripts/push') . ' --server=' . $server->hostname;
 
             $this->info(sprintf("Sending updates to server '%s' using '%s'", $server->hostname, $command));
 
             $process = new Process($command);
-            $process->start();
+            $process->run();
         }
     }
 

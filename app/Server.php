@@ -83,4 +83,14 @@ class Server extends Model
         $this->attributes['type'] = strtolower($value);
     }
 
+    /**
+     * Returns a formatted NS record for a server
+     *
+     * @return string
+     */
+    public function getNSRecord()
+    {
+        return sprintf("%-32s IN\tNS\t%s.", ' ', $this->hostname);
+    }
+
 }

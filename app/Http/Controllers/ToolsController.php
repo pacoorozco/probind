@@ -53,8 +53,10 @@ class ToolsController extends Controller
     public function pushUpdates()
     {
         // create config files
-        // create zone files
-        // push zone files
+
+        // create zone files and push to servers
+        \Artisan::call('probind:push');
+
         // mark zones delete
 
         return redirect()->route('home')

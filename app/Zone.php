@@ -168,6 +168,55 @@ class Zone extends Model
     }
 
     /**
+     * Returns the Default TTL for this zone
+     *
+     * @return int
+     */
+    public function getDefaultTTL()
+    {
+        return intval(($this->custom_settings) ? $this->default_ttl : \Registry::get('zone_default_default_ttl'));
+    }
+
+    /**
+     * Returns a formatted SOA record of a zone
+     *
+     * @return string
+     */
+    public function getSOARecord()
+    {
+        $content = sprintf("%-16s IN\tSOA\t%s. %s. (\n", '@', $this->getPrimaryNameServer(),
+            $this->getHostmasterEmail());
+        $content .= sprintf("%40s %-10d ; Serial (aaaammddvv)\n", ' ', $this->serial);
+        $content .= sprintf("%40s %-10d ; Refresh\n", ' ', $this->getRefresh());
+        $content .= sprintf("%40s %-10d ; Retry\n", ' ', $this->getRetry());
+        $content .= sprintf("%40s %-10d ; Expire\n", ' ', $this->getExpire());
+        $content .= sprintf("%40s %-10d ; Negative TTL\n", ' ', $this->getNegativeTTL());
+        $content .= sprintf(")");
+
+        return $content;
+    }
+
+    /**
+     * Returns the Primary Name Server of a zone
+     *
+     * @return string
+     */
+    public function getPrimaryNameServer()
+    {
+        return \Registry::get('zone_default_mname');
+    }
+
+    /**
+     * Returns the Hostmaster Email of a zone
+     *
+     * @return string
+     */
+    public function getHostmasterEmail()
+    {
+        return strtr(\Registry::get('zone_default_rname'), '@', '.');
+    }
+
+    /**
      * Returns the Refresh time for this zone
      *
      * @return int
@@ -205,15 +254,5 @@ class Zone extends Model
     public function getNegativeTTL()
     {
         return intval(($this->custom_settings) ? $this->negative_ttl : \Registry::get('zone_default_negative_ttl'));
-    }
-
-    /**
-     * Returns the Default TTL for this zone
-     *
-     * @return int
-     */
-    public function getDefaultTTL()
-    {
-        return intval(($this->custom_settings) ? $this->default_ttl : \Registry::get('zone_default_default_ttl'));
     }
 }
