@@ -174,7 +174,7 @@ class Zone extends Model
      */
     public function getRefresh()
     {
-        return intval(($this->custom_settings) ? $this->refresh : \Registry::get('zone_default.refresh'));
+        return intval(($this->custom_settings) ? $this->refresh : \Registry::get('zone_default_refresh'));
     }
 
     /**
@@ -184,7 +184,7 @@ class Zone extends Model
      */
     public function getRetry()
     {
-        return intval(($this->custom_settings) ? $this->retry : \Registry::get('zone_default.retry'));
+        return intval(($this->custom_settings) ? $this->retry : \Registry::get('zone_default_retry'));
     }
 
     /**
@@ -194,7 +194,7 @@ class Zone extends Model
      */
     public function getExpire()
     {
-        return intval(($this->custom_settings) ? $this->expire : \Registry::get('zone_default.expire'));
+        return intval(($this->custom_settings) ? $this->expire : \Registry::get('zone_default_expire'));
     }
 
     /**
@@ -204,7 +204,7 @@ class Zone extends Model
      */
     public function getNegativeTTL()
     {
-        return intval(($this->custom_settings) ? $this->negative_ttl : \Registry::get('zone_default.negative_ttl'));
+        return intval(($this->custom_settings) ? $this->negative_ttl : \Registry::get('zone_default_negative_ttl'));
     }
 
     /**
@@ -214,6 +214,6 @@ class Zone extends Model
      */
     public function getDefaultTTL()
     {
-        return intval(($this->custom_settings) ? $this->default_ttl : \Registry::get('zone_default.default_ttl'));
+        return intval(($this->custom_settings) ? $this->default_ttl : \Registry::get('zone_default_default_ttl'));
     }
 }

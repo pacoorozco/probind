@@ -40,7 +40,8 @@ class Record extends Model
     protected $fillable = [
         'name',
         'type',
-        'data'
+        'ttl',
+        'data',
     ];
     /**
      * The attributes that should be casted to native types.

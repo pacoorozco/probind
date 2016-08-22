@@ -47,11 +47,6 @@ class RecordController extends Controller
     {
         $record = new Record();
 
-        // If user doesn't supply a TTL we must use default's one
-        $record->ttl = ($request->input('ttl') == '')
-            ? \Registry::get('record_ttl_default')
-            : $request->input('ttl');
-
         // Only MX & SRV types use Priority
         $record->priority = ($request->input('type') == 'MX' || $request->input('type') == 'SRV')
             ? $request->input('priority')
@@ -103,11 +98,6 @@ class RecordController extends Controller
      */
     public function update(RecordUpdateRequest $request, Zone $zone, Record $record)
     {
-        // If user doesn't supply a TTL we must use default's one
-        $record->ttl = ($request->input('ttl') == '')
-            ? \Registry::get('record_ttl_default')
-            : $request->input('ttl');
-
         // Only MX & SRV types use Priority
         $record->priority = ($record->type == 'MX' || $record->type == 'SRV')
             ? $request->input('priority')
