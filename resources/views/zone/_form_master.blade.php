@@ -24,7 +24,7 @@
         <!-- custom_settings -->
         <div class="form-group {{ $errors->has('custom_settings') ? 'has-error' : '' }}">
             <div class="checkbox">
-                <label class="control-label" data-toggle="collapse" data-target="#custom_settings_section">>
+                <label class="control-label" data-toggle="collapse" data-target="#custom_settings_section">
                     {{ Form::checkbox('custom_settings', true, null, ['id' => 'custom_settings']) }}
                     {{ trans('zone/model.custom_settings') }}
                 </label>
