@@ -29,8 +29,6 @@ class Server extends Model
         'hostname',
         'ip_address',
         'type',
-        'push_updates',
-        'ns_record',
         'directory',
         'template',
         'script',

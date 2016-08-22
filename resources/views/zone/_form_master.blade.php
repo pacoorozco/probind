@@ -33,7 +33,7 @@
         <!-- ./ custom_settings -->
 
         <!-- custom settings section -->
-        <div class="{{ (isset($zone->custom_settings) && ($zone->custom_settings)) ? 'collapse in' : 'collapse' }}" id="custom_settings_section">
+        <div class="{{ (empty($zone->custom_settings) && empty(old('custom_settings'))) ? 'collapse' : 'collapse in' }}" id="custom_settings_section">
 
             <h4>{{ trans('zone/title.custom_settings') }}</h4>
 
