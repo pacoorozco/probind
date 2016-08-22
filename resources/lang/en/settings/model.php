@@ -1,27 +1,26 @@
 <?php
 
 return [
-
-    'zone_default'            => [
+    'zone_default' => [
         'mname'      => 'SOA Primary Server',
         'mname_help' => 'The fully qualified domain name for the name server.',
 
         'rname'      => 'Responsible Person',
         'rname_help' => ' The e-mail address of the person in charge of the domain.',
 
-        'refresh'      => 'Refresh Interval',
-        'refresh_help' => 'The interval at which a secondary server checks for zone updates.',
+        'refresh'      => 'Refresh time (seconds)',
+        'refresh_help' => 'Sets how often the zone should be synchronized from master name server to slave name server.',
 
-        'retry'      => 'Retry Interval',
-        'retry_help' => 'The time the secondary server waits after a failure to download the zone database.',
+        'retry'      => 'Retry time (seconds)',
+        'retry_help' => 'Sets how often slave name servers try to synchronize the zone from master name server if synchronization fails.',
 
-        'expire'      => 'Expires After',
-        'expire_help' => 'The period of time for which zone information is valid on the secondary server.',
+        'expire'      => 'Expiration (seconds)',
+        'expire_help' => 'Means the period after which the zone expires on slave name servers and slave name servers and slave server stop answering replies until it is synchronized.',
 
-        'minimum_ttl'      => 'Minimum (Default) TTL',
-        'minimum_ttl_help' => 'The minimum time-to-live value for cached records on a DNS server.',
+        'negative_ttl'      => 'Negative Answers TTL (seconds)',
+        'negative_ttl_help' => 'Specifies the time to live in the zone for caching negative answers on slave servers.',
+
+        'default_ttl'      => 'Default TTL for records (seconds)',
+        'default_ttl_help' => 'Specifies the time to live for all records in the zone that do not have an explicit TTL.',
     ],
-    'record_ttl_default'      => 'TTL',
-    'record_ttl_default_help' => 'The default time-to-live value for all resource records.',
-
 ];

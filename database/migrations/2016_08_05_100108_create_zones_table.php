@@ -18,6 +18,14 @@ class CreateZonesTable extends Migration
             $table->integer('serial')->unsigned();
             $table->string('master', 45)->nullable();
             $table->boolean('updated')->default(true);
+
+            $table->boolean('custom_settings')->default(false);
+            $table->integer('refresh')->unsigned()->nullable();
+            $table->integer('retry')->unsigned()->nullable();
+            $table->integer('expire')->unsigned()->nullable();
+            $table->integer('negative_ttl')->unsigned()->nullable();
+            $table->integer('default_ttl')->unsigned()->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });
