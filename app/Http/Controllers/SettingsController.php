@@ -32,6 +32,6 @@ class SettingsController extends Controller
         Registry::store($request->except('_token', '_method'));
 
         return redirect()->route('settings.index')
-            ->with('success', trans('settings/messages.save.success'));
+            ->with('success', trans('settings/messages.update.success'));
     }
 }

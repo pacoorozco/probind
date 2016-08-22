@@ -13,6 +13,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $domain
  * @property integer $serial
  * @property string $master
+ * @property boolean $custom_settings
+ * @property integer $refresh
+ * @property integer $retry
+ * @property integer $expire
+ * @property integer $negative_ttl
+ * @property integer $default_ttl
  * @property boolean $updated
  */
 class Zone extends Model
@@ -33,6 +39,11 @@ class Zone extends Model
     protected $fillable = [
         'domain',
         'master',
+        'refresh',
+        'retry',
+        'expire',
+        'negative_ttl',
+        'default_ttl'
     ];
     /**
      * The attributes that should be casted to native types.
@@ -40,10 +51,16 @@ class Zone extends Model
      * @var array
      */
     protected $casts = [
-        'domain'  => 'string',
-        'serial'  => 'integer',
-        'master'  => 'string',
-        'updated' => 'boolean',
+        'domain'          => 'string',
+        'serial'          => 'integer',
+        'master'          => 'string',
+        'updated'         => 'boolean',
+        'custom_settings' => 'boolean',
+        'refresh'         => 'integer',
+        'retry'           => 'integer',
+        'expire'          => 'integer',
+        'negative_ttl'    => 'integer',
+        'default_ttl'     => 'integer',
     ];
 
     /**
@@ -148,5 +165,55 @@ class Zone extends Model
     public function hasPendingChanges()
     {
         return $this->updated;
+    }
+
+    /**
+     * Returns the Refresh time for this zone
+     *
+     * @return int
+     */
+    public function getRefresh()
+    {
+        return intval(($this->custom_settings) ? $this->refresh : \Registry::get('zone_default_refresh'));
+    }
+
+    /**
+     * Returns the Retry time for this zone
+     *
+     * @return int
+     */
+    public function getRetry()
+    {
+        return intval(($this->custom_settings) ? $this->retry : \Registry::get('zone_default_retry'));
+    }
+
+    /**
+     * Returns the Expire time for this zone
+     *
+     * @return int
+     */
+    public function getExpire()
+    {
+        return intval(($this->custom_settings) ? $this->expire : \Registry::get('zone_default_expire'));
+    }
+
+    /**
+     * Returns the Negative TTL for this zone
+     *
+     * @return int
+     */
+    public function getNegativeTTL()
+    {
+        return intval(($this->custom_settings) ? $this->negative_ttl : \Registry::get('zone_default_negative_ttl'));
+    }
+
+    /**
+     * Returns the Default TTL for this zone
+     *
+     * @return int
+     */
+    public function getDefaultTTL()
+    {
+        return intval(($this->custom_settings) ? $this->default_ttl : \Registry::get('zone_default_default_ttl'));
     }
 }

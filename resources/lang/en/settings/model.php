@@ -1,27 +1,24 @@
 <?php
 
 return [
+    'zone_default_mname'      => 'SOA Primary Server',
+    'zone_default_mname_help' => 'The fully qualified domain name for the name server.',
 
-    'zone_default'            => [
-        'mname'      => 'SOA Primary Server',
-        'mname_help' => 'The fully qualified domain name for the name server.',
+    'zone_default_rname'      => 'Responsible Person',
+    'zone_default_rname_help' => ' The e-mail address of the person in charge of the domain.',
 
-        'rname'      => 'Responsible Person',
-        'rname_help' => ' The e-mail address of the person in charge of the domain.',
+    'zone_default_refresh'      => 'Refresh time (seconds)',
+    'zone_default_refresh_help' => 'Sets how often the zone should be synchronized from master name server to slave name server.',
 
-        'refresh'      => 'Refresh Interval',
-        'refresh_help' => 'The interval at which a secondary server checks for zone updates.',
+    'zone_default_retry'      => 'Retry time (seconds)',
+    'zone_default_retry_help' => 'Sets how often slave name servers try to synchronize the zone from master name server if synchronization fails.',
 
-        'retry'      => 'Retry Interval',
-        'retry_help' => 'The time the secondary server waits after a failure to download the zone database.',
+    'zone_default_expire'      => 'Expiration (seconds)',
+    'zone_default_expire_help' => 'Means the period after which the zone expires on slave name servers and slave name servers and slave server stop answering replies until it is synchronized.',
 
-        'expire'      => 'Expires After',
-        'expire_help' => 'The period of time for which zone information is valid on the secondary server.',
+    'zone_default_negative_ttl'      => 'Negative Answers TTL (seconds)',
+    'zone_default_negative_ttl_help' => 'Specifies the time to live in the zone for caching negative answers on slave servers.',
 
-        'minimum_ttl'      => 'Minimum (Default) TTL',
-        'minimum_ttl_help' => 'The minimum time-to-live value for cached records on a DNS server.',
-    ],
-    'record_ttl_default'      => 'TTL',
-    'record_ttl_default_help' => 'The default time-to-live value for all resource records.',
-
+    'zone_default_default_ttl'      => 'Default TTL for records (seconds)',
+    'zone_default_default_ttl_help' => 'Specifies the time to live for all records in the zone that do not have an explicit TTL.',
 ];
