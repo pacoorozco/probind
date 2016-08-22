@@ -28,6 +28,56 @@
         </div>
         <!-- ./ serial -->
 
+        @if($zone->custom_settings)
+
+            <h4>{{ trans('zone/title.custom_settings') }}</h4>
+
+            <!-- refresh -->
+            <div class="form-group">
+                {!! Form::label('refresh', trans('zone/model.refresh'), array('class' => 'control-label')) !!}
+                <div class="controls">
+                    {{ $zone->refresh }}
+                </div>
+            </div>
+            <!-- ./ refresh -->
+
+            <!-- retry -->
+            <div class="form-group">
+                {!! Form::label('retry', trans('zone/model.retry'), array('class' => 'control-label')) !!}
+                <div class="controls">
+                    {{ $zone->retry }}
+                </div>
+            </div>
+            <!-- ./ retry -->
+
+            <!-- expire -->
+            <div class="form-group">
+                {!! Form::label('expire', trans('zone/model.expire'), array('class' => 'control-label')) !!}
+                <div class="controls">
+                    {{ $zone->expire }}
+                </div>
+            </div>
+            <!-- ./ expire -->
+
+            <!-- negative_ttl -->
+            <div class="form-group">
+                {!! Form::label('negative_ttl', trans('zone/model.negative_ttl'), array('class' => 'control-label')) !!}
+                <div class="controls">
+                    {{ $zone->negative_ttl }}
+                </div>
+            </div>
+            <!-- ./ negative_ttl -->
+
+            <!-- default_ttl -->
+            <div class="form-group">
+                {!! Form::label('default_ttl', trans('zone/model.default_ttl'), array('class' => 'control-label')) !!}
+                <div class="controls">
+                    {{ $zone->default_ttl }}
+                </div>
+            </div>
+            <!-- ./ default_ttl -->
+        @endif
+
     </div>
     <div class="box-footer">
         <a href="{{ route('zones.index') }}">

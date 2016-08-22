@@ -28,7 +28,6 @@ class ServerCreateRequest extends Request
             'ip_address'   => 'required|ip|unique:servers',
             'type'         => 'required|in:master,slave',
             'ns_record'    => 'sometimes|boolean',
-            'active'       => 'required|boolean',
             'push_updates' => 'sometimes|boolean',
             'directory'    => 'required_if:push_updates,1|string',
             'template'     => 'required_if:push_updates,1|string',

@@ -49,6 +49,8 @@ class ZoneController extends Controller
             $zone->serial = Zone::createSerialNumber();
             $zone->updated = true;
         }
+        // deal with checkboxes
+        $zone->custom_settings = $request->input('custom_settings', 0);
 
         $zone->fill($request->all())->save();
 
@@ -94,6 +96,9 @@ class ZoneController extends Controller
             $zone->setSerialNumber();
             $zone->updated = true;
         }
+        // deal with checkboxes
+        $zone->custom_settings = $request->input('custom_settings', 0);
+
         $zone->fill($request->all())->save();
 
         return redirect()->route('zones.index')
