@@ -30,6 +30,11 @@ class SettingsUpdateRequest extends Request
             'zone_default_expire'       => 'required|integer',
             'zone_default_negative_ttl' => 'required|integer|min:0|max:2147483647',
             'zone_default_default_ttl'  => 'required|integer|min:0|max:2147483647',
+
+            'ssh_default_user'        => 'required|string',
+            'ssh_default_key'         => 'required|string',
+            'ssh_default_port'        => 'required|integer|min:1|max:65535',
+            'ssh_default_remote_path' => 'required|string',
         ];
     }
 }

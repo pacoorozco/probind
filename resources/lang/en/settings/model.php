@@ -21,4 +21,16 @@ return [
 
     'zone_default_default_ttl'      => 'Default TTL for records (seconds)',
     'zone_default_default_ttl_help' => 'Specifies the time to live for all records in the zone that do not have an explicit TTL.',
+
+    'ssh_default_user' => 'Username',
+    'ssh_default_user_help' => 'System user account to manage files and folders for DNS server.',
+
+    'ssh_default_key' => 'Private key',
+    'ssh_default_key_help' => 'SSH private key to access to servers.',
+
+    'ssh_default_port' => 'Port number',
+    'ssh_default_port_help' => '',
+
+    'ssh_default_remote_path' => 'Remote path',
+    'ssh_default_remote_path_help' => 'Path to directory where fields will be pushed.',
 ];

@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'yes'      => 'Yes',
     'no'       => 'No',
     'all'      => 'All',
@@ -18,5 +17,5 @@ return [
     'save'     => 'Save data',
     'inactive' => 'disabled',
     'help'     => 'Show / Hide help',
-
+    'logout'   => 'Sign out',
 ];

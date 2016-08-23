@@ -59,12 +59,10 @@
         </div>
         <!-- ./ active -->
 
-        <h4>{{ trans('server/title.push_updates_configuration') }}</h4>
-
         <!-- push_updates -->
         <div class="form-group {{ $errors->has('push_updates') ? 'has-error' : '' }}">
             <div class="checkbox">
-                <label class="control-label">
+                <label class="control-label" data-toggle="collapse" data-target="#push_updates_section">
                     {{ Form::checkbox('push_updates', true, null, ['id' => 'push_updates']) }}
                     {{ trans('server/model.push_updates') }}
                 </label>
@@ -72,35 +70,45 @@
         </div>
         <!-- ./ push_updates -->
 
-        <!-- directory -->
-        <div class="form-group {{ $errors->has('directory') ? 'has-error' : '' }}">
-            {!! Form::label('directory', trans('server/model.directory'), array('class' => 'control-label')) !!}
-            <div class="controls">
-                {!! Form::text('directory', null, array('class' => 'form-control')) !!}
-                <span class="help-block">{{ $errors->first('directory', ':message') }}</span>
-            </div>
-        </div>
-        <!-- ./ directory -->
+        <!-- push updates settings section -->
+        <div class="{{ (empty($server->push_updates) && empty(old('push_updates'))) ? 'collapse' : 'collapse in' }}" id="push_updates_section">
 
-        <!-- template -->
-        <div class="form-group {{ $errors->has('template') ? 'has-error' : '' }}">
-            {!! Form::label('template', trans('server/model.template'), array('class' => 'control-label')) !!}
-            <div class="controls">
-                {!! Form::text('template', null, array('class' => 'form-control')) !!}
-                <span class="help-block">{{ $errors->first('template', ':message') }}</span>
-            </div>
-        </div>
-        <!-- ./ template -->
+            <h4>{{ trans('server/title.push_updates_configuration') }}</h4>
 
-        <!-- script -->
-        <div class="form-group {{ $errors->has('script') ? 'has-error' : '' }}">
-            {!! Form::label('script', trans('server/model.script'), array('class' => 'control-label')) !!}
-            <div class="controls">
-                {!! Form::text('script', null, array('class' => 'form-control')) !!}
-                <span class="help-block">{{ $errors->first('script', ':message') }}</span>
-            </div>
+            <fieldset id="push_updates_fields">
+
+                <!-- directory -->
+                <div class="form-group {{ $errors->has('directory') ? 'has-error' : '' }}">
+                    {!! Form::label('directory', trans('server/model.directory'), array('class' => 'control-label')) !!}
+                    <div class="controls">
+                        {!! Form::text('directory', null, array('class' => 'form-control')) !!}
+                        <span class="help-block">{{ $errors->first('directory', ':message') }}</span>
+                    </div>
+                </div>
+                <!-- ./ directory -->
+
+                <!-- template -->
+                <div class="form-group {{ $errors->has('template') ? 'has-error' : '' }}">
+                    {!! Form::label('template', trans('server/model.template'), array('class' => 'control-label')) !!}
+                    <div class="controls">
+                        {!! Form::text('template', null, array('class' => 'form-control')) !!}
+                        <span class="help-block">{{ $errors->first('template', ':message') }}</span>
+                    </div>
+                </div>
+                <!-- ./ template -->
+
+                <!-- script -->
+                <div class="form-group {{ $errors->has('script') ? 'has-error' : '' }}">
+                    {!! Form::label('script', trans('server/model.script'), array('class' => 'control-label')) !!}
+                    <div class="controls">
+                        {!! Form::text('script', null, array('class' => 'form-control')) !!}
+                        <span class="help-block">{{ $errors->first('script', ':message') }}</span>
+                    </div>
+                </div>
+                <!-- ./ script -->
+            </fieldset>
         </div>
-        <!-- ./ script -->
+        <!-- ./ push updates settings section -->
 
     </div>
 
@@ -120,14 +128,10 @@
 @push('scripts')
 <script>
     $(function () {
-        $("#directory").prop("disabled", !$("#push_updates").prop("checked"));
-        $("#template").prop("disabled", !$("#push_updates").prop("checked"));
-        $("#script").prop("disabled", !$("#push_updates").prop("checked"));
+        $("#push_updates_fields").prop("disabled", !$("#push_updates").prop("checked"));
 
         $("#push_updates").change(function () {
-            $("#directory").prop("disabled", !this.checked);
-            $("#template").prop("disabled", !this.checked);
-            $("#script").prop("disabled", !this.checked);
+            $("#push_updates_fields").prop("disabled", !this.checked);
         });
     });
 </script>
