@@ -255,4 +255,29 @@ class Zone extends Model
     {
         return intval(($this->custom_settings) ? $this->negative_ttl : \Registry::get('zone_default_negative_ttl'));
     }
+
+    /**
+     * Scope a query to include zones to be pushed.
+     *
+     * Criteria:
+     *     - Master zones
+     *     - With pending changes
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithPendingChanges($query)
+    {
+        return $query->where('updated', 1)
+            ->where('master', '');
+    }
+
+    /**
+     * Scope a query to include only Master zones.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOnlyMasterZones($query)
+    {
+        return $query->where('master', '');
+    }
 }

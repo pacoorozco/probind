@@ -6,9 +6,10 @@ use App\Server;
 use App\Zone;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use phpseclib\Crypt\RSA;
+use phpseclib\Net\SFTP;
 use Registry;
 use Storage;
-use Symfony\Component\Process\Process;
 
 class ProBINDPushZones extends Command
 {
@@ -38,12 +39,21 @@ class ProBINDPushZones extends Command
     /**
      * Execute the console command.
      *
+     * Folders:
+     *  |
+     *  |- configuration/
+     *  |   |- named.conf
+     *  |   |- deadlist
+     *  |
+     *  |- primary/
+     *      |- domain.local
+     *      |- another_domain.local
+     *
      * @return integer|null
      */
     public function handle()
     {
-        $zonesToUpdate = Zone::where('updated', 1)
-            ->where('master', '')
+        $zonesToUpdate = Zone::withPendingChanges()
             ->orderBy('domain')
             ->get();
 
@@ -53,22 +63,56 @@ class ProBINDPushZones extends Command
             return 1;
         }
 
-        $this->info('Generating Zone Files...');
+        Storage::deleteDirectory('probind/');
 
+        $this->info('Generating Deleted Zone Files...');
+        $this->generateDeletedZonesFile();
+
+        $this->info('Generating Zone Files...');
         $this->generateZoneFiles($zonesToUpdate);
 
-        $servers = Server::where('push_updates', 1)
+        $servers = Server::withPushCapability()
             ->orderBy('hostname')
             ->get();
 
+        if ($servers->isEmpty()) {
+            $this->error('Nothing to do, servers');
+
+            return 1;
+        }
+
         foreach ($servers as $server) {
-            // Send updates via BASH file
-            $command = storage_path('app/scripts/push') . ' --server=' . $server->hostname;
+            $this->info('Generating Configuration File for ' . $server->hostname);
+            $this->generateConfigFile($server);
 
-            $this->info(sprintf("Sending updates to server '%s' using '%s'", $server->hostname, $command));
+            if ($server->type == 'master') {
+                $this->pushFilesToMasterServer($server, $zonesToUpdate);
+            } else {
+                $this->pushFilesToSlaveServer($server);
+            }
+        }
 
-            $process = new Process($command);
-            $process->run();
+        foreach ($zonesToUpdate as $zone) {
+            $zone->setPendingChanges(false);
+        }
+
+        $deletedZones = Zone::onlyTrashed()
+            ->orderBy('domain')
+            ->get();
+
+        foreach ($deletedZones as $zone) {
+            $zone->forceDelete();
+        }
+    }
+
+    public function generateDeletedZonesFile()
+    {
+        $deletedZones = Zone::onlyTrashed()
+            ->orderBy('domain')
+            ->get();
+
+        foreach ($deletedZones as $zone) {
+            Storage::put('probind/configuration/deadlist', $zone->domain, 'private');
         }
     }
 
@@ -80,7 +124,6 @@ class ProBINDPushZones extends Command
             ->orderBy('type')
             ->get();
 
-        Storage::deleteDirectory('probind/');
 
         foreach ($zonesToUpdate as $zone) {
 
@@ -96,13 +139,124 @@ class ProBINDPushZones extends Command
                 ->with('zone', $zone)
                 ->with('records', $records);
 
-            Storage::put('probind/' . $zone->domain, $contents, 'private');
+            Storage::put('probind/primary/' . $zone->domain, $contents, 'private');
 
             $header = sprintf(";\n; This file has been automatically generated using ProBIND v3 on %s.\n;",
                 Carbon::now());
-            Storage::prepend('probind/' . $zone->domain, $header);
+            Storage::prepend('probind/primary/' . $zone->domain, $header);
 
-            $zone->setPendingChanges(false);
+            //$zone->setPendingChanges(false);
         }
+    }
+
+    public function generateConfigFile($server)
+    {
+        if ($server->type == 'master') {
+            $zones = Zone::all();
+
+            $contents = view('templates.master_config')
+                ->with('server', $server)
+                ->with('zones', $zones);
+        } else {
+            $zones = Zone::onlyMasterZones();
+            $master = Server::where('type', 'master')->first();
+
+            $contents = view('templates.slave_config')
+                ->with('server', $server)
+                ->with('zones', $zones)
+                ->with('master', $master);
+
+        }
+
+        Storage::put('probind/configuration/' . $server->hostname . '.conf', $contents, 'private');
+    }
+
+    public function pushFilesToMasterServer($server, $zonesToUpdate)
+    {
+        // Get RSA private key in order to connect to servers
+        $privateSSHKey = new RSA();
+        $privateSSHKey->loadKey(Registry::get('ssh_default_key'));
+
+        try {
+            $sftp = new SFTP($server->hostname, Registry::get('ssh_default_port'));
+        } catch (\Exception $e) {
+            $this->error('Can not connect to ' . $server->hostname . ': ' . $e->getMessage());
+
+            return false;
+        }
+
+        if ( ! $sftp->login(Registry::get('ssh_default_user'), $privateSSHKey)) {
+            $this->error('Invalid SSH credentials on ' . $server->hostname);
+
+            return false;
+        }
+
+        $this->info('Connected successfully to ' . $server->hostname);
+
+        // Create Remote Folders
+        $sftp->mkdir(Registry::get('ssh_default_remote_path') . '/configuration', -1, true);
+        $sftp->mkdir(Registry::get('ssh_default_remote_path') . '/primary', -1, true);
+
+        foreach ($zonesToUpdate as $zone) {
+            $contents = Storage::get('probind/primary/' . $zone->domain);
+
+            if ( ! $sftp->put(Registry::get('ssh_default_remote_path') . '/primary/' . $zone->domain, $contents)) {
+                $this->error('File ' . $zone->domain . ' can not be uploaded on ' . $server->hostname);
+            }
+        }
+
+        $contents = Storage::get('probind/configuration/' . $server->hostname . '.conf');
+        if ( ! $sftp->put(Registry::get('ssh_default_remote_path') . '/configuration/named.conf', $contents)) {
+            $this->error('File named.conf can not be uploaded on ' . $server->hostname);
+        }
+
+        $contents = Storage::get('probind/configuration/deadlist');
+        if ( ! $sftp->put(Registry::get('ssh_default_remote_path') . '/configuration/deadlist', $contents)) {
+            $this->error('File deadlist can not be uploaded on ' . $server->hostname);
+        }
+
+        $sftp->disconnect();
+
+        return true;
+    }
+
+    public function pushFilesToSlaveServer($server)
+    {
+        // Get RSA private key in order to connect to servers
+        $privateSSHKey = new RSA();
+        $privateSSHKey->loadKey(Registry::get('ssh_default_key'));
+
+        try {
+            $sftp = new SFTP($server->hostname, Registry::get('ssh_default_port'));
+        } catch (\Exception $e) {
+            $this->error('Can not connect to ' . $server->hostname . ': ' . $e->getMessage());
+
+            return false;
+        }
+
+        if ( ! $sftp->login(Registry::get('ssh_default_user'), $privateSSHKey)) {
+            $this->error('Invalid SSH credentials on ' . $server->hostname);
+
+            return false;
+        }
+
+        $this->info('Connected successfully to ' . $server->hostname);
+
+        // Create Remote Folders
+        $sftp->mkdir(Registry::get('ssh_default_remote_path') . '/configuration', -1, true);
+
+        $contents = Storage::get('probind/configuration/' . $server->hostname . '.conf');
+        if ( ! $sftp->put(Registry::get('ssh_default_remote_path') . '/configuration/named.conf', $contents)) {
+            $this->error('File named.conf can not be uploaded on ' . $server->hostname);
+        }
+
+        $contents = Storage::get('probind/configuration/deadlist');
+        if ( ! $sftp->put(Registry::get('ssh_default_remote_path') . '/configuration/deadlist', $contents)) {
+            $this->error('File deadlist can not be uploaded on ' . $server->hostname);
+        }
+
+        $sftp->disconnect();
+
+        return true;
     }
 }

@@ -91,4 +91,16 @@ class Server extends Model
         return sprintf("%-32s IN\tNS\t%s.", ' ', $this->hostname);
     }
 
+    /**
+     * Scope a query to include servers thant can be pushed.
+     *
+     * Criteria:
+     *     - Has push_updates flag
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithPushCapability($query)
+    {
+        return $query->where('push_updates', true);
+    }
 }

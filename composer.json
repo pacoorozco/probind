@@ -13,7 +13,8 @@
     "laravelcollective/html": "5.2.*",
     "yajra/laravel-datatables-oracle": "^6.16",
     "torann/registry": "0.2.*@dev",
-    "barryvdh/laravel-ide-helper": "^2.2"
+    "barryvdh/laravel-ide-helper": "^2.2",
+    "phpseclib/phpseclib": "^2.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
