@@ -38,7 +38,7 @@ class ProBINDPushZones extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return integer|null
      */
     public function handle()
     {
@@ -101,7 +101,7 @@ class ProBINDPushZones extends Command
                 Carbon::now());
             Storage::prepend('probind/' . $zone->domain, $header);
 
-            //$zone->setPendingChanges(false);
+            $zone->setPendingChanges(false);
         }
     }
 }
