@@ -44,11 +44,6 @@ class ServerController extends Controller
     {
         $server = new Server();
 
-        // Deal with checkboxes
-        $server->push_updates = $request->input('push_updates', 0);
-        $server->ns_record = $request->input('ns_record', 0);
-        $server->active = $request->input('active', 1);
-
         $server->fill($request->all())->save();
 
         return redirect()->route('servers.index')
@@ -89,9 +84,8 @@ class ServerController extends Controller
     public function update(ServerUpdateRequest $request, Server $server)
     {
         // First, deal with checkboxes
-        $server->push_updates = $request->input('push_updates', 0);
-        $server->ns_record = $request->input('ns_record', 0);
-        $server->active = $request->input('active', 1);
+        $server->push_updates = $request->has('push_updates');
+        $server->ns_record = $request->has('ns_record');
 
         $server->fill($request->all())->save();
 
