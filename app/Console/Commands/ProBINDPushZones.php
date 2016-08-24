@@ -55,33 +55,36 @@ class ProBINDPushZones extends Command
     {
         $localStoragePath = storage_path('probind');
 
-        // Get zones with pending changes
-        $zonesToUpdate = Zone::withPendingChanges()
-            ->orderBy('domain')
-            ->get();
-
         // Get servers with push updates capability
         $servers = Server::withPushCapability()
             ->orderBy('hostname')
             ->get();
 
-        if ($servers->isEmpty() || $zonesToUpdate->isEmpty()) {
-            $this->error('Nothing to do.');
+        // Get zones with pending changes
+        $zonesToUpdate = Zone::withPendingChanges()
+            ->orderBy('domain')
+            ->get();
 
+        // Get deleted zones
+        $deletedZones = Zone::onlyTrashed()
+            ->orderBy('domain')
+            ->get();
+
+        if ($servers->isEmpty()
+            || ($zonesToUpdate->isEmpty() && $deletedZones->isEmpty())
+        ) {
+            $this->error('Nothing to do.');
             return false;
         }
 
         // Prepare local storage for file's creation
-        $this->info('Local Storage at ' . $localStoragePath);
         Storage::deleteDirectory($localStoragePath);
 
         // Generate a file containing zone's name that has been deleted
-        $this->info('Generating Deleted Zones File...');
-        $content = $this->generateDeletedZonesContent();
+        $content = $this->generateDeletedZonesContent($zonesToUpdate);
         Storage::put($localStoragePath . '/configuration/deadlist', $content, 'private');
 
         // Generate one file for zone with its zone definition
-        $this->info('Generating Zone Files...');
         foreach ($zonesToUpdate as $zone) {
             $zoneFilePath = $localStoragePath . '/primary/' . $zone->domain;
             $this->generateZoneFileForZone($zone, $zoneFilePath);
@@ -90,34 +93,7 @@ class ProBINDPushZones extends Command
         // Now push files to servers using SFTP
         $error = false;
         foreach ($servers as $server) {
-            $this->info('Generating Configuration File for ' . $server->hostname);
-            $configFilePath = $localStoragePath . '/configuration/' . $server->hostname . '.conf';
-            $this->generateConfigFileForServer($server, $configFilePath);
-
-            // Create an array with files that need to be pushed to remote server
-            $filesToPush = [
-                [
-                    'local'  => $localStoragePath . '/configuration/' . $server->hostname . '.conf',
-                    'remote' => Registry::get('ssh_default_remote_path') . '/configuration/named.conf',
-                ],
-                [
-                    'local'  => $localStoragePath . '/configuration/deadlist',
-                    'remote' => Registry::get('ssh_default_remote_path') . '/configuration/deadlist',
-                ]
-            ];
-
-            if ($server->type == 'master') {
-                $localFiles = Storage::files($localStoragePath . '/primary/');
-                foreach ($localFiles as $file) {
-                    $filename = basename($file);
-                    $filesToPush[] = [
-                        'local'  => $file,
-                        'remote' => Registry::get('ssh_default_remote_path') . '/primary/' . $filename
-                    ];
-                }
-            }
-
-            $error = $error || $this->pushFilesToServer($server, $filesToPush);
+            $error = $error || $this->handleServer($server, $localStoragePath);
         }
 
         if ( ! $error) {
@@ -125,10 +101,6 @@ class ProBINDPushZones extends Command
             foreach ($zonesToUpdate as $zone) {
                 $zone->setPendingChanges(false);
             }
-
-            $deletedZones = Zone::onlyTrashed()
-                ->orderBy('domain')
-                ->get();
 
             foreach ($deletedZones as $zone) {
                 $zone->forceDelete();
@@ -141,14 +113,11 @@ class ProBINDPushZones extends Command
     /**
      * Returns the content of Deleted Zones File
      *
+     * @param array $deletedZones
      * @return string
      */
-    public function generateDeletedZonesContent()
+    public function generateDeletedZonesContent($deletedZones)
     {
-        $deletedZones = Zone::onlyTrashed()
-            ->orderBy('domain')
-            ->get();
-
         $content = [];
         foreach ($deletedZones as $zone) {
             $content[] = sprintf("%s\n", $zone->domain);
@@ -195,6 +164,38 @@ class ProBINDPushZones extends Command
             ->with('records', $records);
 
         return Storage::append($path, $contents, 'private');
+    }
+
+    public function handleServer(Server $server, $localStoragePath)
+    {
+        $this->info('Generating Configuration File for ' . $server->hostname);
+        $configFilePath = $localStoragePath . '/configuration/' . $server->hostname . '.conf';
+        $this->generateConfigFileForServer($server, $configFilePath);
+
+        // Create an array with files that need to be pushed to remote server
+        $filesToPush = [
+            [
+                'local'  => $localStoragePath . '/configuration/' . $server->hostname . '.conf',
+                'remote' => Registry::get('ssh_default_remote_path') . '/configuration/named.conf',
+            ],
+            [
+                'local'  => $localStoragePath . '/configuration/deadlist',
+                'remote' => Registry::get('ssh_default_remote_path') . '/configuration/deadlist',
+            ]
+        ];
+
+        if ($server->type == 'master') {
+            $localFiles = Storage::files($localStoragePath . '/primary/');
+            foreach ($localFiles as $file) {
+                $filename = basename($file);
+                $filesToPush[] = [
+                    'local'  => $file,
+                    'remote' => Registry::get('ssh_default_remote_path') . '/primary/' . $filename
+                ];
+            }
+        }
+
+        return $this->pushFilesToServer($server, $filesToPush);
     }
 
     /**
