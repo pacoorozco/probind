@@ -182,6 +182,11 @@ class ProBINDPushZones extends Command
             ->orderBy('type')
             ->get();
 
+        // Put a header on generated file
+        $header = sprintf(";\n; This file has been automatically generated using ProBIND v3 on %s.\n;",
+            Carbon::now());
+        Storage::put($path, $header, 'private');
+
         // Create file content with a blade view
         $contents = view('templates.zone')
             ->with('defaults', $defaults)
@@ -189,17 +194,7 @@ class ProBINDPushZones extends Command
             ->with('servers', $nameServers)
             ->with('records', $records);
 
-        if ( ! Storage::put($path, $contents, 'private')) {
-            // There was an error generating Zone file
-            return false;
-        }
-
-        // Put a header on generated file
-        $header = sprintf(";\n; This file has been automatically generated using ProBIND v3 on %s.\n;",
-            Carbon::now());
-        Storage::prepend($path, $header);
-
-        return true;
+        return Storage::append($path, $contents, 'private');
     }
 
     /**
@@ -217,25 +212,18 @@ class ProBINDPushZones extends Command
             ? $serverTemplateFileName
             : 'templates.config_' . $server->type;
 
-        if ($server->type == 'master') {
-            // Get all zones (master and slave)
-            $zones = Zone::all();
+        // Get zones depending Server type
+        $zones = ($server->type == 'master')
+            ? Zone::all()
+            : Zone::onlyMasterZones();
 
-            $contents = view($templateFile)
-                ->with('server', $server)
-                ->with('zones', $zones);
-        } else {
-            // Slave servers only publish Master zones
-            $zones = Zone::onlyMasterZones();
+        // Only one server can be master of a zone
+        $master = Server::where('type', 'master')->first();
 
-            // Only one server can be master of a zone
-            $master = Server::where('type', 'master')->first();
-
-            $contents = view($templateFile)
-                ->with('server', $server)
-                ->with('zones', $zones)
-                ->with('master', $master);
-        }
+        $contents = view($templateFile)
+            ->with('server', $server)
+            ->with('zones', $zones)
+            ->with('master', $master);
 
         return Storage::put($path, $contents, 'private');
     }
