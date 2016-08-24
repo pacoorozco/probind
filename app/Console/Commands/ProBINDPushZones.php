@@ -29,72 +29,45 @@ class ProBINDPushZones extends Command
     protected $description = 'Generate and push zone files to DNS servers';
 
     /**
+     * The local Storage path to be used
+     *
+     * @var string
+     */
+    protected $localStoragePath;
+
+    /**
      * Create a new command instance.
      */
     public function __construct()
     {
+        $this->localStoragePath = storage_path('probind');
+
         parent::__construct();
     }
 
     /**
      * Execute the console command.
      *
-     * Folders:
-     *  |
-     *  |- configuration/
-     *  |   |- named.conf
-     *  |   |- deadlist
-     *  |
-     *  |- primary/
-     *      |- domain.local
-     *      |- another_domain.local
-     *
      * @return bool
      */
     public function handle()
     {
-        $localStoragePath = storage_path('probind');
-
-        // Get servers with push updates capability
-        $servers = Server::withPushCapability()
-            ->orderBy('hostname')
-            ->get();
-
-        // Get zones with pending changes
-        $zonesToUpdate = Zone::withPendingChanges()
-            ->orderBy('domain')
-            ->get();
-
-        // Get deleted zones
-        $deletedZones = Zone::onlyTrashed()
-            ->orderBy('domain')
-            ->get();
-
-        if ($servers->isEmpty()
-            || ($zonesToUpdate->isEmpty() && $deletedZones->isEmpty())
-        ) {
-            $this->error('Nothing to do.');
-            return false;
-        }
-
         // Prepare local storage for file's creation
-        Storage::deleteDirectory($localStoragePath);
+        Storage::deleteDirectory($this->localStoragePath);
 
         // Generate a file containing zone's name that has been deleted
-        $content = $this->generateDeletedZonesContent($zonesToUpdate);
-        Storage::put($localStoragePath . '/configuration/deadlist', $content, 'private');
+        $deletedZones = Zone::onlyTrashed()->get();
+        $content = $this->generateDeletedZonesContent($deletedZones);
+        Storage::put($this->localStoragePath . '/configuration/deadlist', $content, 'private');
 
         // Generate one file for zone with its zone definition
+        $zonesToUpdate = Zone::withPendingChanges()->get();
         foreach ($zonesToUpdate as $zone) {
-            $zoneFilePath = $localStoragePath . '/primary/' . $zone->domain;
-            $this->generateZoneFileForZone($zone, $zoneFilePath);
+            $this->generateZoneFileForZone($zone);
         }
 
         // Now push files to servers using SFTP
-        $error = false;
-        foreach ($servers as $server) {
-            $error = $error || $this->handleServer($server, $localStoragePath);
-        }
+        $error = $this->handleAllServers();
 
         if ( ! $error) {
             // Clear pending changes on zones and clear deleted ones
@@ -130,11 +103,12 @@ class ProBINDPushZones extends Command
      * Creates a file with the zone definitions
      *
      * @param Zone $zone
-     * @param string $path
      * @return bool
      */
-    public function generateZoneFileForZone(Zone $zone, $path)
+    public function generateZoneFileForZone(Zone $zone)
     {
+        $path = $this->localStoragePath . '/primary/' . $zone->domain;
+
         // Get default settings, we will use to render view
         $defaults = Registry::all();
 
@@ -166,26 +140,48 @@ class ProBINDPushZones extends Command
         return Storage::append($path, $contents, 'private');
     }
 
-    public function handleServer(Server $server, $localStoragePath)
+    /**
+     * Push files to all Servers
+     *
+     * @return bool
+     */
+    public function handleAllServers()
     {
-        $this->info('Generating Configuration File for ' . $server->hostname);
-        $configFilePath = $localStoragePath . '/configuration/' . $server->hostname . '.conf';
-        $this->generateConfigFileForServer($server, $configFilePath);
+        // Get servers with push updates capability
+        $servers = Server::withPushCapability()->get();
+
+        $pushedWithoutErrors = ! $servers->isEmpty();
+        foreach ($servers as $server) {
+            $pushedWithoutErrors &= $this->handleServer($server);
+        }
+
+        return $pushedWithoutErrors;
+    }
+
+    /**
+     * Handle this command only for one Server
+     *
+     * @param Server $server
+     * @return bool
+     */
+    public function handleServer(Server $server)
+    {
+        $this->generateConfigFileForServer($server);
 
         // Create an array with files that need to be pushed to remote server
         $filesToPush = [
             [
-                'local'  => $localStoragePath . '/configuration/' . $server->hostname . '.conf',
+                'local'  => $this->localStoragePath . '/configuration/' . $server->hostname . '.conf',
                 'remote' => Registry::get('ssh_default_remote_path') . '/configuration/named.conf',
             ],
             [
-                'local'  => $localStoragePath . '/configuration/deadlist',
+                'local'  => $this->localStoragePath . '/configuration/deadlist',
                 'remote' => Registry::get('ssh_default_remote_path') . '/configuration/deadlist',
             ]
         ];
 
         if ($server->type == 'master') {
-            $localFiles = Storage::files($localStoragePath . '/primary/');
+            $localFiles = Storage::files($this->localStoragePath . '/primary/');
             foreach ($localFiles as $file) {
                 $filename = basename($file);
                 $filesToPush[] = [
@@ -202,11 +198,12 @@ class ProBINDPushZones extends Command
      * Create a file with DNS server configuration
      *
      * @param Server $server
-     * @param string $path
      * @return bool
      */
-    public function generateConfigFileForServer(Server $server, $path)
+    public function generateConfigFileForServer(Server $server)
     {
+        $path = $this->localStoragePath . '/configuration/' . $server->hostname . '.conf';
+
         // We allow specific templates for each server
         $serverTemplateFileName = 'templates.config_' . $server->hostname;
         $templateFile = view()->exists($serverTemplateFileName)
@@ -274,7 +271,7 @@ class ProBINDPushZones extends Command
             $pushedFiles++;
         }
 
-        $this->info('Has been pushed ' . $pushedFiles . ' of ' . $totalFiles . ' to ' . $server->hostname);
+        $this->info('Has been pushed ' . $pushedFiles . ' of ' . $totalFiles . ' files to ' . $server->hostname);
         $sftp->disconnect();
 
         // Return true if all files has been pushed
