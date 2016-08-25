@@ -102,4 +102,17 @@ class Record extends Model
     {
         return $this->belongsTo('App\Zone');
     }
+
+    /**
+     * Returns a formatted Resource Record for a record
+     *
+     * @return string
+     */
+    public function getResourceRecord()
+    {
+        if ($this->ttl) {
+            return sprintf("%-40s %d\tIN\t%s\t%s", $this->name, $this->ttl, $this->type, $this->data);
+        }
+        return sprintf("%-40s \tIN\t%s\t%s", $this->name, $this->type, $this->data);
+    }
 }

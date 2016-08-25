@@ -15,7 +15,7 @@ class ToolsController extends Controller
      */
     public function viewUpdates()
     {
-        $servers = Server::where('push_updates', 1)
+        $servers = Server::withPushCapability()
             ->orderBy('hostname')
             ->get();
 
@@ -25,7 +25,7 @@ class ToolsController extends Controller
                 ->with('warning', trans('tools/messages.push_updates.no_servers'));
         }
 
-        $zonesToUpdate = Zone::where('updated', 1)
+        $zonesToUpdate = Zone::withPendingChanges()
             ->orderBy('domain')
             ->get();
 
@@ -53,8 +53,10 @@ class ToolsController extends Controller
     public function pushUpdates()
     {
         // create config files
-        // create zone files
-        // push zone files
+
+        // create zone files and push to servers
+        \Artisan::call('probind:push');
+
         // mark zones delete
 
         return redirect()->route('home')

@@ -81,4 +81,26 @@ class Server extends Model
         $this->attributes['type'] = strtolower($value);
     }
 
+    /**
+     * Returns a formatted NS record for a server
+     *
+     * @return string
+     */
+    public function getNSRecord()
+    {
+        return sprintf("%-32s IN\tNS\t%s.", ' ', $this->hostname);
+    }
+
+    /**
+     * Scope a query to include servers thant can be pushed.
+     *
+     * Criteria:
+     *     - Has push_updates flag
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithPushCapability($query)
+    {
+        return $query->where('push_updates', true);
+    }
 }
