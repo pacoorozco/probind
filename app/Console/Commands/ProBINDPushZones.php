@@ -205,10 +205,7 @@ class ProBINDPushZones extends Command
         $path = $this->localStoragePath . '/configuration/' . $server->hostname . '.conf';
 
         // We allow specific templates for each server
-        $serverTemplateFileName = 'templates.config_' . $server->hostname;
-        $templateFile = view()->exists($serverTemplateFileName)
-            ? $serverTemplateFileName
-            : 'templates.config_' . $server->type;
+        $templateFile = $this->getTemplateForConfigFile($server);
 
         // Get zones depending Server type
         $zones = ($server->type == 'master')
@@ -224,6 +221,22 @@ class ProBINDPushZones extends Command
             ->with('master', $master);
 
         return Storage::put($path, $contents, 'private');
+    }
+
+    /**
+     * Returns the template for rendering configuration file
+     *
+     * @param Server $server
+     * @return string
+     */
+    public function getTemplateForConfigFile(Server $server)
+    {
+        $serverTemplateFileName = 'templates.config_' . $server->hostname;
+        $templateFile = view()->exists($serverTemplateFileName)
+            ? $serverTemplateFileName
+            : 'templates.config_' . $server->type;
+
+        return $templateFile;
     }
 
     /**
