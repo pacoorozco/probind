@@ -1,14 +1,42 @@
 <?php
+/**
+ * ProBIND v3 - Professional DNS management made easy.
+ *
+ * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
+ *
+ * This file is part of some open source application.
+ *
+ * Licensed under GNU General Public License 3.0.
+ * Some rights reserved. See LICENSE, AUTHORS.
+ *
+ *  @author      Paco Orozco <paco@pacoorozco.info>
+ *  @copyright   2016 Paco Orozco
+ *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *  @link        https://github.com/pacoorozco/probind
+ *
+ */
 
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Record model, represents a DNS entry on a specified zone.
+ *
+ * @property integer $id
+ * @property string $name
+ * @property integer $ttl
+ * @property string $type
+ * @property integer $priority
+ * @property string $data
+ * @property object $zone
+ */
 class Record extends Model
 {
 
     /**
      * Valid Record Types. These will be used to validation.
+     *
      * @var array
      */
     public static $validInputTypes = [
@@ -28,7 +56,8 @@ class Record extends Model
     protected $fillable = [
         'name',
         'type',
-        'data'
+        'ttl',
+        'data',
     ];
     /**
      * The attributes that should be casted to native types.
@@ -53,7 +82,7 @@ class Record extends Model
      * Set the Record's type uppercase.
      *
      * @param  string $value
-     * @return string
+     * @return string|null
      */
     public function setTypeAttribute($value)
     {
@@ -64,7 +93,7 @@ class Record extends Model
      * Set the Record's name lowercase.
      *
      * @param  string $value
-     * @return string
+     * @return string|null
      */
     public function setNameAttribute($value)
     {
@@ -75,7 +104,7 @@ class Record extends Model
      * Set the Record's data lowercase.
      *
      * @param  string $value
-     * @return string
+     * @return string|null
      */
     public function setDataAttribute($value)
     {
@@ -88,5 +117,18 @@ class Record extends Model
     public function zone()
     {
         return $this->belongsTo('App\Zone');
+    }
+
+    /**
+     * Returns a formatted Resource Record for a record
+     *
+     * @return string
+     */
+    public function getResourceRecord()
+    {
+        if ($this->ttl) {
+            return sprintf("%-40s %d\tIN\t%s\t%s", $this->name, $this->ttl, $this->type, $this->data);
+        }
+        return sprintf("%-40s \tIN\t%s\t%s", $this->name, $this->type, $this->data);
     }
 }

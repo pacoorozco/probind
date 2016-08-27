@@ -1,4 +1,20 @@
 <?php
+/**
+ * ProBIND v3 - Professional DNS management made easy.
+ *
+ * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
+ *
+ * This file is part of some open source application.
+ *
+ * Licensed under GNU General Public License 3.0.
+ * Some rights reserved. See LICENSE, AUTHORS.
+ *
+ *  @author      Paco Orozco <paco@pacoorozco.info>
+ *  @copyright   2016 Paco Orozco
+ *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *  @link        https://github.com/pacoorozco/probind
+ *
+ */
 
 namespace App\Http\Controllers;
 
@@ -45,7 +61,7 @@ class ZoneController extends Controller
         $zone = new Zone();
 
         // assign new serial and flag as updated
-        if ($request->type == 'master') {
+        if ($request->input('type') == 'master') {
             $zone->serial = Zone::createSerialNumber();
             $zone->updated = true;
         }
@@ -89,11 +105,14 @@ class ZoneController extends Controller
      */
     public function update(ZoneUpdateRequest $request, Zone $zone)
     {
-        if ($zone->type == 'master') {
+        if ($zone->isMasterZone()) {
             // assign new serial and flag as updated
             $zone->setSerialNumber();
-            $zone->updated = true;
+            $zone->setPendingChanges(true);
         }
+        // deal with checkboxes
+        $zone->custom_settings = $request->has('custom_settings');
+
         $zone->fill($request->all())->save();
 
         return redirect()->route('zones.index')
@@ -136,7 +155,7 @@ class ZoneController extends Controller
     public function data(Request $request, Datatables $dataTable)
     {
         // Disable this query if isn't AJAX
-        if (!$request->ajax()) {
+        if ( ! $request->ajax()) {
             abort(400);
         }
 
@@ -148,13 +167,13 @@ class ZoneController extends Controller
         ]);
 
         return $dataTable::of($zones)
-            ->addColumn('type', function(Zone $zone) {
+            ->addColumn('type', function (Zone $zone) {
                 return ($zone->isMasterZone()) ? trans('zone/model.types.master') : trans('zone/model.types.slave');
             })
-            ->editColumn('updated', function(Zone $zone) {
+            ->editColumn('updated', function (Zone $zone) {
                 return ($zone->hasPendingChanges()) ? trans('general.yes') : trans('general.no');
             })
-            ->addColumn('actions', function(Zone $zone) {
+            ->addColumn('actions', function (Zone $zone) {
                 return view('zone._actions')
                     ->with('zone', $zone)
                     ->render();

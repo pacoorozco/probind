@@ -1,4 +1,20 @@
 <?php
+/**
+ * ProBIND v3 - Professional DNS management made easy.
+ *
+ * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
+ *
+ * This file is part of some open source application.
+ *
+ * Licensed under GNU General Public License 3.0.
+ * Some rights reserved. See LICENSE, AUTHORS.
+ *
+ *  @author      Paco Orozco <paco@pacoorozco.info>
+ *  @copyright   2016 Paco Orozco
+ *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *  @link        https://github.com/pacoorozco/probind
+ *
+ */
 
 namespace App\Http\Controllers;
 
@@ -47,21 +63,16 @@ class RecordController extends Controller
     {
         $record = new Record();
 
-        // If user doesn't supply a TTL we must use default's one
-        $record->ttl = ($request->ttl == '')
-            ? \Registry::get('record_ttl_default')
-            : $request->ttl;
-
         // Only MX & SRV types use Priority
-        $record->priority = ($request->type == 'MX' || $request->type == 'SRV')
-            ? $request->priority
+        $record->priority = ($request->input('type') == 'MX' || $request->input('type') == 'SRV')
+            ? $request->input('priority')
             : null;
 
         $record->fill($request->all());
 
         $zone->records()->save($record);
 
-        return redirect()->route('zones.records.index', $zone)
+        return redirect()->route('zones.records.index', ['zone' => $zone])
             ->with('success', trans('record/messages.create.success'));
     }
 
@@ -99,23 +110,18 @@ class RecordController extends Controller
      * @param  RecordUpdateRequest $request
      * @param  Zone $zone
      * @param  Record $record
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(RecordUpdateRequest $request, Zone $zone, Record $record)
     {
-        // If user doesn't supply a TTL we must use default's one
-        $record->ttl = ($request->ttl == '')
-            ? \Registry::get('record_ttl_default')
-            : $request->ttl;
-
         // Only MX & SRV types use Priority
         $record->priority = ($record->type == 'MX' || $record->type == 'SRV')
-            ? $request->priority
+            ? $request->input('priority')
             : null;
 
-        $record->fill($request->all())->save();
+        $record->fill($request->except('type'))->save();
 
-        return redirect()->route('zones.records.index', $zone)
+        return redirect()->route('zones.records.index', ['zone' => $zone])
             ->with('success', trans('record/messages.update.success'));
     }
 
@@ -138,13 +144,13 @@ class RecordController extends Controller
      *
      * @param  Zone $zone
      * @param Record $record
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Zone $zone, Record $record)
     {
         $record->delete();
 
-        return redirect()->route('zones.records.index', $zone)
+        return redirect()->route('zones.records.index', ['zone' => $zone])
             ->with('success', trans('record/messages.delete.success'));
     }
 
@@ -159,14 +165,14 @@ class RecordController extends Controller
     public function data(Request $request, Datatables $dataTable, Zone $zone)
     {
         // Disable this query if isn't AJAX
-        if (!$request->ajax()) {
+        if ( ! $request->ajax()) {
             abort(400);
         }
 
         $records = $zone->records();
 
         return $dataTable::of($records)
-            ->addColumn('actions', function(Record $record) {
+            ->addColumn('actions', function (Record $record) {
                 return view('record._actions')
                     ->with('zone', $record->zone)
                     ->with('record', $record)

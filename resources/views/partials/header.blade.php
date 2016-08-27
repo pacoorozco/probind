@@ -10,7 +10,7 @@
     <!-- end: LOGO -->
 
     <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation">
+    <nav class="navbar navbar-static-top">
         <!-- start: RESPONSIVE MENU TOGGLER -->
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
@@ -24,7 +24,7 @@
             <ul class="nav navbar-nav">
 
                 <!-- start: NOTIFICATION DROPDOWN -->
-                    <!-- TODO -->
+                <!-- TODO -->
                 <!-- end: NOTIFICATION DROPDOWN -->
 
                 <!-- start: USER DROPDOWN -->
@@ -32,34 +32,23 @@
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
-                        <img src="{{-- auth()->user()->profile->avatar->url() --}}" class="user-image"
+                        <img src="images/missing_profile.png" class="user-image"
                              alt="{{ trans('user/profile.avatar') }}"/>
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        <span class="hidden-xs">{{-- auth()->user()->name --}} username</span>
+                        <span class="hidden-xs">{{-- auth()->user()->name --}} administrator</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
-                            <img src="{{-- auth()->user()->profile->avatar->url() --}}" class="img-circle"
+                            <img src="images/missing_profile.png" class="img-circle"
                                  alt="{{ trans('user/profile.avatar') }}"/>
                             <p>
-                                {{-- auth()->user()->name --}} username - Admin
+                                {{-- auth()->user()->name --}} administrator - Admin
                                 <small>Member since {{-- date("M Y", strtotime(auth()->user()->created_at)) --}}</small>
                             </p>
                         </li>
-                        <!-- Menu Body -->
-                        <li class="user-body">
-                            <div class="col-xs-12 text-center">
-                                <a href="#">{{ trans('site.my_achievements') }}</a>
-                            </div>
-                        </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
-                            <div class="pull-left">
-                                <a href="{{-- route('profiles.show', Auth::user()->username) --}}" class="btn btn-default btn-flat">
-                                    {{ trans('site.my_profile') }}
-                                </a>
-                            </div>
                             <div class="pull-right">
                                 <a href="{{ url('auth/logout') }}" class="btn btn-default btn-flat">
                                     {{ trans('general.logout') }}

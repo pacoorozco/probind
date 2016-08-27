@@ -107,12 +107,12 @@
     <div class="row">
         <!-- monthly records statistics -->
         <div class="col-md-8 col-sm-12 col-xs-12">
-            @include('dashboard._monthly_records_stats')
+            {{-- @include('dashboard._monthly_records_stats') --}}
         </div>
 
         <!-- record types statistics -->
         <div class="col-md-4 col-sm-12 col-xs-12">
-            @include('dashboard._record_types_stats')
+            {{-- @include('dashboard._record_types_stats') --}}
         </div>
     </div>
 @endsection

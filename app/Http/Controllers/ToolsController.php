@@ -1,4 +1,20 @@
 <?php
+/**
+ * ProBIND v3 - Professional DNS management made easy.
+ *
+ * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
+ *
+ * This file is part of some open source application.
+ *
+ * Licensed under GNU General Public License 3.0.
+ * Some rights reserved. See LICENSE, AUTHORS.
+ *
+ *  @author      Paco Orozco <paco@pacoorozco.info>
+ *  @copyright   2016 Paco Orozco
+ *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *  @link        https://github.com/pacoorozco/probind
+ *
+ */
 
 namespace App\Http\Controllers;
 
@@ -15,17 +31,17 @@ class ToolsController extends Controller
      */
     public function viewUpdates()
     {
-        $servers = Server::where('push_updates', 1)
+        $servers = Server::withPushCapability()
             ->orderBy('hostname')
             ->get();
 
         // Test if there are servers to be pushed
         if ($servers->isEmpty()) {
             return redirect()->route('home')
-                ->with('warning', trans('tools/messages.push_updates.no_servers'));
+                ->with('warning', trans('tools/messages.push_updates_no_servers'));
         }
 
-        $zonesToUpdate = Zone::where('updated', 1)
+        $zonesToUpdate = Zone::withPendingChanges()
             ->orderBy('domain')
             ->get();
 
@@ -36,7 +52,7 @@ class ToolsController extends Controller
         // Test if there are zones to be pushed
         if ($zonesToUpdate->isEmpty() && $zonesToDelete->isEmpty()) {
             return redirect()->route('home')
-                ->with('warning', trans('tools/messages.push_updates.nothing_to_do'));
+                ->with('warning', trans('tools/messages.push_updates_nothing_to_do'));
         }
 
         return view('tools.push')
@@ -53,12 +69,14 @@ class ToolsController extends Controller
     public function pushUpdates()
     {
         // create config files
-        // create zone files
-        // push zone files
+
+        // create zone files and push to servers
+        \Artisan::call('probind:push');
+
         // mark zones delete
 
         return redirect()->route('home')
-            ->with('success', trans('tools/messages.push_updates.success'));
+            ->with('success', trans('tools/messages.push_updates_success'));
     }
 
     /**

@@ -40,8 +40,6 @@
         </div>
         <!-- ./ ns_record -->
 
-        <h4>{{ trans('server/title.push_updates_configuration') }}</h4>
-
         <!-- push_updates -->
         <div class="form-group">
             {!! Form::label('push_updates', trans('server/model.push_updates'), array('class' => 'control-label')) !!}
@@ -50,33 +48,6 @@
             </div>
         </div>
         <!-- ./ push_updates -->
-
-        <!-- directory -->
-        <div class="form-group">
-            {!! Form::label('directory', trans('server/model.directory'), array('class' => 'control-label')) !!}
-            <div class="controls">
-                {{ $server->directory }}
-            </div>
-        </div>
-        <!-- ./ directory -->
-
-        <!-- template -->
-        <div class="form-group">
-            {!! Form::label('template', trans('server/model.template'), array('class' => 'control-label')) !!}
-            <div class="controls">
-                {{ $server->template }}
-            </div>
-        </div>
-        <!-- ./ template -->
-
-        <!-- script -->
-        <div class="form-group">
-            {!! Form::label('script', trans('server/model.script'), array('class' => 'control-label')) !!}
-            <div class="controls">
-                {{ $server->script }}
-            </div>
-        </div>
-        <!-- ./ script -->
 
     </div>
     <div class="box-footer">
