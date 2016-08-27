@@ -76,7 +76,7 @@ class ToolsController extends Controller
         // mark zones delete
 
         return redirect()->route('home')
-            ->with('success', trans('tools/messages.push_updates.success'));
+            ->with('success', trans('tools/messages.push_updates_success'));
     }
 
     /**
