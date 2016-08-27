@@ -9,10 +9,10 @@
  * Licensed under GNU General Public License 3.0.
  * Some rights reserved. See LICENSE, AUTHORS.
  *
- *  @author      Paco Orozco <paco@pacoorozco.info>
- *  @copyright   2016 Paco Orozco
- *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
- *  @link        https://github.com/pacoorozco/probind
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2016 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
  *
  */
 
@@ -27,7 +27,7 @@
 |
 */
 
-$factory->define(App\User::class, function(Faker\Generator $faker) {
+$factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name'           => $faker->name,
         'email'          => $faker->safeEmail,
@@ -36,24 +36,22 @@ $factory->define(App\User::class, function(Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Server::class, function(Faker\Generator $faker) {
+$factory->define(App\Server::class, function (Faker\Generator $faker) {
     return [
         'hostname'   => $faker->unique()->domainWord . '.local',
         'ip_address' => $faker->ipv4,
         'type'       => $faker->randomElement(['master', 'slave']),
-        'directory'  => '/tmp/' . $faker->word,
-        'script'     => $faker->word,
     ];
 });
 
-$factory->define(App\Zone::class, function(Faker\Generator $faker) {
+$factory->define(App\Zone::class, function (Faker\Generator $faker) {
     return [
         'domain' => $faker->unique()->domainName,
         'master' => $faker->optional()->ipv4,
     ];
 });
 
-$factory->defineAs(App\Record::class, 'A', function(Faker\Generator $faker) {
+$factory->defineAs(App\Record::class, 'A', function (Faker\Generator $faker) {
     // Return an A record
     return [
         'name' => $faker->domainWord,
@@ -62,7 +60,7 @@ $factory->defineAs(App\Record::class, 'A', function(Faker\Generator $faker) {
     ];
 });
 
-$factory->defineAs(App\Record::class, 'CNAME', function(Faker\Generator $faker) {
+$factory->defineAs(App\Record::class, 'CNAME', function (Faker\Generator $faker) {
     // Return a CNAME record
     return [
         'name' => $faker->domainWord,

@@ -29,9 +29,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $type
  * @property boolean $push_updates
  * @property boolean $ns_record
- * @property string $directory
- * @property string $template
- * @property string $script
  * @property boolean active *
  */
 class Server extends Model
@@ -45,9 +42,6 @@ class Server extends Model
         'hostname',
         'ip_address',
         'type',
-        'directory',
-        'template',
-        'script',
         'active'
     ];
     /**
@@ -59,9 +53,6 @@ class Server extends Model
         'hostname'   => 'string',
         'ip_address' => 'string',
         'type'       => 'string',
-        'directory'  => 'string',
-        'template'   => 'string',
-        'script'     => 'string'
     ];
 
     /**

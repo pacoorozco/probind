@@ -69,47 +69,6 @@
             </div>
         </div>
         <!-- ./ push_updates -->
-
-        <!-- push updates settings section -->
-        <div class="{{ (empty($server->push_updates) && empty(old('push_updates'))) ? 'collapse' : 'collapse in' }}" id="push_updates_section">
-
-            <h4>{{ trans('server/title.push_updates_configuration') }}</h4>
-
-            <fieldset id="push_updates_fields">
-
-                <!-- directory -->
-                <div class="form-group {{ $errors->has('directory') ? 'has-error' : '' }}">
-                    {!! Form::label('directory', trans('server/model.directory'), array('class' => 'control-label')) !!}
-                    <div class="controls">
-                        {!! Form::text('directory', null, array('class' => 'form-control')) !!}
-                        <span class="help-block">{{ $errors->first('directory', ':message') }}</span>
-                    </div>
-                </div>
-                <!-- ./ directory -->
-
-                <!-- template -->
-                <div class="form-group {{ $errors->has('template') ? 'has-error' : '' }}">
-                    {!! Form::label('template', trans('server/model.template'), array('class' => 'control-label')) !!}
-                    <div class="controls">
-                        {!! Form::text('template', null, array('class' => 'form-control')) !!}
-                        <span class="help-block">{{ $errors->first('template', ':message') }}</span>
-                    </div>
-                </div>
-                <!-- ./ template -->
-
-                <!-- script -->
-                <div class="form-group {{ $errors->has('script') ? 'has-error' : '' }}">
-                    {!! Form::label('script', trans('server/model.script'), array('class' => 'control-label')) !!}
-                    <div class="controls">
-                        {!! Form::text('script', null, array('class' => 'form-control')) !!}
-                        <span class="help-block">{{ $errors->first('script', ':message') }}</span>
-                    </div>
-                </div>
-                <!-- ./ script -->
-            </fieldset>
-        </div>
-        <!-- ./ push updates settings section -->
-
     </div>
 
     <div class="box-footer">
@@ -124,15 +83,3 @@
     </div>
 </div>
 {!! Form::close() !!}
-
-@push('scripts')
-<script>
-    $(function () {
-        $("#push_updates_fields").prop("disabled", !$("#push_updates").prop("checked"));
-
-        $("#push_updates").change(function () {
-            $("#push_updates_fields").prop("disabled", !this.checked);
-        });
-    });
-</script>
-@endpush
