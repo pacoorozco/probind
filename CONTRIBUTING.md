@@ -1,6 +1,6 @@
 # Code contibution to this app
 
-Contributions are **welcomed** and will be fully **credited** (see [AUTHORS](https://github.com/pacoorozco/probind/blob/master/AUTHORS).
+Contributions are **welcomed** and will be fully **credited** (see [AUTHORS](https://github.com/pacoorozco/probind/blob/master/AUTHORS)).
 
 We accept contributions via Pull Requests on [GitHub Repository][github].
 
