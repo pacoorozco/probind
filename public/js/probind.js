@@ -1,30 +1,18 @@
-/**
- * Main JS application file for proBIND. This file
- * should be included in all pages. It controls some layout
- * options.
+/*
+ * ProBIND v3 - Professional DNS management made easy.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * This file is part of some open source application.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * Licensed under GNU General Public License 3.0.
+ * Some rights reserved. See LICENSE, AUTHORS.
  *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *  @author      Paco Orozco <paco@pacoorozco.info>
+ *  @copyright   2016 Paco Orozco
+ *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *  @link        https://github.com/pacoorozco/probind
  *
- * @category   Pakus
- * @package    proBIND JavaScript
- * @author     Paco Orozco <paco_@_pacoorozco.info>
- * @license    http://www.gnu.org/licenses/gpl-2.0.html (GPL v2)
- * @link       https://github.com/pacoorozco/probind
  */
 
 var ProBIND = {
