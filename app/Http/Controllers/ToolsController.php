@@ -38,7 +38,7 @@ class ToolsController extends Controller
         // Test if there are servers to be pushed
         if ($servers->isEmpty()) {
             return redirect()->route('home')
-                ->with('warning', trans('tools/messages.push_updates.no_servers'));
+                ->with('warning', trans('tools/messages.push_updates_no_servers'));
         }
 
         $zonesToUpdate = Zone::withPendingChanges()
@@ -52,7 +52,7 @@ class ToolsController extends Controller
         // Test if there are zones to be pushed
         if ($zonesToUpdate->isEmpty() && $zonesToDelete->isEmpty()) {
             return redirect()->route('home')
-                ->with('warning', trans('tools/messages.push_updates.nothing_to_do'));
+                ->with('warning', trans('tools/messages.push_updates_nothing_to_do'));
         }
 
         return view('tools.push')
@@ -76,7 +76,7 @@ class ToolsController extends Controller
         // mark zones delete
 
         return redirect()->route('home')
-            ->with('success', trans('tools/messages.push_updates.success'));
+            ->with('success', trans('tools/messages.push_updates_success'));
     }
 
     /**

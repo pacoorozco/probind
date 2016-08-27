@@ -35,9 +35,6 @@ class CreateServersTable extends Migration
             $table->enum('type', ['master', 'slave']);
             $table->boolean('push_updates')->default(false);
             $table->boolean('ns_record')->default(false);
-            $table->string('directory');
-            $table->string('template');
-            $table->string('script');
             $table->boolean('active')->default(true);
             $table->timestamps();
         });
