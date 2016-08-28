@@ -162,7 +162,6 @@ return [
         /*
          * Third Party Service Providers...
          */
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class, // Laravel IDE helper
         Collective\Html\HtmlServiceProvider::class, // HTML helpers
         Yajra\Datatables\DatatablesServiceProvider::class, // DataTables helpers
         Torann\Registry\RegistryServiceProvider::class, // Settings helpers
@@ -174,6 +173,11 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        /*
+         * 'Local' environment Service Providers...
+         */
+        App\Providers\LocalServiceProvider::class,
 
     ],
 
