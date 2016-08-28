@@ -9,10 +9,10 @@
  * Licensed under GNU General Public License 3.0.
  * Some rights reserved. See LICENSE, AUTHORS.
  *
- *  @author      Paco Orozco <paco@pacoorozco.info>
- *  @copyright   2016 Paco Orozco
- *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
- *  @link        https://github.com/pacoorozco/probind
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2016 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
  *
  */
 
@@ -34,6 +34,15 @@ use Illuminate\Database\Eloquent\Model;
 class Server extends Model
 {
 
+    /**
+     * Valid Server Types. These will be used to validation.
+     *
+     * @var array
+     */
+    public static $validServerTypes = [
+        'master',
+        'slave'
+    ];
     /**
      * The database table used by the model.
      */
@@ -78,14 +87,19 @@ class Server extends Model
     }
 
     /**
-     * Set the Server's type lowercase.
+     * Set the Server's type lowercase and valid value.
+     *
+     * If $value does not exists on Server::$validServerTypes, we return de first one.
      *
      * @param  string $value
      * @return string|null
      */
     public function setTypeAttribute($value)
     {
-        $this->attributes['type'] = strtolower($value);
+        $lowerCaseValue = strtolower($value);
+        $this->attributes['type'] = array_has(self::$validServerTypes, $lowerCaseValue)
+            ? $lowerCaseValue
+            : head(self::$validServerTypes);
     }
 
     /**

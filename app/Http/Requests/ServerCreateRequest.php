@@ -18,6 +18,8 @@
 
 namespace App\Http\Requests;
 
+use App\Server;
+
 class ServerCreateRequest extends Request
 {
 
@@ -38,10 +40,12 @@ class ServerCreateRequest extends Request
      */
     public function rules()
     {
+        $validServerTypes = join(',', array_keys(Server::$validServerTypes));
+
         return [
             'hostname'     => 'required|string|unique:servers',
             'ip_address'   => 'required|ip|unique:servers',
-            'type'         => 'required|in:master,slave',
+            'type'         => 'required|in:' . $validServerTypes,
             'ns_record'    => 'sometimes|boolean',
             'push_updates' => 'sometimes|boolean',
             'active'       => 'required|boolean'

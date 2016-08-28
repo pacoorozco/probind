@@ -39,11 +39,12 @@ class ServerUpdateRequest extends Request
     public function rules()
     {
         $zone = $this->route('server');
+        $validServerTypes = join(',', array_keys(Server::$validServerTypes));
 
         return [
             'hostname'     => 'required|string|unique:servers,hostname,' . $zone->id,
             'ip_address'   => 'required|ip|unique:servers,ip_address,' . $zone->id,
-            'type'         => 'required|in:master,slave',
+            'type'         => 'required|in:' . $validServerTypes,
             'ns_record'    => 'sometimes|boolean',
             'active'       => 'required|boolean',
             'push_updates' => 'sometimes|boolean'
