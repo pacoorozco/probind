@@ -6,6 +6,9 @@ php:
   - 7.1
   - hhvm
 
+env:
+  APP_KEY=base64:9MMVNXKz1TlnX74s0jAFLc/MD5Cb+aVbLaWGpG91AKw=
+
 # This triggers builds to run on the new TravisCI infrastructure.
 # See: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 sudo: false
