@@ -22,10 +22,9 @@ matrix:
 
 before_script:
   - travis_retry composer self-update
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
+  - travis_retry composer install ${COMPOSER_FLAGS} --no-interaction --prefer-dist
 
 script:
-  - vendor/bin/phpcs --standard=psr2 app/
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
 
 after_script:
