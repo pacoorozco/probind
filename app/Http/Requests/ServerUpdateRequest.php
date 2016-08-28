@@ -39,7 +39,7 @@ class ServerUpdateRequest extends Request
     public function rules()
     {
         $zone = $this->route('server');
-        $validServerTypes = join(',', array_keys(Server::$validServerTypes));
+        $validServerTypes = join(',', array_values(Server::$validServerTypes));
 
         return [
             'hostname'     => 'required|string|unique:servers,hostname,' . $zone->id,

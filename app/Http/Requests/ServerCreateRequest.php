@@ -40,7 +40,7 @@ class ServerCreateRequest extends Request
      */
     public function rules()
     {
-        $validServerTypes = join(',', array_keys(Server::$validServerTypes));
+        $validServerTypes = join(',', array_values(Server::$validServerTypes));
 
         return [
             'hostname'     => 'required|string|unique:servers',
