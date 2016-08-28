@@ -18,6 +18,8 @@
 
 namespace App\Http\Requests;
 
+use App\Server;
+
 class ServerUpdateRequest extends Request
 {
 
