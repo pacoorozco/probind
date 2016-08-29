@@ -21,7 +21,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ServerCreateRequest;
 use App\Http\Requests\ServerUpdateRequest;
 use App\Server;
-use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 class ServerController extends Controller
@@ -138,11 +137,10 @@ class ServerController extends Controller
     /**
      * Show a list of all the levels formatted for Datatables.
      *
-     * @param Request $request
      * @param Datatables $dataTable
      * @return Datatables JsonResponse
      */
-    public function data(Request $request, Datatables $dataTable)
+    public function data(Datatables $dataTable)
     {
         $servers = Server::select([
             'id',

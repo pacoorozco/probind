@@ -21,7 +21,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ZoneCreateRequest;
 use App\Http\Requests\ZoneUpdateRequest;
 use App\Zone;
-use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 class ZoneController extends Controller
@@ -148,11 +147,10 @@ class ZoneController extends Controller
     /**
      * Show a list of all the levels formatted for Datatables.
      *
-     * @param Request $request
      * @param Datatables $dataTable
      * @return Datatables JsonResponse
      */
-    public function data(Request $request, Datatables $dataTable)
+    public function data(Datatables $dataTable)
     {
         $zones = Zone::select([
             'id',

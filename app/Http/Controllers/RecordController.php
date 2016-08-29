@@ -22,7 +22,6 @@ use App\Http\Requests\RecordCreateRequest;
 use App\Http\Requests\RecordUpdateRequest;
 use App\Record;
 use App\Zone;
-use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 class RecordController extends Controller
@@ -157,12 +156,11 @@ class RecordController extends Controller
     /**
      * Show a list of all the levels formatted for Datatables.
      *
-     * @param Request $request
      * @param Datatables $dataTable
      * @param Zone $zone
      * @return Datatables JsonResponse
      */
-    public function data(Request $request, Datatables $dataTable, Zone $zone)
+    public function data(Datatables $dataTable, Zone $zone)
     {
         $records = $zone->records();
 
