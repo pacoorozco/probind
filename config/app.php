@@ -162,7 +162,6 @@ return [
         /*
          * Third Party Service Providers...
          */
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class, // Laravel IDE helper
         Collective\Html\HtmlServiceProvider::class, // HTML helpers
         Yajra\Datatables\DatatablesServiceProvider::class, // DataTables helpers
         Torann\Registry\RegistryServiceProvider::class, // Settings helpers

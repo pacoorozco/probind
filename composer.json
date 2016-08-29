@@ -13,7 +13,6 @@
     "laravelcollective/html": "5.2.*",
     "yajra/laravel-datatables-oracle": "^6.16",
     "torann/registry": "0.2.*@dev",
-    "barryvdh/laravel-ide-helper": "^2.2",
     "phpseclib/phpseclib": "^2.0"
   },
   "require-dev": {
@@ -22,7 +21,8 @@
     "phpunit/phpunit": "~4.0",
     "symfony/css-selector": "2.8.*|3.0.*",
     "symfony/dom-crawler": "2.8.*|3.0.*",
-    "laravel/homestead": "^3.0"
+    "laravel/homestead": "^3.0",
+    "barryvdh/laravel-ide-helper": "^2.2"
   },
   "autoload": {
     "classmap": [

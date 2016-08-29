@@ -9,10 +9,10 @@
  * Licensed under GNU General Public License 3.0.
  * Some rights reserved. See LICENSE, AUTHORS.
  *
- *  @author      Paco Orozco <paco@pacoorozco.info>
- *  @copyright   2016 Paco Orozco
- *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
- *  @link        https://github.com/pacoorozco/probind
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2016 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
  *
  */
 
@@ -21,7 +21,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ZoneCreateRequest;
 use App\Http\Requests\ZoneUpdateRequest;
 use App\Zone;
-use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
 class ZoneController extends Controller
@@ -148,17 +147,11 @@ class ZoneController extends Controller
     /**
      * Show a list of all the levels formatted for Datatables.
      *
-     * @param Request $request
      * @param Datatables $dataTable
      * @return Datatables JsonResponse
      */
-    public function data(Request $request, Datatables $dataTable)
+    public function data(Datatables $dataTable)
     {
-        // Disable this query if isn't AJAX
-        if ( ! $request->ajax()) {
-            abort(400);
-        }
-
         $zones = Zone::select([
             'id',
             'domain',
