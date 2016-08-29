@@ -21,8 +21,10 @@ checks:
 
 tools:
     external_code_coverage: true
+	timeout: 600
+
     php_analyzer: true
-    php_code_coverage: false
+    php_code_coverage: true
     php_code_sniffer:
         config:
             standard: "PSR2"
