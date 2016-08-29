@@ -3,7 +3,6 @@ language: php
 php:
   - 5.6
   - 7.0
-  - 7.1
   - hhvm
 
 # This triggers builds to run on the new TravisCI infrastructure.
@@ -24,4 +23,4 @@ script:
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  - if ([ "hhvm" != "$TRAVIS_PHP_VERSION" ]); then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi;
