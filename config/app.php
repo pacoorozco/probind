@@ -174,11 +174,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        /*
-         * 'Local' environment Service Providers...
-         */
-        App\Providers\LocalServiceProvider::class,
-
     ],
 
     /*
