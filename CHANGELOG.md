@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+- Add unit and integration tests for Zone model and controller.
+- Add unit and integration tests for Record model and controller.
+
 ### Fixed
 - Fix typo on Releases badge in README.
 
