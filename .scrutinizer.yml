@@ -21,7 +21,7 @@ checks:
 
 tools:
     external_code_coverage: true
-	timeout: 600
+        timeout: 600
 
     php_analyzer: true
     php_code_coverage: true
