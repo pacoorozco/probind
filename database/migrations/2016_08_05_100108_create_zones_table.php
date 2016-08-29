@@ -31,7 +31,7 @@ class CreateZonesTable extends Migration
         Schema::create('zones', function(Blueprint $table) {
             $table->increments('id');
             $table->string('domain', 253)->unique();
-            $table->integer('serial')->unsigned();
+            $table->integer('serial')->unsigned()->default(0);
             $table->string('master', 45)->nullable();
             $table->boolean('updated')->default(true);
 

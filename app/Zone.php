@@ -119,16 +119,18 @@ class Zone extends Model
      */
     public function setSerialNumber($force = false)
     {
-        if ($this->updated && ! $force) {
-            return $this->serial;
+        $currentSerial = intval($this->serial);
+
+        if ($this->hasPendingChanges() && ! $force) {
+            return $currentSerial;
         }
 
-        $currentSerial = $this->serial;
         $nowSerial = Zone::createSerialNumber();
 
         $this->serial = ($currentSerial >= $nowSerial)
             ? $currentSerial + 1
             : $nowSerial;
+        $this->setPendingChanges(true);
         $this->save();
 
         return $this->serial;
