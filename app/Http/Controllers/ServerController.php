@@ -59,6 +59,10 @@ class ServerController extends Controller
     {
         $server = new Server();
 
+        // deal with checkboxes
+        $server->ns_record = $request->has('ns_record');
+        $server->push_updates = $request->has('push_updates');
+
         $server->fill($request->all())->save();
 
         return redirect()->route('servers.index')
@@ -98,9 +102,9 @@ class ServerController extends Controller
      */
     public function update(ServerUpdateRequest $request, Server $server)
     {
-        // First, deal with checkboxes
-        $server->push_updates = $request->has('push_updates');
+        // deal with checkboxes
         $server->ns_record = $request->has('ns_record');
+        $server->push_updates = $request->has('push_updates');
 
         $server->fill($request->all())->save();
 

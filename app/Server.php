@@ -97,7 +97,7 @@ class Server extends Model
     public function setTypeAttribute($value)
     {
         $lowerCaseValue = strtolower($value);
-        $this->attributes['type'] = array_has(self::$validServerTypes, $lowerCaseValue)
+        $this->attributes['type'] = in_array($lowerCaseValue, self::$validServerTypes)
             ? $lowerCaseValue
             : head(self::$validServerTypes);
     }
