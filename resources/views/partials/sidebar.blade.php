@@ -16,9 +16,9 @@
             <i class="fa fa-database"></i><span>{{ trans('site.zones') }}</span>
         </a>
     </li>
-    <li {!! (Request::is('records') ? ' class="active"' : '') !!}>
-        <a href="{{-- route('records.index') --}}">
-            <i class="fa fa-search"></i><span>{{ trans('site.records') }}</span>
+    <li {!! (Request::is('search') ? ' class="active"' : '') !!}>
+        <a href="{{ route('search.index') }}">
+            <i class="fa fa-search"></i><span>{{ trans('site.search') }}</span>
         </a>
     </li>
     <li {!! (Request::is('push') ? ' class="active"' : '') !!}>
