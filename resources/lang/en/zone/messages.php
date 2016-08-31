@@ -19,5 +19,11 @@ return [
         'success' => 'The zone was deleted successfully.',
         'warning' => 'This will delete this zone and all related information. Please be sure you want to do this. This action is
         irreversible.'
+    ],
+
+    'activity' => [
+        'created' => 'New zone <strong>:domain</strong> was created.',
+        'updated' => 'Zone <strong>:domain</strong> was modified.',
+        'deleted' => 'Zone <strong>:domain</strong> was deleted.'
     ]
 ];

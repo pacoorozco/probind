@@ -165,6 +165,7 @@ return [
         Collective\Html\HtmlServiceProvider::class, // HTML helpers
         Yajra\Datatables\DatatablesServiceProvider::class, // DataTables helpers
         Torann\Registry\RegistryServiceProvider::class, // Settings helpers
+        Spatie\Activitylog\ActivitylogServiceProvider::class, // Activity Log helpers
 
         /*
          * Application Service Providers...
