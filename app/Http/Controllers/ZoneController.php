@@ -29,7 +29,7 @@ class ZoneController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -53,6 +53,7 @@ class ZoneController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  ZoneCreateRequest $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ZoneCreateRequest $request)
@@ -75,7 +76,8 @@ class ZoneController extends Controller
      * Display the specified resource.
      *
      * @param  Zone $zone
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function show(Zone $zone)
     {
@@ -87,7 +89,8 @@ class ZoneController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  Zone $zone
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Zone $zone)
     {
@@ -100,6 +103,7 @@ class ZoneController extends Controller
      *
      * @param  ZoneUpdateRequest $request
      * @param  Zone $zone
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ZoneUpdateRequest $request, Zone $zone)
@@ -122,7 +126,8 @@ class ZoneController extends Controller
      * Remove zone page.
      *
      * @param Zone $zone
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function delete(Zone $zone)
     {
@@ -134,6 +139,7 @@ class ZoneController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Zone $zone
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Zone $zone)
@@ -148,6 +154,7 @@ class ZoneController extends Controller
      * Show a list of all the levels formatted for Datatables.
      *
      * @param Datatables $dataTable
+     *
      * @return Datatables JsonResponse
      */
     public function data(Datatables $dataTable)
