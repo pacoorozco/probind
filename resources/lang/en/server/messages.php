@@ -18,4 +18,10 @@ return [
         'error'   => 'There was an issue deleting the server. Please try again.',
         'success' => 'The server was deleted successfully.',
     ],
+
+    'activity' => [
+        'created' => 'New DNS server <strong>:hostname</strong> was created with :type role.',
+        'updated' => 'Server <strong>:hostname</strong> was modified.',
+        'deleted' => 'Server <strong>:hostname</strong> was deleted.'
+    ]
 ];

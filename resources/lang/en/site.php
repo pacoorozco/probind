@@ -5,7 +5,8 @@ return [
     'dashboard'  => 'Dashboard',
     'servers'    => 'Servers',
     'zones'      => 'Zones',
-    'records'    => 'Browse Records',
+    'records'    => 'Records',
+    'search'     => 'Search Records',
 
     'tools'        => 'Tools',
     'bulk_update'  => 'Bulk Update',

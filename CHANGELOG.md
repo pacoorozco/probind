@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.2.2 - 2016-08-31
+### Added
+- Add unit and integration tests for Zone and Record model and controller.
+- Add 'Search' functionality to search for records by several criteria. Added with tests. 
+- Add 'Activity Log' functionality for Server and Zone models.
+- Create a 'Latest Activity' widget on Dashboard.
+
+### Fixed
+- Fix typo on Releases badge in README.
+- Fix a bug on Server setTypeAttribute() method.
+
 ## 0.2.1 - 2016-08-29
 ### Added
 - Add validation on Server model, for non-HTTP requests.
@@ -13,7 +24,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Add Code Coverage badge on README.
 
 ### Changed
-- Cange Scrutinizer CI configuration in order to use Travis CI results.
+- Change Scrutinizer CI configuration in order to use Travis CI results.
 
 ### Fixed
 - Fix missing App\Server use on ServerUpdateRequest request.

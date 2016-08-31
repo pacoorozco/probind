@@ -31,7 +31,8 @@ class RecordController extends Controller
      * Display a listing of the resource.
      *
      * @param  Zone $zone
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function index(Zone $zone)
     {
@@ -43,7 +44,8 @@ class RecordController extends Controller
      * Show the form for creating a new resource.
      *
      * @param  Zone $zone
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function create(Zone $zone)
     {
@@ -56,6 +58,7 @@ class RecordController extends Controller
      *
      * @param  RecordCreateRequest $request
      * @param  Zone $zone
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(RecordCreateRequest $request, Zone $zone)
@@ -80,7 +83,8 @@ class RecordController extends Controller
      *
      * @param  Zone $zone
      * @param  Record $record
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function show(Zone $zone, Record $record)
     {
@@ -94,7 +98,8 @@ class RecordController extends Controller
      *
      * @param  Zone $zone
      * @param  Record $record
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Zone $zone, Record $record)
     {
@@ -109,6 +114,7 @@ class RecordController extends Controller
      * @param  RecordUpdateRequest $request
      * @param  Zone $zone
      * @param  Record $record
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(RecordUpdateRequest $request, Zone $zone, Record $record)
@@ -129,7 +135,8 @@ class RecordController extends Controller
      *
      * @param Zone $zone
      * @param Record $record
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function delete(Zone $zone, Record $record)
     {
@@ -143,6 +150,7 @@ class RecordController extends Controller
      *
      * @param  Zone $zone
      * @param Record $record
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Zone $zone, Record $record)
@@ -158,6 +166,7 @@ class RecordController extends Controller
      *
      * @param Datatables $dataTable
      * @param Zone $zone
+     *
      * @return Datatables JsonResponse
      */
     public function data(Datatables $dataTable, Zone $zone)

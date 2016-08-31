@@ -9,10 +9,10 @@
  * Licensed under GNU General Public License 3.0.
  * Some rights reserved. See LICENSE, AUTHORS.
  *
- *  @author      Paco Orozco <paco@pacoorozco.info>
- *  @copyright   2016 Paco Orozco
- *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
- *  @link        https://github.com/pacoorozco/probind
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2016 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
  *
  */
 
@@ -21,6 +21,7 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Zone model, represents a DNS domain / subdomain.
@@ -41,7 +42,9 @@ class Zone extends Model
 {
 
     use SoftDeletes;
+    use LogsActivity;
 
+    protected static $logAttributes = ['domain'];
     /**
      * The attributes that should be mutated to dates.
      *
@@ -78,6 +81,20 @@ class Zone extends Model
         'negative_ttl'    => 'integer',
         'default_ttl'     => 'integer',
     ];
+
+    /**
+     * Returns a customized message for Activity Log.
+     *
+     * @param string $eventName
+     *
+     * @return string
+     */
+    public function getDescriptionForEvent($eventName)
+    {
+        return trans('zone/messages.activity.' . $eventName, [
+            'domain' => $this->domain
+        ]);
+    }
 
     /**
      * Set the Zone's domain lowercase.
@@ -119,19 +136,31 @@ class Zone extends Model
      */
     public function setSerialNumber($force = false)
     {
-        if ($this->updated && ! $force) {
-            return $this->serial;
+        $currentSerial = intval($this->serial);
+
+        if ($this->hasPendingChanges() && ! $force) {
+            return $currentSerial;
         }
 
-        $currentSerial = $this->serial;
         $nowSerial = Zone::createSerialNumber();
 
         $this->serial = ($currentSerial >= $nowSerial)
             ? $currentSerial + 1
             : $nowSerial;
+        $this->setPendingChanges(true);
         $this->save();
 
         return $this->serial;
+    }
+
+    /**
+     * Returns if this zone has changes to send to servers.
+     *
+     * @return bool
+     */
+    public function hasPendingChanges()
+    {
+        return $this->updated;
     }
 
     /**
@@ -142,19 +171,6 @@ class Zone extends Model
     public static function createSerialNumber()
     {
         return intval(Carbon::now()->format('Ymd') . '01');
-    }
-
-    /**
-     * Returns if this is a master zone.
-     *
-     * The DNS server is the primary source for information about this zone, and it stores
-     * the master copy of zone data in a local file.
-     *
-     * @return bool
-     */
-    public function isMasterZone()
-    {
-        return ( ! $this->master);
     }
 
     /**
@@ -174,13 +190,16 @@ class Zone extends Model
     }
 
     /**
-     * Returns if this zone has changes to send to servers.
+     * Returns if this is a master zone.
+     *
+     * The DNS server is the primary source for information about this zone, and it stores
+     * the master copy of zone data in a local file.
      *
      * @return bool
      */
-    public function hasPendingChanges()
+    public function isMasterZone()
     {
-        return $this->updated;
+        return ( ! $this->master);
     }
 
     /**

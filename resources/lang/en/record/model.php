@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'name'          => 'Name',
     'name_help'     => 'Use\'@\' to refer to the fully qualified domain name.',
     'ttl'           => 'TTL (seconds)',
@@ -9,6 +8,6 @@ return [
     'type'          => 'Type',
     'data'          => 'Data',
     'priority'      => 'Priority',
-    'priority_help' => 'Priority of the target host, lower value means more preferred.'
-
+    'priority_help' => 'Priority of the target host, lower value means more preferred.',
+    'any_type'      => 'Any type'
 ];
