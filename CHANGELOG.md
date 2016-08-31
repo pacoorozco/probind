@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Add unit and integration tests for Zone model and controller.
 - Add unit and integration tests for Record model and controller.
 - Add Search functionality to search for records by several criteria. Added with tests. 
+- Add Activity Log for Server and Zone models.
+- Create a Latest activity widget on Dashboard.
 
 ### Fixed
 - Fix typo on Releases badge in README.
