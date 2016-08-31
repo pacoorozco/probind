@@ -41,7 +41,7 @@
         </tfoot>
     </table>
     <div class="pull-right">
-        {{ $pagination->links() }}
+        {{ $records->appends($searchTerms)->links() }}
     </div>
 
 

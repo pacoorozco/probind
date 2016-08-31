@@ -26,8 +26,7 @@ class SearchController extends Controller
     /**
      * Display the records search form.
      *
-     * @return \Illuminate\Http\Response
-     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -51,60 +50,63 @@ class SearchController extends Controller
     /**
      * Display the records search results.
      *
-     * @param  Request $request *
+     * @param  Request $request
      * @param  integer $perPage
      *
-     * @return \Illuminate\Http\Response
-     *
+     * @return \Illuminate\View\View
      */
     public function search(Request $request, $perPage = 15)
+    {
+        // Get search criteria terms
+        $searchTerms = [
+            'domain' => $request->input('domain'),
+            'name'   => $request->input('name'),
+            'type'   => $request->input('type'),
+            'data'   => $request->input('data')
+        ];
+
+        // Do the search query.
+        $records = $this->doSearchPaginatedQuery($searchTerms, $perPage);
+
+        return view('search.index')
+            ->with('records', $records)
+            ->with('searchValidInputTypes', self::getSearchSelectValues())
+            ->with('searchTerms', $searchTerms);
+    }
+
+    /**
+     * Create a query based on provided search terms and return paginated results.
+     *
+     * @param  array $searchTerms
+     * @param  integer $perPage
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    private function doSearchPaginatedQuery($searchTerms, $perPage = 15)
     {
         // Create a Record query, this will be constructed depending search input fields.
         $query = Record::query();
 
-        // Get search criteria terms
-        $domain = $request->input('domain');
-        $name = $request->input('name');
-        $type = $request->input('type');
-        $data = $request->input('data');
-
-        // Construct $query depending the search input fields.
-        if ($name) {
-            $query->where('name', 'like', $name);
+        if ($searchTerms['name']) {
+            $query->where('name', 'like', $searchTerms['name']);
         }
 
-        if ($type && $type !== 'ANY_TYPE') {
-            $query->where('type', $type);
+        if ($searchTerms['type'] && $searchTerms['type'] !== 'ANY_TYPE') {
+            $query->where('type', $searchTerms['type']);
         }
 
-        if ($domain) {
+        if ($searchTerms['domain']) {
+            $domain = $searchTerms['domain'];
             $query->whereHas('zone', function ($q) use ($domain) {
                 $q->where('domain', 'like', $domain);
             });
         }
 
-        if ($data) {
-            $query->where('data', 'like', $data);
+        if ($searchTerms['data']) {
+            $query->where('data', 'like', $searchTerms['data']);
         }
 
         // Do the $query and paginate the results.
-        $records = $query->paginate($perPage);
-
-        // Modify pagination link in order to have search input fields.
-        $pagination = $records->appends([
-            'domain' => $domain,
-            'name'   => $name,
-            'type'   => $type,
-            'data'   => $data
-        ]);
-
-        return view('search.index')
-            ->with('records', $records)
-            ->with('searchValidInputTypes', self::getSearchSelectValues())
-            ->with('pagination', $pagination)
-            ->with('domain', $domain)
-            ->with('name', $name)
-            ->with('type', $type)
-            ->with('data', $data);
+        return $query->paginate($perPage);
     }
 }
