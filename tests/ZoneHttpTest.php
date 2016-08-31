@@ -1,4 +1,19 @@
 <?php
+/**
+ * ProBIND v3 - Professional DNS management made easy.
+ *
+ * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
+ *
+ * This file is part of some open source application.
+ *
+ * Licensed under GNU General Public License 3.0.
+ * Some rights reserved. See LICENSE, AUTHORS.
+ *
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2016 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
+ */
 
 use App\Zone;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -21,9 +36,17 @@ class ZoneHttpTest extends TestCase
             ->type('10', 'expire')
             ->type('10', 'negative_ttl')
             ->type('10', 'default_ttl')
-            ->press('master_zone')
-            ->see('Zone created successfully')
-            ->seePageIs('/zones');
+            ->press('master_zone');
+
+        // Get from DB if Zone has been created.
+        $zone = Zone::where('domain', 'master.com')
+            ->where('refresh', 10)
+            ->where('retry', 10)
+            ->where('negative_ttl', 10)
+            ->where('default_ttl', 10)
+            ->first();
+
+        $this->assertNotNull($zone);
     }
 
     /**
@@ -34,9 +57,14 @@ class ZoneHttpTest extends TestCase
         $this->visit('zones/create')
             ->type('slave.com', 'domain')
             ->type('192.168.1.3', 'master')
-            ->press('slave_zone')
-            ->see('Success')
-            ->seePageIs('/zones');
+            ->press('slave_zone');
+
+        // Get from DB if Zone has been created.
+        $zone = Zone::where('domain', 'slave.com')
+            ->where('master', '192.168.1.3')
+            ->first();
+
+        $this->assertNotNull($zone);
     }
 
     /**
@@ -49,7 +77,7 @@ class ZoneHttpTest extends TestCase
         $this->visit('zones/create')
             ->type($zone->domain, 'domain')
             ->press('master_zone')
-            ->see('The domain has already been taken')
+            ->see('The domain has already been taken.')
             ->seePageIs('/zones/create');
     }
 
@@ -58,14 +86,16 @@ class ZoneHttpTest extends TestCase
      */
     public function testNewSlaveZoneCreationFailure()
     {
-        $zone = factory(Zone::class)->create();
-
         $this->visit('zones/create')
-            ->type($zone->domain, 'domain')
-            ->type('192.168.1.3', 'master')
-            ->press('slave_zone')
-            ->see('The domain has already been taken')
-            ->seePageIs('/zones/create');
+            ->type('slave.com', 'domain')
+            ->type('280.168.1.3', 'master')
+            ->press('slave_zone');
+
+        // Get from DB if Zone has been created.
+        $zone = Zone::where('domain', 'slave.com')
+            ->first();
+
+        $this->assertNull($zone);
     }
 
     /**
@@ -141,8 +171,7 @@ class ZoneHttpTest extends TestCase
         // Use an Invalid IP Address to fail validation
         $this->visit('zones/' . $originalZone->id . '/edit')
             ->type('280.168.1.2', 'master')
-            ->press('Save data')
-            ->see('The master must be a valid IP address.');
+            ->press('Save data');
 
         // Get the server once has been modified
         $modifiedServer = Zone::findOrFail($originalZone->id);
