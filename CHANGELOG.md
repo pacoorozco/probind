@@ -4,15 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 0.2.2 - 2016-08-31
 ### Added
-- Add unit and integration tests for Zone model and controller.
-- Add unit and integration tests for Record model and controller.
-- Add Search functionality to search for records by several criteria. Added with tests. 
-- Add Activity Log for Server and Zone models.
-- Create a Latest activity widget on Dashboard.
+- Add unit and integration tests for Zone and Record model and controller.
+- Add 'Search' functionality to search for records by several criteria. Added with tests. 
+- Add 'Activity Log' functionality for Server and Zone models.
+- Create a 'Latest Activity' widget on Dashboard.
 
 ### Fixed
 - Fix typo on Releases badge in README.
+- Fix a bug on Server setTypeAttribute() method.
 
 ## 0.2.1 - 2016-08-29
 ### Added
@@ -22,7 +24,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Add Code Coverage badge on README.
 
 ### Changed
-- Cange Scrutinizer CI configuration in order to use Travis CI results.
+- Change Scrutinizer CI configuration in order to use Travis CI results.
 
 ### Fixed
 - Fix missing App\Server use on ServerUpdateRequest request.
