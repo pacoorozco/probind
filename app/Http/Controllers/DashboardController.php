@@ -22,6 +22,9 @@ use App\Record;
 use App\Server;
 use App\User;
 use App\Zone;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
+use Spatie\Activitylog\Models\Activity;
 
 class DashboardController extends Controller
 {
@@ -39,7 +42,10 @@ class DashboardController extends Controller
         $data['records'] = Record::all()->count();
         $data['users'] = User::all()->count();
 
+        $activityLog = Activity::orderBy('created_at', 'desc')->simplePaginate(10);
+
         return view('dashboard.index')
-            ->with('data', $data);
+            ->with('data', $data)
+            ->with('activityLog', $activityLog);
     }
 }

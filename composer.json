@@ -13,7 +13,8 @@
     "laravelcollective/html": "5.2.*",
     "yajra/laravel-datatables-oracle": "^6.16",
     "torann/registry": "0.2.*@dev",
-    "phpseclib/phpseclib": "^2.0"
+    "phpseclib/phpseclib": "^2.0",
+    "spatie/laravel-activitylog": "^1.7"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

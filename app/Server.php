@@ -19,6 +19,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Server model
@@ -33,6 +34,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Server extends Model
 {
+
+    use LogsActivity;
 
     /**
      * Valid Server Types. These will be used to validation.
@@ -63,6 +66,21 @@ class Server extends Model
         'ip_address' => 'string',
         'type'       => 'string',
     ];
+
+    /**
+     * Returns a customized message for Activity Log.
+     *
+     * @param string $eventName
+     *
+     * @return string
+     */
+    public function getDescriptionForEvent($eventName)
+    {
+        return trans('server/messages.activity.' . $eventName, [
+            'hostname' => $this->hostname,
+            'type'     => $this->type
+        ]);
+    }
 
     /**
      * Set the Server's hostname lowercase.
