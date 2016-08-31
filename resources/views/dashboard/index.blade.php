@@ -76,7 +76,7 @@
                 <div class="icon">
                     <i class="fa fa-bullseye"></i>
                 </div>
-                <a href="{{-- route('records.index') --}}" class="small-box-footer">
+                <a href="{{  route('search.index') }}" class="small-box-footer">
                     More info <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
