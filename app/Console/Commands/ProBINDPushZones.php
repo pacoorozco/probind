@@ -22,6 +22,7 @@ use App\Zone;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use phpseclib\Crypt\RSA;
 use phpseclib\Net\SFTP;
 use Registry;
@@ -247,7 +248,7 @@ class ProBINDPushZones extends Command
     public function getTemplateForConfigFile(Server $server)
     {
         $serverTemplateFileName = 'templates.config_' . $server->hostname;
-        $templateFile = view()->exists($serverTemplateFileName)
+        $templateFile = View::exists($serverTemplateFileName)
             ? $serverTemplateFileName
             : 'templates.config_' . $server->type;
 
