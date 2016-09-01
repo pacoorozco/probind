@@ -88,7 +88,7 @@ class Zone extends Model
      *
      * @return string
      */
-    public function getDescriptionForEvent($eventName)
+    public function getDescriptionForEvent(string $eventName) : string
     {
         return trans('zone/messages.activity.' . $eventName, [
             'domain' => $this->domain
@@ -186,19 +186,6 @@ class Zone extends Model
         }
 
         return $this->updated;
-    }
-
-    /**
-     * Returns if this is a master zone.
-     *
-     * The DNS server is the primary source for information about this zone, and it stores
-     * the master copy of zone data in a local file.
-     *
-     * @return bool
-     */
-    public function isMasterZone()
-    {
-        return ( ! $this->master);
     }
 
     /**
@@ -313,5 +300,28 @@ class Zone extends Model
     public function scopeOnlyMasterZones($query)
     {
         return $query->where('master', '');
+    }
+
+    /**
+     * Returns a string indicating what type of zone is.
+     *
+     * @return string
+     */
+    public function getTypeOfZone()
+    {
+        return ($this->isMasterZone()) ? 'master' : 'slave';
+    }
+
+    /**
+     * Returns if this is a master zone.
+     *
+     * The DNS server is the primary source for information about this zone, and it stores
+     * the master copy of zone data in a local file.
+     *
+     * @return bool
+     */
+    public function isMasterZone()
+    {
+        return ( ! $this->master);
     }
 }

@@ -152,7 +152,7 @@ class ServerController extends Controller
      */
     public function data(Datatables $dataTable)
     {
-        $servers = Server::select([
+        $servers = Server::get([
             'id',
             'hostname',
             'type',
@@ -164,17 +164,18 @@ class ServerController extends Controller
 
         return $dataTable::of($servers)
             ->editColumn('hostname', function (Server $server) {
-                $label = ( ! $server->active)
-                    ? ' <span class="label label-default">' . trans('general.inactive') . '</span>'
-                    : '';
+                $mapServerStatusToLabel = [
+                    '0' => ' <span class="label label-default">' . trans('general.inactive') . '</span>',
+                    '1' => ''
+                ];
 
-                return $server->hostname . $label;
+                return $server->hostname . $mapServerStatusToLabel[$server->active];
             })
             ->editColumn('push_updates', function (Server $server) {
-                return ($server->push_updates) ? trans('general.yes') : trans('general.no');
+                return trans_choice('general.boolean', $server->push_updates);
             })
             ->editColumn('ns_record', function (Server $server) {
-                return ($server->ns_record) ? trans('general.yes') : trans('general.no');
+                return trans_choice('general.boolean', $server->ns_record);
             })
             ->addColumn('actions', function (Server $server) {
                 return view('partials.actions_dd', [

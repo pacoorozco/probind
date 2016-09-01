@@ -167,10 +167,10 @@ class ZoneController extends Controller
 
         return $dataTable::of($zones)
             ->addColumn('type', function (Zone $zone) {
-                return ($zone->isMasterZone()) ? trans('zone/model.types.master') : trans('zone/model.types.slave');
+                return trans('zone/model.types.' . $zone->getTypeOfZone());
             })
             ->editColumn('updated', function (Zone $zone) {
-                return ($zone->hasPendingChanges()) ? trans('general.yes') : trans('general.no');
+                return trans_choice('general.boolean', $zone->hasPendingChanges());
             })
             ->addColumn('actions', function (Zone $zone) {
                 return view('zone._actions')

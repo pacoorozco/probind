@@ -67,6 +67,22 @@ class ZoneUnitTest extends TestCase
     }
 
     /**
+     * Test getTypeOfZone() function
+     */
+    public function testGetTypeOfZone()
+    {
+        $expectedZone = factory(Zone::class)->make();
+
+        // Set a master Zone
+        $expectedZone->master = null;
+        $this->assertEquals('master', $expectedZone->getTypeOfZone());
+
+        // Set an slave Zone
+        $expectedZone->master = '192.168.1.2';
+        $this->assertEquals('slave', $expectedZone->getTypeOfZone());
+    }
+
+    /**
      * Test hasPendingChanges() function
      */
     public function testHasPendingChanges()

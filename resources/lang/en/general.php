@@ -16,6 +16,7 @@
  */
 
 return [
+    'boolean'  => '{0} No|{1} Yes',
     'yes'      => 'Yes',
     'no'       => 'No',
     'all'      => 'All',
