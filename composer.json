@@ -1,16 +1,30 @@
 {
-  "name": "laravel/laravel",
-  "description": "The Laravel Framework.",
+  "name": "pacoorozco/probind",
+  "description": "Professional DNS Management Application for ISC BIND servers.",
   "keywords": [
-    "framework",
-    "laravel"
+    "dns",
+    "dns management",
+    "web service",
+    "isc bind"
   ],
-  "license": "MIT",
+  "homepage": "https://github.com/pacoorozco/probind",
+  "license": "GPL-3.0",
   "type": "project",
+  "authors": [
+    {
+      "name": "Paco Orozco",
+      "email": "paco@pacorozco.info",
+      "homepage": "https://pacoorozco.info",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/pacoorozco/probind/issues"
+  },
   "require": {
-    "php": ">=5.5.9",
-    "laravel/framework": "5.2.*",
-    "laravelcollective/html": "5.2.*",
+    "php": "^7.0",
+    "laravel/framework": "5.3.*",
+    "laravelcollective/html": "5.3.*",
     "yajra/laravel-datatables-oracle": "^6.16",
     "torann/registry": "0.2.*@dev",
     "phpseclib/phpseclib": "^2.0",
@@ -19,9 +33,9 @@
   "require-dev": {
     "fzaninotto/faker": "~1.4",
     "mockery/mockery": "0.9.*",
-    "phpunit/phpunit": "~4.0",
-    "symfony/css-selector": "2.8.*|3.0.*",
-    "symfony/dom-crawler": "2.8.*|3.0.*",
+    "phpunit/phpunit": "~5.0",
+    "symfony/css-selector": "3.1.*",
+    "symfony/dom-crawler": "3.1.*",
     "laravel/homestead": "^3.0",
     "barryvdh/laravel-ide-helper": "^2.2"
   },

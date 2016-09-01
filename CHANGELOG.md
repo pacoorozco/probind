@@ -5,9 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 ### Added
+- [IMPORTANT] Update this application to Laravel 5.3, new requirement is PHP 5.7+. 
 - Add unit and integration tests for Zone model and controller.
 - Add unit and integration tests for Record model and controller.
-- Add Search functionality to search for records by several criteria. Added with tests. 
+- Add Search functionality to search for records by several criteria. Added with tests.
 
 ### Fixed
 - Fix typo on Releases badge in README.
