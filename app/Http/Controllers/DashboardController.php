@@ -13,7 +13,6 @@
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
  * @link        https://github.com/pacoorozco/probind
- *
  */
 
 namespace App\Http\Controllers;
@@ -22,8 +21,6 @@ use App\Record;
 use App\Server;
 use App\User;
 use App\Zone;
-use Carbon\Carbon;
-use Illuminate\Support\Collection;
 use Spatie\Activitylog\Models\Activity;
 
 class DashboardController extends Controller

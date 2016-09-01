@@ -1,4 +1,19 @@
 <?php
+/**
+ * ProBIND v3 - Professional DNS management made easy.
+ *
+ * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
+ *
+ * This file is part of some open source application.
+ *
+ * Licensed under GNU General Public License 3.0.
+ * Some rights reserved. See LICENSE, AUTHORS.
+ *
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2016 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
+ */
 
 return [
     'zone_default_mname'      => 'SOA Primary Server',
@@ -22,15 +37,15 @@ return [
     'zone_default_default_ttl'      => 'Default TTL for records (seconds)',
     'zone_default_default_ttl_help' => 'Specifies the time to live for all records in the zone that do not have an explicit TTL.',
 
-    'ssh_default_user' => 'Username',
+    'ssh_default_user'      => 'Username',
     'ssh_default_user_help' => 'System user account to manage files and folders for DNS server.',
 
-    'ssh_default_key' => 'Private key',
+    'ssh_default_key'      => 'Private key',
     'ssh_default_key_help' => 'SSH private key to access to servers.',
 
-    'ssh_default_port' => 'Port number',
+    'ssh_default_port'      => 'Port number',
     'ssh_default_port_help' => '',
 
-    'ssh_default_remote_path' => 'Remote path',
+    'ssh_default_remote_path'      => 'Remote path',
     'ssh_default_remote_path_help' => 'Path to directory where fields will be pushed.',
 ];
