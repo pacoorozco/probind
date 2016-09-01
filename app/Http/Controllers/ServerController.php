@@ -172,10 +172,10 @@ class ServerController extends Controller
                 return $server->hostname . $mapServerStatusToLabel[$server->active];
             })
             ->editColumn('push_updates', function (Server $server) {
-                return trans_choice('general.boolean', $server->push_updates);
+                return trans_choice('general.boolean', intval($server->push_updates));
             })
             ->editColumn('ns_record', function (Server $server) {
-                return trans_choice('general.boolean', $server->ns_record);
+                return trans_choice('general.boolean', intval($server->ns_record));
             })
             ->addColumn('actions', function (Server $server) {
                 return view('partials.actions_dd', [

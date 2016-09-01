@@ -170,7 +170,7 @@ class ZoneController extends Controller
                 return trans('zone/model.types.' . $zone->getTypeOfZone());
             })
             ->editColumn('updated', function (Zone $zone) {
-                return trans_choice('general.boolean', $zone->hasPendingChanges());
+                return trans_choice('general.boolean', intval($zone->hasPendingChanges()));
             })
             ->addColumn('actions', function (Zone $zone) {
                 return view('zone._actions')
