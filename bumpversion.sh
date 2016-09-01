@@ -109,8 +109,8 @@ get_new_version_number()
     # Set new version
     #
     case $1 in
-        major) new_version=`echo ${current_version} | awk -F. '{ printf ("%d.%d.%d\n", $1 + 1, $2, $3); }'` ;;
-        minor) new_version=`echo ${current_version} | awk -F. '{ printf ("%d.%d.%d\n", $1, $2 + 1, $3); }'` ;;
+        major) new_version=`echo ${current_version} | awk -F. '{ printf ("%d.%d.%d\n", $1 + 1, 0, 0); }'` ;;
+        minor) new_version=`echo ${current_version} | awk -F. '{ printf ("%d.%d.%d\n", $1, $2 + 1, 0); }'` ;;
         patch) new_version=`echo ${current_version} | awk -F. '{ printf ("%d.%d.%d\n", $1, $2, $3 + 1); }'` ;;
     esac
 }
