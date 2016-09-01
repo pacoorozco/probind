@@ -4,8 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+- **Important**: This application has upgraded to [Laravel 5.3](https://laravel.com/docs/5.3) with a new requirement for PHP 7.0+. **No support will be available for PHP prior 7.0 version.**
 ### Added
-- [IMPORTANT] Update this application to Laravel 5.3, new requirement is PHP 5.7+. 
 - Add unit and integration tests for Zone model and controller.
 - Add unit and integration tests for Record model and controller.
 - Add Search functionality to search for records by several criteria. Added with tests.
