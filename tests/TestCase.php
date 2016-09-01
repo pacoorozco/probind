@@ -15,8 +15,9 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-class TestCase extends Illuminate\Foundation\Testing\TestCase
+abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
+
     /**
      * The base URL to use while testing the application.
      *

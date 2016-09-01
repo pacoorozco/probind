@@ -15,21 +15,32 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-return [
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+
+class ForgotPasswordController extends Controller
+{
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Language Lines
+    | Password Reset Controller
     |--------------------------------------------------------------------------
     |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
+    | This controller is responsible for handling password reset emails and
+    | includes a trait which assists in sending these notifications from
+    | your application to your users. Feel free to explore this trait.
     |
     */
 
-    'failed'   => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    use SendsPasswordResetEmails;
 
-];
-
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
+}

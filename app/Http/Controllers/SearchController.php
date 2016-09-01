@@ -18,7 +18,7 @@
 namespace App\Http\Controllers;
 
 use App\Record;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -98,7 +98,7 @@ class SearchController extends Controller
 
         if ($searchTerms['domain']) {
             $domain = $searchTerms['domain'];
-            $query->whereHas('zone', function (Model $q) use ($domain) {
+            $query->whereHas('zone', function (Builder $q) use ($domain) {
                 $q->where('domain', 'like', $domain);
             });
         }

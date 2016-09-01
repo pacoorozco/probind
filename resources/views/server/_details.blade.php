@@ -35,7 +35,7 @@
         <div class="form-group">
             {!! Form::label('ns_record', trans('server/model.ns_record'), array('class' => 'control-label')) !!}
             <div class="controls">
-                {{ $server->ns_record ? trans('general.yes') : trans('general.no') }}
+                {{ trans_choice('general.boolean', $server->ns_record) }}
             </div>
         </div>
         <!-- ./ ns_record -->
@@ -44,7 +44,7 @@
         <div class="form-group">
             {!! Form::label('push_updates', trans('server/model.push_updates'), array('class' => 'control-label')) !!}
             <div class="controls">
-                {{ ($server->push_updates) ? trans('general.yes') : trans('general.no') }}
+                {{ trans_choice('general.boolean', $server->push_updates) }}
             </div>
         </div>
         <!-- ./ push_updates -->

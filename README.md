@@ -5,14 +5,14 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/pacoorozco/probind/badges/coverage.png)](https://scrutinizer-ci.com/g/pacoorozco/probind)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/98bafc58-957b-476c-8711-f3d81b6938dd/mini.png)](https://insight.sensiolabs.com/projects/98bafc58-957b-476c-8711-f3d81b6938dd)
 [![License](https://img.shields.io/github/license/pacoorozco/probind.svg)](https://github.com/pacoorozco/probind/blob/master/LICENSE)
-[![Laravel Version](https://img.shields.io/badge/Laravel-5.2-orange.svg)](https://laravel.com/docs/5.2)
+[![Laravel Version](https://img.shields.io/badge/Laravel-5.3-orange.svg)](https://laravel.com/docs/5.3)
 [![GitHub release](https://img.shields.io/github/release/pacoorozco/probind.svg?style=flat-square)](https://github.com/pacoorozco/probind/releases)
  	
 ## Presentation
 
 **ProBIND** is a web application designed for managing the DNS zones for one or more servers running the [ISC BIND DNS server](https://www.isc.org/downloads/bind/) software. It works best for companies that need to manage a medium-sized pool of domains across a set of servers.
 
-The application has been written using [Laravel 5.2 framework](https://www.laravel.com/docs/5.2/). It stores its data in a MySQL, Postgres database (see [Laravel Database Backend](https://www.laravel.com/docs/5.2/database)) and generates configuration files for BIND on-demand.
+The application has been written using [Laravel 5.3 framework](https://www.laravel.com/docs/5.3/). It stores its data in a MySQL, Postgres database (see [Laravel Database Backend](https://www.laravel.com/docs/5.3/database)) and generates configuration files for BIND on-demand.
 
 ### What ProBIND Is
 
@@ -34,10 +34,9 @@ See our [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.
 
 ## Requirements
 
-* PHP >= 5.5.9
-* PHP [mcrypt extension](http://php.net/manual/en/book.mcrypt.php)
-* A [supported relational database](http://laravel.com/docs/5.2/database#introduction) and corresponding PHP extension
-* [Composer](https://getcomposer.org/download/)
+* PHP >= 7.0
+* A [supported relational database](http://laravel.com/docs/5.3/database#introduction) and corresponding PHP extension.
+* [Composer](https://getcomposer.org/download/).
 
 ## Installation
 
@@ -58,7 +57,7 @@ See our [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.
 4. [Run database migrations](http://laravel.com/docs/5.2/migrations#running-migrations). If you want to include seed data, add a `--seed` flag.
 
     ```bash
-    php artisan migrate --env=local
+    php artisan migrate --seed
     ```
 5. Configure a web server, such as the [built-in PHP web server](http://php.net/manual/en/features.commandline.webserver.php), to use the `public` directory as the document root.
 

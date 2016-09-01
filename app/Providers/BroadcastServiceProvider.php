@@ -17,31 +17,27 @@
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\User;
+use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\ServiceProvider;
 
-class EventServiceProvider extends ServiceProvider
+class BroadcastServiceProvider extends ServiceProvider
 {
 
     /**
-     * The event listener mappings for the application.
-     *
-     * @var array
-     */
-    protected $listen = [
-        'App\Events\SomeEvent' => [
-            'App\Listeners\EventListener',
-        ],
-    ];
-
-    /**
-     * Register any events for your application.
+     * Bootstrap any application services.
      *
      * @return void
      */
     public function boot()
     {
-        parent::boot();
+        Broadcast::routes();
 
-        //
+        /*
+         * Authenticate the user's personal channel...
+         */
+        Broadcast::channel('App.User.*', function (User $user, $userId) {
+            return (int)$user->id === (int)$userId;
+        });
     }
 }

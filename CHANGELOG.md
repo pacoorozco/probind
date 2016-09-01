@@ -4,12 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+- **Important**: This application has upgraded to [Laravel 5.3](https://laravel.com/docs/5.3) with a new requirement for PHP 7.0+. **No support will be available for PHP prior 7.0 version.**
+
 ### Added
 - Add unit and integration tests for Zone model and controller.
 - Add unit and integration tests for Record model and controller.
-- Add Search functionality to search for records by several criteria. Added with tests. 
-- Add Activity Log for Server and Zone models.
+- Add Activity Logging for Server and Zone models.
 - Create a Latest activity widget on Dashboard.
+- Add Search functionality to search for records by several criteria. Added with tests.
 
 ### Fixed
 - Fix typo on Releases badge in README.
@@ -22,7 +24,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Add Code Coverage badge on README.
 
 ### Changed
-- Cange Scrutinizer CI configuration in order to use Travis CI results.
+- Change Scrutinizer CI configuration in order to use Travis CI results.
 
 ### Fixed
 - Fix missing App\Server use on ServerUpdateRequest request.
@@ -50,4 +52,3 @@ First released version.
 - There are some TODO items to be completed.
 
 A good release to start playing with ProBIND and [send me your feedback](https://github.com/pacoorozco/probind/issues).
-
