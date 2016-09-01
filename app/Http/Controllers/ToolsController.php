@@ -34,12 +34,6 @@ class ToolsController extends Controller
             ->orderBy('hostname')
             ->get();
 
-        // Test if there are servers to be pushed
-        if ($servers->isEmpty()) {
-            return redirect()->route('home')
-                ->with('warning', trans('tools/messages.push_updates_no_servers'));
-        }
-
         $zonesToUpdate = Zone::withPendingChanges()
             ->orderBy('domain')
             ->get();
@@ -47,12 +41,6 @@ class ToolsController extends Controller
         $zonesToDelete = Zone::onlyTrashed()
             ->orderBy('domain')
             ->get();
-
-        // Test if there are zones to be pushed
-        if ($zonesToUpdate->isEmpty() && $zonesToDelete->isEmpty()) {
-            return redirect()->route('home')
-                ->with('warning', trans('tools/messages.push_updates_nothing_to_do'));
-        }
 
         return view('tools.push')
             ->with('servers', $servers)
