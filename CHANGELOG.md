@@ -28,6 +28,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 - Fix missing App\Server use on ServerUpdateRequest request.
+- Fix `bumpversion.sh`. It did not calculate new version number for *major* and *minor* bumps.
 
 ### Removed
 - Remove Ajax Filtering on /{servers,zones,records}/data calls.
