@@ -21,7 +21,7 @@ return [
 
     'description' => 'Description',
     'causer'      => 'User',
-    'created_at'  => 'Where',
+    'created_at'  => 'When',
 
     'more_activity' => 'More activity'
 ];
