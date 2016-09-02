@@ -123,6 +123,7 @@ class Server extends Model
      * Returns a formatted NS record for a server
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getNSRecord()
     {

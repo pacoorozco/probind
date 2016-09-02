@@ -20,6 +20,12 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Class User
+ *
+ * @package App
+ * @codeCoverageIgnore
+ */
 class User extends Authenticatable
 {
 
