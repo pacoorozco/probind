@@ -4,17 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 0.3.0 - 2016-09-02
 - **Important**: This application has upgraded to [Laravel 5.3](https://laravel.com/docs/5.3) with a new requirement for PHP 7.0+. **No support will be available for PHP prior 7.0 version.**
 
 ### Added
-- Add unit and integration tests for Zone model and controller.
-- Add unit and integration tests for Record model and controller.
+- Add unit and integration tests for complete application.
 - Add Activity Logging for Server and Zone models.
-- Create a Latest activity widget on Dashboard.
-- Add Search functionality to search for records by several criteria. Added with tests.
+- Create a **Latest activity widget** on Dashboard.
+- Add **Search functionality** to search for records by several criteria. Added with tests.
+
+### Changed
+- Reformat code to [PSR-2](http://www.php-fig.org/psr/psr-2/).
 
 ### Fixed
 - Fix typo on Releases badge in README.
+- Fix a bug on setTypeAttribute().
+- Fix some missing translations strings.
+- Fix internal broken links.
+- Fix a bug in `bumpversion.sh` with major and minor versions number calculation.
 
 ## 0.2.1 - 2016-08-29
 ### Added
