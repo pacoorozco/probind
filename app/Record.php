@@ -9,11 +9,10 @@
  * Licensed under GNU General Public License 3.0.
  * Some rights reserved. See LICENSE, AUTHORS.
  *
- *  @author      Paco Orozco <paco@pacoorozco.info>
- *  @copyright   2016 Paco Orozco
- *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
- *  @link        https://github.com/pacoorozco/probind
- *
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2016 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
  */
 
 namespace App;
@@ -123,12 +122,14 @@ class Record extends Model
      * Returns a formatted Resource Record for a record
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getResourceRecord()
     {
         if ($this->ttl) {
             return sprintf("%-40s %d\tIN\t%s\t%s", $this->name, $this->ttl, $this->type, $this->data);
         }
+
         return sprintf("%-40s \tIN\t%s\t%s", $this->name, $this->type, $this->data);
     }
 }

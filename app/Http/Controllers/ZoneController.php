@@ -13,7 +13,6 @@
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
  * @link        https://github.com/pacoorozco/probind
- *
  */
 
 namespace App\Http\Controllers;
@@ -29,7 +28,7 @@ class ZoneController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -42,7 +41,7 @@ class ZoneController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -53,6 +52,7 @@ class ZoneController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  ZoneCreateRequest $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ZoneCreateRequest $request)
@@ -75,7 +75,8 @@ class ZoneController extends Controller
      * Display the specified resource.
      *
      * @param  Zone $zone
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function show(Zone $zone)
     {
@@ -87,7 +88,8 @@ class ZoneController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  Zone $zone
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Zone $zone)
     {
@@ -100,6 +102,7 @@ class ZoneController extends Controller
      *
      * @param  ZoneUpdateRequest $request
      * @param  Zone $zone
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ZoneUpdateRequest $request, Zone $zone)
@@ -122,7 +125,8 @@ class ZoneController extends Controller
      * Remove zone page.
      *
      * @param Zone $zone
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function delete(Zone $zone)
     {
@@ -134,6 +138,7 @@ class ZoneController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Zone $zone
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Zone $zone)
@@ -148,6 +153,7 @@ class ZoneController extends Controller
      * Show a list of all the levels formatted for Datatables.
      *
      * @param Datatables $dataTable
+     *
      * @return Datatables JsonResponse
      */
     public function data(Datatables $dataTable)
@@ -161,10 +167,10 @@ class ZoneController extends Controller
 
         return $dataTable::of($zones)
             ->addColumn('type', function (Zone $zone) {
-                return ($zone->isMasterZone()) ? trans('zone/model.types.master') : trans('zone/model.types.slave');
+                return trans('zone/model.types.' . $zone->getTypeOfZone());
             })
             ->editColumn('updated', function (Zone $zone) {
-                return ($zone->hasPendingChanges()) ? trans('general.yes') : trans('general.no');
+                return trans_choice('general.boolean', intval($zone->hasPendingChanges()));
             })
             ->addColumn('actions', function (Zone $zone) {
                 return view('zone._actions')

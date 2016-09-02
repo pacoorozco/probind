@@ -9,11 +9,10 @@
  * Licensed under GNU General Public License 3.0.
  * Some rights reserved. See LICENSE, AUTHORS.
  *
- *  @author      Paco Orozco <paco@pacoorozco.info>
- *  @copyright   2016 Paco Orozco
- *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
- *  @link        https://github.com/pacoorozco/probind
- *
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2016 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
  */
 
 namespace App\Console\Commands;
@@ -22,11 +21,18 @@ use App\Server;
 use App\Zone;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use phpseclib\Crypt\RSA;
 use phpseclib\Net\SFTP;
 use Registry;
-use Storage;
 
+/**
+ * Class ProBINDPushZones
+ *
+ * @package App\Console\Commands
+ * @codeCoverageIgnore
+ */
 class ProBINDPushZones extends Command
 {
 
@@ -248,7 +254,7 @@ class ProBINDPushZones extends Command
     public function getTemplateForConfigFile(Server $server)
     {
         $serverTemplateFileName = 'templates.config_' . $server->hostname;
-        $templateFile = view()->exists($serverTemplateFileName)
+        $templateFile = View::exists($serverTemplateFileName)
             ? $serverTemplateFileName
             : 'templates.config_' . $server->type;
 

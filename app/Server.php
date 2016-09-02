@@ -13,12 +13,12 @@
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
  * @link        https://github.com/pacoorozco/probind
- *
  */
 
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Server model
@@ -33,6 +33,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Server extends Model
 {
+
+    use LogsActivity;
 
     /**
      * Valid Server Types. These will be used to validation.
@@ -63,6 +65,21 @@ class Server extends Model
         'ip_address' => 'string',
         'type'       => 'string',
     ];
+
+    /**
+     * Returns a customized message for Activity Log.
+     *
+     * @param string $eventName
+     *
+     * @return string
+     */
+    public function getDescriptionForEvent($eventName)
+    {
+        return trans('server/messages.activity.' . $eventName, [
+            'hostname' => $this->hostname,
+            'type'     => $this->type
+        ]);
+    }
 
     /**
      * Set the Server's hostname lowercase.
@@ -97,7 +114,7 @@ class Server extends Model
     public function setTypeAttribute($value)
     {
         $lowerCaseValue = strtolower($value);
-        $this->attributes['type'] = array_has(self::$validServerTypes, $lowerCaseValue)
+        $this->attributes['type'] = in_array($lowerCaseValue, self::$validServerTypes)
             ? $lowerCaseValue
             : head(self::$validServerTypes);
     }
@@ -106,6 +123,7 @@ class Server extends Model
      * Returns a formatted NS record for a server
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getNSRecord()
     {

@@ -1,4 +1,19 @@
 <?php
+/**
+ * ProBIND v3 - Professional DNS management made easy.
+ *
+ * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
+ *  
+ * This file is part of some open source application.
+ *  
+ * Licensed under GNU General Public License 3.0. 
+ * Some rights reserved. See LICENSE, AUTHORS.
+ *
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2016 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
+ */
 
 use App\Server;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -19,8 +34,17 @@ class ServerHttpTest extends TestCase
             ->select('slave', 'type')
             ->check('ns_record')
             ->press('Save data')
-            ->see('Success')
             ->seePageIs('/servers');
+
+        // Get from DB if Server has been created.
+        $server = Server::where('hostname', 'server01.local')
+            ->where('ip_address', '192.168.1.2')
+            ->where('type', 'slave')
+            ->where('ns_record', true)
+            ->where('push_updates', false)
+            ->first();
+
+        $this->assertNotNull($server);
     }
 
     /**
@@ -37,8 +61,11 @@ class ServerHttpTest extends TestCase
             ->select('master', 'type')
             ->check('ns_record')
             ->press('Save data')
-            ->see('The ip address must be a valid IP address.')
             ->seePageIs('/servers/create');
+
+        // Get from DB, Server has not been created.
+        $server = Server::where('hostname', 'server01.local')->first();
+        $this->assertNull($server);
     }
 
     /**
@@ -57,20 +84,25 @@ class ServerHttpTest extends TestCase
     /**
      * Test a successful Server edition
      */
-    public function testEditServerCreationSuccess()
+    public function testServerEditionSuccess()
     {
-        $originalServer = factory(Server::class)->create();
+        $originalServer = factory(Server::class)->create([
+            'hostname'  => 'server01.local',
+            'ns_record' => false
+        ]);
 
+        // Modify hostname and ns_record
         $this->visit('servers/' . $originalServer->id . '/edit')
-            ->type('server01.local', 'hostname')
-            ->check('push_updates')
+            ->type('server02.local', 'hostname')
+            ->check('ns_record')
             ->press('Save data');
 
         // Get the server once has been modified
         $modifiedServer = Server::findOrFail($originalServer->id);
 
-        // Test modified hostname field
-        $this->assertEquals('server01.local', $modifiedServer->hostname);
+        // Test modified hostname and ns_record field
+        $this->assertEquals('server02.local', $modifiedServer->hostname);
+        $this->assertEquals(1, $modifiedServer->ns_record);
 
         // Test field that has not been modified
         $this->assertEquals($originalServer->ip_address, $modifiedServer->ip_address);
@@ -81,15 +113,18 @@ class ServerHttpTest extends TestCase
      *
      * Why? Use of an invalid ip_address
      */
-    public function testEditServerCreationFailure()
+    public function testServerEditionFailure()
     {
-        $originalServer = factory(Server::class)->create();
+        $originalServer = factory(Server::class)->create([
+            'hostname'  => 'server01.local',
+            'ns_record' => false
+        ]);
 
         // Use an Invalid IP Address to fail validation
         $this->visit('servers/' . $originalServer->id . '/edit')
+            ->type('server02.local', 'hostname')
             ->type('280.168.1.2', 'ip_address')
-            ->press('Save data')
-            ->see('The ip address must be a valid IP address.');
+            ->press('Save data');
 
         // Get the server once has been modified
         $modifiedServer = Server::findOrFail($originalServer->id);

@@ -9,11 +9,10 @@
  * Licensed under GNU General Public License 3.0.
  * Some rights reserved. See LICENSE, AUTHORS.
  *
- *  @author      Paco Orozco <paco@pacoorozco.info>
- *  @copyright   2016 Paco Orozco
- *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
- *  @link        https://github.com/pacoorozco/probind
- *
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2016 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
  */
 
 namespace App;
@@ -21,6 +20,7 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Zone model, represents a DNS domain / subdomain.
@@ -41,7 +41,9 @@ class Zone extends Model
 {
 
     use SoftDeletes;
+    use LogsActivity;
 
+    protected static $logAttributes = ['domain'];
     /**
      * The attributes that should be mutated to dates.
      *
@@ -78,6 +80,20 @@ class Zone extends Model
         'negative_ttl'    => 'integer',
         'default_ttl'     => 'integer',
     ];
+
+    /**
+     * Returns a customized message for Activity Log.
+     *
+     * @param string $eventName
+     *
+     * @return string
+     */
+    public function getDescriptionForEvent(string $eventName) : string
+    {
+        return trans('zone/messages.activity.' . $eventName, [
+            'domain' => $this->domain
+        ]);
+    }
 
     /**
      * Set the Zone's domain lowercase.
@@ -119,19 +135,31 @@ class Zone extends Model
      */
     public function setSerialNumber($force = false)
     {
-        if ($this->updated && ! $force) {
-            return $this->serial;
+        $currentSerial = intval($this->serial);
+
+        if ($this->hasPendingChanges() && ! $force) {
+            return $currentSerial;
         }
 
-        $currentSerial = $this->serial;
         $nowSerial = Zone::createSerialNumber();
 
         $this->serial = ($currentSerial >= $nowSerial)
             ? $currentSerial + 1
             : $nowSerial;
+        $this->setPendingChanges(true);
         $this->save();
 
         return $this->serial;
+    }
+
+    /**
+     * Returns if this zone has changes to send to servers.
+     *
+     * @return bool
+     */
+    public function hasPendingChanges()
+    {
+        return $this->updated;
     }
 
     /**
@@ -142,19 +170,6 @@ class Zone extends Model
     public static function createSerialNumber()
     {
         return intval(Carbon::now()->format('Ymd') . '01');
-    }
-
-    /**
-     * Returns if this is a master zone.
-     *
-     * The DNS server is the primary source for information about this zone, and it stores
-     * the master copy of zone data in a local file.
-     *
-     * @return bool
-     */
-    public function isMasterZone()
-    {
-        return ( ! $this->master);
     }
 
     /**
@@ -174,16 +189,6 @@ class Zone extends Model
     }
 
     /**
-     * Returns if this zone has changes to send to servers.
-     *
-     * @return bool
-     */
-    public function hasPendingChanges()
-    {
-        return $this->updated;
-    }
-
-    /**
      * Returns the Default TTL for this zone
      *
      * @return int
@@ -197,6 +202,7 @@ class Zone extends Model
      * Returns a formatted SOA record of a zone
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getSOARecord()
     {
@@ -216,6 +222,7 @@ class Zone extends Model
      * Returns the Primary Name Server of a zone
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getPrimaryNameServer()
     {
@@ -226,6 +233,7 @@ class Zone extends Model
      * Returns the Hostmaster Email of a zone
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getHostmasterEmail()
     {
@@ -236,6 +244,7 @@ class Zone extends Model
      * Returns the Refresh time for this zone
      *
      * @return int
+     * @codeCoverageIgnore
      */
     public function getRefresh()
     {
@@ -246,6 +255,7 @@ class Zone extends Model
      * Returns the Retry time for this zone
      *
      * @return int
+     * @codeCoverageIgnore
      */
     public function getRetry()
     {
@@ -256,6 +266,7 @@ class Zone extends Model
      * Returns the Expire time for this zone
      *
      * @return int
+     * @codeCoverageIgnore
      */
     public function getExpire()
     {
@@ -266,6 +277,7 @@ class Zone extends Model
      * Returns the Negative TTL for this zone
      *
      * @return int
+     * @codeCoverageIgnore
      */
     public function getNegativeTTL()
     {
@@ -295,5 +307,28 @@ class Zone extends Model
     public function scopeOnlyMasterZones($query)
     {
         return $query->where('master', '');
+    }
+
+    /**
+     * Returns a string indicating what type of zone is.
+     *
+     * @return string
+     */
+    public function getTypeOfZone()
+    {
+        return ($this->isMasterZone()) ? 'master' : 'slave';
+    }
+
+    /**
+     * Returns if this is a master zone.
+     *
+     * The DNS server is the primary source for information about this zone, and it stores
+     * the master copy of zone data in a local file.
+     *
+     * @return bool
+     */
+    public function isMasterZone()
+    {
+        return ( ! $this->master);
     }
 }

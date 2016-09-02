@@ -35,7 +35,7 @@ class CreateRecordsTable extends Migration
             $table->foreign('zone_id')
                 ->references('id')->on('zones')
                 ->onDelete('cascade');
-            $table->integer('ttl')->unsigned();
+            $table->integer('ttl')->unsigned()->nullable();
             $table->string('type', 10);
             $table->integer('priority')->length(3)->nullable();
             $table->string('data');

@@ -23,10 +23,10 @@
     @include('partials.notifications')
     <!-- ./ notifications -->
 
-    <!-- Info boxes -->
-    <div class="row">
+    <!-- info boxes -->
+    <div class="row" id="info-boxes">
+        <!-- servers box -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <!-- small box -->
             <div class="small-box bg-aqua">
                 <div class="inner">
                     <h3>{{ $data['servers'] }}</h3>
@@ -40,11 +40,10 @@
                     More info <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
-            <!-- /.small-box -->
         </div>
-        <!-- /.col -->
+        <!-- ./ servers-box -->
+        <!-- zones box -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <!-- small box -->
             <div class="small-box bg-green">
                 <div class="inner">
                     <h3>{{ $data['zones'] }}</h3>
@@ -58,15 +57,15 @@
                     More info <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
-            <!-- /.small-box -->
         </div>
-        <!-- /.col -->
+        <!-- ./ zones-box -->
 
         <!-- fix for small devices only -->
         <div class="clearfix visible-sm-block"></div>
 
+        <!-- records box -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <!-- small box -->
+
             <div class="small-box bg-yellow">
                 <div class="inner">
                     <h3>{{ $data['records'] }}</h3>
@@ -76,15 +75,14 @@
                 <div class="icon">
                     <i class="fa fa-bullseye"></i>
                 </div>
-                <a href="{{-- route('records.index') --}}" class="small-box-footer">
+                <a href="{{  route('search.index') }}" class="small-box-footer">
                     More info <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
-            <!-- /.small-box -->
         </div>
-        <!-- /.col -->
+        <!-- ./ records-box -->
+        <!-- users box -->
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <!-- small box -->
             <div class="small-box bg-red">
                 <div class="inner">
                     <h3>{{ $data['users'] }}</h3>
@@ -98,21 +96,39 @@
                     More info <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
-            <!-- /.small-box -->
         </div>
-        <!-- /.col -->
+        <!-- ./ users-box -->
     </div>
-    <!-- /.row -->
+    <!-- ./ info boxes -->
 
+    <!-- statistics -->
     <div class="row">
         <!-- monthly records statistics -->
-        <div class="col-md-8 col-sm-12 col-xs-12">
+        <div class="col-md-8 col-sm-12 col-xs-12" id="monthly-stats-widget">
             {{-- @include('dashboard._monthly_records_stats') --}}
         </div>
 
         <!-- record types statistics -->
-        <div class="col-md-4 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-12 col-xs-12" id="record-stats-widget">
             {{-- @include('dashboard._record_types_stats') --}}
         </div>
     </div>
+    <!-- ./ statistics -->
+
+    <!-- log activity -->
+    <div class="row">
+        <!-- latest activity widget -->
+        <div class="col-md-8 col-sm-12 col-xs-12" id="latest-activity-widget">
+            @include('dashboard._latest_activity')
+        </div>
+        <!-- ./ latest activity widget -->
+
+        <!-- latest push updates widget -->
+        <div class="col-md-4 col-sm-12 col-xs-12" id="latest-jobs-widget">
+            @include('dashboard._latest_jobs')
+        </div>
+        <!-- ./ latest push updates widget -->
+    </div>
+    <!-- log activity -->
+
 @endsection

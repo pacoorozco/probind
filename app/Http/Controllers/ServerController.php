@@ -13,7 +13,6 @@
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
  * @link        https://github.com/pacoorozco/probind
- *
  */
 
 namespace App\Http\Controllers;
@@ -29,7 +28,7 @@ class ServerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -42,7 +41,7 @@ class ServerController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -53,11 +52,16 @@ class ServerController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  ServerCreateRequest $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ServerCreateRequest $request)
     {
         $server = new Server();
+
+        // deal with checkboxes
+        $server->ns_record = $request->has('ns_record');
+        $server->push_updates = $request->has('push_updates');
 
         $server->fill($request->all())->save();
 
@@ -69,7 +73,8 @@ class ServerController extends Controller
      * Display the specified resource.
      *
      * @param  Server $server
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function show(Server $server)
     {
@@ -81,7 +86,8 @@ class ServerController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  Server $server
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Server $server)
     {
@@ -94,13 +100,14 @@ class ServerController extends Controller
      *
      * @param  ServerUpdateRequest $request
      * @param  Server $server
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ServerUpdateRequest $request, Server $server)
     {
-        // First, deal with checkboxes
-        $server->push_updates = $request->has('push_updates');
+        // deal with checkboxes
         $server->ns_record = $request->has('ns_record');
+        $server->push_updates = $request->has('push_updates');
 
         $server->fill($request->all())->save();
 
@@ -112,7 +119,8 @@ class ServerController extends Controller
      * Remove level page.
      *
      * @param Server $server
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function delete(Server $server)
     {
@@ -124,6 +132,7 @@ class ServerController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Server $server
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Server $server)
@@ -138,11 +147,12 @@ class ServerController extends Controller
      * Show a list of all the levels formatted for Datatables.
      *
      * @param Datatables $dataTable
+     *
      * @return Datatables JsonResponse
      */
     public function data(Datatables $dataTable)
     {
-        $servers = Server::select([
+        $servers = Server::get([
             'id',
             'hostname',
             'type',
@@ -154,17 +164,18 @@ class ServerController extends Controller
 
         return $dataTable::of($servers)
             ->editColumn('hostname', function (Server $server) {
-                $label = ( ! $server->active)
-                    ? ' <span class="label label-default">' . trans('general.inactive') . '</span>'
-                    : '';
+                $mapServerStatusToLabel = [
+                    '0' => ' <span class="label label-default">' . trans('general.inactive') . '</span>',
+                    '1' => ''
+                ];
 
-                return $server->hostname . $label;
+                return $server->hostname . $mapServerStatusToLabel[$server->active];
             })
             ->editColumn('push_updates', function (Server $server) {
-                return ($server->push_updates) ? trans('general.yes') : trans('general.no');
+                return trans_choice('general.boolean', intval($server->push_updates));
             })
             ->editColumn('ns_record', function (Server $server) {
-                return ($server->ns_record) ? trans('general.yes') : trans('general.no');
+                return trans_choice('general.boolean', intval($server->ns_record));
             })
             ->addColumn('actions', function (Server $server) {
                 return view('partials.actions_dd', [

@@ -32,57 +32,16 @@
 @section('content')
     <div class="box box-warning">
         <div class="box-header with-border">
-            <h3 class="box-title">Pushing DNS updates to the servers</h3>
+            <h3 class="box-title">{{ trans('tools/title.pushing_updates') }}</h3>
         </div>
-        <div class="box-body">
-            <div class="callout callout-warning">
-                <h4>Warning!</h4>
 
-                <p>{{ trans('tools/messages.push_updates_warning') }}</p>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    These servers will be pushed:
-                    <ul>
-                        @forelse($servers as $server)
-                            <li>{{ $server->hostname }}</li>
-                        @empty
-                            <li>None</li>
-                        @endforelse
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    These zones will be deleted:
-                    <ul>
-                        @forelse($zonesToDelete as $zone)
-                            <li>{{ $zone->domain }}</li>
-                        @empty
-                            <li>None</li>
-                        @endforelse
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    These zones will be created / updated:
-                    <ul>
-                        @forelse($zonesToUpdate as $zone)
-                            <li>{{ $zone->domain }}</li>
-                        @empty
-                            <li>None</li>
-                        @endforelse
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="box-footer">
-            {!! Form::open(['route' => 'tools.push_updates']) !!}
+            @if($servers->isEmpty())
+                @include('tools._nothing_to_do', ['info_message' => trans('tools/messages.push_updates_no_servers')])
+            @elseif($zonesToUpdate->isEmpty() && $zonesToDelete->isEmpty())
+                @include('tools._nothing_to_do', ['info_message' => trans('tools/messages.push_updates_nothing_to_do')])
+            @else
+                @include('tools._push_summary')
+            @endif
 
-            <a href="{{ route('home') }}">
-                <button type="button" class="btn btn-primary">
-                    <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
-                </button>
-            </a>
-            {!! Form::button('<i class="fa fa-download"></i> Push updates', array('type' => 'submit', 'class' => 'btn btn-warning pull-right')) !!}
-            {!! Form::close() !!}
-        </div>
     </div>
 @endsection
