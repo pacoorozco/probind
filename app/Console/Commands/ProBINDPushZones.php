@@ -27,6 +27,12 @@ use phpseclib\Crypt\RSA;
 use phpseclib\Net\SFTP;
 use Registry;
 
+/**
+ * Class ProBINDPushZones
+ *
+ * @package App\Console\Commands
+ * @codeCoverageIgnore
+ */
 class ProBINDPushZones extends Command
 {
 

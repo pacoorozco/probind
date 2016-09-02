@@ -15,21 +15,20 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-namespace App\Http\Controllers;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
-
-/**
- * Class Controller
- *
- * @package App\Http\Controllers
- * @codeCoverageIgnore
- */
-class Controller extends BaseController
+class DashboardHttpTest extends TestCase
 {
+    use DatabaseMigrations;
 
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    /**
+     * Test Dashboard creation.
+     */
+    public function testVisitDashboard()
+    {
+        $this->visit('/')
+            ->seeElement('#info-boxes')
+            ->seeElement('#latest-activity-widget')
+            ->seeElement('#latest-jobs-widget');
+    }
 }

@@ -52,6 +52,7 @@ class ToolsController extends Controller
      * Push updates to servers.
      *
      * @return \Illuminate\Http\RedirectResponse
+     * @codeCoverageIgnore
      */
     public function pushUpdates()
     {

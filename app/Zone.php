@@ -202,6 +202,7 @@ class Zone extends Model
      * Returns a formatted SOA record of a zone
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getSOARecord()
     {
@@ -221,6 +222,7 @@ class Zone extends Model
      * Returns the Primary Name Server of a zone
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getPrimaryNameServer()
     {
@@ -231,6 +233,7 @@ class Zone extends Model
      * Returns the Hostmaster Email of a zone
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getHostmasterEmail()
     {
@@ -241,6 +244,7 @@ class Zone extends Model
      * Returns the Refresh time for this zone
      *
      * @return int
+     * @codeCoverageIgnore
      */
     public function getRefresh()
     {
@@ -251,6 +255,7 @@ class Zone extends Model
      * Returns the Retry time for this zone
      *
      * @return int
+     * @codeCoverageIgnore
      */
     public function getRetry()
     {
@@ -261,6 +266,7 @@ class Zone extends Model
      * Returns the Expire time for this zone
      *
      * @return int
+     * @codeCoverageIgnore
      */
     public function getExpire()
     {
@@ -271,6 +277,7 @@ class Zone extends Model
      * Returns the Negative TTL for this zone
      *
      * @return int
+     * @codeCoverageIgnore
      */
     public function getNegativeTTL()
     {

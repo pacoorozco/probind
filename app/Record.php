@@ -122,6 +122,7 @@ class Record extends Model
      * Returns a formatted Resource Record for a record
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function getResourceRecord()
     {

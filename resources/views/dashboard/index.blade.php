@@ -24,7 +24,7 @@
     <!-- ./ notifications -->
 
     <!-- info boxes -->
-    <div class="row">
+    <div class="row" id="info-boxes">
         <!-- servers box -->
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="small-box bg-aqua">
@@ -104,12 +104,12 @@
     <!-- statistics -->
     <div class="row">
         <!-- monthly records statistics -->
-        <div class="col-md-8 col-sm-12 col-xs-12">
+        <div class="col-md-8 col-sm-12 col-xs-12" id="monthly-stats-widget">
             {{-- @include('dashboard._monthly_records_stats') --}}
         </div>
 
         <!-- record types statistics -->
-        <div class="col-md-4 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-12 col-xs-12" id="record-stats-widget">
             {{-- @include('dashboard._record_types_stats') --}}
         </div>
     </div>
@@ -118,13 +118,13 @@
     <!-- log activity -->
     <div class="row">
         <!-- latest activity widget -->
-        <div class="col-md-8 col-sm-12 col-xs-12">
+        <div class="col-md-8 col-sm-12 col-xs-12" id="latest-activity-widget">
             @include('dashboard._latest_activity')
         </div>
         <!-- ./ latest activity widget -->
 
         <!-- latest push updates widget -->
-        <div class="col-md-4 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-12 col-xs-12" id="latest-jobs-widget">
             @include('dashboard._latest_jobs')
         </div>
         <!-- ./ latest push updates widget -->
