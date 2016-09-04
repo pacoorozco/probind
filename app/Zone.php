@@ -36,6 +36,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property integer $negative_ttl
  * @property integer $default_ttl
  * @property boolean $updated
+ *
+ * TODO: Change $update for $is_modified.
  */
 class Zone extends Model
 {
@@ -118,7 +120,12 @@ class Zone extends Model
     }
 
     /**
-     * A zone will have some records.
+     * Contains all the records in this zone.
+     *
+     * An one-to-many relationship of Resource Records (RR's) for this zone.
+     * Each item is a separate Record model item.
+     * It's format should be pretty self explaining.
+     * See Record model for definition.
      */
     public function records()
     {
@@ -126,7 +133,12 @@ class Zone extends Model
     }
 
     /**
-     * Set Zone's serial parameter if needed.
+     * Generate a new serial number if is need.
+     *
+     * This generates a new serial, based on the often used format
+     * YYYYMMDDXX where XX is an ascending serial,
+     * allowing up to 100 edits per day. After that the serial wraps
+     * into the next day and it still works.
      *
      * We only need to modify this field is has been pushed to a server.
      *
@@ -135,25 +147,33 @@ class Zone extends Model
      */
     public function setSerialNumber($force = false)
     {
+        // Get current Zone serial number.
         $currentSerial = intval($this->serial);
 
+        // We need a new one ONLY if there isn't pending changes.
         if ($this->hasPendingChanges() && ! $force) {
             return $currentSerial;
         }
 
+        // Create a new serial number YYYYMMDD00.
         $nowSerial = Zone::createSerialNumber();
 
         $this->serial = ($currentSerial >= $nowSerial)
             ? $currentSerial + 1
             : $nowSerial;
+
+        // There are changes yo be pushed. Serial number has changed.
         $this->setPendingChanges(true);
         $this->save();
 
-        return $this->serial;
+        return intval($this->serial);
     }
 
     /**
-     * Returns if this zone has changes to send to servers.
+     * Returns if this zone has been modified from last push.
+     *
+     * This checks whether the Zone has been modified.
+     * If so, we need to generate a new serial when we render it.
      *
      * @return bool
      */
@@ -169,7 +189,7 @@ class Zone extends Model
      */
     public static function createSerialNumber()
     {
-        return intval(Carbon::now()->format('Ymd') . '01');
+        return intval(Carbon::now()->format('Ymd') . '00');
     }
 
     /**

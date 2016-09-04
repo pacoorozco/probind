@@ -34,9 +34,24 @@ class Record extends Model
 {
 
     /**
-     * Valid Record Types. These will be used to validation.
+     * Contains all supported Resource Records.
+     *
+     * This list contains all supported resource records.
+     * This currently is:
+     *
+     * /SOA
+     * A
+     * AAAA
+     * CNAME
+     * MX
+     * NS
+     * PTR
+     * SRV
+     * TXT
      *
      * @var array
+     *
+     * TODO: Create a simple array $data = ['A', 'AAAA'...] to be able to translate values.
      */
     public static $validInputTypes = [
         'A'     => 'A (IPv4 address)',
