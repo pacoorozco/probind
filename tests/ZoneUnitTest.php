@@ -46,7 +46,7 @@ class ZoneUnitTest extends TestCase
     public function testCreateSerialNumber()
     {
         $expectedSerial = intval(Carbon::now()->format('Ymd') . '01');
-        $serial = Zone::createSerialNumber();
+        $serial = Zone::generateSerialNumber();
         $this->assertEquals($expectedSerial, $serial);
     }
 

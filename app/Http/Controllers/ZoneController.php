@@ -32,10 +32,7 @@ class ZoneController extends Controller
      */
     public function index()
     {
-        $zones = Zone::all();
-
-        return view('zone.index')
-            ->with('zones', $zones);
+        return view('zone.index');
     }
 
     /**
@@ -59,11 +56,14 @@ class ZoneController extends Controller
     {
         $zone = new Zone();
 
-        // assign new serial and flag as updated
+        // if it's a Master zone, assign new Serial Number and flag pending changes.
         if ($request->input('type') == 'master') {
-            $zone->serial = Zone::createSerialNumber();
-            $zone->updated = true;
+            $zone->serial = Zone::generateSerialNumber();
+            $zone->setPendingChanges(true);
         }
+
+        // deal with checkboxes
+        $zone->custom_settings = $request->has('custom_settings');
 
         $zone->fill($request->all())->save();
 
@@ -109,7 +109,7 @@ class ZoneController extends Controller
     {
         if ($zone->isMasterZone()) {
             // assign new serial and flag as updated
-            $zone->setSerialNumber();
+            $zone->raiseSerialNumber();
             $zone->setPendingChanges(true);
         }
         // deal with checkboxes

@@ -48,8 +48,8 @@ $factory->define(App\Server::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Zone::class, function (Faker\Generator $faker) {
     return [
-        'domain' => $faker->unique()->domainName,
-        'master' => $faker->optional()->ipv4,
+        'domain'        => $faker->unique()->domainName,
+        'master_server' => $faker->optional()->ipv4,
     ];
 });
 
