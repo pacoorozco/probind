@@ -27,25 +27,7 @@
 {{-- Content --}}
 @section('content')
     <!-- search criteria -->
-    <div class="box box-primary">
-        <!-- box-header -->
-        <div class="box-header with-border">
-            <h3 class="box-title">{{ trans('search/title.search_criteria') }}</h3>
-            <!-- box-tools -->
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-            </div>
-            <!-- ./ box-tools -->
-        </div>
-        <!-- ./ box-header -->
-        <div class="box-body">
-            @include('search._form')
-        </div>
-        <div class="box-footer">
-            {!! trans('search/messages.wildcard_help') !!}
-        </div>
-    </div>
+    @include('search._form')
     <!-- ./ search criteria -->
 
     @if(isset($records))

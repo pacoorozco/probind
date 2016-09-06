@@ -5,10 +5,9 @@
         <tr>
             <th class="col-md-2">{{ trans('zone/table.domain') }}</th>
             <th class="col-md-3">{{ trans('record/table.name') }}</th>
-            <th class="col-md-1">{{ trans('record/table.ttl') }}</th>
             <th class="col-md-1">{{ trans('record/table.type') }}</th>
             <th class="col-md-4">{{ trans('record/table.data') }}</th>
-            <th class="col-md-1">{{ trans('general.actions') }}</th>
+            <th class="col-md-2">{{ trans('general.actions') }}</th>
         </tr>
         </thead>
 
@@ -19,7 +18,6 @@
                     <a href="{{ route('zones.records.index', $record->zone) }}">{{ $record->zone->domain }}</a>
                 </td>
                 <td>{{ $record->name }}</td>
-                <td>{{ $record->ttl }}</td>
                 <td>{{ $record->type }}</td>
                 <td>{{ $record->data }}</td>
                 <td>
@@ -33,10 +31,9 @@
         <tr>
             <th class="col-md-2">{{ trans('zone/table.domain') }}</th>
             <th class="col-md-3">{{ trans('record/table.name') }}</th>
-            <th class="col-md-1">{{ trans('record/table.ttl') }}</th>
             <th class="col-md-1">{{ trans('record/table.type') }}</th>
             <th class="col-md-4">{{ trans('record/table.data') }}</th>
-            <th class="col-md-1">{{ trans('general.actions') }}</th>
+            <th class="col-md-2">{{ trans('general.actions') }}</th>
         </tr>
         </tfoot>
     </table>
