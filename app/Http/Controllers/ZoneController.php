@@ -163,7 +163,7 @@ class ZoneController extends Controller
             'domain',
             'master',
             'updated'
-        ]);
+        ])->get();
 
         return $dataTable::of($zones)
             ->addColumn('type', function (Zone $zone) {
