@@ -323,11 +323,7 @@ class Zone extends Model
     }
 
     /**
-     * Scope a query to include zones to be pushed.
-     *
-     * Criteria:
-     *     - Master zones
-     *     - With pending changes
+     * Scope a query to include zones with modifications.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      *
@@ -335,9 +331,7 @@ class Zone extends Model
      */
     public function scopeWithPendingChanges(Builder $query)
     {
-        return $query
-            ->where('master_server', null)
-            ->where('has_modifications', true);
+        return $query->where('has_modifications', true);
     }
 
     /**

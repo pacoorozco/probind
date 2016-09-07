@@ -57,7 +57,7 @@ class ZoneController extends Controller
         $zone = new Zone();
 
         // if it's a Master zone, assign new Serial Number and flag pending changes.
-        if ($request->input('type') == 'master') {
+        if (!$request->has('master_server')) {
             $zone->serial = Zone::generateSerialNumber();
             $zone->setPendingChanges(true);
         }
@@ -101,17 +101,18 @@ class ZoneController extends Controller
      * Update the specified resource in storage.
      *
      * @param  ZoneUpdateRequest $request
-     * @param  Zone $zone
+     * @param  Zone              $zone
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ZoneUpdateRequest $request, Zone $zone)
     {
+        // if it's a Master zone, assign new Serial Number and flag pending changes.
         if ($zone->isMasterZone()) {
-            // assign new serial and flag as updated
             $zone->raiseSerialNumber();
             $zone->setPendingChanges(true);
         }
+
         // deal with checkboxes
         $zone->custom_settings = $request->has('custom_settings');
 
@@ -161,15 +162,15 @@ class ZoneController extends Controller
         $zones = Zone::select([
             'id',
             'domain',
-            'master',
-            'updated'
+            'master_server',
+            'has_modifications'
         ]);
 
         return $dataTable::of($zones)
             ->addColumn('type', function (Zone $zone) {
                 return trans('zone/model.types.' . $zone->getTypeOfZone());
             })
-            ->editColumn('updated', function (Zone $zone) {
+            ->editColumn('has_modifications', function (Zone $zone) {
                 return trans_choice('general.boolean', intval($zone->hasPendingChanges()));
             })
             ->addColumn('actions', function (Zone $zone) {
