@@ -27,6 +27,10 @@
 |
 */
 
+/*
+ * User Model Factories
+ */
+
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     static $password;
 
@@ -38,13 +42,24 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+/*
+ * Server Model Factory
+ */
+
 $factory->define(App\Server::class, function (Faker\Generator $faker) {
     return [
-        'hostname'   => $faker->unique()->domainWord . '.local',
-        'ip_address' => $faker->ipv4,
-        'type'       => $faker->randomElement(['master', 'slave']),
+        'hostname'     => $faker->unique()->domainWord . '.local',
+        'ip_address'   => $faker->ipv4,
+        'type'         => $faker->randomElement(['master', 'slave']),
+        'push_updates' => false,
+        'ns_record'    => false,
+        'active'       => true,
     ];
 });
+
+/*
+ * Zone Model Factory
+ */
 
 $factory->define(App\Zone::class, function (Faker\Generator $faker) {
     return [
@@ -61,21 +76,39 @@ $factory->define(App\Zone::class, function (Faker\Generator $faker) {
     ];
 });
 
+/*
+ * Record Model Factories
+ */
+
 $factory->defineAs(App\Record::class, 'A', function (Faker\Generator $faker) {
     // Return an A record
     return [
-        'name' => $faker->domainWord,
-        'type' => 'A',
-        'data' => $faker->ipv4,
+        'name'     => $faker->domainWord,
+        'ttl'      => null,
+        'type'     => 'A',
+        'priority' => null,
+        'data'     => $faker->ipv4,
     ];
 });
 
 $factory->defineAs(App\Record::class, 'CNAME', function (Faker\Generator $faker) {
     // Return a CNAME record
     return [
-        'name' => $faker->domainWord,
-        'type' => 'CNAME',
-        'data' => $faker->domainWord . '.' . $faker->domainName . '.',
+        'name'     => $faker->domainWord,
+        'ttl'      => null,
+        'type'     => 'CNAME',
+        'priority' => null,
+        'data'     => $faker->domainWord . '.' . $faker->domainName . '.',
     ];
 });
 
+$factory->defineAs(App\Record::class, 'MX', function (Faker\Generator $faker) {
+    // Return a MX record
+    return [
+        'name'     => $faker->domainWord,
+        'ttl'      => null,
+        'type'     => 'MX',
+        'priority' => $faker->randomElement([10, 20, 30]),
+        'data'     => $faker->domainWord . '.' . $faker->domainName . '.',
+    ];
+});
