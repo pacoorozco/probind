@@ -29,7 +29,7 @@ class ToolsHttpTest extends TestCase
     {
         // Create some zones to test
         factory(Zone::class, 5)->create([
-            'updated' => false
+            'has_modifications' => false
         ]);
 
         // Visit URL to do bulk update

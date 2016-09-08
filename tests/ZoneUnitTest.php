@@ -3,10 +3,10 @@
  * ProBIND v3 - Professional DNS management made easy.
  *
  * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
- *  
+ *
  * This file is part of some open source application.
- *  
- * Licensed under GNU General Public License 3.0. 
+ *
+ * Licensed under GNU General Public License 3.0.
  * Some rights reserved. See LICENSE, AUTHORS.
  *
  * @author      Paco Orozco <paco@pacoorozco.info>
@@ -117,27 +117,32 @@ class ZoneUnitTest extends TestCase
      */
     public function testRaiseSerialNumber()
     {
-        $expectedSerial = Zone::generateSerialNumber() + 1;
-
         // Create a Zone without pending changes
         $zone = factory(Zone::class)->create();
+        $expectedSerial = $zone->serial;
         $zone->setPendingChanges(false);
+
+        // Raise Serial Number, has to be bigger than expected.
+        $zone->raiseSerialNumber();
+        $this->assertGreaterThan($expectedSerial, $zone->serial);
+
+        // Call again, but serial will be the same, there are pending changes.
+        $expectedSerial = $zone->serial;
         $zone->raiseSerialNumber();
         $this->assertEquals($expectedSerial, $zone->serial);
 
-        // Call again, but serial will be the same, there are pending changes
-        $zone->raiseSerialNumber();
-        $this->assertEquals($expectedSerial, $zone->serial);
-
-        // Simulate a push to servers, so pending changes are false
+        // Simulate a push to servers, so pending changes are false.
         $zone->setPendingChanges(false);
+
+        // Now, raise Serial Number will be get a greater one.
+        $expectedSerial = $zone->serial;
         $zone->raiseSerialNumber();
-        $this->assertNotEquals($expectedSerial, $zone->serial);
+        $this->assertGreaterThan($expectedSerial, $zone->serial);
 
         // Use force option on raiseSerialNumber()
         $zone->serial = $expectedSerial;
         $zone->raiseSerialNumber(true);
-        $this->assertNotEquals($expectedSerial, $zone->serial);
+        $this->assertGreaterThan($expectedSerial, $zone->serial);
     }
 
     /**
@@ -149,9 +154,10 @@ class ZoneUnitTest extends TestCase
         $zone = factory(Zone::class)->create([
             'has_modifications' => false
         ]);
+        // Pre-condition.
         $this->assertFalse($zone->hasPendingChanges());
 
-        // Set pending changes
+        // Set pending changes.
         $zone->setPendingChanges(true);
         $this->assertTrue($zone->hasPendingChanges());
     }
@@ -161,18 +167,21 @@ class ZoneUnitTest extends TestCase
      */
     public function testScopeWithPendingChanges()
     {
-        // Create Zone that are out this scope
+        // Create Zone that are out this scope.
         factory(Zone::class, 5)->create([
             'has_modifications' => false
         ]);
         $zonesWithPendingChanges = Zone::withPendingChanges()->get();
+
+        // Pre-condition.
         $this->assertEmpty($zonesWithPendingChanges);
 
-        // Create Zone that are in this scope
+        // Create Zone that are in this scope.
         factory(Zone::class, 5)->create([
             'has_modifications' => true
         ]);
         $zonesWithPendingChanges = Zone::withPendingChanges()->get();
+
         $this->assertCount(5, $zonesWithPendingChanges);
     }
 
@@ -186,6 +195,8 @@ class ZoneUnitTest extends TestCase
             'master_server' => '192.168.1.3'
         ]);
         $masterZones = Zone::onlyMasterZones()->get();
+
+        // Pre-condition.
         $this->assertEmpty($masterZones);
 
         // Create Zone that are in this scope
@@ -193,6 +204,7 @@ class ZoneUnitTest extends TestCase
             'master_server' => null
         ]);
         $masterZones = Zone::onlyMasterZones()->get();
+
         $this->assertCount(5, $masterZones);
     }
 }

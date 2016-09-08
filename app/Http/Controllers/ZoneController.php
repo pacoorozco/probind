@@ -59,7 +59,7 @@ class ZoneController extends Controller
         // if it's a Master zone, assign new Serial Number and flag pending changes.
         if (!$request->has('master_server')) {
             $zone->serial = Zone::generateSerialNumber();
-            $zone->setPendingChanges(true);
+            $zone->has_modifications = true;
         }
 
         // deal with checkboxes

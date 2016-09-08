@@ -56,12 +56,12 @@ class ZoneHttpTest extends TestCase
     {
         $this->visit('zones/create')
             ->type('slave.com', 'domain')
-            ->type('192.168.1.3', 'master')
+            ->type('192.168.1.3', 'master_server')
             ->press('slave_zone');
 
         // Get from DB if Zone has been created.
         $zone = Zone::where('domain', 'slave.com')
-            ->where('master', '192.168.1.3')
+            ->where('master_server', '192.168.1.3')
             ->first();
 
         $this->assertNotNull($zone);
@@ -88,7 +88,7 @@ class ZoneHttpTest extends TestCase
     {
         $this->visit('zones/create')
             ->type('slave.com', 'domain')
-            ->type('280.168.1.3', 'master')
+            ->type('280.168.1.3', 'master_server')
             ->press('slave_zone');
 
         // Get from DB if Zone has been created.
@@ -116,7 +116,7 @@ class ZoneHttpTest extends TestCase
     {
         $originalZone = factory(Zone::class)->create([
             'domain' => 'domain.com',
-            'master' => null
+            'master_server' => null
         ]);
 
         $this->visit('zones/' . $originalZone->id . '/edit')
@@ -130,7 +130,7 @@ class ZoneHttpTest extends TestCase
         $this->assertEquals('modified.com', $modifiedZone->domain);
 
         // Test field that has not been modified
-        $this->assertEquals($originalZone->master, $modifiedZone->master);
+        $this->assertEquals($originalZone->master_server, $modifiedZone->master_server);
     }
 
     /**
@@ -140,18 +140,18 @@ class ZoneHttpTest extends TestCase
     {
         $originalZone = factory(Zone::class)->create([
             'domain' => 'domain.com',
-            'master' => '192.168.1.3'
+            'master_server' => '192.168.1.3'
         ]);
 
         $this->visit('zones/' . $originalZone->id . '/edit')
-            ->type('10.10.10.1', 'master')
+            ->type('10.10.10.1', 'master_server')
             ->press('Save data');
 
         // Get the zone once has been modified
         $modifiedZone = Zone::findOrFail($originalZone->id);
 
         // Test modified domain field
-        $this->assertEquals('10.10.10.1', $modifiedZone->master);
+        $this->assertEquals('10.10.10.1', $modifiedZone->master_server);
 
         // Test field that has not been modified
         $this->assertEquals($originalZone->domain, $modifiedZone->domain);
@@ -165,12 +165,12 @@ class ZoneHttpTest extends TestCase
     public function testSlaveServerEditionFailure()
     {
         $originalZone = factory(Zone::class)->create([
-            'master' => '192.168.1.3'
+            'master_server' => '192.168.1.3'
         ]);
 
         // Use an Invalid IP Address to fail validation
         $this->visit('zones/' . $originalZone->id . '/edit')
-            ->type('280.168.1.2', 'master')
+            ->type('280.168.1.2', 'master_server')
             ->press('Save data');
 
         // Get the server once has been modified
@@ -178,7 +178,7 @@ class ZoneHttpTest extends TestCase
 
         // Test fields has not been modified, edit has failed
         $this->assertEquals($originalZone->domain, $modifiedServer->domain);
-        $this->assertEquals($originalZone->master, $modifiedServer->master);
+        $this->assertEquals($originalZone->master_server, $modifiedServer->master_server);
     }
 
     /**
@@ -199,13 +199,13 @@ class ZoneHttpTest extends TestCase
     public function testJSONGetZoneData()
     {
         $originalZone = factory(Zone::class)->create([
-            'master' => '192.168.1.3'
+            'master_server' => '192.168.1.3'
         ]);
 
         $this->json('GET', '/zones/data')
             ->seeJson([
                 'domain' => $originalZone->domain,
-                'master' => $originalZone->master,
+                'master_server' => $originalZone->master_server,
             ]);
     }
 
