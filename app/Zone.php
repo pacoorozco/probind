@@ -226,6 +226,8 @@ class Zone extends Model
      * Returns the Default TTL for this zone.
      *
      * @return int
+     *
+     * @codeCoverageIgnore
      */
     public function getDefaultTTL() : int
     {

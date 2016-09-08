@@ -138,6 +138,8 @@ class Server extends Model
      */
     public function scopeWithPushCapability(Builder $query) : Builder
     {
-        return $query->where('push_updates', true);
+        return $query
+            ->where('push_updates', true)
+            ->where('active', true);
     }
 }

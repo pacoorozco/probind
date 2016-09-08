@@ -126,7 +126,7 @@ class ZoneUnitTest extends TestCase
         $zone->raiseSerialNumber();
         $this->assertGreaterThan($expectedSerial, $zone->serial);
 
-        // Call again, but serial will be the same, there are pending changes.
+        // Call again, but serial will be the same, there are still pending changes.
         $expectedSerial = $zone->serial;
         $zone->raiseSerialNumber();
         $this->assertEquals($expectedSerial, $zone->serial);
@@ -143,6 +143,12 @@ class ZoneUnitTest extends TestCase
         $zone->serial = $expectedSerial;
         $zone->raiseSerialNumber(true);
         $this->assertGreaterThan($expectedSerial, $zone->serial);
+
+        // Create a low Serial Number and raise serial
+        $zone->serial = 2010010100;
+        $expectedSerial = Zone::generateSerialNumber();
+        $zone->raiseSerialNumber(true);
+        $this->assertEquals($expectedSerial, $zone->serial);
     }
 
     /**
