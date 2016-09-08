@@ -8,8 +8,8 @@
     <tr>
         <th class="col-md-4">{{ trans('zone/table.domain') }}</th>
         <th class="col-md-1">{{ trans('zone/table.type') }}</th>
-        <th class="col-md-4">{{ trans('zone/table.master') }}</th>
-        <th class="col-md-1">{{ trans('zone/table.updated') }}</th>
+        <th class="col-md-4">{{ trans('zone/table.master_server') }}</th>
+        <th class="col-md-1">{{ trans('zone/table.has_modifications') }}</th>
         <th class="col-md-2">{{ trans('general.actions') }}</th>
     </tr>
     </thead>
@@ -17,8 +17,8 @@
     <tr>
         <th class="col-md-4">{{ trans('zone/table.domain') }}</th>
         <th class="col-md-1">{{ trans('zone/table.type') }}</th>
-        <th class="col-md-4">{{ trans('zone/table.master') }}</th>
-        <th class="col-md-1">{{ trans('zone/table.updated') }}</th>
+        <th class="col-md-4">{{ trans('zone/table.master_server') }}</th>
+        <th class="col-md-1">{{ trans('zone/table.has_modifications') }}</th>
         <th class="col-md-2">{{ trans('general.actions') }}</th>
     </tr>
     </tfoot>
@@ -36,8 +36,8 @@
             "columns": [
                 {data: "domain"},
                 {data: "type"},
-                {data: "master"},
-                {data: "updated", "orderable": false, "searchable": false},
+                {data: "master_server"},
+                {data: "has_modifications", "orderable": false, "searchable": false},
                 {data: "actions", "orderable": false, "searchable": false}
             ],
             "order": [[1, 'asc'], [0, 'asc']],

@@ -41,7 +41,7 @@ class ZoneUpdateRequest extends Request
 
         return [
             'domain'          => 'required|string|unique:zones,domain,' . $zone->id,
-            'master'          => 'sometimes|required|ip',
+            'master_server'   => 'sometimes|required|ip',
             'custom_settings' => 'sometimes|boolean',
             'refresh'         => 'required_if:custom_settings,1|integer|min:0|max:2147483647',
             'retry'           => 'required_if:custom_settings,1|integer|min:0|max:2147483647',

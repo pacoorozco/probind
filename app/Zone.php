@@ -1,14 +1,10 @@
 <?php
 /**
  * ProBIND v3 - Professional DNS management made easy.
- *
  * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
- *
  * This file is part of some open source application.
- *
  * Licensed under GNU General Public License 3.0.
  * Some rights reserved. See LICENSE, AUTHORS.
- *
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
@@ -18,45 +14,66 @@
 namespace App;
 
 use Carbon\Carbon;
+use Iatstuti\Database\Support\NullableFields;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
- * Zone model, represents a DNS domain / subdomain.
+ * Zone model, represents a DNS domain.
  *
- * @property integer $id
- * @property string $domain
- * @property integer $serial
- * @property string $master
- * @property boolean $custom_settings
- * @property integer $refresh
- * @property integer $retry
- * @property integer $expire
- * @property integer $negative_ttl
- * @property integer $default_ttl
- * @property boolean $updated
+ * The Zone model contains all DNS information of a zone / domain name.
+ * Has one-to-many relationship in order to associate Record models for Master Zones.
+ *
+ * @property integer $id                    The object unique id.
+ * @property string  $domain                The domain name that represents this zone.
+ * @property integer $serial                The serial number of this zone.
+ * @property string  $master_server         The IP address of the master server.
+ *                                          If it's set to null, this zone is a master zone.
+ * @property boolean $custom_settings       This flag determines if this zone has custom timers.
+ * @property integer $refresh               Custom Refresh time value.
+ * @property integer $retry                 Custom Retry time value.
+ * @property integer $expire                Custom Expire time value.
+ * @property integer $negative_ttl          Custom Negative TTL value.
+ * @property integer $default_ttl           Custom TTL value.
+ * @property boolean $has_modifications     This flag determines if this zone has been modified from last push.
+ *
+ * @link https://www.ietf.org/rfc/rfc1035.txt
+ * @link https://www.ietf.org/rfc/rfc2782.txt
+ *
+ * TODO: Add Inverse Zones. Create a new flag for inverse zones, *.IN-ADDR.ARPA. Only PTR, NS will be allowed.
  */
 class Zone extends Model
 {
 
     use SoftDeletes;
     use LogsActivity;
+    use NullableFields;
 
+    /**
+     * Attributes updates that will be logged into Activity log.
+     *
+     * @var array
+     */
     protected static $logAttributes = ['domain'];
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
     /**
      * The database table used by the model.
      */
     protected $table = 'zones';
     protected $fillable = [
         'domain',
-        'master',
+        'master_server',
         'refresh',
         'retry',
         'expire',
@@ -69,22 +86,35 @@ class Zone extends Model
      * @var array
      */
     protected $casts = [
-        'domain'          => 'string',
-        'serial'          => 'integer',
-        'master'          => 'string',
-        'updated'         => 'boolean',
-        'custom_settings' => 'boolean',
-        'refresh'         => 'integer',
-        'retry'           => 'integer',
-        'expire'          => 'integer',
-        'negative_ttl'    => 'integer',
-        'default_ttl'     => 'integer',
+        'domain'            => 'string',
+        'serial'            => 'integer',
+        'master_server'     => 'string',
+        'has_modifications' => 'boolean',
+        'custom_settings'   => 'boolean',
+        'refresh'           => 'integer',
+        'retry'             => 'integer',
+        'expire'            => 'integer',
+        'negative_ttl'      => 'integer',
+        'default_ttl'       => 'integer',
+    ];
+    /**
+     * The attributes that should be casted to null if is empty.
+     *
+     * @var array
+     */
+    protected $nullable = [
+        'master_server',
+        'refresh',
+        'retry',
+        'expire',
+        'negative_ttl',
+        'default_ttl'
     ];
 
     /**
      * Returns a customized message for Activity Log.
      *
-     * @param string $eventName
+     * @param string $eventName The event could be saved, updated or deleted.
      *
      * @return string
      */
@@ -96,29 +126,22 @@ class Zone extends Model
     }
 
     /**
-     * Set the Zone's domain lowercase.
+     * Set the domain Zone attribute to lowercase.
      *
      * @param  string $value
-     * @return string|null
      */
-    public function setDomainAttribute($value)
+    public function setDomainAttribute(string $value)
     {
         $this->attributes['domain'] = strtolower($value);
     }
 
     /**
-     * Set the Zone's master lowercase.
+     * Contains all the records associate to this zone.
      *
-     * @param  string $value
-     * @return string|null
-     */
-    public function setMasterAttribute($value)
-    {
-        $this->attributes['master'] = strtolower($value);
-    }
-
-    /**
-     * A zone will have some records.
+     * A one-to-many relationship of Resource Records (RR's) for this zone.
+     * Each item is a separate Record model item.
+     *
+     * @see Record model for definition of each one.
      */
     public function records()
     {
@@ -126,85 +149,99 @@ class Zone extends Model
     }
 
     /**
-     * Set Zone's serial parameter if needed.
+     * Raise Serial Number for this zone if is need.
      *
-     * We only need to modify this field is has been pushed to a server.
+     * This generates a new serial, based on the often used format YYYYMMDDXX where XX is an ascending serial, allowing
+     * up to 100 edits per day. After that the serial wraps into the next day and it still works.
+     * We don't need to raise Serial Number in every change, only when last change was pushed.
      *
-     * @param  boolean $force
-     * @return integer
+     * @param  bool $force This flag force to raise the Serial Number.
+     *
+     * @return int
      */
-    public function setSerialNumber($force = false)
+    public function raiseSerialNumber(bool $force = false) : int
     {
-        $currentSerial = intval($this->serial);
+        // Get current Zone serial number.
+        $currentSerial = $this->serial;
 
+        // We need a new one ONLY if there isn't pending changes.
         if ($this->hasPendingChanges() && ! $force) {
             return $currentSerial;
         }
 
-        $nowSerial = Zone::createSerialNumber();
+        // Create a new serial number YYYYMMDD00.
+        $nowSerial = Zone::generateSerialNumber();
 
         $this->serial = ($currentSerial >= $nowSerial)
             ? $currentSerial + 1
             : $nowSerial;
+
+        // Once Serial Number has changed, we have changes to push to servers.
         $this->setPendingChanges(true);
         $this->save();
 
-        return $this->serial;
+        return intval($this->serial);
     }
 
     /**
-     * Returns if this zone has changes to send to servers.
+     * Return true if this zone has been modified from last push.
+     *
+     * This checks whether the Zone has been modified from the last push.
      *
      * @return bool
      */
-    public function hasPendingChanges()
+    public function hasPendingChanges() : bool
     {
-        return $this->updated;
+        return $this->has_modifications;
     }
 
     /**
-     * Create a new Serial Number based on a specified format
-     *
-     * @return integer
-     */
-    public static function createSerialNumber()
-    {
-        return intval(Carbon::now()->format('Ymd') . '01');
-    }
-
-    /**
-     * Marks / unmark pending changes on a zone.
-     *
-     * @param bool $value
-     * @return bool
-     */
-    public function setPendingChanges($value = true)
-    {
-        if ($this->hasPendingChanges() != $value) {
-            $this->updated = $value;
-            $this->save();
-        }
-
-        return $this->updated;
-    }
-
-    /**
-     * Returns the Default TTL for this zone
+     * Generate a Serial Number based on a specified format.
      *
      * @return int
      */
-    public function getDefaultTTL()
+    public static function generateSerialNumber() : int
+    {
+        return intval(Carbon::now()->format('Ymd') . '00');
+    }
+
+    /**
+     * Marks / unmark pending changes on this zone.
+     *
+     * @param bool $value The value to set pending changes on this zone.
+     *
+     * @return bool
+     */
+    public function setPendingChanges(bool $value = true) : bool
+    {
+        if ($this->hasPendingChanges() !== $value) {
+            $this->has_modifications = $value;
+            $this->save();
+        }
+
+        return $this->has_modifications;
+    }
+
+    /**
+     * Returns the Default TTL for this zone.
+     *
+     * @return int
+     *
+     * @codeCoverageIgnore
+     */
+    public function getDefaultTTL() : int
     {
         return intval(($this->custom_settings) ? $this->default_ttl : \Registry::get('zone_default_default_ttl'));
     }
 
     /**
-     * Returns a formatted SOA record of a zone
+     * Returns a formatted SOA record of a zone.
      *
      * @return string
+     *
      * @codeCoverageIgnore
      */
-    public function getSOARecord()
+    public function getSOARecord() : string
     {
         $content = sprintf("%-16s IN\tSOA\t%s. %s. (\n", '@', $this->getPrimaryNameServer(),
             $this->getHostmasterEmail());
@@ -219,102 +256,111 @@ class Zone extends Model
     }
 
     /**
-     * Returns the Primary Name Server of a zone
+     * Returns the Master name server of this zone.
      *
      * @return string
+     *
      * @codeCoverageIgnore
      */
-    public function getPrimaryNameServer()
+    public function getPrimaryNameServer() : string
     {
         return \Registry::get('zone_default_mname');
     }
 
     /**
-     * Returns the Hostmaster Email of a zone
+     * Returns the Hostmaster Email of a zone.
      *
      * @return string
+     *
      * @codeCoverageIgnore
      */
-    public function getHostmasterEmail()
+    public function getHostmasterEmail() : string
     {
         return strtr(\Registry::get('zone_default_rname'), '@', '.');
     }
 
     /**
-     * Returns the Refresh time for this zone
+     * Returns the Refresh time for this zone.
      *
      * @return int
+     *
      * @codeCoverageIgnore
      */
-    public function getRefresh()
+    public function getRefresh() : int
     {
         return intval(($this->custom_settings) ? $this->refresh : \Registry::get('zone_default_refresh'));
     }
 
     /**
-     * Returns the Retry time for this zone
+     * Returns the Retry time for this zone.
      *
      * @return int
+     *
      * @codeCoverageIgnore
      */
-    public function getRetry()
+    public function getRetry() : int
     {
         return intval(($this->custom_settings) ? $this->retry : \Registry::get('zone_default_retry'));
     }
 
     /**
-     * Returns the Expire time for this zone
+     * Returns the Expire time for this zone.
      *
      * @return int
+     *
      * @codeCoverageIgnore
      */
-    public function getExpire()
+    public function getExpire() : int
     {
         return intval(($this->custom_settings) ? $this->expire : \Registry::get('zone_default_expire'));
     }
 
     /**
-     * Returns the Negative TTL for this zone
+     * Returns the Negative TTL for this zone.
      *
      * @return int
+     *
      * @codeCoverageIgnore
      */
-    public function getNegativeTTL()
+    public function getNegativeTTL() : int
     {
         return intval(($this->custom_settings) ? $this->negative_ttl : \Registry::get('zone_default_negative_ttl'));
     }
 
     /**
-     * Scope a query to include zones to be pushed.
+     * Scope a query to include zones with modifications.
      *
-     * Criteria:
-     *     - Master zones
-     *     - With pending changes
+     * @param \Illuminate\Database\Eloquent\Builder $query
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithPendingChanges($query)
+    public function scopeWithPendingChanges(Builder $query)
     {
-        return $query->where('updated', 1)
-            ->where('master', '');
+        return $query->where('has_modifications', true);
     }
 
     /**
      * Scope a query to include only Master zones.
      *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOnlyMasterZones($query)
+    public function scopeOnlyMasterZones(Builder $query)
     {
-        return $query->where('master', '');
+        return $query->where('master_server', null);
     }
 
     /**
-     * Returns a string indicating what type of zone is.
+     * Returns a normalized string indicating what type of zone is.
+     *
+     * It's useful to get a translated Zone type:
+     *
+     * echo trans('zone/model.types.' . $zone->getTypeOfZone());
      *
      * @return string
      */
-    public function getTypeOfZone()
+    public function getTypeOfZone() : string
     {
         return ($this->isMasterZone()) ? 'master' : 'slave';
     }
@@ -322,13 +368,13 @@ class Zone extends Model
     /**
      * Returns if this is a master zone.
      *
-     * The DNS server is the primary source for information about this zone, and it stores
-     * the master copy of zone data in a local file.
+     * The DNS server is the primary source for information about this zone, and it stores the master copy of zone data
+     * in a local file.
      *
      * @return bool
      */
-    public function isMasterZone()
+    public function isMasterZone() : bool
     {
-        return ( ! $this->master);
+        return is_null($this->master_server);
     }
 }

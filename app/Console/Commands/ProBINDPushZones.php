@@ -140,7 +140,7 @@ class ProBINDPushZones extends Command
             ->get();
 
         // Create new Serial for this zone
-        $zone->setSerialNumber();
+        $zone->raiseSerialNumber();
 
         // Get all records
         $records = $zone->records()

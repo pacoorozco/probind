@@ -3,10 +3,10 @@
  * ProBIND v3 - Professional DNS management made easy.
  *
  * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
- *  
+ *
  * This file is part of some open source application.
- *  
- * Licensed under GNU General Public License 3.0. 
+ *
+ * Licensed under GNU General Public License 3.0.
  * Some rights reserved. See LICENSE, AUTHORS.
  *
  * @author      Paco Orozco <paco@pacoorozco.info>
@@ -43,10 +43,10 @@ class ZoneUnitTest extends TestCase
     /**
      * Test Zone serial creation
      */
-    public function testCreateSerialNumber()
+    public function testGenerateSerialNumber()
     {
-        $expectedSerial = intval(Carbon::now()->format('Ymd') . '01');
-        $serial = Zone::createSerialNumber();
+        $expectedSerial = intval(Carbon::now()->format('Ymd') . '00');
+        $serial = Zone::generateSerialNumber();
         $this->assertEquals($expectedSerial, $serial);
     }
 
@@ -58,11 +58,11 @@ class ZoneUnitTest extends TestCase
         $expectedZone = factory(Zone::class)->make();
 
         // Set a master Zone
-        $expectedZone->master = null;
+        $expectedZone->master_server = null;
         $this->assertTrue($expectedZone->isMasterZone());
 
         // Set an slave Zone
-        $expectedZone->master = '192.168.1.2';
+        $expectedZone->master_server = '192.168.1.2';
         $this->assertFalse($expectedZone->isMasterZone());
     }
 
@@ -74,11 +74,11 @@ class ZoneUnitTest extends TestCase
         $expectedZone = factory(Zone::class)->make();
 
         // Set a master Zone
-        $expectedZone->master = null;
+        $expectedZone->master_server = null;
         $this->assertEquals('master', $expectedZone->getTypeOfZone());
 
         // Set an slave Zone
-        $expectedZone->master = '192.168.1.2';
+        $expectedZone->master_server = '192.168.1.2';
         $this->assertEquals('slave', $expectedZone->getTypeOfZone());
     }
 
@@ -90,11 +90,11 @@ class ZoneUnitTest extends TestCase
         $expectedZone = factory(Zone::class)->make();
 
         // Set pending changes
-        $expectedZone->updated = true;
+        $expectedZone->has_modifications = true;
         $this->assertTrue($expectedZone->hasPendingChanges());
 
         // Clear pending changes
-        $expectedZone->updated = false;
+        $expectedZone->has_modifications = false;
         $this->assertFalse($expectedZone->hasPendingChanges());
     }
 
@@ -113,32 +113,42 @@ class ZoneUnitTest extends TestCase
     }
 
     /**
-     * Test Zone setSerialNumber() function
+     * Test Zone raiseSerialNumber() function
      */
-    public function testSetSerialNumber()
+    public function testRaiseSerialNumber()
     {
-        $expectedSerial = intval(Carbon::now()->format('Ymd') . '01');
-
         // Create a Zone without pending changes
-        $zone = factory(Zone::class)->create([
-            'updated' => false
-        ]);
-        $zone->setSerialNumber();
-        $this->assertEquals($expectedSerial, $zone->serial);
-
-        // Call again, but serial will be the same, there are pending changes
-        $zone->setSerialNumber();
-        $this->assertEquals($expectedSerial, $zone->serial);
-
-        // Simulate a push to servers, so pending changes are false
+        $zone = factory(Zone::class)->create();
+        $expectedSerial = $zone->serial;
         $zone->setPendingChanges(false);
-        $zone->setSerialNumber();
-        $this->assertNotEquals($expectedSerial, $zone->serial);
 
-        // Use force option on setSerialNumber()
+        // Raise Serial Number, has to be bigger than expected.
+        $zone->raiseSerialNumber();
+        $this->assertGreaterThan($expectedSerial, $zone->serial);
+
+        // Call again, but serial will be the same, there are still pending changes.
+        $expectedSerial = $zone->serial;
+        $zone->raiseSerialNumber();
+        $this->assertEquals($expectedSerial, $zone->serial);
+
+        // Simulate a push to servers, so pending changes are false.
+        $zone->setPendingChanges(false);
+
+        // Now, raise Serial Number will be get a greater one.
+        $expectedSerial = $zone->serial;
+        $zone->raiseSerialNumber();
+        $this->assertGreaterThan($expectedSerial, $zone->serial);
+
+        // Use force option on raiseSerialNumber()
         $zone->serial = $expectedSerial;
-        $zone->setSerialNumber(true);
-        $this->assertNotEquals($expectedSerial, $zone->serial);
+        $zone->raiseSerialNumber(true);
+        $this->assertGreaterThan($expectedSerial, $zone->serial);
+
+        // Create a low Serial Number and raise serial
+        $zone->serial = 2010010100;
+        $expectedSerial = Zone::generateSerialNumber();
+        $zone->raiseSerialNumber(true);
+        $this->assertEquals($expectedSerial, $zone->serial);
     }
 
     /**
@@ -148,11 +158,12 @@ class ZoneUnitTest extends TestCase
     {
         // Create a Zone without pending changes
         $zone = factory(Zone::class)->create([
-            'updated' => false
+            'has_modifications' => false
         ]);
+        // Pre-condition.
         $this->assertFalse($zone->hasPendingChanges());
 
-        // Set pending changes
+        // Set pending changes.
         $zone->setPendingChanges(true);
         $this->assertTrue($zone->hasPendingChanges());
     }
@@ -162,19 +173,21 @@ class ZoneUnitTest extends TestCase
      */
     public function testScopeWithPendingChanges()
     {
-        // Create Zone that are out this scope
+        // Create Zone that are out this scope.
         factory(Zone::class, 5)->create([
-            'updated' => false
+            'has_modifications' => false
         ]);
         $zonesWithPendingChanges = Zone::withPendingChanges()->get();
+
+        // Pre-condition.
         $this->assertEmpty($zonesWithPendingChanges);
 
-        // Create Zone that are in this scope
+        // Create Zone that are in this scope.
         factory(Zone::class, 5)->create([
-            'updated' => true,
-            'master'  => null
+            'has_modifications' => true
         ]);
         $zonesWithPendingChanges = Zone::withPendingChanges()->get();
+
         $this->assertCount(5, $zonesWithPendingChanges);
     }
 
@@ -185,16 +198,19 @@ class ZoneUnitTest extends TestCase
     {
         // Create Zone that are out this scope
         factory(Zone::class, 5)->create([
-            'master' => '192.168.1.3'
+            'master_server' => '192.168.1.3'
         ]);
         $masterZones = Zone::onlyMasterZones()->get();
+
+        // Pre-condition.
         $this->assertEmpty($masterZones);
 
         // Create Zone that are in this scope
         factory(Zone::class, 5)->create([
-            'master' => null
+            'master_server' => null
         ]);
         $masterZones = Zone::onlyMasterZones()->get();
+
         $this->assertCount(5, $masterZones);
     }
 }
