@@ -39,7 +39,7 @@ class RecordCreateRequest extends Request
      */
     public function rules()
     {
-        $validInputTypes = join(',', array_keys(Record::$validInputTypes));
+        $validInputTypes = join(',', array_keys(Record::$validRecordTypes));
 
         return [
             'name'     => 'required|string',

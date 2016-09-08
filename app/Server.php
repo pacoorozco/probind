@@ -17,19 +17,20 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Server model
  *
- * @property integer $id
- * @property string $hostname
- * @property string $ip_address
- * @property string $type
- * @property boolean $push_updates
- * @property boolean $ns_record
- * @property boolean active *
+ * @property integer $id            The object unique id.
+ * @property string  $hostname      The hostname of this server. Will be used on NS records.
+ * @property string  $ip_address    The IP address of this server. Will be used for glue records.
+ * @property string  $type          The type of this server. Could be 'master' or 'slave'.
+ * @property boolean $push_updates  This flag determines if this server must be pushed with zone files.
+ * @property boolean $ns_record     This flag determines if this server will be included as NS on zone files.
+ * @property boolean active         This flags determines if this server is active or inactive.
  */
 class Server extends Model
 {
@@ -69,11 +70,11 @@ class Server extends Model
     /**
      * Returns a customized message for Activity Log.
      *
-     * @param string $eventName
+     * @param string $eventName The event could be: saved, updated or deleted.
      *
      * @return string
      */
-    public function getDescriptionForEvent($eventName)
+    public function getDescriptionForEvent(string $eventName) : string
     {
         return trans('server/messages.activity.' . $eventName, [
             'hostname' => $this->hostname,
@@ -85,9 +86,8 @@ class Server extends Model
      * Set the Server's hostname lowercase.
      *
      * @param  string $value
-     * @return string|null
      */
-    public function setHostnameAttribute($value)
+    public function setHostnameAttribute(string $value)
     {
         $this->attributes['hostname'] = strtolower($value);
     }
@@ -96,9 +96,8 @@ class Server extends Model
      * Set the Server's ip_address lowercase.
      *
      * @param  string $value
-     * @return string|null
      */
-    public function setIpAddressAttribute($value)
+    public function setIpAddressAttribute(string $value)
     {
         $this->attributes['ip_address'] = strtolower($value);
     }
@@ -109,9 +108,8 @@ class Server extends Model
      * If $value does not exists on Server::$validServerTypes, we return de first one.
      *
      * @param  string $value
-     * @return string|null
      */
-    public function setTypeAttribute($value)
+    public function setTypeAttribute(string $value)
     {
         $lowerCaseValue = strtolower($value);
         $this->attributes['type'] = in_array($lowerCaseValue, self::$validServerTypes)
@@ -120,12 +118,13 @@ class Server extends Model
     }
 
     /**
-     * Returns a formatted NS record for a server
+     * Returns a formatted NS record for a server.
      *
      * @return string
+     *
      * @codeCoverageIgnore
      */
-    public function getNSRecord()
+    public function getNSRecord() : string
     {
         return sprintf("%-32s IN\tNS\t%s.", ' ', $this->hostname);
     }
@@ -133,12 +132,11 @@ class Server extends Model
     /**
      * Scope a query to include servers thant can be pushed.
      *
-     * Criteria:
-     *     - Has push_updates flag
+     * @param \Illuminate\Database\Eloquent\Builder $query
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithPushCapability($query)
+    public function scopeWithPushCapability(Builder $query) : Builder
     {
         return $query->where('push_updates', true);
     }

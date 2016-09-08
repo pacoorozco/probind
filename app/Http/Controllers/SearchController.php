@@ -44,7 +44,7 @@ class SearchController extends Controller
     {
         return array_merge(
             ['ANY_TYPE' => trans('record/model.any_type')],
-            Record::$validInputTypes
+            Record::$validRecordTypes
         );
     }
 

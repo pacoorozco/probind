@@ -40,6 +40,9 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property boolean $has_modifications     This flag determines if this zone has been modified from last push.
  *
  * @link https://www.ietf.org/rfc/rfc1035.txt
+ * @link https://www.ietf.org/rfc/rfc2782.txt
+ *
+ * TODO: Add Inverse Zones. Create a new flag for inverse zones, *.IN-ADDR.ARPA. Only PTR, NS will be allowed.
  */
 class Zone extends Model
 {
