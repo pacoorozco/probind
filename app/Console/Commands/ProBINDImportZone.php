@@ -14,7 +14,7 @@ class ProBINDImportZone extends Command
      * @var string
      */
     protected $signature = 'probind:import 
-                {zone : The zone domain to import}
+                {zone : The zone domain name to create}
                 {zonefile : The file name to import} 
                 {--force}';
 
@@ -44,32 +44,32 @@ class ProBINDImportZone extends Command
         $fileDNS->load($this->argument('zone'), $this->argument('zonefile'));
         $records = $fileDNS->getRecords();
 
-        if ($this->option('force')) {
-            $zone = Zone::withTrashed()
-                ->where([
-                    'domain' => $this->argument('zone')
-                ])->first();
-            if ($zone) {
-                $zone->forceDelete();
-            }
+        $existingZone = Zone::withTrashed()
+            ->where([
+                'domain' => $this->argument('zone')
+            ])->first();
 
+        if ($existingZone) {
+            $this->info('Zone \'' . $existingZone->domain . '\' exists on ProBIND.');
+        }
+
+        if ($existingZone && $this->option('force')) {
+            $this->info('Force option used, \'' . $existingZone->domain . '\' contents will be deleted.');
+            $existingZone->forceDelete();
         }
 
         $zone = Zone::create($fileDNS->getZoneData());
         foreach ($records as $item) {
-            $record = $zone->records()->create([
-                'name' => $item['name'],
-                'ttl'  => $item['ttl'],
-                'type' => $item['type'],
-                'data' => $item['data']
+            $zone->records()->create([
+                'name'     => $item['name'],
+                'ttl'      => $item['ttl'],
+                'type'     => $item['type'],
+                'priority' => array_get('options.preference', null),
+                'data'     => $item['data']
             ]);
-
-            if ($item['type'] == 'MX') {
-                $record->priority = $item['options']['preference'];
-                $record->save();
-            }
         }
 
+        $this->info('Import zone <strong>' . $zone->domain . '</strong> has created <strong>' . $zone->records()->count() . '</strong> records.');
         activity()->log('Import zone <strong>' . $zone->domain . '</strong> has created <strong>' . $zone->records()->count() . '</strong> records.');
     }
 }
