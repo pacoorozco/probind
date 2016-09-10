@@ -25,4 +25,8 @@ return [
 
     'bulk_update_warning' => 'You are about to mark all domains in the database as having been updated. This means that the next time you push database updates to the DNS servers, it will take a very long time. This operation is only appropriate in a situation where one or more of the DNS servers is known to be out of synchronization with this database, or if there has been a change to the set of DNS servers which should appear in NS records. ',
     'bulk_update_success' => 'All zones has been marked with pending changes',
+
+    'zonefile'            => 'A RFC 1033 / BIND file containing Zone data',
+    'import_zone_success' => 'Your file is being processed, data will be imported to :zone.',
+    'import_button'       => 'Import',
 ];

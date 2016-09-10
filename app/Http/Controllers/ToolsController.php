@@ -19,6 +19,8 @@ namespace App\Http\Controllers;
 
 use App\Server;
 use App\Zone;
+use Artisan;
+use Illuminate\Http\Request;
 
 class ToolsController extends Controller
 {
@@ -91,5 +93,59 @@ class ToolsController extends Controller
 
         return redirect()->route('home')
             ->with('success', trans('tools/messages.bulk_update_success'));
+    }
+
+    /**
+     * Show the form to import a zone from a RFC 1033 file.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function importZone()
+    {
+        return view('tools.import_zone');
+    }
+
+    /**
+     * Call Artisan 'probind:import' command with supplied data.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function importZonePost(Request $request)
+    {
+        $this->validate($request, [
+            'domain'    => 'required|string',
+            'zonefile'  => 'required|file|max:2048',
+            'overwrite' => 'sometimes|boolean'
+        ]);
+
+        // Validator fails
+
+        /*
+
+        try {
+            $fname = md5(rand()) . '.xlsx';
+            $full_path = Config::get('filesystems.disks.local.root');
+            $excel_file->move( $full_path, $fname );
+            $flag_table = Flag::firstOrNew(['file_name'=>$fname]);
+            $flag_table->imported = 0; //file was not imported
+            $flag_table->save();
+        }catch(\Exception $e){
+            return Redirect::to(route('home'))
+                ->withErrors($e->getMessage()); //don't use this in production ok ?
+        }
+
+        */
+
+        Artisan::call('probind:import', [
+            'zone'     => $request->input('domain'),
+            'zonefile' => $request->file('zonefile')->path(),
+            '--force'  => $request->has('overwrite'),
+        ]);
+
+        return redirect()->route('home')
+            ->with('success',
+                trans('tools/messages.import_zone_success', ['zone' => $request->input('domain')]));
     }
 }

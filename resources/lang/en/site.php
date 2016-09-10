@@ -26,6 +26,7 @@ return [
     'tools'        => 'Tools',
     'bulk_update'  => 'Bulk Update',
     'push_updates' => 'Push Updates',
+    'import_zone'  => 'Import Zone',
 
     'settings'  => 'Settings',
     'configure' => 'PROBIND CONFIGURATION',

@@ -23,5 +23,8 @@ return [
     'bulk_update'          => 'Bulk Update',
     'bulk_update_subtitle' => 'mark all zones with pending changes',
 
+    'import_zone' => 'Import Zone',
+    'import_zone_subtitle' => 'import a zone data from a RFC 1033 file',
+
 
 ];
