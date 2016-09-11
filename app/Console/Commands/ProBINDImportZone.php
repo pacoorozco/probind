@@ -42,7 +42,6 @@ class ProBINDImportZone extends Command
     {
         $fileDNS = new FileDNSParser();
         $fileDNS->load($this->argument('zone'), $this->argument('zonefile'));
-        $records = $fileDNS->getRecords();
 
         if (!$this->option('force')) {
             // Check if Zone exists on database.
@@ -66,8 +65,17 @@ class ProBINDImportZone extends Command
             $existingZone->forceDelete();
         }
 
-        // Create the zone and associate all its records.
-        $zone = Zone::create($fileDNS->getZoneData());
+        // Create the zone and fill with parsed data.
+        $zoneData = $fileDNS->getZoneData();
+        $zone = new Zone();
+        $zone->domain = $this->argument('zone');
+        $zone->serial = $zoneData['serial'];
+        $zone->custom_settings = true;
+        $zone->fill(array_only($zoneData, ['refresh', 'retry', 'expire', 'negative_ttl', 'default_ttl']));
+        $zone->save();
+
+        // Associate parsed RR
+        $records = $fileDNS->getRecords();
         foreach ($records as $item) {
             $zone->records()->create([
                 'name'     => $item['name'],
@@ -84,3 +92,5 @@ class ProBINDImportZone extends Command
         return true;
     }
 }
+
+
