@@ -113,7 +113,13 @@ class FileDNSParser
      */
     public function getRecords()
     {
-        return $this->records;
+        $another = [];
+        foreach ($this->records as $record) {
+            $record['name'] = preg_replace('/\.'.$this->domain.'\.$/', '', $record['name']);
+            $record['name'] = preg_replace('/'.$this->domain.'\.$/', '@', $record['name']);
+            $another[] = $record;
+        }
+        return $another;
     }
 
     /**
@@ -474,10 +480,6 @@ class FileDNSParser
         if (!preg_match('/(.*\.)/', $record['name'])) {
             $record['name'] = $record['name'] . '.' . $origin;
         }
-        // Remove zone name for impliced zone domain name.
-        $record['name'] = preg_replace('/\.' . $this->domain . '\.$/', '', $record['name']);    // Example: 'ftp.domain.com' => 'ftp'
-        $record['name'] = preg_replace('/' . $this->domain . '\.$/', '@', $record['name']);     // Example: 'domain.com' => '@'
-
         foreach ($items as $key => $item) {
             $item = trim($item);
             if (preg_match('/^[0-9]/', $item) &&
