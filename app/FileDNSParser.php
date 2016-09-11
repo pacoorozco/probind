@@ -103,22 +103,6 @@ class FileDNSParser
     private $domain = null;
 
     /**
-     * Checks if a value is an IP address or not.
-     *
-     * @param string $value Value to check.
-     *
-     * @return bool     true or false.
-     */
-    public static function isIP(string $value) : bool
-    {
-        // http://www.regular-expressions.info/regexbuddy/ipaccurate.html
-        $ipaccurate = '/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}' .
-            '(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/';
-
-        return preg_match($ipaccurate, $value);
-    }
-
-    /**
      * Get an array with the records of this zone file.
      *
      * Returns an unindexed array of Resource Records (RR's) for this zone. Each item is a separate RR.
@@ -193,17 +177,14 @@ class FileDNSParser
         // RFC1033: A semicolon (';') starts a comment; the remainder of the line is ignored.
         $zone = preg_replace('/(;.*)$/m', '', $zone);
 
-        // FIXME:
-        // There has to be an easier way to do that, but for now it'll do.
-
-        // RFC1033: Parenthesis ('(',')') are used to group data that crosses a line boundary.
+        // RFC1033: Parenthesis '(' and ')' are used to group data that crosses a line boundary.
         $zone = preg_replace_callback(
             '/(\([^()]*\))/',
-            create_function(
-                '$matches',
-                'return str_replace("\\n", "", $matches[0]);'
-            )
-            , $zone);
+            function ($matches) {
+                return str_replace(PHP_EOL, '', $matches[0]);
+            },
+            $zone
+        );
         $zone = str_replace('(', '', $zone);
         $zone = str_replace(')', '', $zone);
 
@@ -225,29 +206,29 @@ class FileDNSParser
          *  @ is new.sub3.example.com.
          */
 
-        $originFQDN = $origin = $current = $this->domain . '.';
+        $origin = $current = $this->domain . '.';
         $ttl = 86400; // RFC1537 advices this value as a default TTL.
 
-        $zone = explode("\n", $zone);
+        $zone = explode(PHP_EOL, $zone);
         foreach ($zone as $line) {
             $line = rtrim($line);
             $line = preg_replace('/\s+/', ' ', $line);
 
-            $record = array();
             if (!$line) {
-                //Empty lines are stripped.
+                // Empty lines are stripped.
+                continue;
             } elseif (preg_match('/^\$TTL([^0-9]*)([0-9]+)/i',
                 $line, $matches)) {
                 //RFC 2308 define the $TTL keyword as default TTL from here.
                 $ttl = intval($matches[2]);
             } elseif (preg_match('/^\$ORIGIN (.*\.)/', $line, $matches)) {
                 //FQDN origin. Note the trailing dot(.)
-                $origin = $originFQDN = trim($matches[1]);
+                $origin = trim($matches[1]);
             } elseif (preg_match('/^\$ORIGIN (.*)/', $line, $matches)) {
                 //New origin. Append to current origin.
                 $origin = trim($matches[1]) . '.' . $origin;
             } elseif (stristr($line, ' SOA ')) {
-                if ($this->SOA) {
+                if (!empty($this->SOA)) {
                     //SOA already set. Only one per zone is possible.
                     //Done parsing.
                     //A second SOA is added by programs such as dig,
@@ -255,20 +236,20 @@ class FileDNSParser
                     break;
                 }
                 $soa = $this->parseSOA($line, $origin, $ttl);
-                if (!$soa) {
+                if (empty($soa)) {
                     return false;
                 }
                 $soa = $this->setSOAValue($soa);
-                if (!$soa) {
+                if (empty($soa)) {
                     return false;
                 }
             } else {
-                $rr = $this->parseRR($line, $origin, $ttl, $current);
-                if (!$rr) {
+                $record = $this->parseRR($line, $origin, $ttl, $current);
+                if (!$record) {
                     return false;
                 }
-                $current = $rr['name'];
-                $this->records[] = $rr;
+                $current = $record['name'];
+                $this->records[] = $record;
             }
         }
 
@@ -434,6 +415,7 @@ class FileDNSParser
                 case 'person':
                     $value = str_replace('@', '.', $value);
                     $value = trim($value, '.') . '.';
+                // no break
                 case 'name':
                 case 'origin':
                     $valid = '/^[A-Za-z0-9\-\_\.]*\.$/';
@@ -452,12 +434,10 @@ class FileDNSParser
                 case 'retry':
                 case 'expire':
                 case 'negative_ttl':
-                    if (is_numeric($value)) {
-                        $soa[$key] = $value;
-                    } else {
+                    if (!is_numeric($value)) {
                         throw new Exception('Unable to set SOA value. ' . $key . ' not recognized');
                     }
-                    break;
+                    $soa[$key] = $value;
             }
         }
         // If all got parsed, save values.
@@ -491,6 +471,13 @@ class FileDNSParser
             $record['name'] = $current;
         }
         unset($items[0]);
+        if (!preg_match('/(.*\.)/', $record['name'])) {
+            $record['name'] = $record['name'] . '.' . $origin;
+        }
+        // Remove zone name for impliced zone domain name.
+        $record['name'] = preg_replace('/\.' . $this->domain . '\.$/', '', $record['name']);    // Example: 'ftp.domain.com' => 'ftp'
+        $record['name'] = preg_replace('/' . $this->domain . '\.$/', '@', $record['name']);     // Example: 'domain.com' => '@'
+
         foreach ($items as $key => $item) {
             $item = trim($item);
             if (preg_match('/^[0-9]/', $item) &&
@@ -556,50 +543,5 @@ class FileDNSParser
         }
 
         return $record;
-    }
-
-    /**
-     * Returns a string with the zone file generated from this object.
-     *
-     * @param  string $separator The line ending separator. Defaults to \n
-     *
-     * @return string  The generated zone.
-     */
-    public function toString($separator = "\n")
-    {
-        $zone = $this->generateZone();
-        if (!$zone) {
-            return $zone;
-        }
-        $zone = implode($separator, $zone);
-
-        return $zone;
-    }
-
-    /**
-     * Converts seconds to BIND-style time(1D, 2H, 15M).
-     *
-     * @param  integer $time seconds to convert
-     *
-     * @return string String with time.
-     * @throws Exception
-     *
-     */
-    public static function parseFromSeconds(int $time) : string
-    {
-        $time = intval($time);
-        if (!is_int($time)) {
-            throw new Exception('Unable to parse time back. ' . $time);
-        } elseif (is_int($num = ($time / (1 * 60 * 60 * 24 * 7)))) {
-            return "$num" . 'W';
-        } elseif (is_int($num = ($time / (1 * 60 * 60 * 24)))) {
-            return "$num" . 'D';
-        } elseif (is_int($num = ($time / (1 * 60 * 60)))) {
-            return "$num" . 'H';
-        } elseif (is_int($num = ($time / (1 * 60)))) {
-            return "$num" . 'M';
-        } elseif (is_int($num = ($time / (1)))) {
-            return "$num";
-        }
     }
 }
