@@ -17,10 +17,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ImportZoneRequest;
 use App\Server;
 use App\Zone;
 use Artisan;
-use Illuminate\Http\Request;
 
 class ToolsController extends Controller
 {
@@ -108,39 +108,22 @@ class ToolsController extends Controller
     /**
      * Call Artisan 'probind:import' command with supplied data.
      *
-     * @param Request $request
+     * @param ImportZoneRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
+     *
+     * FIXME
+     * Use queues for doing long tasks on background. This will require some notification system.
+     * Errors processing import Zone.
      */
-    public function importZonePost(Request $request)
+    public function importZonePost(ImportZoneRequest $request)
     {
-        $this->validate($request, [
-            'domain'    => 'required|string',
-            'zonefile'  => 'required|file|max:2048',
-            'overwrite' => 'sometimes|boolean'
-        ]);
+        // Move uploaded file to local storage.
+        $zonefile = $request->file('zonefile')->store('temp');
 
-        // Validator fails
-
-        /*
-
-        try {
-            $fname = md5(rand()) . '.xlsx';
-            $full_path = Config::get('filesystems.disks.local.root');
-            $excel_file->move( $full_path, $fname );
-            $flag_table = Flag::firstOrNew(['file_name'=>$fname]);
-            $flag_table->imported = 0; //file was not imported
-            $flag_table->save();
-        }catch(\Exception $e){
-            return Redirect::to(route('home'))
-                ->withErrors($e->getMessage()); //don't use this in production ok ?
-        }
-
-        */
-
-        Artisan::call('probind:import', [
+        $exitCode = Artisan::call('probind:import', [
             'zone'     => $request->input('domain'),
-            'zonefile' => $request->file('zonefile')->path(),
+            'zonefile' => storage_path('app/' . $zonefile),
             '--force'  => $request->has('overwrite'),
         ]);
 
