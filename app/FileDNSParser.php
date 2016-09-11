@@ -49,74 +49,106 @@ class FileDNSParser
     /**
      * Contains all the records in this zone.
      *
-     * An unindexed array of Resource Records (RR's) for this zone. Each item is a separate RR.
-     * It's format should be pretty self explaining.
-     * See manual for exact definition.
+     * An unindexed array of Resource Records (RR's) for this zone. Each item is a separate array representing a RR.
+     *
+     * Each RR item is an array:
+     *
+     * $record = [
+     *  'name'      => 'sub.domain',
+     *  'ttl'       => 7200,
+     *  'class'     => 'IN',
+     *  'type'      => 'MX',
+     *  'data'      => '10.10.10.1',
+     *  'options'   => [
+     *          'preference'    => 10,
+     *                  ],
+     * ];
      *
      * @var array
      */
     private $records = array();
     /**
-     * SOA Record of the loaded zone.
+     * Zone data of the loaded zone.
      *
      * This contains all the relevant data stored in the SOA (Start of Authority) record.
      * It's stored in an associative array, that should be pretty self-explaining.
      *
-     * $_SOA = [
-     *       'name' => 'example.com.',
-     *       'ttl' => '345600',
-     *       'class' => 'IN',
-     *       'origin' => 'ns1.example.com.',
-     *       'person' => 'hostmaster.example.com.',
+     * $zoneData = [
+     *       'domain' => 'example.com.',
+     *       'mname' => 'ns1.example.com.',
+     *       'rname' => 'hostmaster.example.com.',
      *       'serial' => '204041514',
      *       'refresh' => '14400',
      *       'retry' => '1800',
      *       'expire' => '86400',
-     *       'negative_ttl' => '10800'
+     *       'negative_ttl' => '10800',
+     *       'default_ttl' => '16400',
      *   ];
      *
      * @var array
      */
-    private $SOA = array();
-
-    public function getZoneData() : array
-    {
-        return [
-            'domain'       => rtrim($this->SOA['name'], '.'),
-            'serial'       => $this->SOA['serial'],
-            'refresh'      => $this->SOA['refresh'],
-            'retry'        => $this->SOA['retry'],
-            'expire'       => $this->SOA['expire'],
-            'negative_ttl' => $this->SOA['negative_ttl'],
-            'default_ttl'  => $this->SOA['ttl'],
-        ];
-    }
+    private $zoneData = [
+        'domain'       => null,
+        'mname'        => null,
+        'rname'        => null,
+        'serial'       => null,
+        'refresh'      => null,
+        'retry'        => null,
+        'expire'       => null,
+        'negative_ttl' => null,
+        'default_ttl'  => null,
+    ];
 
     /**
      * Contains the domain name of the loaded zone.
-     *
-     * The domain name will automatically be appended to any and all records.
-     * Unused if set to null.
      *
      * @var string
      */
     private $domain = null;
 
     /**
-     * Get an array with the records of this zone file.
+     * Return an array with zone parsed data from file.
      *
-     * Returns an unindexed array of Resource Records (RR's) for this zone. Each item is a separate RR.
+     * $zone = [
+     *  'domain'        => 'example.com',
+     *  'serial'        => 2016091100,
+     *  'refresh'       => 14400,
+     *  'retry'         => 1800,
+     *  'expire'        => 86400,
+     *  'negative_ttl'  => 10800,
+     *  'default_ttl'   => 16400,
+     * ];
+     *
+     * @return array
+     */
+    public function getZoneData() : array
+    {
+        return array_only($this->zoneData, [
+            'domain',
+            'serial',
+            'refresh',
+            'retry',
+            'expire',
+            'negative_ttl',
+            'default_ttl',
+        ]);
+    }
+
+    /**
+     * Return an array with the records parsed from file..
+     *
+     * Returns an unindexed array of Resource Records (RR's) for this zone.
      *
      * $records = $fileDNS->getRecords();
      *
      * @return array
      */
-    public function getRecords()
+    public function getRecords() : array
     {
         $another = [];
         foreach ($this->records as $record) {
-            $record['name'] = preg_replace('/\.'.$this->domain.'\.$/', '', $record['name']);
-            $record['name'] = preg_replace('/'.$this->domain.'\.$/', '@', $record['name']);
+            $record['name'] = preg_replace('/\.' . $this->domain . '\.$/', '', $record['name']);
+            $record['name'] = preg_replace('/' . $this->domain . '\.$/', '@', $record['name']);
             $another[] = $record;
         }
         return $another;
@@ -133,39 +165,17 @@ class FileDNSParser
      */
     public function load(string $domain, string $zonefile) : bool
     {
+        // Set domain to the supplied value.
+        $this->domain = $domain;
 
         try {
             $zone = File::get($zonefile);
         } catch (Exception $e) {
-            throw new FileNotFoundException('Unable to read file ' . $zonefile);
+            throw new FileNotFoundException('Unable to read file: ' . $zonefile);
         }
-        $ret = $this->setDomainName($domain);
-        if (!$ret) {
-            return $ret;
-        }
-        $parse = $this->parseZone($zone);
 
-        return $parse;
-    }
-
-    /**
-     * Sets the domain name of the currently loaded zone.
-     *
-     * @param string $domain the new domain name
-     *
-     * @return boolean
-     * @throws Exception
-     */
-    private function setDomainName(string $domain) : bool
-    {
-        $valid = '/^[A-Za-z0-9\-\_\.]*$/';
-        if (!preg_match($valid, $domain)) {
-            throw new Exception('Unable to set domain name: ' . $domain);
-        }
-        $domain = rtrim($domain, '.');
-        $this->domain = $domain;
-
-        return true;
+        // Parse zone file contents to create an array of RR.
+        return $this->parseZone($zone);
     }
 
     /**
@@ -174,25 +184,25 @@ class FileDNSParser
      * This function parses the zone file and saves the data collected from it to the _domain, _SOA and _records
      * variables.
      *
-     * @param string $zone The zone file contents to parse.
+     * @param string $fileContents The zone file contents to parse.
      *
      * @return boolean
      */
-    private function parseZone(string $zone) : bool
+    private function parseZone(string $fileContents) : bool
     {
         // RFC1033: A semicolon (';') starts a comment; the remainder of the line is ignored.
-        $zone = preg_replace('/(;.*)$/m', '', $zone);
+        $fileContents = preg_replace('/(;.*)$/m', '', $fileContents);
 
         // RFC1033: Parenthesis '(' and ')' are used to group data that crosses a line boundary.
-        $zone = preg_replace_callback(
+        $fileContents = preg_replace_callback(
             '/(\([^()]*\))/',
             function ($matches) {
                 return str_replace(PHP_EOL, '', $matches[0]);
             },
-            $zone
+            $fileContents
         );
-        $zone = str_replace('(', '', $zone);
-        $zone = str_replace(')', '', $zone);
+        $fileContents = str_replace('(', '', $fileContents);
+        $fileContents = str_replace(')', '', $fileContents);
 
         /*
          * Origin is the current origin(@) that we're at now.
@@ -211,12 +221,13 @@ class FileDNSParser
          *  $ORIGIN new.sub3.example.com.
          *  @ is new.sub3.example.com.
          */
-
-        $origin = $current = $this->domain . '.';
+        $origin = $lastRecordName = $this->domain . '.';
         $ttl = 86400; // RFC1537 advices this value as a default TTL.
 
-        $zone = explode(PHP_EOL, $zone);
-        foreach ($zone as $line) {
+        // We will parse file contents line by line.
+        $fileContents = explode(PHP_EOL, $fileContents);
+        foreach ($fileContents as $line) {
+            // Remove end character and multiple spaces and tabs from line.
             $line = rtrim($line);
             $line = preg_replace('/\s+/', ' ', $line);
 
@@ -227,6 +238,7 @@ class FileDNSParser
                 $line, $matches)) {
                 //RFC 2308 define the $TTL keyword as default TTL from here.
                 $ttl = intval($matches[2]);
+                $this->setZoneDataAttributeIfNotExist('default_ttl', $matches[2]);
             } elseif (preg_match('/^\$ORIGIN (.*\.)/', $line, $matches)) {
                 //FQDN origin. Note the trailing dot(.)
                 $origin = trim($matches[1]);
@@ -234,27 +246,14 @@ class FileDNSParser
                 //New origin. Append to current origin.
                 $origin = trim($matches[1]) . '.' . $origin;
             } elseif (stristr($line, ' SOA ')) {
-                if (!empty($this->SOA)) {
-                    //SOA already set. Only one per zone is possible.
-                    //Done parsing.
-                    //A second SOA is added by programs such as dig,
-                    //to indicate the end of a zone.
-                    break;
-                }
-                $soa = $this->parseSOA($line, $origin, $ttl);
-                if (empty($soa)) {
-                    return false;
-                }
-                $soa = $this->setSOAValue($soa);
-                if (empty($soa)) {
-                    return false;
-                }
+                // Parse SOA line, if there is any error an Exception is thrown.
+                $this->parseSOA($line);
             } else {
-                $record = $this->parseRR($line, $origin, $ttl, $current);
+                $record = $this->parseRR($line, $origin, $ttl, $lastRecordName);
                 if (!$record) {
                     return false;
                 }
-                $current = $record['name'];
+                $lastRecordName = $record['name'];
                 $this->records[] = $record;
             }
         }
@@ -263,61 +262,101 @@ class FileDNSParser
     }
 
     /**
+     * Set an attribute in $this->zoneData, only if it has not been set before.
+     *
+     * @param string $attribute    The attribute of $this->zoneData to be set.
+     * @param string $value        The value for this attribute.
+     * @param string $validPattern A regexp to validate value. Default is null, to no validate.
+     * @param bool   $force        This flags determine if value is set although it has been set before.
+     *                             Default is false, to no overwrite.
+     *
+     * @return bool
+     * @throws Exception
+     */
+    private function setZoneDataAttributeIfNotExist(
+        string $attribute,
+        string $value,
+        string $validPattern = null,
+        bool $force = false
+    ) : bool
+    {
+        if (empty($this->zoneData[$attribute]) || $force) {
+            // Check if $value is a correct one.
+            if (!is_null($validPattern) && !preg_match($validPattern, $value)) {
+                throw new Exception('Invalid value \'' . $value . '\'. Does not match with \'' . $validPattern . '\' pattern.');
+            }
+
+            // Set the attribute.
+            $this->zoneData[$attribute] = $value;
+        }
+        return true;
+    }
+
+    /**
      * Parses a SOA (Start Of Authority) record line.
      *
-     * This function returns the parsed SOA in array form.
+     * This function parses SOA and set $this->zoneData. Throws Exception if there is any parser problem.
      *
      * @param string $line   the SOA line to be parsed.
      *                       Should be stripped of comments and on 1 line.
-     * @param string $origin the current origin of this SOA record
-     * @param int    $ttl    the TTL of this record
      *
-     * @return array array of SOA info .
+     * @return bool
      * @throws Exception
      */
-    private function parseSOA(string $line, string $origin, int $ttl) : array
+    private function parseSOA(string $line) : bool
     {
-        $soa = [];
+        // Check that lines contain a SOA record.
+        if (!stristr($line, ' SOA ')) {
+            return false;
+        }
+        /*
+         * $this->zoneData already set. Only one SOA per zone is possible. Done parsing.
+         *
+         * A second SOA is added by programs such as dig, to indicate the end of a zone.
+         */
+        if (!empty($this->zoneData['serial'])) {
+            return true;
+        }
+
+        // Parse supplied line to find all SOA fields.
         $regexp = '/(.*) SOA (\S*) (\S*) (\S*) (\S*) (\S*) (\S*) (\S*)/i';
         preg_match($regexp, $line, $matches);
         if (sizeof($matches) != 9) {
             throw new Exception('Unable to parse SOA.');
         }
-        $pre = explode(' ', strtolower($matches[1]));
-        if ($pre[0] == '@') {
-            $soa['name'] = $origin;
-        } else {
-            $soa['name'] = $pre[0];
-        }
-        if (isset($pre[1])) {
-            if (strtoupper($pre[1]) == 'IN') {
-                $soa['ttl'] = $ttl;
-                $soa['class'] = 'IN';
-            } else {
-                $soa['ttl'] = $this->parseToSeconds($pre[1]);
-            }
-            if (isset($pre[2])) {
-                $soa['class'] = $pre[2];
-            }
-        } else {
-            $soa['ttl'] = $ttl;
-            $soa['class'] = 'IN';
-        }
-        $soa['origin'] = $matches[2];
-        $soa['person'] = $matches[3];
-        $soa['serial'] = $matches[4];
-        $soa['refresh'] = $this->parseToSeconds($matches[5]);
-        $soa['retry'] = $this->parseToSeconds($matches[6]);
-        $soa['expire'] = $this->parseToSeconds($matches[7]);
-        $soa['negative_ttl'] = $this->parseToSeconds($matches[8]);
-        foreach (array_values($soa) as $item) {
-            //Scan all items to see if any are a pear error.
-            if (!$item) {
-                return $item;
-            }
+        try {
+            /*
+             * The first field, matches[1], could be '@' or a domain name 'example.com.', followed by a SOA TTL and
+             * class (IN).
+             * But we don't use any of this values, so set 'domain' from $this->domain and not from parsed SOA.
+             */
+            $this->setZoneDataAttributeIfNotExist('domain', $this->domain);
+            /*
+             * The second field, matches[2], is the 'mname' SOA field.
+             */
+            $matches[2] = str_replace('@', '.', $matches[2]);
+            $matches[2] = trim($matches[2], '.') . '.';
+            $this->setZoneDataAttributeIfNotExist('mname', $matches[2], '/^[A-Za-z0-9\-\_\.]*\.$/');
+            /*
+             * The third field, matches[3], is the 'rname' SOA field.
+             */
+            $this->setZoneDataAttributeIfNotExist('rname', $matches[3], '/^[A-Za-z0-9\-\_\.]*\.$/');
+            /*
+             * The fourth fielss, matches[4], is the 'serial' SOA field.
+             */
+            $this->setZoneDataAttributeIfNotExist('serial', $matches[4]);
+            /*
+             * The next 4 fields, are the 'refresh', 'retry', 'expire' and 'negative_ttl' SOA fields.
+             */
+            $this->setZoneDataAttributeIfNotExist('refresh', $matches[5]);
+            $this->setZoneDataAttributeIfNotExist('retry', $matches[6]);
+            $this->setZoneDataAttributeIfNotExist('expire', $matches[7]);
+            $this->setZoneDataAttributeIfNotExist('negative_ttl', $matches[8]);
+        } catch (Exception $e) {
+            throw new Exception('Unable to set SOA value.' . $e);
         }
 
-        return $soa;
+        return true;
     }
 
     /**
@@ -328,7 +367,10 @@ class FileDNSParser
      * @return integer
      * @throws Exception
      */
-    public static function parseToSeconds(string $time) : int
+    public
+    static function parseToSeconds(
+        string $time
+    ) : int
     {
         if (is_numeric($time)) {
             // Already a number. Return.
@@ -365,145 +407,74 @@ class FileDNSParser
         $time = $num * $times;
 
         return $time;
-
-    }
-
-    /**
-     * Sets a specific value in the SOA field.
-     *
-     * This function updates the list of SOA data we have.
-     * List of accepted key => value pairs:
-     * <pre>
-     * Array
-     *   (
-     *       [name] => example.com.
-     *       [ttl] => 345600
-     *       [class] => IN
-     *       [origin] => ns1.example.com.
-     *       [person] => hostmaster.example.com.
-     *       [serial] => 204041514
-     *       [refresh] => 14400
-     *       [retry] => 1800
-     *       [expire] => 86400
-     *       [negative_ttl] => 10800
-     *   )
-     * </pre>
-     *
-     * @param array $values A list of key -> value pairs
-     *
-     * @return boolean
-     * @throws Exception
-     */
-    protected function setSOAValue(array $values) : bool
-    {
-        $soa = array();
-        if (!is_array($values)) {
-            throw new Exception('Unable to set SOA value.');
-        }
-        $validKeys = array(
-            'name',
-            'ttl',
-            'class',
-            'origin',
-            'person',
-            'serial',
-            'refresh',
-            'retry',
-            'expire',
-            'negative_ttl'
-        );
-        foreach ($values as $key => $value) {
-            if (array_search($key, $validKeys) === false) {
-                throw new Exception('Unable to set SOA value. ' . $key . ' not recognized');
-            }
-
-            switch (strtolower($key)) {
-                case 'person':
-                    $value = str_replace('@', '.', $value);
-                    $value = trim($value, '.') . '.';
-                // no break
-                case 'name':
-                case 'origin':
-                    $valid = '/^[A-Za-z0-9\-\_\.]*\.$/';
-                    if (preg_match($valid, $value)) {
-                        $soa[$key] = $value;
-                    } else {
-                        throw new Exception('Unable to set SOA value. ' . $key . ' not valid');
-                    }
-                    break;
-                case 'class':
-                    $soa[$key] = $value;
-                    break;
-                case 'ttl':
-                case 'serial':
-                case 'refresh':
-                case 'retry':
-                case 'expire':
-                case 'negative_ttl':
-                    if (!is_numeric($value)) {
-                        throw new Exception('Unable to set SOA value. ' . $key . ' not recognized');
-                    }
-                    $soa[$key] = $value;
-            }
-        }
-        // If all got parsed, save values.
-        $this->SOA = array_merge($this->SOA, $soa);
-
-        return true;
     }
 
     /**
      * Parses a (Resource Record) into an array
      *
-     * @param string $line    the RR line to be parsed.
-     * @param string $origin  the current origin of this record.
-     * @param int    $ttl     the TTL of this record.
-     * @param string $current the current domain name we're working on.
+     * @param string $line           the RR line to be parsed.
+     * @param string $origin         the current origin of this record.
+     * @param int    $ttl            the TTL of this record.
+     * @param string $lastRecordName the current domain name we're working on.
      *
      * @return array  array of RR info.
      * @throws Exception
      */
-    private function parseRR(string $line, string $origin, int $ttl, string $current) : array
+    private
+    function parseRR(
+        string $line,
+        string $origin,
+        int $ttl,
+        string $lastRecordName
+    ) : array
     {
-        $record = array();
         $items = explode(' ', $line);
+
+        $record = [];
         $record['name'] = $items[0];
         $record['ttl'] = null;
         $record['class'] = null;
         $record['type'] = null;
         $record['data'] = null;
-        if (!$record['name']) {
-            // No name specified, inherit current name.
-            $record['name'] = $current;
+
+        /*
+         * The first field, items[0], could be '' (inherit last record, 'ftp.example.com.' (FQDN) or 'ftp'.
+         */
+        if (empty($record['name'])) {
+            // No name specified, inherit last parsed RR name.
+            $record['name'] = $lastRecordName;
+        }
+        // If it's a FQDN, add the current origin.
+        // if (!preg_match('/(.*\.)/', $record['name'])) {
+        if (!preg_match('/(.*\.)/', $record['name'])) {
+            $record['name'] .= '.' . $origin;
         }
         unset($items[0]);
-        if (!preg_match('/(.*\.)/', $record['name'])) {
-            $record['name'] = $record['name'] . '.' . $origin;
-        }
+
+        /*
+         * The remaining fields could be:
+         *      7200    IN  A   10.10.10.1
+         *              IN  A   10.10.10.1
+         *
+         */
         foreach ($items as $key => $item) {
             $item = trim($item);
-            if (preg_match('/^[0-9]/', $item) &&
-                is_null($record['ttl'])
+            if (preg_match('/^[0-9]/', $item) && is_null($record['ttl'])
             ) {
                 // Only a TTL can start with a number.
                 $record['ttl'] = $this->parseToSeconds($item);
-            } elseif ((strtoupper($item) == 'IN') &&
-                is_null($record['class'])
+            } elseif ((strtoupper($item) == 'IN') && is_null($record['class'])
             ) {
                 // This is the class definition.
                 $record['class'] = 'IN';
-            } elseif (array_search($item, $this->types) &&
-                is_null($record['type'])
+            } elseif (array_search($item, $this->types) && is_null($record['type'])
             ) {
                 // We found our type!
                 if (is_null($record['ttl'])) {
                     // TTL was left out. Use default.
                     $record['ttl'] = $ttl;
                 }
-                if (is_null($record['class'])) {
-                    // Class was left out. Use default.
-                    $record['class'] = 'IN';
-                }
+                $record['class'] = 'IN';
                 $record['type'] = $item;
             } elseif (!is_null($record['type'])) {
                 // We found out what type we are. This must be the data field.
@@ -530,20 +501,13 @@ class FileDNSParser
                         break;
 
                     default:
-                        throw new Exception('Unable to parse RR. ' . $record['type'] . ' not recognized');
+                        throw new Exception('Unable to parse RR. ' . $record['type'] . ' not recognized.');
                 }
                 //We're done parsing this RR now. Break out of the loop.
             } else {
-                throw new Exception('Unable to parse RR. ' . $item . ' not recognized');
+                throw new Exception('Unable to parse RR. ' . $item . ' not recognized.');
             }
         }
-        foreach (array_values($record) as $item) {
-            // Scan all items to see if any are a pear error.
-            if (!$item) {
-                return [];
-            }
-        }
-
         return $record;
     }
 }
