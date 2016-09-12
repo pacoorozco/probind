@@ -377,18 +377,37 @@ class FileDNSParser
      * @param string $time Time to convert.
      *
      * @return integer
-     * @throws Exception
      */
-    public
-    static function parseToSeconds(
-        string $time
-    ) : int
+    public static function parseToSeconds(string $time) : int
     {
         if (is_numeric($time)) {
             // Already a number. Return.
             return $time;
         }
 
+        $pattern = '/([0-9]+)([a-zA-Z]+)/';
+        $split = preg_split($pattern, $time, null,
+            PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
+        $seconds = 0;
+        while (count($split)) {
+            list($value, $key) = array_splice($split, 0, 2);
+            $seconds += FileDNSParser::translateCharToSeconds($key, $value);
+        }
+
+        return $seconds;
+    }
+
+    /**
+     * This function calculates and translate a character to seconds.
+     *
+     * @param string $modifier The modifier char: Week, Day, Minute, Month, Second
+     * @param int    $value    The amount of modifier.
+     *
+     * @return int
+     */
+    private static function translateCharToSeconds(string $modifier, int $value = 1) : int
+    {
         // This map translate a character to seconds.
         $translateToSeconds = [
             'W' => 1 * 60 * 60 * 24 * 7, // Week
@@ -398,17 +417,7 @@ class FileDNSParser
             'S' => 1, // Second
         ];
 
-        $pattern = '/([0-9]+)([a-zA-Z]+)/';
-        $split = preg_split($pattern, strtoupper($time), null,
-            PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-
-        $seconds = 0;
-        while (count($split)) {
-            list($value, $key) = array_splice($split, 0, 2);
-            $seconds += $value * $translateToSeconds[$key];
-        }
-
-        return $seconds;
+        return intval($value * $translateToSeconds[strtoupper($modifier)]);
     }
 
     /**
