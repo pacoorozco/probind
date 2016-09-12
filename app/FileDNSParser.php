@@ -305,10 +305,6 @@ class FileDNSParser
      */
     private function parseSOA(string $line) : bool
     {
-        // Check that lines contain a SOA record.
-        if (!stristr($line, ' SOA ')) {
-            return false;
-        }
         /*
          * $this->zoneData already set. Only one SOA per zone is possible. Done parsing.
          *
@@ -328,34 +324,50 @@ class FileDNSParser
             /*
              * The first field, matches[1], could be '@' or a domain name 'example.com.', followed by a SOA TTL and
              * class (IN).
-             * But we don't use any of this values, so set 'domain' from $this->domain and not from parsed SOA.
-             */
-            $this->setZoneDataAttributeIfNotExist('domain', $this->domain);
-            /*
              * The second field, matches[2], is the 'mname' SOA field.
-             */
-            $matches[2] = str_replace('@', '.', $matches[2]);
-            $matches[2] = trim($matches[2], '.') . '.';
-            $this->setZoneDataAttributeIfNotExist('mname', $matches[2], '/^[A-Za-z0-9\-\_\.]*\.$/');
-            /*
              * The third field, matches[3], is the 'rname' SOA field.
-             */
-            $this->setZoneDataAttributeIfNotExist('rname', $matches[3], '/^[A-Za-z0-9\-\_\.]*\.$/');
-            /*
              * The fourth fielss, matches[4], is the 'serial' SOA field.
-             */
-            $this->setZoneDataAttributeIfNotExist('serial', $matches[4]);
-            /*
              * The next 4 fields, are the 'refresh', 'retry', 'expire' and 'negative_ttl' SOA fields.
              */
-            $this->setZoneDataAttributeIfNotExist('refresh', $matches[5]);
-            $this->setZoneDataAttributeIfNotExist('retry', $matches[6]);
-            $this->setZoneDataAttributeIfNotExist('expire', $matches[7]);
-            $this->setZoneDataAttributeIfNotExist('negative_ttl', $matches[8]);
+            $this->setZoneDataAttributesFromArray([
+                'domain'       => $this->domain,
+                'mname'        => $matches[2],
+                'rname'        => $matches[3],
+                'serial'       => $matches[4],
+                'refresh'      => $matches[5],
+                'retry'        => $matches[6],
+                'expire'       => $matches[7],
+                'negative_ttl' => $matches[8],
+            ]);
         } catch (Exception $e) {
             throw new Exception('Unable to set SOA value.' . $e);
         }
 
+        return true;
+    }
+
+    /**
+     * Set $this->zoneData attributes from a array with its data.
+     *
+     * @param array $values The attribute values of $this->zoneData to be set.
+     *
+     * @return bool
+     * @throws Exception
+     */
+    private function setZoneDataAttributesFromArray(array $values) : bool
+    {
+        try {
+            $this->setZoneDataAttributeIfNotExist('domain', $values['domain']);
+            $this->setZoneDataAttributeIfNotExist('mname', $values['mname'], '/^[A-Za-z0-9\-\_\.]*\.$/');
+            $this->setZoneDataAttributeIfNotExist('rname', $values['rname'], '/^[A-Za-z0-9\-\_\.]*\.$/');
+            $this->setZoneDataAttributeIfNotExist('serial', $values['serial']);
+            $this->setZoneDataAttributeIfNotExist('refresh', $values['refresh']);
+            $this->setZoneDataAttributeIfNotExist('retry', $values['retry']);
+            $this->setZoneDataAttributeIfNotExist('expire', $values['expire']);
+            $this->setZoneDataAttributeIfNotExist('negative_ttl', $values['negative_ttl']);
+        } catch (Exception $e) {
+            throw new Exception('Unable to set SOA value.' . $e);
+        }
         return true;
     }
 
@@ -377,36 +389,26 @@ class FileDNSParser
             return $time;
         }
 
-        $pattern = '/([0-9]+)([a-zA-Z]+)/';
-        $split = preg_split($pattern, $time, -1,
-            PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-        if (count($split) != 2) {
-            throw new Exception('Unable to parse time. ' . $time);
-        }
-        list($num, $what) = $split;
-        switch (strtoupper($what)) {
-            case 'S':
-                $times = 1; // Seconds
-                break;
-            case 'M':
-                $times = 1 * 60; // Minute
-                break;
-            case 'H':
-                $times = 1 * 60 * 60; // Hour
-                break;
-            case 'D':
-                $times = 1 * 60 * 60 * 24; // Day
-                break;
-            case 'W':
-                $times = 1 * 60 * 60 * 24 * 7; // Week
-                break;
-            default:
-                throw new Exception('Unable to parse time. ' . $time);
-                break;
-        }
-        $time = $num * $times;
+        // This map translate a character to seconds.
+        $translateToSeconds = [
+            'W' => 1 * 60 * 60 * 24 * 7, // Week
+            'D' => 1 * 60 * 60 * 24, // Day
+            'H' => 1 * 60 * 60, // Hour
+            'M' => 1 * 60, // Minute
+            'S' => 1, // Second
+        ];
 
-        return $time;
+        $pattern = '/([0-9]+)([a-zA-Z]+)/';
+        $split = preg_split($pattern, strtoupper($time), null,
+            PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
+        $seconds = 0;
+        while (count($split)) {
+            list($value, $key) = array_splice($split, 0, 2);
+            $seconds += $value * $translateToSeconds[$key];
+        }
+
+        return $seconds;
     }
 
     /**
