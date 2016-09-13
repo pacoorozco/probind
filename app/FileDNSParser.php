@@ -508,7 +508,9 @@ class FileDNSParser
                         break 2;
 
                     case 'TXT':
-                        $record['data'] .= ' ' . $item;
+                        $record['data'] = (empty($record['data']))
+                            ? $item
+                            : implode(' ', [$record['data'], trim($item)]);
                         break;
 
                     default:
