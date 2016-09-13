@@ -25,71 +25,79 @@ www                                     7200    IN      CNAME   webserver.domain
 $ORIGIN subdomain
 www1                                    7200    IN      A       10.10.10.10
                                                 IN      A       10.10.10.11
+text                                    7200    IN      TXT     "Somewhere over the rainbow"
 ';
     protected $expectedRecords = [
 
         [
-            "name"  => "@",
-            "ttl"   => 172800,
-            "class" => "IN",
-            "type"  => "NS",
-            "data"  => "dns1.domain.com.",
+            'name'  => '@',
+            'ttl'   => 172800,
+            'class' => 'IN',
+            'type'  => 'NS',
+            'data'  => 'dns1.domain.com.',
         ],
         [
-            "name"  => "@",
-            "ttl"   => 172800,
-            "class" => "IN",
-            "type"  => "NS",
-            "data"  => "dns2.domain.com.",
+            'name'  => '@',
+            'ttl'   => 172800,
+            'class' => 'IN',
+            'type'  => 'NS',
+            'data'  => 'dns2.domain.com.',
         ],
         [
-            "name"    => "@",
-            "ttl"     => 172800,
-            "class"   => "IN",
-            "type"    => "MX",
-            "data"    => "10.10.10.1",
-            "options" => [
-                "preference" => "10",
+            'name'    => '@',
+            'ttl'     => 172800,
+            'class'   => 'IN',
+            'type'    => 'MX',
+            'data'    => '10.10.10.1',
+            'options' => [
+                'preference' => '10',
             ],
         ],
         [
-            "name"    => "@",
-            "ttl"     => 7200,
-            "class"   => "IN",
-            "type"    => "MX",
-            "data"    => "10.10.10.2",
-            "options" => [
-                "preference" => "20",
+            'name'    => '@',
+            'ttl'     => 7200,
+            'class'   => 'IN',
+            'type'    => 'MX',
+            'data'    => '10.10.10.2',
+            'options' => [
+                'preference' => '20',
             ],
         ],
         [
-            "name"  => "ftp",
-            "ttl"   => 7200,
-            "class" => "IN",
-            "type"  => "A",
-            "data"  => "10.10.10.3",
+            'name'  => 'ftp',
+            'ttl'   => 7200,
+            'class' => 'IN',
+            'type'  => 'A',
+            'data'  => '10.10.10.3',
         ],
         [
-            "name"  => "www",
-            "ttl"   => 7200,
-            "class" => "IN",
-            "type"  => "CNAME",
-            "data"  => "webserver.domain.com.",
+            'name'  => 'www',
+            'ttl'   => 7200,
+            'class' => 'IN',
+            'type'  => 'CNAME',
+            'data'  => 'webserver.domain.com.',
         ],
         [
-            "name"  => "www1.subdomain",
-            "ttl"   => 7200,
-            "class" => "IN",
-            "type"  => "A",
-            "data"  => "10.10.10.10",
+            'name'  => 'www1.subdomain',
+            'ttl'   => 7200,
+            'class' => 'IN',
+            'type'  => 'A',
+            'data'  => '10.10.10.10',
         ],
         [
-            "name"  => "www1.subdomain",
-            "ttl"   => 172800,
-            "class" => "IN",
-            "type"  => "A",
-            "data"  => "10.10.10.11",
+            'name'  => 'www1.subdomain',
+            'ttl'   => 172800,
+            'class' => 'IN',
+            'type'  => 'A',
+            'data'  => '10.10.10.11',
         ],
+        [
+            'name'  => 'text.subdomain',
+            'ttl'   => 7200,
+            'class' => 'IN',
+            'type'  => 'TXT',
+            'data'  => '"Somewhere over the rainbow"',
+        ]
     ];
 
     /**
