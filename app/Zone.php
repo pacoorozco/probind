@@ -149,7 +149,7 @@ class Zone extends Model
     }
 
     /**
-     * Raise Serial Number for this zone if is need.
+     * Get New Serial Number for this zone.
      *
      * This generates a new serial, based on the often used format YYYYMMDDXX where XX is an ascending serial, allowing
      * up to 100 edits per day. After that the serial wraps into the next day and it still works.
@@ -159,28 +159,41 @@ class Zone extends Model
      *
      * @return int
      */
-    public function raiseSerialNumber(bool $force = false) : int
+    public function getNewSerialNumber(bool $force = false) : int
     {
         // Get current Zone serial number.
         $currentSerial = $this->serial;
 
         // We need a new one ONLY if there isn't pending changes.
-        if ($this->hasPendingChanges() && ! $force) {
+        if ($this->hasPendingChanges() && !$force) {
             return $currentSerial;
         }
 
-        // Create a new serial number YYYYMMDD00.
-        $nowSerial = Zone::generateSerialNumber();
-
-        $this->serial = ($currentSerial >= $nowSerial)
-            ? $currentSerial + 1
-            : $nowSerial;
+        // Raise serial number
+        $this->serial = $this->raiseSerialNumber($currentSerial);
 
         // Once Serial Number has changed, we have changes to push to servers.
         $this->setPendingChanges(true);
         $this->save();
 
         return intval($this->serial);
+    }
+
+    /**
+     * Raise a supplied Serial Number maintaining format YYYYMMDDXX.
+     *
+     * @param int $currentSerial The serial number to be increased.
+     *
+     * @return int
+     */
+    public function raiseSerialNumber(int $currentSerial) : int
+    {
+        // Create a new serial number YYYYMMDD00.
+        $nowSerial = Zone::generateSerialNumber();
+
+        return ($currentSerial >= $nowSerial)
+            ? $currentSerial + 1
+            : $nowSerial;
     }
 
     /**

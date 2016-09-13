@@ -109,7 +109,7 @@ class ZoneController extends Controller
     {
         // if it's a Master zone, assign new Serial Number and flag pending changes.
         if ($zone->isMasterZone()) {
-            $zone->raiseSerialNumber();
+            $zone->getNewSerialNumber();
             $zone->setPendingChanges(true);
         }
 

@@ -123,12 +123,12 @@ class ZoneUnitTest extends TestCase
         $zone->setPendingChanges(false);
 
         // Raise Serial Number, has to be bigger than expected.
-        $zone->raiseSerialNumber();
+        $zone->getNewSerialNumber();
         $this->assertGreaterThan($expectedSerial, $zone->serial);
 
         // Call again, but serial will be the same, there are still pending changes.
         $expectedSerial = $zone->serial;
-        $zone->raiseSerialNumber();
+        $zone->getNewSerialNumber();
         $this->assertEquals($expectedSerial, $zone->serial);
 
         // Simulate a push to servers, so pending changes are false.
@@ -136,18 +136,18 @@ class ZoneUnitTest extends TestCase
 
         // Now, raise Serial Number will be get a greater one.
         $expectedSerial = $zone->serial;
-        $zone->raiseSerialNumber();
+        $zone->getNewSerialNumber();
         $this->assertGreaterThan($expectedSerial, $zone->serial);
 
-        // Use force option on raiseSerialNumber()
+        // Use force option on getNewSerialNumber()
         $zone->serial = $expectedSerial;
-        $zone->raiseSerialNumber(true);
+        $zone->getNewSerialNumber(true);
         $this->assertGreaterThan($expectedSerial, $zone->serial);
 
         // Create a low Serial Number and raise serial
         $zone->serial = 2010010100;
         $expectedSerial = Zone::generateSerialNumber();
-        $zone->raiseSerialNumber(true);
+        $zone->getNewSerialNumber(true);
         $this->assertEquals($expectedSerial, $zone->serial);
     }
 
