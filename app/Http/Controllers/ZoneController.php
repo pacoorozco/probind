@@ -55,6 +55,7 @@ class ZoneController extends Controller
     public function store(ZoneCreateRequest $request)
     {
         $zone = new Zone();
+        $zone->domain = $request->input('domain');
 
         // if it's a Master zone, assign new Serial Number and flag pending changes.
         if (!$request->has('master_server')) {
