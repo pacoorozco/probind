@@ -34,41 +34,52 @@ class ProBINDImportZone extends Command
     }
 
     /**
-     * Execute the console command.
+     * Delete the specified zone by domain search if exists.
      *
-     * @return mixed
+     * @param string $domain
      */
-    public function handle()
+    private function deleteZoneIfExists(string $domain)
     {
-        $fileDNS = new FileDNSParser();
-        $fileDNS->load($this->argument('zone'), $this->argument('zonefile'));
-
-        if (!$this->option('force')) {
-            // Check if Zone exists on database.
-            $existingZone = Zone::where([
-                'domain' => $this->argument('zone')
-            ])->first();
-
-            if ($existingZone) {
-                $this->error('Zone \'' . $existingZone->domain . '\' exists on ProBIND. Use \'--force\' option if you want to import this zone.');
-                return false;
-            }
-        }
-
         // Check if Zone exists on database, including trashed zones.
         $existingZone = Zone::withTrashed()
-            ->where([
-                'domain' => $this->argument('zone')
-            ])->first();
+            ->where('domain', $domain)->first();
 
         if ($existingZone) {
             $existingZone->forceDelete();
         }
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle() : int
+    {
+        // Cast supplied arguments and options.
+        $domain = (string)$this->argument('zone');
+        $zonefile = (string)$this->argument('zonefile');
+
+        $fileDNS = new FileDNSParser($domain);
+        $fileDNS->load($zonefile);
+
+        if (!$this->option('force')) {
+            // Check if Zone exists on database.
+            $existingZone = Zone::where('domain', $domain)->first();
+
+            if ($existingZone) {
+                $this->error('Zone \'' . $existingZone->domain . '\' exists on ProBIND. Use \'--force\' option if you want to import this zone.');
+                return 1;
+            }
+        }
+
+        // Delete zone, if exists on database.
+        $this->deleteZoneIfExists($domain);
 
         // Create the zone and fill with parsed data.
         $zoneData = $fileDNS->getZoneData();
         $zone = new Zone();
-        $zone->domain = $this->argument('zone');
+        $zone->domain = $domain;
         $zone->serial = $zoneData['serial'];
         $zone->custom_settings = true;
         $zone->fill(array_only($zoneData, ['refresh', 'retry', 'expire', 'negative_ttl', 'default_ttl']));
@@ -88,8 +99,7 @@ class ProBINDImportZone extends Command
 
         $this->info('Import zone \'' . $zone->domain . '\' has created with ' . $zone->records()->count() . ' imported records.');
         activity()->log('Import zone <strong>' . $zone->domain . '</strong> has created <strong>' . $zone->records()->count() . '</strong> records.');
-
-        return true;
+        return 0;
     }
 }
 

@@ -19,7 +19,6 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
  * @copyright  2016 Paco Orozco <paco@pacoorozco.info>
  * @copyright  2004-2005 Cipriano Groenendal <cipri@php.net>
  * @license    http://www.php.net/license/3_0.txt PHP License 3.0
- * @version    Release: @version@
  * @link       http://pear.php.net/package/File_DNS
  * @link       http://www.rfc-editor.org/rfc/rfc1033.txt
  * @link       http://www.rfc-editor.org/rfc/rfc1537.txt
@@ -100,13 +99,6 @@ class FileDNSParser
     ];
 
     /**
-     * Contains the domain name of the loaded zone.
-     *
-     * @var string
-     */
-    private $domain = null;
-
-    /**
      * Return an array with zone parsed data from file.
      *
      * $zone = [
@@ -147,27 +139,33 @@ class FileDNSParser
     {
         $another = [];
         foreach ($this->records as $record) {
-            $record['name'] = preg_replace('/\.' . $this->domain . '\.$/', '', $record['name']);
-            $record['name'] = preg_replace('/' . $this->domain . '\.$/', '@', $record['name']);
+            $record['name'] = preg_replace('/\.' . $this->zoneData['domain'] . '\.$/', '', $record['name']);
+            $record['name'] = preg_replace('/' . $this->zoneData['domain'] . '\.$/', '@', $record['name']);
             $another[] = $record;
         }
         return $another;
     }
 
     /**
+     * FileDNSParser constructor.
+     *
+     * @param string $domain Domain name of this zone.
+     */
+    public function __construct(string $domain)
+    {
+        $this->zoneData['domain'] = $domain;
+    }
+
+    /**
      * Loads the specified zone file.
      *
-     * @param string $domain   domain name of this zone
      * @param string $zonefile filename of zonefile to load.
      *
      * @return bool
      * @throws FileNotFoundException
      */
-    public function load(string $domain, string $zonefile) : bool
+    public function load(string $zonefile) : bool
     {
-        // Set domain to the supplied value.
-        $this->domain = $domain;
-
         try {
             $zone = File::get($zonefile);
         } catch (Exception $e) {
@@ -176,6 +174,30 @@ class FileDNSParser
 
         // Parse zone file contents to create an array of RR.
         return $this->parseZone($zone);
+    }
+
+    /**
+     * Remove comments and other unused data from Zone file contents.
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    private function prepareZoneContent(string $content) : string
+    {
+        // RFC1033: A semicolon (';') starts a comment; the remainder of the line is ignored.
+        $fileContents = preg_replace('/(;.*)$/m', '', $content);
+
+        // RFC1033: Parenthesis '(' and ')' are used to group data that crosses a line boundary.
+        $fileContents = preg_replace_callback(
+            '/(\([^()]*\))/',
+            function ($matches) {
+                return str_replace(PHP_EOL, '', $matches[0]);
+            },
+            $fileContents
+        );
+        $fileContents = str_replace('(', '', $fileContents);
+        return  str_replace(')', '', $fileContents);
     }
 
     /**
@@ -190,19 +212,8 @@ class FileDNSParser
      */
     private function parseZone(string $fileContents) : bool
     {
-        // RFC1033: A semicolon (';') starts a comment; the remainder of the line is ignored.
-        $fileContents = preg_replace('/(;.*)$/m', '', $fileContents);
-
-        // RFC1033: Parenthesis '(' and ')' are used to group data that crosses a line boundary.
-        $fileContents = preg_replace_callback(
-            '/(\([^()]*\))/',
-            function ($matches) {
-                return str_replace(PHP_EOL, '', $matches[0]);
-            },
-            $fileContents
-        );
-        $fileContents = str_replace('(', '', $fileContents);
-        $fileContents = str_replace(')', '', $fileContents);
+        // Remove comments and unused data from contents.
+        $fileContents = $this->prepareZoneContent($fileContents);
 
         /*
          * Origin is the current origin(@) that we're at now.
@@ -221,7 +232,7 @@ class FileDNSParser
          *  $ORIGIN new.sub3.example.com.
          *  @ is new.sub3.example.com.
          */
-        $origin = $lastRecordName = $this->domain . '.';
+        $origin = $lastRecordName = $this->zoneData['domain'] . '.';
         $ttl = 86400; // RFC1537 advices this value as a default TTL.
 
         // We will parse file contents line by line.
@@ -250,7 +261,7 @@ class FileDNSParser
                 $this->parseSOA($line);
             } else {
                 $record = $this->parseRR($line, $origin, $ttl, $lastRecordName);
-                if (!$record) {
+                if (empty($record)) {
                     return false;
                 }
                 $lastRecordName = $record['name'];
@@ -264,11 +275,11 @@ class FileDNSParser
     /**
      * Set an attribute in $this->zoneData, only if it has not been set before.
      *
-     * @param string $attribute    The attribute of $this->zoneData to be set.
-     * @param string $value        The value for this attribute.
-     * @param string $validPattern A regexp to validate value. Default is null, to no validate.
-     * @param bool   $force        This flags determine if value is set although it has been set before.
-     *                             Default is false, to no overwrite.
+     * @param string      $attribute    The attribute of $this->zoneData to be set.
+     * @param string      $value        The value for this attribute.
+     * @param string|null $validPattern A regexp to validate value. Default is null, to no validate.
+     * @param bool        $force        This flags determine if value is set although it has been set before.
+     *                                  Default is false, to no overwrite.
      *
      * @return bool
      * @throws Exception
@@ -330,7 +341,6 @@ class FileDNSParser
              * The next 4 fields, are the 'refresh', 'retry', 'expire' and 'negative_ttl' SOA fields.
              */
             $this->setZoneDataAttributesFromArray([
-                'domain'       => $this->domain,
                 'mname'        => $matches[2],
                 'rname'        => $matches[3],
                 'serial'       => $matches[4],
@@ -357,7 +367,6 @@ class FileDNSParser
     private function setZoneDataAttributesFromArray(array $values) : bool
     {
         try {
-            $this->setZoneDataAttributeIfNotExist('domain', $values['domain']);
             $this->setZoneDataAttributeIfNotExist('mname', $values['mname'], '/^[A-Za-z0-9\-\_\.]*\.$/');
             $this->setZoneDataAttributeIfNotExist('rname', $values['rname'], '/^[A-Za-z0-9\-\_\.]*\.$/');
             $this->setZoneDataAttributeIfNotExist('serial', $values['serial']);

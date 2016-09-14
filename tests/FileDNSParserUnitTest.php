@@ -110,8 +110,8 @@ text                                    7200    IN      TXT     "Somewhere over 
             ->with('zonefile')
             ->andReturn($this->fileContents);
 
-        $fileDNS = new FileDNSParser();
-        $fileDNS->load('domain.com', 'zonefile');
+        $fileDNS = new FileDNSParser('domain.com');
+        $fileDNS->load('zonefile');
 
         $records = $fileDNS->getRecords();
         $expectedRecords = $this->expectedRecords;

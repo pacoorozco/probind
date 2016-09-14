@@ -61,7 +61,7 @@ class ToolsController extends Controller
         // create config files
 
         // create zone files and push to servers
-        \Artisan::call('probind:push');
+        Artisan::call('probind:push');
 
         // mark zones delete
 
@@ -121,7 +121,7 @@ class ToolsController extends Controller
         // Move uploaded file to local storage.
         $zonefile = $request->file('zonefile')->store('temp');
 
-        $exitCode = Artisan::call('probind:import', [
+        Artisan::call('probind:import', [
             'zone'     => $request->input('domain'),
             'zonefile' => storage_path('app/' . $zonefile),
             '--force'  => $request->has('overwrite'),
