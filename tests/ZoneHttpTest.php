@@ -120,14 +120,21 @@ class ZoneHttpTest extends TestCase
         ]);
 
         $this->visit('zones/' . $originalZone->id . '/edit')
-            ->type('modified.com', 'domain')
+            ->check('#custom_settings')
+            ->type(7200, '#refresh')
+            ->type(7200, '#retry')
+            ->type(7200, '#expire')
+            ->type(7200, '#negative_ttl')
+            ->type(7200, '#default_ttl')
             ->press('Save data');
 
         // Get the zone once has been modified
         $modifiedZone = Zone::findOrFail($originalZone->id);
 
         // Test modified domain field
-        $this->assertEquals('modified.com', $modifiedZone->domain);
+        $this->assertEquals(7200, $modifiedZone->refresh);
+        $this->assertEquals(7200, $modifiedZone->retry);
+        $this->assertEquals(7200, $modifiedZone->expire);
 
         // Test field that has not been modified
         $this->assertEquals($originalZone->master_server, $modifiedZone->master_server);
