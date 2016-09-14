@@ -40,8 +40,8 @@ class ProBINDImportZone extends Command
      */
     public function handle()
     {
-        $fileDNS = new FileDNSParser();
-        $fileDNS->load($this->argument('zone'), $this->argument('zonefile'));
+        $fileDNS = new FileDNSParser($this->argument('zone'));
+        $fileDNS->load($this->argument('zonefile'));
 
         if (!$this->option('force')) {
             // Check if Zone exists on database.
