@@ -32,9 +32,8 @@ class ZoneUnitTest extends TestCase
     {
         $expectedZone = factory(Zone::class)->make();
 
-        $zone = new Zone([
-            'domain' => strtoupper($expectedZone->domain)
-        ]);
+        $zone = new Zone();
+        $zone->domain = strtoupper($expectedZone->domain);
 
         // Attribute must be lower cased
         $this->assertEquals($expectedZone->domain, $zone->domain);
@@ -212,5 +211,68 @@ class ZoneUnitTest extends TestCase
         $masterZones = Zone::onlyMasterZones()->get();
 
         $this->assertCount(5, $masterZones);
+    }
+
+    /**
+     * Test for Normal zone name validation.
+     */
+    public function testValidateNormalZoneName()
+    {
+        $validDomainTestCase = [
+            'domain.com',
+            'sub.domain.com',
+        ];
+
+        foreach ($validDomainTestCase as $domain) {
+            $this->assertTrue(Zone::validateNormalDomainName($domain),
+                'Failed test, this zone name is valid: ' . $domain);
+        }
+
+        $invalidDomainTestCase = [
+            'domain',
+            '.com',
+            '_domain.com',
+            'domain._com',
+            'sub domain.com',
+            'domain..com',
+            'domain___.com',
+            '10.10.10.in-addr.arpa',
+            '168.192.in-addr.arpa',
+        ];
+
+        foreach ($invalidDomainTestCase as $domain) {
+            $this->assertFalse(Zone::validateNormalDomainName($domain),
+                'Failed test, this zone name is invalid: ' . $domain);
+        }
+    }
+
+    /**
+     * Test for Reverse zone name validation.
+     */
+    public function testValidateReverseZoneName()
+    {
+        $validDomainTestCase = [
+            '10.in-addr.arpa',
+            '11.10.in-addr.arpa',
+            '12.11.10.in-addr.arpa',
+        ];
+
+        foreach ($validDomainTestCase as $domain) {
+            $this->assertTrue(Zone::validateReverseDomainName($domain),
+                'Failed test, this reverse zone name is valid: ' . $domain);
+        }
+
+        $invalidDomainTestCase = [
+            'domain.com',
+            'sub.domain.com',
+            '256.in-addr.arpa',
+            '10.256.in-addr.arpa',
+            '13.12.11.10.in-addr.arpa',
+        ];
+
+        foreach ($invalidDomainTestCase as $domain) {
+            $this->assertFalse(Zone::validateReverseDomainName($domain),
+                'Failed test, this reverse zone name is invalid: ' . $domain);
+        }
     }
 }
