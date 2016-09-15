@@ -107,6 +107,33 @@ class Zone extends Model
     ];
 
     /**
+     * Returns true if $domain is a valid NORMAL zone name.
+     *
+     * @param string $domain The domain to be validated.
+     *
+     * @return bool
+     */
+    public static function validateNormalDomainName(string $domain) : bool
+    {
+        return preg_match('/^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$/',
+            $domain);
+
+    }
+
+    /**
+     * Returns true if $domain is a valid REVERSE zone name.
+     *
+     * @param string $domain The domain to be validated.
+     *
+     * @return bool
+     */
+    public static function validateReverseDomainName(string $domain) : bool
+    {
+        return preg_match('/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){0,2}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.in-addr.arpa$/',
+            $domain);
+    }
+
+    /**
      * Returns a customized message for Activity Log.
      *
      * @param string $eventName The event could be saved, updated or deleted.
@@ -175,6 +202,18 @@ class Zone extends Model
     }
 
     /**
+     * Return true if this zone has been modified from last push.
+     *
+     * This checks whether the Zone has been modified from the last push.
+     *
+     * @return bool
+     */
+    public function hasPendingChanges() : bool
+    {
+        return $this->has_modifications;
+    }
+
+    /**
      * Raise a supplied Serial Number maintaining format YYYYMMDDXX.
      *
      * @param int $currentSerial The serial number to be increased.
@@ -189,18 +228,6 @@ class Zone extends Model
         return ($currentSerial >= $nowSerial)
             ? $currentSerial + 1
             : $nowSerial;
-    }
-
-    /**
-     * Return true if this zone has been modified from last push.
-     *
-     * This checks whether the Zone has been modified from the last push.
-     *
-     * @return bool
-     */
-    public function hasPendingChanges() : bool
-    {
-        return $this->has_modifications;
     }
 
     /**
@@ -261,33 +288,6 @@ class Zone extends Model
         $content .= sprintf(")");
 
         return $content;
-    }
-
-    /**
-     * Returns true if $domain is a valid NORMAL zone name.
-     *
-     * @param string $domain The domain to be validated.
-     *
-     * @return bool
-     */
-    public static function validateNormalDomainName(string $domain) : bool
-    {
-        return preg_match('/^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$/',
-            $domain);
-
-    }
-
-    /**
-     * Returns true if $domain is a valid REVERSE zone name.
-     *
-     * @param string $domain The domain to be validated.
-     *
-     * @return bool
-     */
-    public static function validateReverseDomainName(string $domain) : bool
-    {
-        return preg_match('/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){0,2}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.in-addr.arpa$/',
-            $domain);
     }
 
     /**

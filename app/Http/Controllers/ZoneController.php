@@ -56,6 +56,7 @@ class ZoneController extends Controller
     {
         $zone = new Zone();
         $zone->domain = $request->input('domain');
+        $zone->reverse_zone = Zone::validateReverseDomainName($zone->domain);
 
         // if it's a Master zone, assign new Serial Number and flag pending changes.
         if (!$request->has('master_server')) {

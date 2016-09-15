@@ -34,6 +34,7 @@ class CreateZonesTable extends Migration
             $table->integer('serial')->unsigned()->default(0);
             $table->string('master_server', 45)->nullable();
             $table->boolean('has_modifications')->default(true);
+            $table->boolean('reverse_zone')->default(false);
 
             $table->boolean('custom_settings')->default(false);
             $table->integer('refresh')->unsigned()->nullable();
