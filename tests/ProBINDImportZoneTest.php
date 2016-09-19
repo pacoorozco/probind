@@ -60,7 +60,9 @@ $TTL 172800
         parent::setUp();
 
         $this->tempDir = __DIR__ . '/tmp';
-        mkdir($this->tempDir);
+        if (!file_exists($this->tempDir)) {
+            mkdir($this->tempDir, 0700, true);
+        }
         file_put_contents($this->tempDir . '/forward-zone.db', $this->forwardZoneFileContents);
         file_put_contents($this->tempDir . '/reverse-zone.db', $this->reverseZoneFileContents);
     }
@@ -109,6 +111,42 @@ $TTL 172800
         $this->assertInstanceOf(Zone::class, $zone);
         $this->assertTrue($zone->reverse_zone);
         $this->assertCount(6, $zone->records);
+    }
+
+    public function testCommandWithExistingZoneSuccess()
+    {
+        $expectedZone = factory(Zone::class)->create();
+
+        // Call the command with the created file.
+        Artisan::call('probind:import', [
+            'zone'     => $expectedZone->domain,
+            'zonefile' => $this->tempDir . '/forward-zone.db',
+            '--force'  => true,
+        ]);
+
+        $zone = Zone::where(['domain' => $expectedZone->domain])->first();
+
+        $this->assertNotNull($zone);
+        $this->assertInstanceOf(Zone::class, $zone);
+        $this->assertCount(9, $zone->records);
+    }
+
+    public function testCommandWithExistingZoneFailure()
+    {
+        $expectedZone = factory(Zone::class)->create();
+
+        // Call the command with the created file.
+        Artisan::call('probind:import', [
+            'zone'     => $expectedZone->domain,
+            'zonefile' => $this->tempDir . '/forward-zone.db',
+            '--force'  => false,
+        ]);
+
+        $zone = Zone::where(['domain' => $expectedZone->domain])->first();
+
+        $this->assertNotNull($zone);
+        $this->assertInstanceOf(Zone::class, $zone);
+        $this->assertNotCount(9, $zone->records);
     }
 
     /**
