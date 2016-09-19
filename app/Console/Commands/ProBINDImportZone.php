@@ -80,6 +80,7 @@ class ProBINDImportZone extends Command
         $zoneData = $fileDNS->getZoneData();
         $zone = new Zone();
         $zone->domain = $domain;
+        $zone->reverse_zone = Zone::validateReverseDomainName($domain);
         $zone->serial = $zoneData['serial'];
         $zone->custom_settings = true;
         $zone->fill(array_only($zoneData, ['refresh', 'retry', 'expire', 'negative_ttl', 'default_ttl']));
