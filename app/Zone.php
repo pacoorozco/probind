@@ -412,4 +412,18 @@ class Zone extends Model
     {
         return is_null($this->master_server);
     }
+
+    /**
+     * Returns an array of valid Record types for this zone.
+     *
+     * Reverse zone only has 'PTR' and 'NS' types.
+     *
+     * @return array
+     */
+    public function getValidRecordTypesForThisZone() : array
+    {
+        return ($this->reverse_zone)
+            ? array_only(Record::getAllValidRecordTypes(), ['PTR', 'NS'])
+            : array_except(Record::getAllValidRecordTypes(), ['PTR']);
+    }
 }

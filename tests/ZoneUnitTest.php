@@ -275,4 +275,23 @@ class ZoneUnitTest extends TestCase
                 'Failed test, this reverse zone name is invalid: ' . $domain);
         }
     }
+
+    /**
+     * Test getValidRecordTypesForThisZone()
+     */
+    public function testGetValidRecordTypesForThisZone()
+    {
+        $zone = new Zone();
+
+        $zone->reverse_zone = true;
+        $this->assertArrayHasKey('PTR', $zone->getValidRecordTypesForThisZone());
+        $this->assertArrayHasKey('NS', $zone->getValidRecordTypesForThisZone());
+        $this->assertArrayNotHasKey('A', $zone->getValidRecordTypesForThisZone());
+
+        $zone->reverse_zone = false;
+        $this->assertArrayHasKey('A', $zone->getValidRecordTypesForThisZone());
+        $this->assertArrayHasKey('CNAME', $zone->getValidRecordTypesForThisZone());
+        $this->assertArrayHasKey('NS', $zone->getValidRecordTypesForThisZone());
+        $this->assertArrayNotHasKey('PTR', $zone->getValidRecordTypesForThisZone());
+    }
 }
