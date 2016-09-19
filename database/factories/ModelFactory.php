@@ -67,6 +67,27 @@ $factory->define(App\Zone::class, function (Faker\Generator $faker) {
         'serial'            => \App\Zone::generateSerialNumber(),
         'master_server'     => $faker->optional()->ipv4,
         'has_modifications' => true,
+        'reverse_zone'      => false,
+        'custom_settings'   => false,
+        'refresh'           => null,
+        'retry'             => null,
+        'expire'            => null,
+        'negative_ttl'      => null,
+        'default_ttl'       => null,
+    ];
+});
+
+$factory->defineAs(App\Zone::class, 'reverse', function (Faker\Generator $faker) {
+    $parts = explode('.', $faker->unique()->ipv4, -1);
+    $reverse_ip = implode('.', array_reverse($parts));
+    $reverseZoneName = $reverse_ip . '.in-addr.arpa';
+
+    return [
+        'domain'            => $reverseZoneName,
+        'serial'            => \App\Zone::generateSerialNumber(),
+        'master_server'     => $faker->optional()->ipv4,
+        'has_modifications' => true,
+        'reverse_zone'      => true,
         'custom_settings'   => false,
         'refresh'           => null,
         'retry'             => null,

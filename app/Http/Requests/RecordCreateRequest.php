@@ -39,7 +39,8 @@ class RecordCreateRequest extends Request
      */
     public function rules()
     {
-        $validInputTypes = join(',', array_keys(Record::$validRecordTypes));
+        $zone = $this->route('zone');
+        $validInputTypes = join(',', array_keys($zone->getValidRecordTypesForThisZone()));
 
         return [
             'name'     => 'required|string',

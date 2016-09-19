@@ -49,9 +49,9 @@
             <div class="controls">
                 @if(isset($record))
                     {!! Form::hidden('type', $record->type) !!}
-                    {!! Form::select('type_disabled', \App\Record::$validRecordTypes, $record->type, ['class' => 'form-control', 'disabled' => 'disabled']) !!}
+                    {!! Form::select('type_disabled', $zone->getValidRecordTypesForThisZone(), $record->type, ['class' => 'form-control', 'disabled' => 'disabled']) !!}
                 @else
-                    {!! Form::select('type', \App\Record::$validRecordTypes, null, ['class' => 'form-control', 'required' => 'required']) !!}
+                    {!! Form::select('type', $zone->getValidRecordTypesForThisZone(), null, ['class' => 'form-control', 'required' => 'required']) !!}
                 @endif
                 <span class="help-block">{{ $errors->first('type', ':message') }}</span>
             </div>

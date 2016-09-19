@@ -40,11 +40,12 @@ class FileDNSParser
      * MX
      * CNAME
      * PTR
+     * SRV
      * TXT
      *
      * @var array
      */
-    private $types = array('SOA', 'A', 'AAAA', 'NS', 'MX', 'CNAME', 'PTR', 'TXT');
+    private $types = array('SOA', 'A', 'AAAA', 'NS', 'MX', 'CNAME', 'PTR', 'SRV', 'TXT');
     /**
      * Contains all the records in this zone.
      *
@@ -99,6 +100,16 @@ class FileDNSParser
     ];
 
     /**
+     * FileDNSParser constructor.
+     *
+     * @param string $domain Domain name of this zone.
+     */
+    public function __construct(string $domain)
+    {
+        $this->zoneData['domain'] = $domain;
+    }
+
+    /**
      * Return an array with zone parsed data from file.
      *
      * $zone = [
@@ -147,16 +158,6 @@ class FileDNSParser
     }
 
     /**
-     * FileDNSParser constructor.
-     *
-     * @param string $domain Domain name of this zone.
-     */
-    public function __construct(string $domain)
-    {
-        $this->zoneData['domain'] = $domain;
-    }
-
-    /**
      * Loads the specified zone file.
      *
      * @param string $zonefile filename of zonefile to load.
@@ -174,30 +175,6 @@ class FileDNSParser
 
         // Parse zone file contents to create an array of RR.
         return $this->parseZone($zone);
-    }
-
-    /**
-     * Remove comments and other unused data from Zone file contents.
-     *
-     * @param string $content
-     *
-     * @return string
-     */
-    private function prepareZoneContent(string $content) : string
-    {
-        // RFC1033: A semicolon (';') starts a comment; the remainder of the line is ignored.
-        $fileContents = preg_replace('/(;.*)$/m', '', $content);
-
-        // RFC1033: Parenthesis '(' and ')' are used to group data that crosses a line boundary.
-        $fileContents = preg_replace_callback(
-            '/(\([^()]*\))/',
-            function ($matches) {
-                return str_replace(PHP_EOL, '', $matches[0]);
-            },
-            $fileContents
-        );
-        $fileContents = str_replace('(', '', $fileContents);
-        return  str_replace(')', '', $fileContents);
     }
 
     /**
@@ -270,6 +247,30 @@ class FileDNSParser
         }
 
         return true;
+    }
+
+    /**
+     * Remove comments and other unused data from Zone file contents.
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    private function prepareZoneContent(string $content) : string
+    {
+        // RFC1033: A semicolon (';') starts a comment; the remainder of the line is ignored.
+        $fileContents = preg_replace('/(;.*)$/m', '', $content);
+
+        // RFC1033: Parenthesis '(' and ')' are used to group data that crosses a line boundary.
+        $fileContents = preg_replace_callback(
+            '/(\([^()]*\))/',
+            function ($matches) {
+                return str_replace(PHP_EOL, '', $matches[0]);
+            },
+            $fileContents
+        );
+        $fileContents = str_replace('(', '', $fileContents);
+        return str_replace(')', '', $fileContents);
     }
 
     /**
@@ -381,55 +382,6 @@ class FileDNSParser
     }
 
     /**
-     * Converts a BIND-style timeout(1D, 2H, 15M) to seconds.
-     *
-     * @param string $time Time to convert.
-     *
-     * @return integer
-     */
-    public static function parseToSeconds(string $time) : int
-    {
-        if (is_numeric($time)) {
-            // Already a number. Return.
-            return $time;
-        }
-
-        $pattern = '/([0-9]+)([a-zA-Z]+)/';
-        $split = preg_split($pattern, $time, null,
-            PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-
-        $seconds = 0;
-        while (count($split)) {
-            list($value, $key) = array_splice($split, 0, 2);
-            $seconds += FileDNSParser::translateCharToSeconds($key, $value);
-        }
-
-        return $seconds;
-    }
-
-    /**
-     * This function calculates and translate a character to seconds.
-     *
-     * @param string $modifier The modifier char: Week, Day, Minute, Month, Second
-     * @param int    $value    The amount of modifier.
-     *
-     * @return int
-     */
-    private static function translateCharToSeconds(string $modifier, int $value = 1) : int
-    {
-        // This map translate a character to seconds.
-        $translateToSeconds = [
-            'W' => 1 * 60 * 60 * 24 * 7, // Week
-            'D' => 1 * 60 * 60 * 24, // Day
-            'H' => 1 * 60 * 60, // Hour
-            'M' => 1 * 60, // Minute
-            'S' => 1, // Second
-        ];
-
-        return intval($value * $translateToSeconds[strtoupper($modifier)]);
-    }
-
-    /**
      * Parses a (Resource Record) into an array
      *
      * @param string $line           the RR line to be parsed.
@@ -507,6 +459,7 @@ class FileDNSParser
                         $record['data'] = $item;
                         break 2;
 
+                    case 'SRV':
                     case 'MX':
                         // MX have an extra element. Save both right away.
                         // The setting itself is in the next item.
@@ -531,5 +484,54 @@ class FileDNSParser
             }
         }
         return $record;
+    }
+
+    /**
+     * Converts a BIND-style timeout(1D, 2H, 15M) to seconds.
+     *
+     * @param string $time Time to convert.
+     *
+     * @return integer
+     */
+    public static function parseToSeconds(string $time) : int
+    {
+        if (is_numeric($time)) {
+            // Already a number. Return.
+            return $time;
+        }
+
+        $pattern = '/([0-9]+)([a-zA-Z]+)/';
+        $split = preg_split($pattern, $time, null,
+            PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
+        $seconds = 0;
+        while (count($split)) {
+            list($value, $key) = array_splice($split, 0, 2);
+            $seconds += FileDNSParser::translateCharToSeconds($key, $value);
+        }
+
+        return $seconds;
+    }
+
+    /**
+     * This function calculates and translate a character to seconds.
+     *
+     * @param string $modifier The modifier char: Week, Day, Minute, Month, Second
+     * @param int    $value    The amount of modifier.
+     *
+     * @return int
+     */
+    private static function translateCharToSeconds(string $modifier, int $value = 1) : int
+    {
+        // This map translate a character to seconds.
+        $translateToSeconds = [
+            'W' => 1 * 60 * 60 * 24 * 7, // Week
+            'D' => 1 * 60 * 60 * 24, // Day
+            'H' => 1 * 60 * 60, // Hour
+            'M' => 1 * 60, // Minute
+            'S' => 1, // Second
+        ];
+
+        return intval($value * $translateToSeconds[strtoupper($modifier)]);
     }
 }

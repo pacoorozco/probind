@@ -26,18 +26,19 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * The Zone model contains all DNS information of a zone / domain name.
  * Has one-to-many relationship in order to associate Record models for Master Zones.
  *
- * @property integer $id                    The object unique id.
- * @property string  $domain                The domain name that represents this zone.
- * @property integer $serial                The serial number of this zone.
- * @property string  $master_server         The IP address of the master server.
+ * @property int    $id                    The object unique id.
+ * @property string $domain                The domain name that represents this zone.
+ * @property int    $serial                The serial number of this zone.
+ * @property string $master_server         The IP address of the master server.
  *                                          If it's set to null, this zone is a master zone.
- * @property boolean $custom_settings       This flag determines if this zone has custom timers.
- * @property integer $refresh               Custom Refresh time value.
- * @property integer $retry                 Custom Retry time value.
- * @property integer $expire                Custom Expire time value.
- * @property integer $negative_ttl          Custom Negative TTL value.
- * @property integer $default_ttl           Custom TTL value.
- * @property boolean $has_modifications     This flag determines if this zone has been modified from last push.
+ * @property bool   $reverse_zone          This flag determines if this zone is a .IN-ADDR.ARPA. zone.
+ * @property bool   $custom_settings       This flag determines if this zone has custom timers.
+ * @property int    $refresh               Custom Refresh time value.
+ * @property int    $retry                 Custom Retry time value.
+ * @property int    $expire                Custom Expire time value.
+ * @property int    $negative_ttl          Custom Negative TTL value.
+ * @property int    $default_ttl           Custom TTL value.
+ * @property bool   $has_modifications     This flag determines if this zone has been modified from last push.
  *
  * @link https://www.ietf.org/rfc/rfc1035.txt
  * @link https://www.ietf.org/rfc/rfc2782.txt
@@ -51,12 +52,6 @@ class Zone extends Model
     use LogsActivity;
     use NullableFields;
 
-    /**
-     * Attributes updates that will be logged into Activity log.
-     *
-     * @var array
-     */
-    protected static $logAttributes = ['domain'];
     /**
      * The attributes that should be mutated to dates.
      *
@@ -72,7 +67,6 @@ class Zone extends Model
      */
     protected $table = 'zones';
     protected $fillable = [
-        'domain',
         'master_server',
         'refresh',
         'retry',
@@ -91,6 +85,7 @@ class Zone extends Model
         'master_server'     => 'string',
         'has_modifications' => 'boolean',
         'custom_settings'   => 'boolean',
+        'reverse_zone'      => 'boolean',
         'refresh'           => 'integer',
         'retry'             => 'integer',
         'expire'            => 'integer',
@@ -110,6 +105,33 @@ class Zone extends Model
         'negative_ttl',
         'default_ttl'
     ];
+
+    /**
+     * Returns true if $domain is a valid NORMAL zone name.
+     *
+     * @param string $domain The domain to be validated.
+     *
+     * @return bool
+     */
+    public static function validateNormalDomainName(string $domain) : bool
+    {
+        return preg_match('/^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$/',
+            $domain);
+
+    }
+
+    /**
+     * Returns true if $domain is a valid REVERSE zone name.
+     *
+     * @param string $domain The domain to be validated.
+     *
+     * @return bool
+     */
+    public static function validateReverseDomainName(string $domain) : bool
+    {
+        return preg_match('/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){0,2}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.in-addr.arpa$/',
+            $domain);
+    }
 
     /**
      * Returns a customized message for Activity Log.
@@ -180,6 +202,18 @@ class Zone extends Model
     }
 
     /**
+     * Return true if this zone has been modified from last push.
+     *
+     * This checks whether the Zone has been modified from the last push.
+     *
+     * @return bool
+     */
+    public function hasPendingChanges() : bool
+    {
+        return $this->has_modifications;
+    }
+
+    /**
      * Raise a supplied Serial Number maintaining format YYYYMMDDXX.
      *
      * @param int $currentSerial The serial number to be increased.
@@ -194,18 +228,6 @@ class Zone extends Model
         return ($currentSerial >= $nowSerial)
             ? $currentSerial + 1
             : $nowSerial;
-    }
-
-    /**
-     * Return true if this zone has been modified from last push.
-     *
-     * This checks whether the Zone has been modified from the last push.
-     *
-     * @return bool
-     */
-    public function hasPendingChanges() : bool
-    {
-        return $this->has_modifications;
     }
 
     /**
@@ -389,5 +411,19 @@ class Zone extends Model
     public function isMasterZone() : bool
     {
         return is_null($this->master_server);
+    }
+
+    /**
+     * Returns an array of valid Record types for this zone.
+     *
+     * Reverse zone only has 'PTR' and 'NS' types.
+     *
+     * @return array
+     */
+    public function getValidRecordTypesForThisZone() : array
+    {
+        return ($this->reverse_zone)
+            ? array_only(Record::getAllValidRecordTypes(), ['PTR', 'NS'])
+            : array_except(Record::getAllValidRecordTypes(), ['PTR']);
     }
 }

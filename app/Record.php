@@ -17,6 +17,7 @@
 
 namespace App;
 
+use Iatstuti\Database\Support\NullableFields;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -36,37 +37,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Record extends Model
 {
+    use NullableFields;
 
-    /**
-     * Contains all supported Resource Records.
-     *
-     * This list contains all supported resource records.
-     * This currently is:
-     *
-     * /SOA
-     * A
-     * AAAA
-     * CNAME
-     * MX
-     * NS
-     * PTR
-     * SRV
-     * TXT
-     *
-     * @var array
-     *
-     * FIXME: Create a simple array $data = ['A', 'AAAA'...] to be able to translate values.
-     */
-    public static $validRecordTypes = [
-        'A'     => 'A (IPv4 address)', // ns1 IN A 192.168.0.1
-        'AAAA'  => 'AAAA (IPv6 address)',
-        'CNAME' => 'CNAME (canonical name)', // ftp IN CNAME www.example.com.
-        'MX'    => 'MX (mail exchange)', // @ IN  MX 10 mail.another.com.
-        'NS'    => 'NS (name server)', // sub1 IN NS ns2.smokeyjoe.com.
-        'PTR'   => 'PTR (pointer)',
-        'SRV'   => 'SRV (service locator)', // _foobar._tcp IN SRV 0 1 9 old-slow-box.example.com.
-        'TXT'   => 'TXT (text)', // joe IN TXT "Located in a black hole"
-    ];
     /**
      * The database table used by the model.
      */
@@ -90,11 +62,39 @@ class Record extends Model
         'data'     => 'string'
     ];
     /**
+     * The attributes that should be casted to null if is empty.
+     *
+     * @var array
+     */
+    protected $nullable = [
+        'ttl',
+        'priority',
+    ];
+    /**
      * All of the relationships to be touched.
      *
      * @var array
      */
     protected $touches = ['zone'];
+
+    /**
+     * Return an array with ALL valid Record types.
+     *
+     * @return array
+     */
+    public static function getAllValidRecordTypes() : array
+    {
+        return [
+            'A'     => trans('record/model.types_mapper.A'),
+            'AAAA'  => trans('record/model.types_mapper.AAAA'),
+            'CNAME' => trans('record/model.types_mapper.CNAME'),
+            'MX'    => trans('record/model.types_mapper.MX'),
+            'NS'    => trans('record/model.types_mapper.NS'),
+            'PTR'   => trans('record/model.types_mapper.PTR'),
+            'SRV'   => trans('record/model.types_mapper.SRV'),
+            'TXT'   => trans('record/model.types_mapper.TXT'),
+        ];
+    }
 
     /**
      * Set the Record's type uppercase.
