@@ -18,6 +18,7 @@ use Iatstuti\Database\Support\NullableFields;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Setting;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
@@ -266,7 +267,7 @@ class Zone extends Model
      */
     public function getDefaultTTL() : int
     {
-        return intval(($this->custom_settings) ? $this->default_ttl : \Registry::get('zone_default_default_ttl'));
+        return intval(($this->custom_settings) ? $this->default_ttl : Setting::get('zone_default_default_ttl'));
     }
 
     /**
@@ -299,7 +300,7 @@ class Zone extends Model
      */
     public function getPrimaryNameServer() : string
     {
-        return \Registry::get('zone_default_mname');
+        return Setting::get('zone_default_mname');
     }
 
     /**
@@ -311,7 +312,7 @@ class Zone extends Model
      */
     public function getHostmasterEmail() : string
     {
-        return strtr(\Registry::get('zone_default_rname'), '@', '.');
+        return strtr(Setting::get('zone_default_rname'), '@', '.');
     }
 
     /**
@@ -323,7 +324,7 @@ class Zone extends Model
      */
     public function getRefresh() : int
     {
-        return intval(($this->custom_settings) ? $this->refresh : \Registry::get('zone_default_refresh'));
+        return intval(($this->custom_settings) ? $this->refresh : Setting::get('zone_default_refresh'));
     }
 
     /**
@@ -335,7 +336,7 @@ class Zone extends Model
      */
     public function getRetry() : int
     {
-        return intval(($this->custom_settings) ? $this->retry : \Registry::get('zone_default_retry'));
+        return intval(($this->custom_settings) ? $this->retry : Setting::get('zone_default_retry'));
     }
 
     /**
@@ -347,7 +348,7 @@ class Zone extends Model
      */
     public function getExpire() : int
     {
-        return intval(($this->custom_settings) ? $this->expire : \Registry::get('zone_default_expire'));
+        return intval(($this->custom_settings) ? $this->expire : Setting::get('zone_default_expire'));
     }
 
     /**
@@ -359,7 +360,7 @@ class Zone extends Model
      */
     public function getNegativeTTL() : int
     {
-        return intval(($this->custom_settings) ? $this->negative_ttl : \Registry::get('zone_default_negative_ttl'));
+        return intval(($this->custom_settings) ? $this->negative_ttl : Setting::get('zone_default_negative_ttl'));
     }
 
     /**

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "74915f75baf21b40ac599b5b3c5c5dfe",
-    "content-hash": "e815fbc0f97e27cd4d7334ff04653562",
+    "hash": "b5dadc8aea5d2b8b930bd9cec219d4a5",
+    "content-hash": "4864f99802f2c8f1a7fef26e32ba05b5",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -56,6 +56,131 @@
                 "toolkit"
             ],
             "time": "2015-05-16 19:24:58"
+        },
+        {
+            "name": "arcanedev/settings",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ARCANEDEV/Settings.git",
+                "reference": "8e08dadc29d5a47c64099454696100babb356530"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ARCANEDEV/Settings/zipball/8e08dadc29d5a47c64099454696100babb356530",
+                "reference": "8e08dadc29d5a47c64099454696100babb356530",
+                "shasum": ""
+            },
+            "require": {
+                "arcanedev/support": "~3.0",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "phpunit/phpcov": "~2.0|~3.0",
+                "phpunit/phpunit": "~4.0|~5.0"
+            },
+            "suggest": {
+                "illuminate/database": "Save settings to a database table.",
+                "illuminate/filesystem": "Save settings to a JSON file."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Arcanedev\\Settings\\": "src/"
+                },
+                "files": [
+                    "helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ARCANEDEV",
+                    "email": "arcanedev.maroc@gmail.com",
+                    "homepage": "https://github.com/ARCANEDEV",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Persistent settings for Laravel.",
+            "homepage": "https://github.com/ARCANEDEV/Settings",
+            "keywords": [
+                "Settings",
+                "arcanedev",
+                "config",
+                "database",
+                "json",
+                "laravel",
+                "persistent",
+                "setting"
+            ],
+            "time": "2016-04-16 17:19:56"
+        },
+        {
+            "name": "arcanedev/support",
+            "version": "3.15.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ARCANEDEV/Support.git",
+                "reference": "9dfe987cada7341966be38110e8b349f5c30e9fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ARCANEDEV/Support/zipball/9dfe987cada7341966be38110e8b349f5c30e9fa",
+                "reference": "9dfe987cada7341966be38110e8b349f5c30e9fa",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/filesystem": "~5.0",
+                "illuminate/support": "~5.0",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpcov": "~2.0|~3.0",
+                "phpunit/phpunit": "~4.0|~5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Arcanedev\\Support\\": "src/"
+                },
+                "files": [
+                    "constants.php",
+                    "helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ARCANEDEV",
+                    "email": "arcanedev.maroc@gmail.com",
+                    "homepage": "https://github.com/arcanedev-maroc"
+                }
+            ],
+            "description": "ARCANEDEV Support Helpers",
+            "homepage": "https://github.com/ARCANEDEV/Support",
+            "keywords": [
+                "arcanedev",
+                "arcanesoft",
+                "laravel",
+                "support"
+            ],
+            "time": "2016-09-18 16:31:53"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -2583,54 +2708,6 @@
             "time": "2015-12-08 16:14:14"
         },
         {
-            "name": "torann/registry",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Torann/laravel-registry.git",
-                "reference": "9d366fb1c0602b130324aec2a346dc4af7d19147"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Torann/laravel-registry/zipball/9d366fb1c0602b130324aec2a346dc4af7d19147",
-                "reference": "9d366fb1c0602b130324aec2a346dc4af7d19147",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "~5.0",
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Torann\\Registry\\": "src/Torann/Registry"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD 2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Daniel Stainback",
-                    "email": "daniel@lyften.com"
-                }
-            ],
-            "description": "Laravel registry manager for application configurations",
-            "keywords": [
-                "Settings",
-                "configuration",
-                "laravel",
-                "registry"
-            ],
-            "time": "2015-03-11 19:37:02"
-        },
-        {
             "name": "vlucas/phpdotenv",
             "version": "v2.4.0",
             "source": {
@@ -4473,9 +4550,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "torann/registry": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

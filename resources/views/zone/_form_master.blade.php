@@ -150,11 +150,11 @@
         });
 
         $("#copy_global_settings").click(function () {
-            $("#refresh").val("{{ \Registry::get('zone_default_refresh') }}");
-            $("#retry").val("{{ \Registry::get('zone_default_retry') }}");
-            $("#expire").val("{{ \Registry::get('zone_default_expire') }}");
-            $("#negative_ttl").val("{{ \Registry::get('zone_default_negative_ttl') }}");
-            $("#default_ttl").val("{{ \Registry::get('zone_default_default_ttl') }}");
+            $("#refresh").val("{{ \Setting::get('zone_default_refresh') }}");
+            $("#retry").val("{{ \Setting::get('zone_default_retry') }}");
+            $("#expire").val("{{ \Setting::get('zone_default_expire') }}");
+            $("#negative_ttl").val("{{ \Setting::get('zone_default_negative_ttl') }}");
+            $("#default_ttl").val("{{ \Setting::get('zone_default_default_ttl') }}");
         });
     });
 </script>

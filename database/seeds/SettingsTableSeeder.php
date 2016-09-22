@@ -16,8 +16,9 @@
  *
  */
 
+use Arcanedev\Settings\Facades\Setting;
 use Illuminate\Database\Seeder;
-use Torann\Registry\Facades\Registry;
+
 
 class SettingsTableSeeder extends Seeder
 {
@@ -29,7 +30,7 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        Registry::flush();
+        Setting::reset();
 
         $settings = [
             /*
@@ -49,6 +50,7 @@ class SettingsTableSeeder extends Seeder
             'ssh_default_remote_path' => '/etc/named/probinder',
         ];
 
-        Registry::store($settings);
+        Setting::set($settings);
+        Setting::save();
     }
 }

@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use phpseclib\Crypt\RSA;
 use phpseclib\Net\SFTP;
-use Registry;
+use Setting;
 
 /**
  * Class ProBINDPushZones
@@ -132,7 +132,7 @@ class ProBINDPushZones extends Command
         $path = $this->localStoragePath . '/primary/' . $zone->domain;
 
         // Get default settings, we will use to render view
-        $defaults = Registry::all();
+        $defaults = Setting::all();
 
         // Get all Name Servers that had to be on NS records
         $nameServers = Server::where('ns_record', true)
@@ -194,11 +194,11 @@ class ProBINDPushZones extends Command
         $filesToPush = [
             [
                 'local'  => $this->localStoragePath . '/configuration/' . $server->hostname . '.conf',
-                'remote' => Registry::get('ssh_default_remote_path') . '/configuration/named.conf',
+                'remote' => Setting::get('ssh_default_remote_path') . '/configuration/named.conf',
             ],
             [
                 'local'  => $this->localStoragePath . '/configuration/deadlist',
-                'remote' => Registry::get('ssh_default_remote_path') . '/configuration/deadlist',
+                'remote' => Setting::get('ssh_default_remote_path') . '/configuration/deadlist',
             ]
         ];
 
@@ -208,7 +208,7 @@ class ProBINDPushZones extends Command
                 $filename = basename($file);
                 $filesToPush[] = [
                     'local'  => $file,
-                    'remote' => Registry::get('ssh_default_remote_path') . '/primary/' . $filename
+                    'remote' => Setting::get('ssh_default_remote_path') . '/primary/' . $filename
                 ];
             }
         }
@@ -272,17 +272,17 @@ class ProBINDPushZones extends Command
     {
         // Get RSA private key in order to connect to servers
         $privateSSHKey = new RSA();
-        $privateSSHKey->loadKey(Registry::get('ssh_default_key'));
+        $privateSSHKey->loadKey(Setting::get('ssh_default_key'));
 
         try {
-            $sftp = new SFTP($server->hostname, Registry::get('ssh_default_port'));
+            $sftp = new SFTP($server->hostname, Setting::get('ssh_default_port'));
         } catch (\Exception $e) {
             $this->error('Can\'t connect to ' . $server->hostname . ': ' . $e->getMessage());
 
             return false;
         }
 
-        if (!$sftp->login(Registry::get('ssh_default_user'), $privateSSHKey)) {
+        if (!$sftp->login(Setting::get('ssh_default_user'), $privateSSHKey)) {
             $this->error('Invalid SSH credentials for ' . $server->hostname);
 
             return false;
@@ -291,8 +291,8 @@ class ProBINDPushZones extends Command
         $this->info('Connected successfully to ' . $server->hostname);
 
         // Create Remote Folders, last argument is to be recursive
-        $sftp->mkdir(Registry::get('ssh_default_remote_path') . '/configuration', -1, true);
-        $sftp->mkdir(Registry::get('ssh_default_remote_path') . '/primary', -1, true);
+        $sftp->mkdir(Setting::get('ssh_default_remote_path') . '/configuration', -1, true);
+        $sftp->mkdir(Setting::get('ssh_default_remote_path') . '/primary', -1, true);
 
         $totalFiles = count($filesToPush);
         $pushedFiles = 0;
