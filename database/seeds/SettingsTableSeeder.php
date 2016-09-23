@@ -16,7 +16,6 @@
  *
  */
 
-use Arcanedev\Settings\Facades\Setting;
 use Illuminate\Database\Seeder;
 
 
@@ -30,8 +29,6 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        Setting::reset();
-
         $settings = [
             /*
              * Default values for Zone's definition
@@ -51,6 +48,5 @@ class SettingsTableSeeder extends Seeder
         ];
 
         Setting::set($settings);
-        Setting::save();
     }
 }

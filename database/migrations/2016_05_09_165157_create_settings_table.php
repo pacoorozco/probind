@@ -27,12 +27,13 @@ class CreateSettingsTable extends Migration
      */
     public function up()
     {
-        $tableName = config('settings.stores.database.table');
-
-        Schema::create($tableName, function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('key')->index();
-            $table->text('value');
+            $table->timestamps();
+            $table->string('key');
+            $table->text('value')->nullable();
+
+            $table->unique('key');
         });
     }
 
@@ -43,8 +44,6 @@ class CreateSettingsTable extends Migration
      */
     public function down()
     {
-        $tableName = config('settings.stores.database.table');
-
-        Schema::drop($tableName);
+        Schema::drop('settings');
     }
 }

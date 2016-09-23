@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b5dadc8aea5d2b8b930bd9cec219d4a5",
-    "content-hash": "4864f99802f2c8f1a7fef26e32ba05b5",
+    "hash": "766ab118d502c26602ff0b7643d93a38",
+    "content-hash": "d82a2560ae960e4e452bf34664223470",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -56,131 +56,6 @@
                 "toolkit"
             ],
             "time": "2015-05-16 19:24:58"
-        },
-        {
-            "name": "arcanedev/settings",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ARCANEDEV/Settings.git",
-                "reference": "8e08dadc29d5a47c64099454696100babb356530"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ARCANEDEV/Settings/zipball/8e08dadc29d5a47c64099454696100babb356530",
-                "reference": "8e08dadc29d5a47c64099454696100babb356530",
-                "shasum": ""
-            },
-            "require": {
-                "arcanedev/support": "~3.0",
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "phpunit/phpcov": "~2.0|~3.0",
-                "phpunit/phpunit": "~4.0|~5.0"
-            },
-            "suggest": {
-                "illuminate/database": "Save settings to a database table.",
-                "illuminate/filesystem": "Save settings to a JSON file."
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Arcanedev\\Settings\\": "src/"
-                },
-                "files": [
-                    "helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ARCANEDEV",
-                    "email": "arcanedev.maroc@gmail.com",
-                    "homepage": "https://github.com/ARCANEDEV",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Persistent settings for Laravel.",
-            "homepage": "https://github.com/ARCANEDEV/Settings",
-            "keywords": [
-                "Settings",
-                "arcanedev",
-                "config",
-                "database",
-                "json",
-                "laravel",
-                "persistent",
-                "setting"
-            ],
-            "time": "2016-04-16 17:19:56"
-        },
-        {
-            "name": "arcanedev/support",
-            "version": "3.15.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ARCANEDEV/Support.git",
-                "reference": "9dfe987cada7341966be38110e8b349f5c30e9fa"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ARCANEDEV/Support/zipball/9dfe987cada7341966be38110e8b349f5c30e9fa",
-                "reference": "9dfe987cada7341966be38110e8b349f5c30e9fa",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/filesystem": "~5.0",
-                "illuminate/support": "~5.0",
-                "php": ">=5.6"
-            },
-            "require-dev": {
-                "phpunit/phpcov": "~2.0|~3.0",
-                "phpunit/phpunit": "~4.0|~5.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Arcanedev\\Support\\": "src/"
-                },
-                "files": [
-                    "constants.php",
-                    "helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ARCANEDEV",
-                    "email": "arcanedev.maroc@gmail.com",
-                    "homepage": "https://github.com/arcanedev-maroc"
-                }
-            ],
-            "description": "ARCANEDEV Support Helpers",
-            "homepage": "https://github.com/ARCANEDEV/Support",
-            "keywords": [
-                "arcanedev",
-                "arcanesoft",
-                "laravel",
-                "support"
-            ],
-            "time": "2016-09-18 16:31:53"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -563,6 +438,49 @@
                 "tokenizer"
             ],
             "time": "2015-12-05 17:17:57"
+        },
+        {
+            "name": "larapacks/setting",
+            "version": "v1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/larapacks/setting.git",
+                "reference": "6c79e80be6c55febbd194913b45a39a6e3326ffa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/larapacks/setting/zipball/6c79e80be6c55febbd194913b45a39a6e3326ffa",
+                "reference": "6c79e80be6c55febbd194913b45a39a6e3326ffa",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "~5.2",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.2",
+                "phpunit/phpunit": "~4.8"
+            },
+            "type": "project",
+            "autoload": {
+                "files": [
+                    "src/helper.php"
+                ],
+                "psr-4": {
+                    "Larapacks\\Setting\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Persistent Laravel configuration settings.",
+            "keywords": [
+                "Settings",
+                "configuration",
+                "setting"
+            ],
+            "time": "2016-07-24 01:05:24"
         },
         {
             "name": "laravel/framework",

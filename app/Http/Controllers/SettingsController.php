@@ -30,10 +30,7 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        $settings = Setting::all();
-
-        return view('settings.index')
-            ->with('settings', $settings);
+        return view('settings.index');
     }
 
     /**

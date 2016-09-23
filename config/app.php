@@ -168,7 +168,7 @@ return [
         Collective\Html\HtmlServiceProvider::class, // HTML helpers
         Yajra\Datatables\DatatablesServiceProvider::class, // DataTables helpers
         Spatie\Activitylog\ActivitylogServiceProvider::class, // Activity Log helpers
-        Arcanedev\Settings\SettingsServiceProvider::class, // Settings
+        Larapacks\Setting\SettingServiceProvider::class, // Settings
 
         /*
          * Application Service Providers...
@@ -232,7 +232,7 @@ return [
         'Form'         => Collective\Html\FormFacade::class, // HTML Form helpers
         'HTML'         => Collective\Html\HtmlFacade::class, // HTML helpers
         'Datatables'   => Yajra\Datatables\Facades\Datatables::class, // DataTables helpers
-        'Setting'      => Arcanedev\Settings\Facades\Setting::class, // Setting helper
+        'Setting'      => Larapacks\Setting\Facades\Setting::class, // Setting helper
 
     ],
 

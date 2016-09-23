@@ -8,7 +8,7 @@
 <div class="form-group {{ $errors->has('zone_default_mname') ? 'has-error' : '' }}">
     {!! Form::label('zone_default_mname', trans('settings/model.zone_default_mname'), array('class' => 'control-label required')) !!}
     <div class="controls">
-        {!! Form::text('zone_default_mname', Setting::get('zone_default_mname'), array('class' => 'form-control', 'required' => 'required')) !!}
+        {!! Form::text('zone_default_mname', setting('zone_default_mname'), array('class' => 'form-control', 'required' => 'required')) !!}
         <span class="help-block">{{ trans('settings/model.zone_default_mname_help') }}</span>
         <span class="help-block">{{ $errors->first('zone_default_mname', ':message') }}</span>
     </div>
@@ -19,7 +19,7 @@
 <div class="form-group {{ $errors->has('zone_default_rname') ? 'has-error' : '' }}">
     {!! Form::label('zone_default_rname', trans('settings/model.zone_default_rname'), array('class' => 'control-label required')) !!}
     <div class="controls">
-        {!! Form::email('zone_default_rname', Setting::get('zone_default_rname'), array('class' => 'form-control', 'required' => 'required')) !!}
+        {!! Form::email('zone_default_rname', setting('zone_default_rname'), array('class' => 'form-control', 'required' => 'required')) !!}
         <span class="help-block">{{ trans('settings/model.zone_default_rname_help') }}</span>
         <span class="help-block">{{ $errors->first('zone_default_rname', ':message') }}</span>
     </div>
@@ -32,7 +32,7 @@
         <div class="form-group {{ $errors->has('zone_default_refresh') ? 'has-error' : '' }}">
             {!! Form::label('zone_default_refresh', trans('settings/model.zone_default_refresh'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::number('zone_default_refresh', Setting::get('zone_default_refresh'), array('class' => 'form-control', 'required' => 'required')) !!}
+                {!! Form::number('zone_default_refresh', setting('zone_default_refresh'), array('class' => 'form-control', 'required' => 'required')) !!}
                 <span class="help-block">{{ trans('settings/model.zone_default_refresh_help') }}</span>
                 <span class="help-block">{{ $errors->first('zone_default_refresh', ':message') }}</span>
             </div>
@@ -44,7 +44,7 @@
         <div class="form-group {{ $errors->has('zone_default_retry') ? 'has-error' : '' }}">
             {!! Form::label('zone_default_retry', trans('settings/model.zone_default_retry'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::number('zone_default_retry', Setting::get('zone_default_retry'), array('class' => 'form-control', 'required' => 'required')) !!}
+                {!! Form::number('zone_default_retry', setting('zone_default_retry'), array('class' => 'form-control', 'required' => 'required')) !!}
                 <span class="help-block">{{ trans('settings/model.zone_default_retry_help') }}</span>
                 <span class="help-block">{{ $errors->first('zone_default_retry', ':message') }}</span>
             </div>
@@ -59,7 +59,7 @@
         <div class="form-group {{ $errors->has('zone_default_expire') ? 'has-error' : '' }}">
             {!! Form::label('zone_default_expire', trans('settings/model.zone_default_expire'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::number('zone_default_expire', Setting::get('zone_default_expire'), array('class' => 'form-control', 'required' => 'required')) !!}
+                {!! Form::number('zone_default_expire', setting('zone_default_expire'), array('class' => 'form-control', 'required' => 'required')) !!}
                 <span class="help-block">{{ trans('settings/model.zone_default_expire_help') }}</span>
                 <span class="help-block">{{ $errors->first('zone_default_expire', ':message') }}</span>
             </div>
@@ -71,7 +71,7 @@
         <div class="form-group {{ $errors->has('zone_default_negative_ttl') ? 'has-error' : '' }}">
             {!! Form::label('zone_default_negative_ttl', trans('settings/model.zone_default_negative_ttl'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::number('zone_default_negative_ttl', Setting::get('zone_default_negative_ttl'), array('class' => 'form-control', 'required' => 'required')) !!}
+                {!! Form::number('zone_default_negative_ttl', setting('zone_default_negative_ttl'), array('class' => 'form-control', 'required' => 'required')) !!}
                 <span class="help-block">{{ trans('settings/model.zone_default_negative_ttl_help') }}</span>
                 <span class="help-block">{{ $errors->first('zone_default_negative_ttl', ':message') }}</span>
             </div>
@@ -84,7 +84,7 @@
 <div class="form-group {{ $errors->has('zone_default_default_ttl') ? 'has-error' : '' }}">
     {!! Form::label('zone_default_default_ttl', trans('settings/model.zone_default_default_ttl'), array('class' => 'control-label required')) !!}
     <div class="controls">
-        {!! Form::number('zone_default_default_ttl', Setting::get('zone_default_default_ttl'), array('class' => 'form-control', 'required' => 'required')) !!}
+        {!! Form::number('zone_default_default_ttl', setting('zone_default_default_ttl'), array('class' => 'form-control', 'required' => 'required')) !!}
         <span class="help-block">{{ trans('settings/model.zone_default_default_ttl_help') }}</span>
         <span class="help-block">{{ $errors->first('zone_default_default_ttl', ':message') }}</span>
     </div>

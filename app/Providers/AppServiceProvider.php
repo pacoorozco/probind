@@ -19,6 +19,8 @@ namespace App\Providers;
 
 use App\Record;
 use Illuminate\Support\ServiceProvider;
+use Setting;
+use View;
 
 class AppServiceProvider extends ServiceProvider
 {
