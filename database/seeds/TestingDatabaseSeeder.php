@@ -15,9 +15,17 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-return [
-    'domain'            => 'Domain',
-    'master_server'     => 'Master DNS',
-    'has_modifications' => 'Modified',
-    'type'              => 'Type',
-];
+use Illuminate\Database\Seeder;
+
+class TestingDatabaseSeeder extends Seeder
+{
+    /**
+     * Run the database seeds for testing environment.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $this->call(SettingsTableSeeder::class);
+    }
+}

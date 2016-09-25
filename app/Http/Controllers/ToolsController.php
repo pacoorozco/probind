@@ -17,8 +17,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ImportZoneRequest;
 use App\Server;
 use App\Zone;
+use Artisan;
 
 class ToolsController extends Controller
 {
@@ -59,7 +61,7 @@ class ToolsController extends Controller
         // create config files
 
         // create zone files and push to servers
-        \Artisan::call('probind:push');
+        Artisan::call('probind:push');
 
         // mark zones delete
 
@@ -91,5 +93,42 @@ class ToolsController extends Controller
 
         return redirect()->route('home')
             ->with('success', trans('tools/messages.bulk_update_success'));
+    }
+
+    /**
+     * Show the form to import a zone from a RFC 1033 file.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function importZone()
+    {
+        return view('tools.import_zone');
+    }
+
+    /**
+     * Call Artisan 'probind:import' command with supplied data.
+     *
+     * @param ImportZoneRequest $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     *
+     * FIXME
+     * Use queues for doing long tasks on background. This will require some notification system.
+     * Errors processing import Zone.
+     */
+    public function importZonePost(ImportZoneRequest $request)
+    {
+        // Move uploaded file to local storage.
+        $zonefile = $request->file('zonefile')->store('temp');
+
+        Artisan::call('probind:import', [
+            'zone'     => $request->input('domain'),
+            'zonefile' => storage_path('app/' . $zonefile),
+            '--force'  => $request->has('overwrite'),
+        ]);
+
+        return redirect()->route('home')
+            ->with('success',
+                trans('tools/messages.import_zone_success', ['zone' => $request->input('domain')]));
     }
 }

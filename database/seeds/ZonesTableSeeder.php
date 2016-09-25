@@ -30,7 +30,7 @@ class ZonesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Zone::class, 25)
+        factory(Zone::class, 15)
             ->create()
             ->each(function (Zone $zone) {
                 $records = factory(Record::class, 'A', 10)->make();
@@ -42,5 +42,8 @@ class ZonesTableSeeder extends Seeder
                     $zone->records()->save($record);
                 }
             });
+
+        factory(Zone::class, 'reverse', 5)
+            ->create();
     }
 }

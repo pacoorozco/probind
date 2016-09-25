@@ -45,6 +45,11 @@
                     <i class="fa fa-circle-o"></i> {{ trans('site.push_updates') }}
                 </a>
             </li>
+            <li {!! (Request::is('tools/import') ? ' class="active"' : '') !!}>
+                <a href="{{ route('tools.import_zone') }}">
+                    <i class="fa fa-circle-o"></i> {{ trans('site.import_zone') }}
+                </a>
+            </li>
         </ul>
     </li>
 

@@ -16,9 +16,11 @@
  */
 
 use App\Server;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ServerUnitTest extends TestCase
 {
+    use DatabaseMigrations;
 
     /**
      * Test Server hostname is lower cased
@@ -74,23 +76,6 @@ class ServerUnitTest extends TestCase
     }
 
     /**
-     * Test Server type is a valid one with valid value
-     */
-    public function testTypeAttributeIsValidFailure()
-    {
-        $expectedType = 'slave';
-
-        $server = new Server([
-            'hostname'   => 'server01.local',
-            'ip_address' => '192.168.1.2',
-            'type'       => $expectedType,
-        ]);
-
-        // Attribute must be defined as one of Server::$validServerTypes.
-        $this->assertEquals($expectedType, $server->type);
-    }
-
-    /**
      * Test Server NS record formatting
      */
     public function testGetNSRecord()
@@ -108,4 +93,28 @@ class ServerUnitTest extends TestCase
         // Function must return a specified format
         $this->assertEquals($expectedNSRecord, $server->getNSRecord());
     }
+
+    /**
+     * Test scope withPushCapability()
+     */
+    public function testScopeWithPushCapability()
+    {
+        // Create Server items that are out this scope
+        factory(Server::class, 5)->create([
+            'push_updates' => false
+        ]);
+        $servers = Server::withPushCapability()->get();
+
+        // Pre-condition.
+        $this->assertEmpty($servers);
+
+        // Create Server items that are in this scope
+        factory(Server::class, 5)->create([
+            'push_updates' => true
+        ]);
+        $servers = Server::withPushCapability()->get();
+
+        $this->assertCount(5, $servers);
+    }
+
 }

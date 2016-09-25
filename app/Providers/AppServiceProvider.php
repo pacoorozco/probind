@@ -19,6 +19,8 @@ namespace App\Providers;
 
 use App\Record;
 use Illuminate\Support\ServiceProvider;
+use Setting;
+use View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -50,7 +52,9 @@ class AppServiceProvider extends ServiceProvider
     {
         // Load Service Providers for 'local' environment
         if ($this->app->environment() === 'local') {
+            // @codeCoverageIgnoreStart
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+            // @codeCoverageIgnoreEnd
         }
     }
 }

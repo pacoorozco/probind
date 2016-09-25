@@ -18,7 +18,7 @@
 return [
     'domain'          => 'Domain',
     'serial'          => 'Serial',
-    'master'          => 'Master DNS',
+    'master_server'   => 'Master DNS',
     'type'            => 'Type',
     'types'           => [
         'master' => 'Master',

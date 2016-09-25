@@ -78,6 +78,10 @@ Route::get('tools/update',
     ['as' => 'tools.bulk_update', 'uses' => 'ToolsController@showBulkUpdate']);
 Route::post('tools/update',
     ['as' => 'tools.do_bulk_update', 'uses' => 'ToolsController@doBulkUpdate']);
+Route::get('tools/import',
+    ['as' => 'tools.import_zone', 'uses' => 'ToolsController@importZone']);
+Route::post('tools/import',
+    ['as' => 'tools.import_zone_post', 'uses' => 'ToolsController@importZonePost']);
 /*
  * ------------------------------------------
  * Settings

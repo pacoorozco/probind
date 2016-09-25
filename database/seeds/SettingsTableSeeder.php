@@ -17,7 +17,7 @@
  */
 
 use Illuminate\Database\Seeder;
-use Torann\Registry\Facades\Registry;
+
 
 class SettingsTableSeeder extends Seeder
 {
@@ -29,8 +29,6 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        Registry::flush();
-
         $settings = [
             /*
              * Default values for Zone's definition
@@ -49,6 +47,6 @@ class SettingsTableSeeder extends Seeder
             'ssh_default_remote_path' => '/etc/named/probinder',
         ];
 
-        Registry::store($settings);
+        Setting::set($settings);
     }
 }

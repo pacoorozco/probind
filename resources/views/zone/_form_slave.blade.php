@@ -15,21 +15,25 @@
         <div class="form-group {{ $errors->has('domain') ? 'has-error' : '' }}">
             {!! Form::label('domain', trans('zone/model.domain'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::text('domain', null, array('class' => 'form-control', 'required' => 'required')) !!}
+                @if (isset($zone))
+                    {!! Form::text('domain', null, array('class' => 'form-control', 'disabled' => 'disabled')) !!}
+                @else
+                    {!! Form::text('domain', null, array('class' => 'form-control', 'required' => 'required')) !!}
+                @endif
                 <span class="help-block">{{ $errors->first('domain', ':message') }}</span>
             </div>
         </div>
         <!-- ./ domain -->
 
-        <!-- master -->
-        <div class="form-group {{ $errors->has('master') ? 'has-error' : '' }}">
-            {!! Form::label('master', trans('zone/model.master'), array('class' => 'control-label required')) !!}
+        <!-- master_server -->
+        <div class="form-group {{ $errors->has('master_server') ? 'has-error' : '' }}">
+            {!! Form::label('master_server', trans('zone/model.master_server'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::text('master', null, array('class' => 'form-control',  'required' => 'required')) !!}
-                <span class="help-block">{{ $errors->first('master', ':message') }}</span>
+                {!! Form::text('master_server', null, array('class' => 'form-control',  'required' => 'required')) !!}
+                <span class="help-block">{{ $errors->first('master_server', ':message') }}</span>
             </div>
         </div>
-        <!-- ./ master -->
+        <!-- ./ master_server -->
     </div>
 
     <div class="box-footer">

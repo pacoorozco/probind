@@ -44,7 +44,7 @@ class SearchController extends Controller
     {
         return array_merge(
             ['ANY_TYPE' => trans('record/model.any_type')],
-            Record::$validInputTypes
+            Record::getAllValidRecordTypes()
         );
     }
 
@@ -78,7 +78,7 @@ class SearchController extends Controller
     /**
      * Create a query based on provided search terms and return paginated results.
      *
-     * @param  array $searchTerms
+     * @param  array   $searchTerms
      * @param  integer $perPage
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
