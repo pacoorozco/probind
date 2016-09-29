@@ -35,7 +35,7 @@
                         <img src="{{ asset('images/missing_profile.png') }}" class="user-image"
                              alt="{{ trans('user/profile.avatar') }}"/>
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        <span class="hidden-xs">{{-- auth()->user()->name --}} administrator</span>
+                        <span class="hidden-xs">{{ auth()->user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
@@ -43,16 +43,16 @@
                             <img src="{{ asset('images/missing_profile.png') }}" class="img-circle"
                                  alt="{{ trans('user/profile.avatar') }}"/>
                             <p>
-                                {{-- auth()->user()->name --}} administrator - Admin
-                                <small>Member since {{-- date("M Y", strtotime(auth()->user()->created_at)) --}}</small>
+                                {{ auth()->user()->name }} - Admin
+                                <small>Member since {{ auth()->user()->created_at->format('M Y') }}</small>
                             </p>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-right">
-                                <a href="{{ url('auth/logout') }}" class="btn btn-default btn-flat">
-                                    {{ trans('general.logout') }}
-                                </a>
+                                {!! Form::open(['url' => '/logout']) !!}
+                                {!! Form::button(trans('auth.logout'), ['type' => 'submit', 'class' => 'btn btn-default btn-flat']) !!}
+                                {!! Form::close() !!}
                             </div>
                         </li>
                     </ul>
