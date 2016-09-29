@@ -24,6 +24,14 @@ class SearchHttpTest extends TestCase
 
     use DatabaseMigrations;
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        $user = factory(\App\User::class)->create();
+        $this->actingAs($user);
+    }
+
     public function testSearchWithResults()
     {
         // Prepare data to make tests

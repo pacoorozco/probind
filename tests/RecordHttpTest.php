@@ -24,6 +24,14 @@ class RecordHttpTest extends TestCase
 
     use DatabaseMigrations;
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        $user = factory(\App\User::class)->create();
+        $this->actingAs($user);
+    }
+
     /**
      * Test a successful new Record creation
      */
