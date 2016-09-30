@@ -55,17 +55,15 @@
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-            <button type="submit" class="btn btn-primary btn-block btn-flat">
-                {{ trans('auth.login') }}
-            </button>
+            {!! Form::button(trans('auth.login'), ['type' => 'submit', 'class' => 'btn btn-primary btn-block btn-flat', 'id' => 'submit']) !!}
         </div>
         <!-- /.col -->
     </div>
     {!! Form::close() !!}
+    {{--
     <a href="{{ url('/password/reset') }}">
         {{ trans('auth.forgot_password') }}
     </a><br>
-    {{--
     <a href="{{ url('auth/register') }}" class="text-center">
         {{ trans('auth.create_account') }}
     </a>
