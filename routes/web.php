@@ -1,4 +1,19 @@
 <?php
+/**
+ * ProBIND v3 - Professional DNS management made easy.
+ *
+ * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
+ *
+ * This file is part of some open source application.
+ *
+ * Licensed under GNU General Public License 3.0.
+ * Some rights reserved. See LICENSE, AUTHORS.
+ *
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2016 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
+ */
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +30,21 @@ Route::singularResourceParameters();
 
 Route::get('/', ['as' => 'home', 'uses' => 'DashboardController@index']);
 
-/* ------------------------------------------
+/*  ------------------------------------------
+ *  User management
+ *  ------------------------------------------
+ */
+// Datatables Ajax route.
+// NOTE: We must define this route first as it is more specific than
+// the default show resource route for /users/{user}
+Route::get('users/data',
+    ['as' => 'users.data', 'uses' => 'UserController@data']);
+// Our special delete confirmation route - uses the show/details view.
+Route::get('users/{user}/delete',
+    ['as' => 'users.delete', 'uses' => 'UserController@delete']);
+Route::resource('users', 'UserController');
+
+/*  ------------------------------------------
  *  Server management
  *  ------------------------------------------
  */
@@ -29,7 +58,7 @@ Route::get('servers/{server}/delete',
     ['as' => 'servers.delete', 'uses' => 'ServerController@delete']);
 Route::resource('servers', 'ServerController');
 
-/* ------------------------------------------
+/*  ------------------------------------------
  *  Zone management
  *  ------------------------------------------
  */
@@ -43,7 +72,7 @@ Route::get('zones/{zone}/delete',
     ['as' => 'zones.delete', 'uses' => 'ZoneController@delete']);
 Route::resource('zones', 'ZoneController');
 
-/* ------------------------------------------
+/*  ------------------------------------------
  *  Record management
  *  ------------------------------------------
  */
@@ -57,7 +86,7 @@ Route::get('zones/{zone}/records/{record}/delete',
     ['as' => 'zones.records.delete', 'uses' => 'RecordController@delete']);
 Route::resource('zones.records', 'RecordController');
 
-/* ------------------------------------------
+/*  ------------------------------------------
  *  Search
  *  ------------------------------------------
  */
@@ -66,7 +95,7 @@ Route::get('search',
 Route::get('search/results',
     ['as' => 'search.results', 'uses' => 'SearchController@search']);
 
-/* ------------------------------------------
+/*  ------------------------------------------
  *  Tools
  *  ------------------------------------------
  */
@@ -82,10 +111,23 @@ Route::get('tools/import',
     ['as' => 'tools.import_zone', 'uses' => 'ToolsController@importZone']);
 Route::post('tools/import',
     ['as' => 'tools.import_zone_post', 'uses' => 'ToolsController@importZonePost']);
-/*
- * ------------------------------------------
- * Settings
- * ------------------------------------------
+/*  ------------------------------------------
+ *  Settings
+ *  ------------------------------------------
  */
 Route::get('settings', ['as' => 'settings.index', 'uses' => 'SettingsController@index']);
 Route::put('settings', ['as' => 'settings.update', 'uses' => 'SettingsController@update']);
+/*  ------------------------------------------
+ *  Authentication
+ *  ------------------------------------------
+ */
+// Authentication Routes...
+Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout');
+
+// Password Reset Routes...
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset');

@@ -44,7 +44,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @link https://www.ietf.org/rfc/rfc1035.txt
  * @link https://www.ietf.org/rfc/rfc2782.txt
  *
- * TODO: Add Inverse Zones. Create a new flag for inverse zones, *.IN-ADDR.ARPA. Only PTR, NS will be allowed.
  */
 class Zone extends Model
 {

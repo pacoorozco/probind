@@ -24,6 +24,10 @@ use Artisan;
 
 class ToolsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Show the summary page before push updates to servers.

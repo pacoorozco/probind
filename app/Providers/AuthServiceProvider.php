@@ -17,6 +17,8 @@
 
 namespace App\Providers;
 
+use App\User;
+use Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -40,6 +42,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // Prevent an user to delete himself.
+        Gate::define('delete-user', function (User $user, User $item) {
+            return $user->id != $item->id;
+        });
     }
 }

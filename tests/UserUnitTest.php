@@ -15,28 +15,21 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\User;
 
-class DashboardHttpTest extends TestCase
+class UserUnitTest extends TestCase
 {
-    use DatabaseMigrations;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $user = factory(\App\User::class)->create();
-        $this->actingAs($user);
-    }
-
     /**
-     * Test Dashboard creation.
+     * Test User username is lower cased
      */
-    public function testVisitDashboard()
+    public function testUsernameAttributeIsLowerCased()
     {
-        $this->visit('/')
-            ->seeElement('#info-boxes')
-            ->seeElement('#latest-activity-widget')
-            ->seeElement('#latest-jobs-widget');
+        $expectedUser = factory(User::class)->make();
+
+        $user = new User();
+        $user->username = strtoupper($expectedUser->username);
+
+        // Attribute must be lower cased
+        $this->assertEquals($expectedUser->username, $user->username);
     }
 }

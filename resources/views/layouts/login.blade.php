@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>@yield('title', 'Administration Dashboard') :: ProBIND v3</title>
+    <title>@yield('title', 'Login') :: ProBIND v3</title>
     <!-- start: META -->
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <meta content="ProBIND v3: Professional DNS Management - Login" name="description">
