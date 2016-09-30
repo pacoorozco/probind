@@ -55,7 +55,7 @@
 
     <li class="header">{{ trans('site.configure') }}</li>
     <li {!! (Request::is('users*') ? ' class="active"' : '') !!}>
-        <a href="{{-- route('users.index') --}}">
+        <a href="{{ route('users.index') }}">
             <i class="fa fa-users"></i><span>{{ trans('site.users') }}</span>
         </a>
     </li>

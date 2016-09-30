@@ -31,6 +31,20 @@ Route::singularResourceParameters();
 Route::get('/', ['as' => 'home', 'uses' => 'DashboardController@index']);
 
 /*  ------------------------------------------
+ *  User management
+ *  ------------------------------------------
+ */
+// Datatables Ajax route.
+// NOTE: We must define this route first as it is more specific than
+// the default show resource route for /users/{user}
+Route::get('users/data',
+    ['as' => 'users.data', 'uses' => 'UserController@data']);
+// Our special delete confirmation route - uses the show/details view.
+Route::get('users/{user}/delete',
+    ['as' => 'users.delete', 'uses' => 'UserController@delete']);
+Route::resource('users', 'UserController');
+
+/*  ------------------------------------------
  *  Server management
  *  ------------------------------------------
  */

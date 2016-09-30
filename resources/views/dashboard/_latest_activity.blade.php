@@ -24,7 +24,7 @@
             <tbody>
             @foreach($activityLog as $activity)
                 <tr>
-                    <td>{!! is_null($activity->causer) ? 'Unknown' : $activity->causer !!}</td>
+                    <td>{!! is_null($activity->causer) ? 'System' : $activity->causer->name !!}</td>
                     <td>{!! $activity->description !!}</td>
                     <td>{{ $activity->created_at->diffForHumans() }}</td>
                 </tr>
