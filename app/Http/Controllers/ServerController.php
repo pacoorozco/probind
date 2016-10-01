@@ -17,6 +17,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use App\Http\Requests\ServerCreateRequest;
 use App\Http\Requests\ServerUpdateRequest;
 use App\Server;
@@ -168,12 +169,7 @@ class ServerController extends Controller
 
         return $dataTable::of($servers)
             ->editColumn('hostname', function (Server $server) {
-                $mapServerStatusToLabel = [
-                    '0' => ' <span class="label label-default">' . trans('general.inactive') . '</span>',
-                    '1' => ''
-                ];
-
-                return $server->hostname . $mapServerStatusToLabel[$server->active];
+                return Helper::addStatusLabel($server->active, $server->hostname);
             })
             ->editColumn('push_updates', function (Server $server) {
                 return trans_choice('general.boolean', intval($server->push_updates));

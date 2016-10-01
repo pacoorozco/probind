@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\User;
@@ -150,12 +151,7 @@ class UserController extends Controller
 
         return $dataTable::of($users)
             ->editColumn('username', function (User $user) {
-                $mapUserStatusToLabel = [
-                    '0' => ' <span class="label label-default">' . trans('general.inactive') . '</span>',
-                    '1' => ''
-                ];
-
-                return $user->username . $mapUserStatusToLabel[$user->active];
+                return Helper::addStatusLabel($user->active, $user->username);
             })
             ->addColumn('actions', function (User $user) {
                 return view('partials.actions_dd', [
