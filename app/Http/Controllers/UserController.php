@@ -154,10 +154,10 @@ class UserController extends Controller
                 return Helper::addStatusLabel($user->active, $user->username);
             })
             ->addColumn('actions', function (User $user) {
-                return view('partials.actions_dd', [
-                    'model' => 'users',
-                    'id'    => $user->id,
-                ])->render();
+                return view('partials.actions_dd')
+                    ->with('model', 'users')
+                    ->with('id', $user->id)
+                    ->render();
             })
             ->removeColumn('id')
             ->removeColumn('active')
