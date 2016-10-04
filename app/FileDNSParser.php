@@ -417,7 +417,6 @@ class FileDNSParser
             $record['name'] = $lastRecordName;
         }
         // If it's a FQDN, add the current origin.
-        // if (!preg_match('/(.*\.)/', $record['name'])) {
         if (!preg_match('/(.*\.)/', $record['name'])) {
             $record['name'] .= '.' . $origin;
         }
