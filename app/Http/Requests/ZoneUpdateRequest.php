@@ -37,7 +37,6 @@ class ZoneUpdateRequest extends Request
      */
     public function rules()
     {
-        // This rules are used on ZoneCreateRequest.php too.
         return [
             'master_server'   => 'sometimes|required|ip',
             'custom_settings' => 'sometimes|boolean',

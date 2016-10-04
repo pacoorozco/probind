@@ -40,7 +40,7 @@ class Helper
             ];
         }
         $concatenationSpace = empty($text) ? '' : ' ';
-        return $text . $concatenationSpace . $mapStatusToLabel[$condition];
+        return trim($text . $concatenationSpace . $mapStatusToLabel[$condition], ' ');
     }
 
 }
