@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 0.4.0 - 2016-10-05
+### Added
 - Add 'Import zone' feature which allows to import BIND (RFC 1033) zone files to ProBIND.
 - Add support for **Reverse zones**. [What is a Reverse zone?](https://en.wikipedia.org/wiki/Reverse_DNS_lookup)
 - Add user management and authentication. Now **only** authenticates with local database.
