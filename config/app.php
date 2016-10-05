@@ -121,7 +121,7 @@ return [
     |
     */
 
-    'version' => '0.3.0',
+    'version' => '0.4.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -167,8 +167,8 @@ return [
          */
         Collective\Html\HtmlServiceProvider::class, // HTML helpers
         Yajra\Datatables\DatatablesServiceProvider::class, // DataTables helpers
-        Torann\Registry\RegistryServiceProvider::class, // Settings helpers
         Spatie\Activitylog\ActivitylogServiceProvider::class, // Activity Log helpers
+        Larapacks\Setting\SettingServiceProvider::class, // Settings
 
         /*
          * Application Service Providers...
@@ -232,7 +232,7 @@ return [
         'Form'         => Collective\Html\FormFacade::class, // HTML Form helpers
         'HTML'         => Collective\Html\HtmlFacade::class, // HTML helpers
         'Datatables'   => Yajra\Datatables\Facades\Datatables::class, // DataTables helpers
-        'Registry'     => Torann\Registry\Facades\Registry::class, // Settings helpers
+        'Setting'      => Larapacks\Setting\Facades\Setting::class, // Setting helper
 
     ],
 

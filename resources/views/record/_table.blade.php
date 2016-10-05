@@ -32,6 +32,8 @@
 <script>
     $(function () {
         $('#records-table').DataTable({
+            "processing": true,
+            "serverSide": true,
             "ajax": "{{ route('zones.records.data', $zone->id) }}",
             "columns": [
                 {data: "name"},

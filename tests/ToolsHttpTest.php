@@ -22,6 +22,14 @@ class ToolsHttpTest extends TestCase
 {
     use DatabaseMigrations;
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        $user = factory(\App\User::class)->create();
+        $this->actingAs($user);
+    }
+
     /**
      * Test Bulk Update feature.
      */
@@ -29,7 +37,7 @@ class ToolsHttpTest extends TestCase
     {
         // Create some zones to test
         factory(Zone::class, 5)->create([
-            'updated' => false
+            'has_modifications' => false
         ]);
 
         // Visit URL to do bulk update

@@ -41,7 +41,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -50,4 +50,16 @@ class LoginController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
     }
+
+    /**
+     * Which field will be used as a username. (Default is email).
+     *
+     * @return string
+     */
+    public function username() : string
+    {
+        return 'username';
+    }
+
+
 }

@@ -45,12 +45,17 @@
                     <i class="fa fa-circle-o"></i> {{ trans('site.push_updates') }}
                 </a>
             </li>
+            <li {!! (Request::is('tools/import') ? ' class="active"' : '') !!}>
+                <a href="{{ route('tools.import_zone') }}">
+                    <i class="fa fa-circle-o"></i> {{ trans('site.import_zone') }}
+                </a>
+            </li>
         </ul>
     </li>
 
     <li class="header">{{ trans('site.configure') }}</li>
     <li {!! (Request::is('users*') ? ' class="active"' : '') !!}>
-        <a href="{{-- route('users.index') --}}">
+        <a href="{{ route('users.index') }}">
             <i class="fa fa-users"></i><span>{{ trans('site.users') }}</span>
         </a>
     </li>

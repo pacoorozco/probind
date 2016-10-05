@@ -15,7 +15,11 @@
         <div class="form-group {{ $errors->has('domain') ? 'has-error' : '' }}">
             {!! Form::label('domain', trans('zone/model.domain'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::text('domain', null, array('class' => 'form-control', 'required' => 'required')) !!}
+                @if (isset($zone))
+                    {!! Form::text('domain', null, array('class' => 'form-control', 'disabled' => 'disabled')) !!}
+                @else
+                    {!! Form::text('domain', null, array('class' => 'form-control', 'required' => 'required')) !!}
+                @endif
                 <span class="help-block">{{ $errors->first('domain', ':message') }}</span>
             </div>
         </div>
@@ -33,7 +37,8 @@
         <!-- ./ custom_settings -->
 
         <!-- custom settings section -->
-        <div class="{{ (empty($zone->custom_settings) && empty(old('custom_settings'))) ? 'collapse' : 'collapse in' }}" id="custom_settings_section">
+        <div class="{{ (empty($zone->custom_settings) && empty(old('custom_settings'))) ? 'collapse' : 'collapse in' }}"
+             id="custom_settings_section">
 
             <h4>{{ trans('zone/title.custom_settings') }}</h4>
 
@@ -145,11 +150,11 @@
         });
 
         $("#copy_global_settings").click(function () {
-            $("#refresh").val("{{ \Registry::get('zone_default_refresh') }}");
-            $("#retry").val("{{ \Registry::get('zone_default_retry') }}");
-            $("#expire").val("{{ \Registry::get('zone_default_expire') }}");
-            $("#negative_ttl").val("{{ \Registry::get('zone_default_negative_ttl') }}");
-            $("#default_ttl").val("{{ \Registry::get('zone_default_default_ttl') }}");
+            $("#refresh").val("{{ setting('zone_default_refresh') }}");
+            $("#retry").val("{{ setting('zone_default_retry') }}");
+            $("#expire").val("{{ setting('zone_default_expire') }}");
+            $("#negative_ttl").val("{{ setting('zone_default_negative_ttl') }}");
+            $("#default_ttl").val("{{ setting('zone_default_default_ttl') }}");
         });
     });
 </script>

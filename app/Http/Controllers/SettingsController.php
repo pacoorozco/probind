@@ -18,10 +18,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SettingsUpdateRequest;
-use Torann\Registry\Facades\Registry;
+use Setting;
 
 class SettingsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Display a listing of the resource.
@@ -30,10 +34,7 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        $settings = Registry::all();
-
-        return view('settings.index')
-            ->with('settings', $settings);
+        return view('settings.index');
     }
 
     /**
@@ -45,7 +46,7 @@ class SettingsController extends Controller
      */
     public function update(SettingsUpdateRequest $request)
     {
-        Registry::store($request->except('_token', '_method'));
+        Setting::set($request->except('_token', '_method'));
 
         return redirect()->route('settings.index')
             ->with('success', trans('settings/messages.update.success'));
