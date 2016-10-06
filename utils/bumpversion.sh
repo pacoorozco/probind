@@ -28,7 +28,9 @@
 # ----------------------------------------------------------------------
 # Program name and version
 PN=$(basename "$0")
-VER='0.1'
+VER='0.2'
+# Root directory where files reside in
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
 # ----------------------------------------------------------------------
 # Functions
@@ -120,7 +122,7 @@ get_current_version_number()
     #
     # Get current version from config/app.php
     #
-    current_version=`grep "'version' => '\(.*\)'" config/app.php |
+    current_version=`grep "'version' => '\(.*\)'" ${ROOT_DIR}/config/app.php |
     	head -1 |
     	awk '{ print $3 }' | sed "s/[',]//g"`
 }
@@ -135,10 +137,10 @@ bump_version()
     echo -e "Bump version: ${current_version} -> ${new_version}\n"
 
     # Update version number on config/app.php
-    sed -i config/app.php -e "s/'version' => '\(.*\)'/'version' => '${new_version}'/g"
+    sed -i ${ROOT_DIR}/config/app.php -e "s/'version' => '\(.*\)'/'version' => '${new_version}'/g"
 
 	# Create a new section on CHANGELOG
-	sed -i CHANGELOG.md -e "s/^## Unreleased/## Unreleased\n\n## ${new_version} - ${date}\n/g"
+	sed -i ${ROOT_DIR}/CHANGELOG.md -e "s/^## Unreleased/## Unreleased\n\n## ${new_version} - ${date}\n/g"
 }
 
 # ----------------------------------------------------------------------
