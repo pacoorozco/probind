@@ -136,11 +136,11 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
  *  Installer
  *  ------------------------------------------
  */
-Route::group(['prefix' => 'install'], function () {
-    Route::get('/', ['as' => 'installBegin', 'uses' => 'InstallController@index']);
-    Route::get('database', ['as' => 'installDatabaseForm', 'uses' => 'InstallController@index']);
-    Route::post('database', ['as' => 'installDatabaseCreate', 'uses' => 'InstallController@index']);
-    Route::get('register', ['as' => 'installAdminForm', 'uses' => 'InstallController@index']);
-    Route::post('register', ['as' => 'installAdminCreate', 'uses' => 'InstallController@index']);
-    Route::get('end', ['as' => 'installEnd', 'uses' => 'InstallController@index']);
+Route::group(['prefix' => 'install', 'as' => 'Installer::'], function () {
+    Route::get('/', ['as' => 'begin', 'uses' => 'InstallController@index']);
+    Route::get('database', ['as' => 'database', 'uses' => 'InstallController@showDatabaseForm']);
+    Route::post('database', ['as' => 'databaseSave', 'uses' => 'InstallController@createDatabase']);
+    Route::get('register', ['as' => 'administrator', 'uses' => 'InstallController@showUserCreateForm']);
+    Route::post('register', ['as' => 'administratorSave', 'uses' => 'InstallController@createUser']);
+    Route::get('end', ['as' => 'End', 'uses' => 'InstallController@end']);
 });

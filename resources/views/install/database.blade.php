@@ -1,13 +1,25 @@
 @extends('layouts.installer')
 
+{{-- Web site Title --}}
+@section('title')
+    {{ trans('installer.database.title') }}
+@endsection
+
 @section('content')
-    <!-- start: Database Form -->
-    {!! Form::open(['route' => 'installDatabaseCreate']) !!}
+<div class="container">
+    <div class="register-logo">
+        <a href="{{ route('home') }}"><b>ProBIND</b> v3</a>
+    </div>
+
+    @include('partials.notifications')
+
+    <!-- start: DATABASE FORM -->
+    {!! Form::open(['route' => 'Installer::databaseSave']) !!}
 
     <div class="box box-primary box-solid">
         <div class="box-header with-border">
             <i class="fa fa-database"></i>
-            <h3 class="box-title">{{ trans('installer.database.title') }}</h3>
+            <h3 class="box-title">{{ trans('installer.database.header') }}</h3>
         </div>
         <div class="box-body">
             <p>{{ trans('installer.database.sub-title') }}</p>
@@ -51,6 +63,17 @@
                 </div>
             </div>
             <!-- ./ host -->
+
+            <!-- seed -->
+            <div class="form-group {{ $errors->has('seed') ? 'has-error' : '' }}">
+                <div class="checkbox">
+                    <label class="control-label">
+                        {{ Form::checkbox('seed', true, null) }}
+                        {{ trans('installer.database.seed-label') }}
+                    </label>
+                </div>
+            </div>
+            <!-- ./ seed -->
         </div>
 
         <div class="box-footer">
@@ -59,5 +82,6 @@
     </div>
 
     {!! Form::close() !!}
-    <!-- end: Database Form -->
+    <!-- end: DATABASE FORM -->
+</div>
 @endsection

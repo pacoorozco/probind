@@ -36,19 +36,25 @@
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 </head>
 <!-- start: BODY -->
-<body class="register-page">
-<div class="register-box">
-    <div class="register-logo">
-        <a href="{{ route('home') }}"><b>ProBIND</b> v3</a>
-    </div>
+<body class="hold-transition skin-blue layout-top-nav">
+<!-- start: MAIN CONTAINER -->
+<div class="wrapper">
 
-    @include('partials.notifications')
-
-    <div class="register-box-body">
-        @yield('content')
+    <!-- start: PAGE -->
+    <div class="content-wrapper">
+        <!-- start: PAGE CONTENT -->
+        <section class="content">
+            @yield('content')
+        </section>
+        <!-- end: PAGE CONTENT-->
     </div>
+    <!-- end: PAGE -->
+
+    <!-- start: FOOTER -->
+    @include('partials.footer')
+    <!-- end: FOOTER -->
 </div>
-
+<!-- end: MAIN CONTAINER -->
 <!-- start: GLOBAL JAVASCRIPT -->
 {!! HTML::script('vendor/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js') !!}
 {!! HTML::script('vendor/AdminLTE/bootstrap/js/bootstrap.min.js') !!}

@@ -17,9 +17,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\EnvironmentRepository;
+use Artisan;
+use Exception;
+use Illuminate\Http\Request;
+
+
 class InstallController extends Controller
 {
     public function index()
+    {
+
+    }
+
+    /**
+     * Show Connection Settings Form
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showDatabaseForm()
     {
         $host = env('DB_HOST');
         $dbname = env('DB_DATABASE');
@@ -31,5 +47,61 @@ class InstallController extends Controller
             ->with('username', $username)
             ->with('password', $password)
             ->with('host', $host);
+    }
+
+    /**
+     * Manage Database form submission.
+     *
+     * @param Request               $request
+     * @param EnvironmentRepository $environmentRepository
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function createDatabase(Request $request, EnvironmentRepository $environmentRepository)
+    {
+        // Set config for migrations and seeds
+        $connection = config('database.default');
+        config([
+            'database.connections.' . $connection . '.host'     => $request->input('host'),
+            'database.connections.' . $connection . '.database' => $request->input('dbname'),
+            'database.connections.' . $connection . '.password' => $request->input('password'),
+            'database.connections.' . $connection . '.username' => $request->input('username'),
+        ]);
+        // Migrations and seeds
+        try {
+            Artisan::call('migrate');
+            if ($request->has('seed')) {
+                Artisan::call('db:seed');
+            }
+        } catch (Exception $e) {
+            return redirect()->route('Installer::database')
+                ->with('error', trans('installer.database.error-message'));
+        }
+        // Update .env file
+        $environmentRepository->setDatabaseSetting([
+            'database' => $request->input('dbname'),
+            'username' => $request->input('username'),
+            'password' => $request->input('password'),
+            'host'     => $request->input('host')
+        ]);
+        if (config('installer.administrator')) {
+            return redirect()->route('Installer::administrator');
+        }
+        return redirect()->route('Installer::End');
+    }
+
+    public function showUserCreateForm()
+    {
+
+    }
+
+    public function createUser(Request $request)
+    {
+        return redirect()->route('Installer::End');
+    }
+
+    public function end()
+    {
+
     }
 }
