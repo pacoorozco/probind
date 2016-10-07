@@ -131,3 +131,16 @@ Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm'
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
 Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+
+/*  ------------------------------------------
+ *  Installer
+ *  ------------------------------------------
+ */
+Route::group(['prefix' => 'install'], function () {
+    Route::get('/', ['as' => 'installBegin', 'uses' => 'InstallController@index']);
+    Route::get('database', ['as' => 'installDatabaseForm', 'uses' => 'InstallController@index']);
+    Route::post('database', ['as' => 'installDatabaseCreate', 'uses' => 'InstallController@index']);
+    Route::get('register', ['as' => 'installAdminForm', 'uses' => 'InstallController@index']);
+    Route::post('register', ['as' => 'installAdminCreate', 'uses' => 'InstallController@index']);
+    Route::get('end', ['as' => 'installEnd', 'uses' => 'InstallController@index']);
+});
