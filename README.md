@@ -42,11 +42,13 @@ See our [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.
 
 ### Using a Homestead Vagrant Box
 
-You will need:
+This will create a VM box (a [Vagrant](https://www.vagrantup.com/) one) where all needed software will be installed and configured. **It's the best way to develop and test ProBIND**.
 
-* Vagrant installed
-* Composer
-* Bower
+Prior this installation, you **need to have installed** this software:
+
+* [Vagrant](https://www.vagrantup.com/)
+* [Composer](https://getcomposer.org/download/)
+* [Bower](https://bower.io/)
 
 1. Clone the repository locally
 
@@ -75,7 +77,7 @@ You will need:
 
     ```bash
     $ vagrant ssh
-    $ ce probind
+    $ cd probind
     $ php artisan key:generate
     $ php artisan migrate --seed
     $ exit
