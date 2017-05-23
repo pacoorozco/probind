@@ -40,6 +40,14 @@ See our [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.
 
 ## Installation
 
+### Using a Homestead Vagrant Box
+
+You will need:
+
+* Vagrant installed
+* Composer
+* Bower
+
 1. Clone the repository locally
 
     ```bash
@@ -51,21 +59,28 @@ See our [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.
     ```bash
     $ cd probind
     $ composer install
+    $ bower install
     ```
 
-3. Copy [`.env.example`](https://github.com/pacoorozco/probind/blob/master/.env.example) to `.env` and modify its contents to reflect your local environment.
-4. [Run database migrations](http://laravel.com/docs/5.2/migrations#running-migrations). If you want to include seed data, add a `--seed` flag.
+3. Copy [`.env.example`](https://github.com/pacoorozco/probind/blob/master/.env.example) to `.env`. By default this configuration will work with Homestead Vagrant Box.
+4. Prepare Homestead envionment and Vagrant box
 
     ```bash
-    php artisan migrate --seed
-    ```
-5. Configure a web server, such as the [built-in PHP web server](http://php.net/manual/en/features.commandline.webserver.php), to use the `public` directory as the document root.
-
-	```bash
-    php -S localhost:8080 -t public
+    $ php vendor/laravel/homestead/homestead make
+    $ vagrant box add laravel/homestead
+    $ vagrant up
     ```
 
-Then enjoy !
+5. [Run database migrations](http://laravel.com/docs/5.2/migrations#running-migrations). If you want to include seed data, add a `--seed` flag.
+
+    ```bash
+    $ vagrant ssh
+    $ ce probind
+    $ php artisan key:generate
+    $ php artisan migrate --seed
+    $ exit
+    ```
+6. Go to `http://192.168.10.10` and test **ProBIND**. Enjoy!
 
 ## Reporting issues
 
