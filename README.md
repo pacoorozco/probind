@@ -38,7 +38,42 @@ See our [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.
 * A [supported relational database](http://laravel.com/docs/5.3/database#introduction) and corresponding PHP extension.
 * [Composer](https://getcomposer.org/download/).
 
-## Installation
+## How to test ProBIND
+
+There are two methods in order to test **ProBIND**:
+
+* Method 1: Using [Docker](https://www.docker.com/) containers. **This is the quickest way**
+* Method 2: Using [Vagrant](https://www.vagrantup.com/) box. This is a preferred way to developers
+
+### Docker method
+
+This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND needings. A web server, a database server and a Redis server.
+
+Prior this installation, you **need to have installed** this software:
+
+* [Docker](https://www.docker.com/)
+* [Docker Compose](https://docs.docker.com/compose/)
+
+1. Clone the repository locally
+
+    ```bash
+    $ git clone https://github.com/pacoorozco/probind.git probind
+    ```
+2. Start all containers with [Docker Compose](https://docs.docker.com/compose/)
+
+    ```bash
+    $ cd probind/docker
+    $ docker-compose build
+    $ docker-compose up -d
+    ```
+3. Seed database in order to play with some data
+
+
+    ```bash
+    $ docker exec docker_web_1 /setup-probind.sh 
+    ```
+
+Enjoy!
 
 ### Homestead Vagrant Box method
 
