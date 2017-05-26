@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.5.0 - 2017-05-26
+### Added
+- Add [Docker](https://www.docker.com/) containers to deploy **ProBIND**. Please read project's [README](README.md) for more information.
+
+### Changed
+- Change the way large data tables are processed. Enable Server Side processing.
+- Move `bumpversion.sh` to [utils/](utils) folder.
+- Improve documentation about **How to test ProBIND** on [README](README.md).
+
+### Fixed
+- Update [Homestead](https://laravel.com/docs/5.3/homestead) to latest `laravel/homestead` version. 
+
 ## 0.4.0 - 2016-10-05
 ### Added
 - Add 'Import zone' feature which allows to import BIND (RFC 1033) zone files to ProBIND.
