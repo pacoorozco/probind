@@ -13,8 +13,7 @@ RUN apt-get update \
     git \
     libmcrypt-dev \
     nodejs \
-    npm \
-    redis-server
+    npm
 
 RUN docker-php-ext-install \
     json \
