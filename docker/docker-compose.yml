@@ -1,0 +1,24 @@
+version: '3'
+services:
+    web:
+      build: web/.
+      ports:
+        - "80:80"
+      depends_on:
+        - db
+        - redis
+
+    db:
+      image: mysql:latest
+      environment:
+        MYSQL_ROOT_PASSWORD: verysecret
+        MYSQL_DATABASE: homestead
+        MYSQL_USER: homestead
+        MYSQL_PASSWORD: secret
+      ports:
+        - "3306:3306"
+
+    redis:
+      image: redis:latest
+      ports:
+        - "6379:6379"
