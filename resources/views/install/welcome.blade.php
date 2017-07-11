@@ -1,24 +1,32 @@
-<div class="card blue-grey darken-1">
-    <div class="card-content white-text">
-        <hr>
-        <div class="center-align">
-            <p class="card-title">{{ trans('installer.welcome.name') }}</p>
-            <p><em>{{ trans('installer.welcome.version') }}</em></p>
-            <hr>
-            <p class="card-title">{{ trans('installer.welcome.title') }}</p>
+@extends('layouts.installer')
+
+{{-- Web site Title --}}
+@section('title')
+    {{ trans('installer.welcome.title') }}
+@endsection
+
+@section('content')
+    <div class="container">
+        <div class="register-logo">
+            <a href="{{ route('home') }}"><b>ProBIND</b> v3</a>
         </div>
-        <p>{{ trans('installer.welcome.sub-title') }}</p>
-        <ol>
-            @for ($i = 1; $i < 5; $i++)
-                <li>{{ trans('installer.welcome.item' . $i) }}</li>
-            @endfor
-        </ol>
-        <p>{{ trans('installer.welcome.message') }}</p>
+
+        <div class="box box-primary box-solid">
+            <div class="box-header with-border">
+                <i class="fa fa-database"></i>
+                <h3 class="box-title">{{ trans('installer.welcome.header') }}</h3>
+            </div>
+            <div class="box-body">
+                <p>{{ trans('installer.welcome.sub-title') }}</p>
+            </div>
+            <div class="box-footer">
+                <a href="{{ route('zones.records.create', $zone) }}">
+                    <button type="button" class="btn btn-success margin-bottom">
+                        <i class="fa fa-plus"></i> {{ trans('record/title.create_new') }}
+                    </button>
+                </a>
+
+            </div>
+        </div>
     </div>
-    <div class="card-action">
-        <a class="btn waves-effect waves-light" href="{{ url('install/database') }}">
-            {{ trans('installer.welcome.button') }}
-            <i class="material-icons right">send</i>
-        </a>
-    </div>
-</div>
+@endsection

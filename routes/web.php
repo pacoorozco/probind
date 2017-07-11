@@ -142,5 +142,5 @@ Route::group(['prefix' => 'install', 'as' => 'Installer::'], function () {
     Route::post('database', ['as' => 'databaseSave', 'uses' => 'InstallController@createDatabase']);
     Route::get('register', ['as' => 'administrator', 'uses' => 'InstallController@showUserCreateForm']);
     Route::post('register', ['as' => 'administratorSave', 'uses' => 'InstallController@createUser']);
-    Route::get('end', ['as' => 'End', 'uses' => 'InstallController@end']);
+    Route::get('end', ['as' => 'end', 'uses' => 'InstallController@end']);
 });

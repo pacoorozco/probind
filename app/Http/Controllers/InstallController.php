@@ -25,8 +25,14 @@ use Illuminate\Http\Request;
 
 class InstallController extends Controller
 {
+    /**
+     * Display the installer welcome page.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
+        return view('install.welcome');
 
     }
 
