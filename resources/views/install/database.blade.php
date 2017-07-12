@@ -6,11 +6,6 @@
 @endsection
 
 @section('content')
-<div class="container">
-    <div class="register-logo">
-        <a href="{{ route('home') }}"><b>ProBIND</b> v3</a>
-    </div>
-
     @include('partials.notifications')
 
     <!-- start: DATABASE FORM -->
@@ -23,6 +18,16 @@
         </div>
         <div class="box-body">
             <p>{{ trans('installer.database.sub-title') }}</p>
+
+            <!-- dbtype -->
+            <div class="form-group {{ $errors->has('dbtype') ? 'has-error' : '' }}">
+                {!! Form::label('dbtype', trans('installer.database.dbtype-label'), array('class' => 'control-label required')) !!}
+                <div class="controls">
+                    <span class="help-block">{{ trans('installer.database.dbtype-help') }}</span>
+                    {!! Form::select('dbtype', array('mysql' => 'MySQL Database'), null, ['class' => 'form-control', 'required' => 'required', 'disabled' => 'disabled']) !!}
+                </div>
+            </div>
+            <!-- ./ dbtype -->
 
             <!-- dbname -->
             <div class="form-group {{ $errors->has('dbname') ? 'has-error' : '' }}">
@@ -83,5 +88,4 @@
 
     {!! Form::close() !!}
     <!-- end: DATABASE FORM -->
-</div>
 @endsection

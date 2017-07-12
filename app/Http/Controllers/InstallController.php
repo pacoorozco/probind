@@ -93,7 +93,7 @@ class InstallController extends Controller
         if (config('installer.administrator')) {
             return redirect()->route('Installer::administrator');
         }
-        return redirect()->route('Installer::End');
+        return redirect()->route('Installer::end');
     }
 
     public function showUserCreateForm()
@@ -103,11 +103,11 @@ class InstallController extends Controller
 
     public function createUser(Request $request)
     {
-        return redirect()->route('Installer::End');
+        return redirect()->route('Installer::end');
     }
 
     public function end()
     {
-
+        return view('install.end');
     }
 }

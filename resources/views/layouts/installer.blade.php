@@ -44,15 +44,20 @@
     <div class="content-wrapper">
         <!-- start: PAGE CONTENT -->
         <section class="content">
-            @yield('content')
+            <div class="container">
+                <div class="register-logo">
+                    <a href="{{ route('home') }}"><b>ProBIND</b> v3</a>
+                </div>
+                @yield('content')
+            </div>
         </section>
         <!-- end: PAGE CONTENT-->
     </div>
     <!-- end: PAGE -->
 
     <!-- start: FOOTER -->
-    @include('partials.footer')
-    <!-- end: FOOTER -->
+@include('partials.footer')
+<!-- end: FOOTER -->
 </div>
 <!-- end: MAIN CONTAINER -->
 <!-- start: GLOBAL JAVASCRIPT -->
