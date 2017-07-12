@@ -38,7 +38,52 @@ See our [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.
 * A [supported relational database](http://laravel.com/docs/5.3/database#introduction) and corresponding PHP extension.
 * [Composer](https://getcomposer.org/download/).
 
-## Installation
+## How to test ProBIND
+
+There are two methods in order to test **ProBIND**:
+
+* Method 1: Using [Docker](https://www.docker.com/) containers. **This is the quickest way**
+* Method 2: Using [Vagrant](https://www.vagrantup.com/) box. This is a preferred way to developers
+
+### Docker method
+
+This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND needings. A web server, a database server and a Redis server.
+
+Prior this installation, you **need to have installed** this software:
+
+* [Docker](https://www.docker.com/)
+* [Docker Compose](https://docs.docker.com/compose/)
+
+1. Clone the repository locally
+
+    ```bash
+    $ git clone https://github.com/pacoorozco/probind.git probind
+    ```
+2. Start all containers with [Docker Compose](https://docs.docker.com/compose/)
+
+    ```bash
+    $ cd probind/docker
+    $ docker-compose build
+    $ docker-compose up -d
+    ```
+3. Seed database in order to play with some data
+
+
+    ```bash
+    $ docker exec docker_web_1 /setup-probind.sh 
+    ```
+
+Enjoy!
+
+### Homestead Vagrant Box method
+
+This will create a VM box (a [Vagrant](https://www.vagrantup.com/) one) where all needed software will be installed and configured. **It's the best way to develop and test ProBIND**.
+
+Prior this installation, you **need to have installed** this software:
+
+* [Vagrant](https://www.vagrantup.com/)
+* [Composer](https://getcomposer.org/download/)
+* [Bower](https://bower.io/)
 
 1. Clone the repository locally
 
@@ -51,21 +96,28 @@ See our [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.
     ```bash
     $ cd probind
     $ composer install
+    $ bower install
     ```
 
-3. Copy [`.env.example`](https://github.com/pacoorozco/probind/blob/master/.env.example) to `.env` and modify its contents to reflect your local environment.
-4. [Run database migrations](http://laravel.com/docs/5.2/migrations#running-migrations). If you want to include seed data, add a `--seed` flag.
+3. Copy [`.env.example`](https://github.com/pacoorozco/probind/blob/master/.env.example) to `.env`. By default this configuration will work with Homestead Vagrant Box.
+4. Prepare Homestead envionment and Vagrant box
 
     ```bash
-    php artisan migrate --seed
-    ```
-5. Configure a web server, such as the [built-in PHP web server](http://php.net/manual/en/features.commandline.webserver.php), to use the `public` directory as the document root.
-
-	```bash
-    php -S localhost:8080 -t public
+    $ php vendor/laravel/homestead/homestead make
+    $ vagrant box add laravel/homestead
+    $ vagrant up
     ```
 
-Then enjoy !
+5. [Run database migrations](http://laravel.com/docs/5.2/migrations#running-migrations). If you want to include seed data, add a `--seed` flag.
+
+    ```bash
+    $ vagrant ssh
+    $ cd probind
+    $ php artisan key:generate
+    $ php artisan migrate --seed
+    $ exit
+    ```
+6. Go to `http://192.168.10.10` and test **ProBIND**. Enjoy!
 
 ## Reporting issues
 
