@@ -73,16 +73,7 @@ class InstallController extends Controller
             'database.connections.' . $connection . '.password' => $request->input('password'),
             'database.connections.' . $connection . '.username' => $request->input('username'),
         ]);
-        // Migrations and seeds
-        try {
-            Artisan::call('migrate');
-            if ($request->has('seed')) {
-                Artisan::call('db:seed');
-            }
-        } catch (Exception $e) {
-            return redirect()->route('Installer::database')
-                ->with('error', trans('installer.database.error-message'));
-        }
+
         // Update .env file
         $environmentRepository->setDatabaseSetting([
             'database' => $request->input('dbname'),
@@ -90,9 +81,22 @@ class InstallController extends Controller
             'password' => $request->input('password'),
             'host'     => $request->input('host')
         ]);
+
+        // Migrations and seeds
+        try {
+            Artisan::call('migrate:refresh');
+            if ($request->has('seed')) {
+                Artisan::call('db:seed');
+            }
+        } catch (Exception $e) {
+            return redirect()->route('Installer::database')
+                ->with('error', trans('installer.database.error-message'));
+        }
+
         if (config('installer.administrator')) {
             return redirect()->route('Installer::administrator');
         }
+
         return redirect()->route('Installer::end');
     }
 
@@ -108,6 +112,8 @@ class InstallController extends Controller
 
     public function end()
     {
+        \Storage::disk('local')->put('installed', config('app.version'));
+
         return view('install.end');
     }
 }

@@ -16,7 +16,7 @@
         </div>
         <div class="box-footer">
             <a href="{{ route('login') }}">
-                <button type="button" class="btn btn-primary btn-block btn-flat margin-bottom pull-center">
+                <button type="button" class="btn btn-primary margin-bottom pull-center">
                     {{ trans('auth.login') }}
                 </button>
             </a>

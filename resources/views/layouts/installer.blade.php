@@ -44,11 +44,13 @@
     <div class="content-wrapper">
         <!-- start: PAGE CONTENT -->
         <section class="content">
-            <div class="container">
-                <div class="register-logo">
-                    <a href="{{ route('home') }}"><b>ProBIND</b> v3</a>
+            <div class="row">
+                <div class="container col-md-6 col-md-offset-3">
+                    <div class="register-logo">
+                        <a href="{{ route('home') }}"><b>ProBIND</b> v3</a>
+                    </div>
+                    @yield('content')
                 </div>
-                @yield('content')
             </div>
         </section>
         <!-- end: PAGE CONTENT-->
