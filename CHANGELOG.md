@@ -7,13 +7,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Close #26: Add a **web installer**. You can use `/install` in order to configure database settings.
 
-## 0.5.0 - 2017-05-26
-### Added
-- Add [Docker](https://www.docker.com/) containers to deploy **ProBIND**. Please read project's [README](README.md) for more information.
-
 ### Fixed
 - Fix redirection for logged in users. Before this a logged user who pointed to `/login` was redirected to `/home`. No goes to `/`.
  
+## 0.5.0 - 2017-05-26
+### Added
+- Add [Docker](https://www.docker.com/) containers to deploy **ProBIND**. Please read project's [README](README.md) for more information.
 
 ### Changed
 - Change the way large data tables are processed. Enable Server Side processing.
