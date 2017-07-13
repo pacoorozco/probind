@@ -4,16 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 0.6.0 - 2017-07-13
+
 ### Added
 - Close #26: Add a **web installer**. You can use `/install` in order to configure database settings.
-
-## 0.5.0 - 2017-05-26
-### Added
-- Add [Docker](https://www.docker.com/) containers to deploy **ProBIND**. Please read project's [README](README.md) for more information.
 
 ### Fixed
 - Fix redirection for logged in users. Before this a logged user who pointed to `/login` was redirected to `/home`. No goes to `/`.
  
+## 0.5.0 - 2017-05-26
+### Added
+- Add [Docker](https://www.docker.com/) containers to deploy **ProBIND**. Please read project's [README](README.md) for more information.
 
 ### Changed
 - Change the way large data tables are processed. Enable Server Side processing.

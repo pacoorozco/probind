@@ -34,5 +34,6 @@ return [
     'inactive' => 'disabled',
     'help'     => 'Show / Hide help',
     'info'     => 'Info!',
-    'warning'  => 'Warning!'
+    'warning'  => 'Warning!',
+    'next'     => 'Next',
 ];
