@@ -46,14 +46,16 @@
 
 @push('scripts')
 <script>
-    $(document).ready(function () {
-        $('#domainInput').keyup(function (e) {
-            var a = $('#domainInput').val().trim();
-            if (a === '{{ $zone->domain }}') {
-                $('#submitBtn').removeAttr('disabled');
-            }
-            else {
-                $('#submitBtn').attr("disabled", "true");
+    $(function () {
+        var inputBox = $("#domainInput");
+        var matchingText = "{{ $zone->domain }}";
+        var outputButton = $("#submitBtn");
+
+        inputBox.keyup(function (e) {
+            if (inputBox.val().trim() === matchingText) {
+                outputButton.removeAttr("disabled");
+            } else {
+                outputButton.attr("disabled", "true");
             }
         });
     });
