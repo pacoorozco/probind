@@ -42,8 +42,8 @@ See our [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.
 
 There are two methods in order to test **ProBIND**:
 
-* Method 1: Using [Docker](https://www.docker.com/) containers. **This is the quickest way**
-* Method 2: Using [Vagrant](https://www.vagrantup.com/) box. This is a preferred way to developers
+* [Method 1](#docker-method): Using [Docker](https://www.docker.com/) containers. **This is the quickest way**
+* [Method 2](#homestead-vagrant-box-method): Using [Vagrant](https://www.vagrantup.com/) box. This is a preferred way to developers
 
 ### Docker method
 
@@ -84,6 +84,7 @@ Prior this installation, you **need to have installed** this software:
 * [Vagrant](https://www.vagrantup.com/)
 * [Composer](https://getcomposer.org/download/)
 * [Bower](https://bower.io/)
+* PHP extensions/modules installed: `php-mbstring php-xml`
 
 1. Clone the repository locally
 
@@ -108,16 +109,15 @@ Prior this installation, you **need to have installed** this software:
     $ vagrant up
     ```
 
-5. [Run database migrations](http://laravel.com/docs/5.2/migrations#running-migrations). If you want to include seed data, add a `--seed` flag.
+5. Create a new application key.
 
     ```bash
     $ vagrant ssh
     $ cd probind
     $ php artisan key:generate
-    $ php artisan migrate --seed
     $ exit
     ```
-6. Go to `http://192.168.10.10` and test **ProBIND**. Enjoy!
+6. Go to `http://192.168.10.10/install` and finsh **ProBIND** installation. Enjoy!
 
 ## Reporting issues
 
