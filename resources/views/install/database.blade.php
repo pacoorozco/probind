@@ -73,7 +73,7 @@
             <div class="form-group {{ $errors->has('seed') ? 'has-error' : '' }}">
                 <div class="checkbox">
                     <label class="control-label">
-                        {{ Form::checkbox('seed', true, null) }}
+                        {{ Form::checkbox('seed', true, true, array('disabled' => 'disabled')) }}
                         {{ trans('installer.database.seed-label') }}
                     </label>
                 </div>
