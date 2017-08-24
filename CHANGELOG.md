@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.7.0 - 2017-08-24
+
+### Added
+- Document the two methods to install / test this application. You will find it on [README](README.md) file.
+- Add a better way to delete a zone. Now implies a more secure delete confirmation (#41)
+- From this version, tags will be GPG signed in order to improve trust.
+
+### Changed
+- Complete the **web installer**. You can use `/install` in order to configure database settings. 
+
+### Removed
+- Remove [Bower](https://bower.io) requirement. Now you must call `bower install` inside homestead vagrant box or it will automatically included on docker image.
+
 ## 0.6.0 - 2017-07-13
 
 ### Added
