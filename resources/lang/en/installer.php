@@ -67,6 +67,6 @@ return [
     'end'          => [
         'title'     => 'Successful installation',
         'header'    => 'Successful installation',
-        'sub-title' => 'The application and now installed and you can use it.',
+        'sub-title' => 'The application and now installed and you can use it. Try to login with admin / secret credentials.',
     ],
 ];
