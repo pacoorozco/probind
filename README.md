@@ -83,7 +83,6 @@ Prior this installation, you **need to have installed** this software:
 
 * [Vagrant](https://www.vagrantup.com/)
 * [Composer](https://getcomposer.org/download/)
-* [Bower](https://bower.io/)
 * PHP extensions/modules installed: `php-mbstring php-xml`
 
 1. Clone the repository locally
@@ -97,7 +96,6 @@ Prior this installation, you **need to have installed** this software:
     ```bash
     $ cd probind
     $ composer install
-    $ bower install
     ```
 
 3. Copy [`.env.example`](https://github.com/pacoorozco/probind/blob/master/.env.example) to `.env`. By default this configuration will work with Homestead Vagrant Box.
@@ -109,12 +107,13 @@ Prior this installation, you **need to have installed** this software:
     $ vagrant up
     ```
 
-5. Create a new application key.
+5. Create a new application key and install some [Bower](https://bower.io/) dependencies.
 
     ```bash
     $ vagrant ssh
     $ cd probind
     $ php artisan key:generate
+    $ bower install
     $ exit
     ```
 6. Go to `http://192.168.10.10/install` and finsh **ProBIND** installation. Enjoy!
