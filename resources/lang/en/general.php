@@ -36,4 +36,10 @@ return [
     'info'     => 'Info!',
     'warning'  => 'Warning!',
     'next'     => 'Next',
+
+    'absolutely_sure_question'  => 'Are you ABSOLUTELY sure?',
+    'unexpected_things_warning' => 'Unexpected bad things will happen if you don\'t read this!',
+    'action_cannot_be_undone'   => 'This action <strong>CANNOT</strong> be undone.',
+    'please_confirm_to_delete'  => 'Please type in the name of the :item to confirm.',
+    'i_understand_consequences' => 'I understand the consequences, delete this :item',
 ];

@@ -30,10 +30,11 @@ return [
     ],
 
     'delete' => [
-        'error'   => 'There was an issue deleting the zone. Please try again.',
-        'success' => 'The zone was deleted successfully.',
-        'warning' => 'This will delete this zone and all related information. Please be sure you want to do this. This action is
-        irreversible.'
+        'error'        => 'There was an issue deleting the zone. Please try again.',
+        'success'      => 'The zone was deleted successfully.',
+        'warning'      => 'This will delete this zone and all related information. Please be sure you want to do this. This action is
+        irreversible.',
+        'confirmation' => 'This will permanently delete the <strong>:domain</strong> zone and all associated records.',
     ],
 
     'activity' => [
