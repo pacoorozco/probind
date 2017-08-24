@@ -81,7 +81,7 @@ This will create a VM box (a [Vagrant](https://www.vagrantup.com/) one) where al
 
 Prior this installation, you **need to have installed** this software:
 
-* [Vagrant](https://www.vagrantup.com/)
+* [Vagrant 1.9.0+](https://www.vagrantup.com/)
 * [Composer](https://getcomposer.org/download/)
 * PHP extensions/modules installed: `php-mbstring php-xml`
 
