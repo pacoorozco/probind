@@ -67,9 +67,6 @@ Route::resource('servers', 'ServerController');
 // the default show resource route for /zones/{zone}
 Route::get('zones/data',
     ['as' => 'zones.data', 'uses' => 'ZoneController@data']);
-// Our special delete confirmation route - uses the show/details view.
-Route::get('zones/{zone}/delete',
-    ['as' => 'zones.delete', 'uses' => 'ZoneController@delete']);
 Route::resource('zones', 'ZoneController');
 
 /*  ------------------------------------------
