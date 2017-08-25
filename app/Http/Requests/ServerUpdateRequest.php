@@ -46,9 +46,9 @@ class ServerUpdateRequest extends Request
             'hostname'     => 'required|string|unique:servers,hostname,' . $zone->id,
             'ip_address'   => 'required|ip|unique:servers,ip_address,' . $zone->id,
             'type'         => 'required|in:' . $validServerTypes,
-            'ns_record'    => 'sometimes|boolean',
+            'ns_record'    => 'required|boolean',
             'active'       => 'required|boolean',
-            'push_updates' => 'sometimes|boolean'
+            'push_updates' => 'required|boolean'
         ];
     }
 }

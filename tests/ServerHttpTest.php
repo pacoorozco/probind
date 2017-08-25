@@ -40,7 +40,8 @@ class ServerHttpTest extends TestCase
             ->type('server01.local', 'hostname')
             ->type('192.168.1.2', 'ip_address')
             ->select('slave', 'type')
-            ->check('ns_record')
+            ->select('0', 'ns_record')
+            ->select('1', 'push_updates')
             ->press('Save data')
             ->seePageIs('/servers');
 
@@ -48,8 +49,8 @@ class ServerHttpTest extends TestCase
         $server = Server::where('hostname', 'server01.local')
             ->where('ip_address', '192.168.1.2')
             ->where('type', 'slave')
-            ->where('ns_record', true)
-            ->where('push_updates', false)
+            ->where('ns_record', false)
+            ->where('push_updates', true)
             ->first();
 
         $this->assertNotNull($server);
@@ -67,7 +68,7 @@ class ServerHttpTest extends TestCase
             ->type('server01.local', 'hostname')
             ->type('280.168.1.2', 'ip_address')
             ->select('master', 'type')
-            ->check('ns_record')
+            ->select('1', 'ns_record')
             ->press('Save data')
             ->seePageIs('/servers/create');
 
@@ -102,7 +103,7 @@ class ServerHttpTest extends TestCase
         // Modify hostname and ns_record
         $this->visit('servers/' . $originalServer->id . '/edit')
             ->type('server02.local', 'hostname')
-            ->check('ns_record')
+            ->select('1', 'ns_record')
             ->press('Save data');
 
         // Get the server once has been modified

@@ -45,8 +45,8 @@ class ServerCreateRequest extends Request
             'hostname'     => 'required|string|unique:servers',
             'ip_address'   => 'required|ip|unique:servers',
             'type'         => 'required|in:' . $validServerTypes,
-            'ns_record'    => 'sometimes|boolean',
-            'push_updates' => 'sometimes|boolean',
+            'ns_record'    => 'required|boolean',
+            'push_updates' => 'required|boolean',
             'active'       => 'required|boolean'
         ];
     }

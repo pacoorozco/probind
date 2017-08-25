@@ -40,14 +40,23 @@
 
         <!-- ns_record -->
         <div class="form-group {{ $errors->has('ns_record') ? 'has-error' : '' }}">
-            <div class="checkbox">
-                <label class="control-label">
-                    {{ Form::checkbox('ns_record', true, null) }}
-                    {{ trans('server/model.ns_record') }}
-                </label>
+            {!! Form::label('ns_record', trans('server/model.ns_record'), array('class' => 'control-label required')) !!}
+            <div class="controls">
+                {!! Form::select('ns_record', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {{ $errors->first('ns_record', '<span class="help-inline">:message</span>') }}
             </div>
         </div>
         <!-- ./ ns_record -->
+
+        <!-- push_updates -->
+        <div class="form-group {{ $errors->has('push_updates') ? 'has-error' : '' }}">
+            {!! Form::label('push_updates', trans('server/model.push_updates'), array('class' => 'control-label required')) !!}
+            <div class="controls">
+                {!! Form::select('push_updates', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {{ $errors->first('push_updates', '<span class="help-inline">:message</span>') }}
+            </div>
+        </div>
+        <!-- ./ push_updates -->
 
         <!-- active -->
         <div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
@@ -59,16 +68,6 @@
         </div>
         <!-- ./ active -->
 
-        <!-- push_updates -->
-        <div class="form-group {{ $errors->has('push_updates') ? 'has-error' : '' }}">
-            <div class="checkbox">
-                <label class="control-label" data-toggle="collapse" data-target="#push_updates_section">
-                    {{ Form::checkbox('push_updates', true, null, ['id' => 'push_updates']) }}
-                    {{ trans('server/model.push_updates') }}
-                </label>
-            </div>
-        </div>
-        <!-- ./ push_updates -->
     </div>
 
     <div class="box-footer">
