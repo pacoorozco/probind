@@ -91,20 +91,6 @@ class InstallController extends Controller
                 ->with('error', trans('installer.database.error-message'));
         }
 
-        if (config('installer.administrator')) {
-            return redirect()->route('Installer::administrator');
-        }
-
-        return redirect()->route('Installer::end');
-    }
-
-    public function showUserCreateForm()
-    {
-
-    }
-
-    public function createUser(Request $request)
-    {
         return redirect()->route('Installer::end');
     }
 
