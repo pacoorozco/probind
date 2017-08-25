@@ -124,7 +124,7 @@ class FileDNSParser
      *
      * @return array
      */
-    public function getZoneData() : array
+    public function getZoneData(): array
     {
         return array_only($this->zoneData, [
             'domain',
@@ -146,7 +146,7 @@ class FileDNSParser
      *
      * @return array
      */
-    public function getRecords() : array
+    public function getRecords(): array
     {
         $another = [];
         foreach ($this->records as $record) {
@@ -165,7 +165,7 @@ class FileDNSParser
      * @return bool
      * @throws FileNotFoundException
      */
-    public function load(string $zonefile) : bool
+    public function load(string $zonefile): bool
     {
         try {
             $zone = File::get($zonefile);
@@ -187,7 +187,7 @@ class FileDNSParser
      *
      * @return boolean
      */
-    private function parseZone(string $fileContents) : bool
+    private function parseZone(string $fileContents): bool
     {
         // Remove comments and unused data from contents.
         $fileContents = $this->prepareZoneContent($fileContents);
@@ -256,7 +256,7 @@ class FileDNSParser
      *
      * @return string
      */
-    private function prepareZoneContent(string $content) : string
+    private function prepareZoneContent(string $content): string
     {
         // RFC1033: A semicolon (';') starts a comment; the remainder of the line is ignored.
         $fileContents = preg_replace('/(;.*)$/m', '', $content);
@@ -290,7 +290,7 @@ class FileDNSParser
         string $value,
         string $validPattern = null,
         bool $force = false
-    ) : bool
+    ): bool
     {
         if (empty($this->zoneData[$attribute]) || $force) {
             // Check if $value is a correct one.
@@ -315,7 +315,7 @@ class FileDNSParser
      * @return bool
      * @throws Exception
      */
-    private function parseSOA(string $line) : bool
+    private function parseSOA(string $line): bool
     {
         /*
          * $this->zoneData already set. Only one SOA per zone is possible. Done parsing.
@@ -365,7 +365,7 @@ class FileDNSParser
      * @return bool
      * @throws Exception
      */
-    private function setZoneDataAttributesFromArray(array $values) : bool
+    private function setZoneDataAttributesFromArray(array $values): bool
     {
         try {
             $this->setZoneDataAttributeIfNotExist('mname', $values['mname'], '/^[A-Za-z0-9\-\_\.]*\.$/');
@@ -398,7 +398,7 @@ class FileDNSParser
         string $origin,
         int $ttl,
         string $lastRecordName
-    ) : array
+    ): array
     {
         $items = explode(' ', $line);
 
@@ -464,7 +464,7 @@ class FileDNSParser
                         // The setting itself is in the next item.
                         $record['data'] = $items[$key + 1];
                         $record['options'] = [
-                            'preference' => $item
+                            'preference' => $item,
                         ];
                         break 2;
 
@@ -492,7 +492,7 @@ class FileDNSParser
      *
      * @return integer
      */
-    public static function parseToSeconds(string $time) : int
+    public static function parseToSeconds(string $time): int
     {
         if (is_numeric($time)) {
             // Already a number. Return.
@@ -520,7 +520,7 @@ class FileDNSParser
      *
      * @return int
      */
-    private static function translateCharToSeconds(string $modifier, int $value = 1) : int
+    private static function translateCharToSeconds(string $modifier, int $value = 1): int
     {
         // This map translate a character to seconds.
         $translateToSeconds = [
