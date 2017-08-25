@@ -118,22 +118,4 @@ text                                    7200    IN      TXT     "Somewhere over 
 
         $this->assertEquals($expectedRecords, $records);
     }
-
-    /**
-     * Test static parseToSeconds() function.
-     */
-    public function testParseToSeconds()
-    {
-        $testTimeTranslations = [
-            '7200'   => 7200,
-            '10800S' => 10800 * 1,
-            '15m'    => 15 * 60,
-            '3W12h'  => 3 * 7 * 24 * 60 * 60 + 12 * 60 * 60,
-        ];
-
-        foreach (array_keys($testTimeTranslations) as $time) {
-            $seconds = FileDNSParser::parseToSeconds($time);
-            $this->assertEquals($testTimeTranslations[$time], $seconds);
-        }
-    }
 }
