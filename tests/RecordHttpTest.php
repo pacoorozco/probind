@@ -58,6 +58,33 @@ class RecordHttpTest extends TestCase
     }
 
     /**
+     * Test a successful new Record creation
+     */
+    public function testNewSRVRecordCreationSuccess()
+    {
+        $zone = factory(Zone::class)->create();
+
+        $this->visit('zones/' . $zone->id . '/records/create')
+            ->see($zone->domain)
+            ->type('testRR', 'name')
+            ->type('128', 'ttl')
+            ->select('SRV', 'type')
+            ->type('10', 'priority')
+            ->type('testData', 'data')
+            ->press('Save data');
+
+        // Get from DB if Record has been created.
+        $record = Record::where('name', 'testrr')
+            ->where('ttl', 128)
+            ->where('type', 'SRV')
+            ->where('priority', '10')
+            ->where('data', 'testdata')
+            ->first();
+
+        $this->assertNotNull($record);
+    }
+
+    /**
      * Test a Record view
      */
     public function testViewRecord()
