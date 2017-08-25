@@ -63,4 +63,22 @@ class SearchHttpTest extends TestCase
             ->press('Search')
             ->see('No results have been found!');
     }
+
+    public function testSearchWithAllCriteriaFields()
+    {
+        // Prepare data to make tests
+        $zone = factory(Zone::class)->create();
+
+        // Create the same 25 A Records for abc.com and xyz.com
+        $record = factory(Record::class, 'A')->make();
+        $zone->records()->save($record);
+
+        $this->visit('search')
+            ->type($zone->domain, 'domain')
+            ->type($record->name, 'name')
+            ->select('A', 'type')
+            ->type($record->data, 'data')
+            ->press('Search')
+            ->dontSee('No results have been found!');
+    }
 }
