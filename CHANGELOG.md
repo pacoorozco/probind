@@ -4,8 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 0.7.1 - 2017-08-26
+
+### Changed
+- Improve testing on `UserHttpTest`, `SearchHttpTest`, `ServerHttpTest`  and `RecordHttpTest` classes.
+- Decouple `FileDNSParser` class in order to reduce complexity.
+
 ### Fixed
-- Fix some code quality isues reported by Scrutinizer and SensioLabs CI. See commits in order to know what has been changed.
+- Fix some code quality issues reported by Scrutinizer and SensioLabs CI. See commits in order to know what has been changed.
 
 ## 0.7.0 - 2017-08-24
 
