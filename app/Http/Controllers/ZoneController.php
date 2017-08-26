@@ -129,19 +129,6 @@ class ZoneController extends Controller
     }
 
     /**
-     * Remove zone page.
-     *
-     * @param Zone $zone
-     *
-     * @return \Illuminate\View\View
-     */
-    public function delete(Zone $zone)
-    {
-        return view('zone/delete')
-            ->with('zone', $zone);
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param Zone $zone

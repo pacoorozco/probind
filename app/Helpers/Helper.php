@@ -31,12 +31,12 @@ class Helper
      *
      * @return string
      */
-    public static function addStatusLabel(bool $condition, string $text = null, array $mapStatusToLabel = null) : string
+    public static function addStatusLabel(bool $condition, string $text = null, array $mapStatusToLabel = null): string
     {
         if (is_null($mapStatusToLabel)) {
             $mapStatusToLabel = [
                 '0' => '<span class="label label-default">' . trans('general.inactive') . '</span>',
-                '1' => ''
+                '1' => '',
             ];
         }
         $concatenationSpace = empty($text) ? '' : ' ';

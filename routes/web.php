@@ -67,9 +67,6 @@ Route::resource('servers', 'ServerController');
 // the default show resource route for /zones/{zone}
 Route::get('zones/data',
     ['as' => 'zones.data', 'uses' => 'ZoneController@data']);
-// Our special delete confirmation route - uses the show/details view.
-Route::get('zones/{zone}/delete',
-    ['as' => 'zones.delete', 'uses' => 'ZoneController@delete']);
 Route::resource('zones', 'ZoneController');
 
 /*  ------------------------------------------
@@ -140,7 +137,5 @@ Route::group(['prefix' => 'install', 'as' => 'Installer::', 'middleware' => ['we
     Route::get('/', ['as' => 'begin', 'uses' => 'InstallController@index']);
     Route::get('database', ['as' => 'database', 'uses' => 'InstallController@showDatabaseForm']);
     Route::post('database', ['as' => 'databaseSave', 'uses' => 'InstallController@createDatabase']);
-    Route::get('register', ['as' => 'administrator', 'uses' => 'InstallController@showUserCreateForm']);
-    Route::post('register', ['as' => 'administratorSave', 'uses' => 'InstallController@createUser']);
     Route::get('end', ['as' => 'end', 'uses' => 'InstallController@end']);
 });

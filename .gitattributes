@@ -1,3 +1,11 @@
-* text=auto
-*.css linguist-vendored
-*.scss linguist-vendored
+*       text=auto
+*.css   linguist-vendored
+*.scss  linguist-vendored
+*.js    linguist-vendored
+
+# Prevent this folders / files to be archived into a tar or zip ball.
+/utils              export-ignore
+/.gitattributes     export-ignore
+/.gitignore         export-ignore
+/.scrutinizer.yml   export-ignore
+/.travis.yml        export-ignore

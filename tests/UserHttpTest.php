@@ -88,6 +88,17 @@ class UserHttpTest extends TestCase
     }
 
     /**
+     * Test a Delete view
+     */
+    public function testDeleteUser()
+    {
+        $user = factory(User::class)->create();
+
+        $this->visit('users/' . $user->id . '/delete')
+            ->see($user->username);
+    }
+
+    /**
      * Test a successful User deletion
      */
     public function testDeleteUserSuccess()

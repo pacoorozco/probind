@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.7.1 - 2017-08-26
+
+### Changed
+- Improve testing on `UserHttpTest`, `SearchHttpTest`, `ServerHttpTest`  and `RecordHttpTest` classes.
+- Decouple `FileDNSParser` class in order to reduce complexity.
+
+### Fixed
+- Fix some code quality issues reported by Scrutinizer and SensioLabs CI. See commits in order to know what has been changed.
+
 ## 0.7.0 - 2017-08-24
 
 ### Added

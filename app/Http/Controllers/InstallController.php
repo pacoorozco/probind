@@ -85,28 +85,12 @@ class InstallController extends Controller
         // Migrations and seeds
         try {
             Artisan::call('migrate:refresh');
-            // if ($request->has('seed')) {
-                Artisan::call('db:seed');
-            // }
+            Artisan::call('db:seed');
         } catch (Exception $e) {
             return redirect()->route('Installer::database')
                 ->with('error', trans('installer.database.error-message'));
         }
 
-        if (config('installer.administrator')) {
-            return redirect()->route('Installer::administrator');
-        }
-
-        return redirect()->route('Installer::end');
-    }
-
-    public function showUserCreateForm()
-    {
-
-    }
-
-    public function createUser(Request $request)
-    {
         return redirect()->route('Installer::end');
     }
 

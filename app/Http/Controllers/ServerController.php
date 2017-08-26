@@ -63,11 +63,6 @@ class ServerController extends Controller
     public function store(ServerCreateRequest $request)
     {
         $server = new Server();
-
-        // deal with checkboxes
-        $server->ns_record = $request->has('ns_record');
-        $server->push_updates = $request->has('push_updates');
-
         $server->fill($request->all())->save();
 
         return redirect()->route('servers.index')
@@ -110,10 +105,6 @@ class ServerController extends Controller
      */
     public function update(ServerUpdateRequest $request, Server $server)
     {
-        // deal with checkboxes
-        $server->ns_record = $request->has('ns_record');
-        $server->push_updates = $request->has('push_updates');
-
         $server->fill($request->all())->save();
 
         return redirect()->route('servers.index')

@@ -47,7 +47,7 @@ class EnvironmentRepository
      *
      * @return array
      */
-    private function all() : array
+    private function all(): array
     {
         if (!file_exists($this->envPath)) {
             if (file_exists($this->envExamplePath)) {
@@ -73,7 +73,7 @@ class EnvironmentRepository
      *
      * @return bool
      */
-    public function setDatabaseSetting(array $connectionSettings) : bool
+    public function setDatabaseSetting(array $connectionSettings): bool
     {
         if (!array_has($connectionSettings, ['database', 'username', 'password', 'host'])) {
             return false;
@@ -110,7 +110,7 @@ class EnvironmentRepository
      *
      * @return bool
      */
-    private function saveFile() : bool
+    private function saveFile(): bool
     {
         return (file_put_contents($this->envPath, implode($this->env)) !== false);
     }
