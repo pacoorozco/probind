@@ -44,7 +44,7 @@ class Server extends Model
      */
     public static $validServerTypes = [
         'master',
-        'slave'
+        'slave',
     ];
     /**
      * The database table used by the model.
@@ -54,7 +54,9 @@ class Server extends Model
         'hostname',
         'ip_address',
         'type',
-        'active'
+        'ns_record',
+        'active',
+        'push_updates',
     ];
     /**
      * The attributes that should be casted to native types.
@@ -74,11 +76,11 @@ class Server extends Model
      *
      * @return string
      */
-    public function getDescriptionForEvent(string $eventName) : string
+    public function getDescriptionForEvent(string $eventName): string
     {
         return trans('server/messages.activity.' . $eventName, [
             'hostname' => $this->hostname,
-            'type'     => $this->type
+            'type'     => $this->type,
         ]);
     }
 
@@ -124,7 +126,7 @@ class Server extends Model
      *
      * @codeCoverageIgnore
      */
-    public function getNSRecord() : string
+    public function getNSRecord(): string
     {
         return sprintf("%-32s IN\tNS\t%s.", ' ', $this->hostname);
     }
@@ -136,7 +138,7 @@ class Server extends Model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithPushCapability(Builder $query) : Builder
+    public function scopeWithPushCapability(Builder $query): Builder
     {
         return $query
             ->where('push_updates', true)
