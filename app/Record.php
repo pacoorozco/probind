@@ -89,6 +89,7 @@ class Record extends Model
             'AAAA'  => trans('record/model.types_mapper.AAAA'),
             'CNAME' => trans('record/model.types_mapper.CNAME'),
             'MX'    => trans('record/model.types_mapper.MX'),
+            'NAPTR' => trans('record/model.types_mapper.NAPTR'),
             'NS'    => trans('record/model.types_mapper.NS'),
             'PTR'   => trans('record/model.types_mapper.PTR'),
             'SRV'   => trans('record/model.types_mapper.SRV'),

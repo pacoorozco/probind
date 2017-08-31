@@ -5,8 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+### Added
+- Add support to [NAPRT DNS record type](https://en.wikipedia.org/wiki/NAPTR_record). 
+
 ### Fixed
-- Fix an error in Record model. Data attibute was lowercase, but this data field may contain uppercase and lowercase.
+- Fix an error in Record model. Data attribute was lowercase, but this data field may contain uppercase and lowercase.
+
 ## 0.7.1 - 2017-08-26
 
 ### Changed

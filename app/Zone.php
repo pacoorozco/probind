@@ -423,7 +423,7 @@ class Zone extends Model
     public function getValidRecordTypesForThisZone() : array
     {
         return ($this->reverse_zone)
-            ? array_only(Record::getAllValidRecordTypes(), ['PTR', 'NS'])
+            ? array_only(Record::getAllValidRecordTypes(), ['PTR', 'TXT', 'NS'])
             : array_except(Record::getAllValidRecordTypes(), ['PTR']);
     }
 }
