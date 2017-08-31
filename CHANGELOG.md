@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+### Fixed
+- Fix an error in Record model. Data attibute was lowercase, but this data field may contain uppercase and lowercase.
 ## 0.7.1 - 2017-08-26
 
 ### Changed
