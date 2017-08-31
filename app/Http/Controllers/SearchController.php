@@ -17,6 +17,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DNSHelper;
 use App\Record;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -49,7 +50,7 @@ class SearchController extends Controller
     {
         return array_merge(
             ['ANY_TYPE' => trans('record/model.any_type')],
-            Record::getAllValidRecordTypes()
+            DNSHelper::getValidRecordTypesWithDescription()
         );
     }
 
@@ -68,7 +69,7 @@ class SearchController extends Controller
             'domain' => $request->input('domain'),
             'name'   => $request->input('name'),
             'type'   => $request->input('type'),
-            'data'   => $request->input('data')
+            'data'   => $request->input('data'),
         ];
 
         // Do the search query.

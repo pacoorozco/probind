@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Add support to [NAPRT DNS record type](https://en.wikipedia.org/wiki/NAPTR_record). 
 
+### Changed
+- Move valid record types definition and `validateRecordType()` method to `DNSHelper` class.
+
 ### Fixed
 - Fix an error in Record model. Data attribute was lowercase, but this data field may contain uppercase and lowercase.
 

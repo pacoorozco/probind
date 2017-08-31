@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  *
  * Represents a DNS entry on a specified zone.
  *
+ * Valid records types are defined on DNSHelper Class.
+ *
  * @property integer $id        The object unique id.
  * @property string  $name      The name of the record.
  * @property integer $ttl       The custom TTL value for this record.
@@ -76,26 +78,6 @@ class Record extends Model
      * @var array
      */
     protected $touches = ['zone'];
-
-    /**
-     * Return an array with ALL valid Record types.
-     *
-     * @return array
-     */
-    public static function getAllValidRecordTypes(): array
-    {
-        return [
-            'A'     => trans('record/model.types_mapper.A'),
-            'AAAA'  => trans('record/model.types_mapper.AAAA'),
-            'CNAME' => trans('record/model.types_mapper.CNAME'),
-            'MX'    => trans('record/model.types_mapper.MX'),
-            'NAPTR' => trans('record/model.types_mapper.NAPTR'),
-            'NS'    => trans('record/model.types_mapper.NS'),
-            'PTR'   => trans('record/model.types_mapper.PTR'),
-            'SRV'   => trans('record/model.types_mapper.SRV'),
-            'TXT'   => trans('record/model.types_mapper.TXT'),
-        ];
-    }
 
     /**
      * Set the Record's type uppercase.

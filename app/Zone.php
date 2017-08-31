@@ -13,6 +13,7 @@
 
 namespace App;
 
+use App\Helpers\DNSHelper;
 use Carbon\Carbon;
 use Iatstuti\Database\Support\NullableFields;
 use Illuminate\Database\Eloquent\Builder;
@@ -423,7 +424,7 @@ class Zone extends Model
     public function getValidRecordTypesForThisZone() : array
     {
         return ($this->reverse_zone)
-            ? array_only(Record::getAllValidRecordTypes(), ['PTR', 'TXT', 'NS'])
-            : array_except(Record::getAllValidRecordTypes(), ['PTR']);
+            ? array_only(DNSHelper::getValidRecordTypesWithDescription(), ['PTR', 'TXT', 'NS'])
+            : array_except(DNSHelper::getValidRecordTypesWithDescription(), ['PTR']);
     }
 }
