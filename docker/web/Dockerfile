@@ -8,6 +8,7 @@ ENV PROBIND_USER probind
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
 
+# Update and install needed packages
 RUN apt-get update \
     && apt-get install -y --no-install-recommends --no-install-suggests \
     git \
@@ -15,6 +16,7 @@ RUN apt-get update \
     nodejs \
     npm
 
+# Configure PHP with needed modules
 RUN docker-php-ext-install \
     json \
     mbstring \
@@ -22,24 +24,24 @@ RUN docker-php-ext-install \
     pdo_mysql \
     zip
 
+# Configure Node.js and install bower and composer
+RUN update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10 \
+    && npm install -g bower \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Configure Apache and add our site
 RUN a2enmod rewrite
-
-RUN update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
-
-RUN curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer \
-    && npm install -g bower
-
 COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
-RUN useradd -r -g www-data ${PROBIND_USER}
-
-RUN git clone https://github.com/pacoorozco/probind.git ${PROBIND_ROOT} \
+# Download code from Git and install all dependencies
+RUN git clone --depth 1 https://github.com/pacoorozco/probind.git ${PROBIND_ROOT} \
     && cd ${PROBIND_ROOT} \
     && composer install --no-plugins --no-scripts --prefer-dist --no-interaction \
     && bower install --allow-root 
 
-RUN cd ${PROBIND_ROOT} \
+# Configure our application
+RUN useradd -r -g www-data ${PROBIND_USER} \
+    && cd ${PROBIND_ROOT} \
     && cp .env.example .env \
     && sed -i "s/DB_HOST=127.0.0.1/DB_HOST=db/" .env \
     && sed -i "s/REDIS_HOST=127.0.0.1/REDIS_HOST=redis/" .env \
