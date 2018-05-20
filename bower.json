@@ -19,7 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "admin-lte": "^2.4.3"
+    "admin-lte": "~2.3.11"
   },
   "resolutions": {
     "jquery": "^3.3.1"
