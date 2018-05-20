@@ -19,6 +19,9 @@
     "tests"
   ],
   "dependencies": {
-    "AdminLTE": "admin-lte#^2.3.6"
+    "admin-lte": "^2.4.3"
+  },
+  "resolutions": {
+    "jquery": "^3.3.1"
   }
 }

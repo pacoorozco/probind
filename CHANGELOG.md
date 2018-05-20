@@ -14,6 +14,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - Fix an error in Record model. Data attribute was lowercase, but this data field may contain uppercase and lowercase.
 
+## 0.8.0 - 2018-05-20
+### Changed
+-  Improve Dockerfile creation to speed it up
+
+### Fixed
+-  Fix bower dependency problems (#42)
+
 ## 0.7.1 - 2017-08-26
 
 ### Changed
