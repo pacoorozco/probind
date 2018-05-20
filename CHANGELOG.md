@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.8.1 - 2018-05-20
+### Fixed
+- Fix AdminLTE paths in order to be compatible with v2.3.11 (admin-lte)
+
+
 ## 0.8.0 - 2018-05-20
 ### Changed
 -  Improve Dockerfile creation to speed it up
