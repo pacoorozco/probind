@@ -61,16 +61,16 @@ class RecordUnitTest extends TestCase
     }
 
     /**
-     * Test Record data is lower cased
+     * Test Record data is not touched
      */
-    public function testDataAttributeIsLowerCased()
+    public function testDataAttributeIsNotTouched()
     {
-        $expectedData = 'testdata';
+        $expectedData = 'This is a log TXT message.';
 
         $record = new Record([
                 'data' => 'testRR',
-                'type' => 'CNAME',
-                'data' => strtoupper($expectedData),
+                'type' => 'TXT',
+                'data' => $expectedData,
             ]
         );
 
