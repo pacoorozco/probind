@@ -1,0 +1,50 @@
+version: '3'
+services:
+
+    # The application server
+    app:
+      build:
+        context: ./
+        dockerfile: docker/app/Dockerfile
+      working_dir: /var/www
+      volumes:
+        - ./:/var/www
+      environment:
+        DB_HOST: db
+        REDIS_HOST: redis
+      depends_on:
+        - db
+        - redis
+
+    # The web server
+    web:
+      image: nginx:stable-alpine
+      volumes:
+        - ./docker/web/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+        - ./:/var/www:ro
+      ports:
+        - "80:80"
+      depends_on:
+        - app
+
+    # The database server
+    db:
+      image: mysql:5
+      volumes:
+            - dbdata:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: verysecret
+        MYSQL_DATABASE: homestead
+        MYSQL_USER: homestead
+        MYSQL_PASSWORD: secret
+      ports:
+        - "3306:3306"
+
+    # The cache server
+    redis:
+      image: redis:4-alpine
+      ports:
+        - "6379:6379"
+
+volumes:
+  dbdata:
