@@ -47,7 +47,7 @@ There are two methods in order to test **ProBIND**:
 
 ### Docker method
 
-This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND needings. A web server, a database server and a Redis server.
+This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND needings. An application server, a web server, a database server.
 
 Prior this installation, you **need to have installed** this software:
 
@@ -58,22 +58,40 @@ Prior this installation, you **need to have installed** this software:
 
     ```bash
     $ git clone https://github.com/pacoorozco/probind.git probind
+    $ cd probind
     ```
-2. Start all containers with [Docker Compose](https://docs.docker.com/compose/)
+1. Install PHP dependencies with:
+
+    > **NOTE**: You don't need to install neither _PHP_ nor _Composer_, we are going to use a [Composer image](https://hub.docker.com/_/composer/) instead.
 
     ```bash
-    $ cd probind/docker
+    $ docker run --rm --interactive --tty \
+          --volume $PWD:/app \
+          --user $(id -u):$(id -g) \
+          composer install
+    ```
+
+1. Copy [`.env.example`](https://github.com/pacoorozco/probind/blob/master/.env.example) to `.env`.
+
+    > **NOTE**: You don't need to touch anything from this file. It works with default settings.
+
+1. Start all containers with [Docker Compose](https://docs.docker.com/compose/)
+
+    ```bash
     $ docker-compose build
     $ docker-compose up -d
     ```
-3. Seed database in order to play with some data
 
+1. Seed database in order to play with some data
 
     ```bash
-    $ docker exec docker_web_1 /setup-probind.sh 
+    $ docker-compose exec app php artisan key:generate 
+    $ docker-compose exec app php artisan migrate --seed
     ```
+    
+1. Go to `http://localhost/install` and finsh **ProBIND** installation. Enjoy!
 
-Enjoy!
+   > **NOTE**: Default credentials are `admin/secret`.
 
 ### Homestead Vagrant Box method
 
@@ -91,15 +109,15 @@ Prior this installation, you **need to have installed** this software:
     $ git clone https://github.com/pacoorozco/probind.git probind
     ```
 
-2. [Install dependencies](https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies) with:
+1. [Install dependencies](https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies) with:
 
     ```bash
     $ cd probind
     $ composer install
     ```
 
-3. Copy [`.env.example`](https://github.com/pacoorozco/probind/blob/master/.env.example) to `.env`. By default this configuration will work with Homestead Vagrant Box.
-4. Prepare Homestead envionment and Vagrant box
+1. Copy [`.env.example`](https://github.com/pacoorozco/probind/blob/master/.env.example) to `.env`. By default this configuration will work with Homestead Vagrant Box.
+1. Prepare Homestead envionment and Vagrant box
 
     ```bash
     $ php vendor/laravel/homestead/homestead make
@@ -107,7 +125,7 @@ Prior this installation, you **need to have installed** this software:
     $ vagrant up
     ```
 
-5. Create a new application key and install some [Bower](https://bower.io/) dependencies.
+1. Create a new application key and install some [Bower](https://bower.io/) dependencies.
 
     ```bash
     $ vagrant ssh
@@ -116,7 +134,9 @@ Prior this installation, you **need to have installed** this software:
     $ bower install
     $ exit
     ```
-6. Go to `http://192.168.10.10/install` and finsh **ProBIND** installation. Enjoy!
+1. Go to `http://192.168.10.10/install` and finsh **ProBIND** installation. Enjoy!
+
+   > **NOTE**: Default credentials are `admin/secret`.
 
 ## Reporting issues
 
