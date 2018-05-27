@@ -1,6 +1,6 @@
 {{-- Styles --}}
 @push('styles')
-{!! HTML::style('vendor/admin-lte/plugins/datatables/dataTables.bootstrap.css') !!}
+{!! HTML::style('themes/admin-lte/plugins/datatables/dataTables.bootstrap.css') !!}
 @endpush
 
 <table id="records-table" class="table table-striped table-bordered">
@@ -26,8 +26,8 @@
 
 {{-- Scripts --}}
 @push('scripts')
-{!! HTML::script('vendor/admin-lte/plugins/datatables/jquery.dataTables.min.js') !!}
-{!! HTML::script('vendor/admin-lte/plugins/datatables/dataTables.bootstrap.min.js') !!}
+{!! HTML::script('themes/admin-lte/plugins/datatables/jquery.dataTables.min.js') !!}
+{!! HTML::script('themes/admin-lte/plugins/datatables/dataTables.bootstrap.min.js') !!}
 
 <script>
     $(function () {

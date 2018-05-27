@@ -1,7 +1,7 @@
 @extends('layouts.login')
 
 @push('styles')
-    {!! HTML::style('vendor/admin-lte/plugins/iCheck/square/blue.css') !!}
+    {!! HTML::style('themes/admin-lte/plugins/iCheck/square/blue.css') !!}
 @endpush
 
 {{-- Web site Title --}}
@@ -72,7 +72,7 @@
 @endsection
 
 @push('scripts')
-    {!! HTML::script('vendor/admin-lte/plugins/iCheck/icheck.min.js') !!}
+    {!! HTML::script('themes/admin-lte/plugins/iCheck/icheck.min.js') !!}
     <script>
         $(function () {
             $('input').iCheck({
