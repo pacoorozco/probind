@@ -131,7 +131,7 @@ Prior this installation, you **need to have installed** this software:
     $ vagrant ssh
     $ cd probind
     $ php artisan key:generate
-    $ bower install
+    $ php artisan migrate --seed
     $ exit
     ```
 1. Go to `http://192.168.10.10/install` and finsh **ProBIND** installation. Enjoy!
