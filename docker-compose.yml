@@ -21,7 +21,6 @@ services:
         - "9000:9000"
       depends_on:
         - database
-        - redis
 
 ### WEB: Web server #################################################
     web:
