@@ -125,7 +125,7 @@ Prior this installation, you **need to have installed** this software:
     $ vagrant up
     ```
 
-1. Create a new application key and install some [Bower](https://bower.io/) dependencies.
+1. Create a new application key and seed some values.
 
     ```bash
     $ vagrant ssh
