@@ -17,6 +17,9 @@ services:
       environment:
         DB_HOST: database
         REDIS_HOST: redis
+        DB_DATABASE: homestead
+        DB_USERNAME: homestead
+        DB_PASSWORD: secret
       ports:
         - "9000:9000"
       depends_on:
