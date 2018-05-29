@@ -1,60 +1,21 @@
-FROM php:7.0-apache
+FROM nginx:alpine
 
 MAINTAINER Paco Orozco <paco@pacoorozco.info>
 
-ENV PROBIND_ROOT /var/www/probind
-ENV PROBIND_USER probind
+COPY ./docker/web/nginx.conf /etc/nginx/
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV TERM linux
+RUN apk update \
+    && apk upgrade \
+    && apk add --no-cache bash \
+    && adduser -D -H -u 1000 -s /bin/bash www-data
 
-# Update and install needed packages
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends --no-install-suggests \
-    git \
-    libmcrypt-dev \
-    nodejs \
-    npm
+ARG PHP_UPSTREAM_CONTAINER=app
+ARG PHP_UPSTREAM_PORT=9000
 
-# Configure PHP with needed modules
-RUN docker-php-ext-install \
-    json \
-    mbstring \
-    mcrypt \
-    pdo_mysql \
-    zip
+# Set upstream conf and remove the default conf
+RUN echo "upstream php-upstream { server ${PHP_UPSTREAM_CONTAINER}:${PHP_UPSTREAM_PORT}; }" > /etc/nginx/conf.d/upstream.conf \
+    && rm /etc/nginx/conf.d/default.conf
 
-# Configure Node.js and install bower and composer
-RUN update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10 \
-    && npm install -g bower \
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+CMD ["nginx"]
 
-# Configure Apache and add our site
-RUN a2enmod rewrite
-COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
-
-# Download code from Git and install all dependencies
-RUN git clone --depth 1 https://github.com/pacoorozco/probind.git ${PROBIND_ROOT} \
-    && cd ${PROBIND_ROOT} \
-    && composer install --no-plugins --no-scripts --prefer-dist --no-interaction \
-    && bower install --allow-root 
-
-# Configure our application
-RUN useradd -r -g www-data ${PROBIND_USER} \
-    && cd ${PROBIND_ROOT} \
-    && cp .env.example .env \
-    && sed -i "s/DB_HOST=127.0.0.1/DB_HOST=db/" .env \
-    && sed -i "s/REDIS_HOST=127.0.0.1/REDIS_HOST=redis/" .env \
-    && php artisan key:generate \
-    && find ${PROBIND_ROOT} -type d -exec chmod 0750 {} \; \
-    && find ${PROBIND_ROOT} -type f -exec chmod 0640 {} \; \
-    && chown -R ${PROBIND_USER}:www-data ${PROBIND_ROOT} \
-    && chown -R www-data:www-data ${PROBIND_ROOT}/bootstrap/cache \
-    && chown -R www-data:www-data ${PROBIND_ROOT}/storage
-
-WORKDIR ${PROBIND_ROOT}
-
-EXPOSE 80
-
-COPY scripts/setup-probind.sh /setup-probind.sh
-RUN ["chmod", "+x", "/setup-probind.sh"]
+EXPOSE 80 443

@@ -12,7 +12,7 @@
     @yield('meta')
     <!-- end: META -->
     <!-- start: GLOBAL CSS -->
-    {!! HTML::style('vendor/admin-lte/bootstrap/css/bootstrap.min.css') !!}
+    {!! HTML::style('themes/admin-lte/bootstrap/css/bootstrap.min.css') !!}
     {!! HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css') !!}
     {!! HTML::style('//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') !!}
     <!-- end: GLOBAL CSS -->
@@ -20,8 +20,8 @@
     @stack('styles')
     <!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
     <!-- start: MAIN CSS -->
-    {!! HTML::style('vendor/admin-lte/dist/css/AdminLTE.min.css') !!}
-    {!! HTML::style('vendor/admin-lte/dist/css/skins/skin-blue.min.css') !!}
+    {!! HTML::style('themes/admin-lte/dist/css/AdminLTE.min.css') !!}
+    {!! HTML::style('themes/admin-lte/dist/css/skins/skin-blue.min.css') !!}
     {!! HTML::style('css/probind.css') !!}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -79,14 +79,14 @@
     </div>
     <!-- end: MAIN CONTAINER -->
     <!-- start: GLOBAL JAVASCRIPT -->
-    {!! HTML::script('vendor/admin-lte/plugins/jQuery/jquery-2.2.3.min.js') !!}
-    {!! HTML::script('vendor/admin-lte/bootstrap/js/bootstrap.min.js') !!}
+    {!! HTML::script('themes/admin-lte/plugins/jQuery/jquery-2.2.3.min.js') !!}
+    {!! HTML::script('themes/admin-lte/bootstrap/js/bootstrap.min.js') !!}
     <!-- end: GLOBAL JAVASCRIPT -->
     <!-- start: JAVASCRIPT REQUIRED FOR THIS PAGE ONLY -->
     @stack('scripts')
     <!-- end: JAVASCRIPT REQUIRED FOR THIS PAGE ONLY -->
     <!-- start: MAIN JAVASCRIPT -->
-    {!! HTML::script('vendor/admin-lte/dist/js/app.min.js') !!}
+    {!! HTML::script('themes/admin-lte/dist/js/app.min.js') !!}
     {!! HTML::script('js/probind.js') !!}
     <script>
         (function() {

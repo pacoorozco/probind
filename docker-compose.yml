@@ -1,0 +1,58 @@
+version: '3'
+
+volumes:
+  dbdata:
+    driver: local
+
+services:
+
+### APP: Application server #########################################
+    app:
+      build:
+        context: ./
+        dockerfile: docker/app/Dockerfile
+      working_dir: /var/www
+      volumes:
+        - ./:/var/www
+      environment:
+        DB_HOST: database
+        REDIS_HOST: redis
+        DB_DATABASE: homestead
+        DB_USERNAME: homestead
+        DB_PASSWORD: secret
+      ports:
+        - "9000:9000"
+      depends_on:
+        - database
+
+### WEB: Web server #################################################
+    web:
+      build:
+        context: ./
+        dockerfile: docker/web/Dockerfile
+        args:
+          - PHP_UPSTREAM_CONTAINER=app
+          - PHP_UPSTREAM_PORT=9000
+      volumes:
+        - ./docker/web/sites:/etc/nginx/sites-available:ro
+        - ./:/var/www:ro
+      ports:
+        - "80:80"
+        - "443:443"
+      depends_on:
+        - app
+
+### DATABASE: Database server #############################################
+    database:
+      image: mysql:5
+      volumes:
+            - dbdata:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: verysecret
+        MYSQL_DATABASE: homestead
+        MYSQL_USER: homestead
+        MYSQL_PASSWORD: secret
+      ports:
+        - "3306:3306"
+
+

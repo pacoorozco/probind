@@ -44,7 +44,7 @@ class RecordHttpTest extends TestCase
             ->type('testRR', 'name')
             ->type('128', 'ttl')
             ->select('CNAME', 'type')
-            ->type('testData', 'data')
+            ->type('testdata', 'data')
             ->press('Save data');
 
         // Get from DB if Record has been created.
@@ -70,7 +70,7 @@ class RecordHttpTest extends TestCase
             ->type('128', 'ttl')
             ->select('SRV', 'type')
             ->type('10', 'priority')
-            ->type('testData', 'data')
+            ->type('testdata', 'data')
             ->press('Save data');
 
         // Get from DB if Record has been created.
