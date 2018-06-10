@@ -17,8 +17,6 @@
 
 namespace App\Console;
 
-use App\Console\Commands\ProBINDImportZone;
-use App\Console\Commands\ProBINDPushZones;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -31,25 +29,29 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        ProBINDPushZones::class,
-        ProBINDImportZone::class
+        //
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
+     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
-        //
+        // $schedule->command('inspire')
+        //          ->hourly();
     }
 
     /**
-     * REMOVED: I've remove this code, using require() doesn't seems a good idea.
+     * Register the commands for the application.
      *
-     * Register the Closure based commands for the application.
-     *
+     * @return void
      */
+    protected function commands()
+    {
+        $this->load(__DIR__.'/Commands');
+        require base_path('routes/console.php');
+    }
 }

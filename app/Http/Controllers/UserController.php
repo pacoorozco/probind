@@ -7,7 +7,7 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\User;
 use Gate;
-use Yajra\Datatables\Datatables;
+use DataTables;
 
 class UserController extends Controller
 {
@@ -133,13 +133,13 @@ class UserController extends Controller
     }
 
     /**
-     * Show a list of all the users formatted for Datatables.
+     * Show a list of all the users formatted for DataTables.
      *
-     * @param Datatables $dataTable
+     * @param DataTables $dataTable
      *
-     * @return Datatables JsonResponse
+     * @return DataTables JsonResponse
      */
-    public function data(Datatables $dataTable)
+    public function data(DataTables $dataTable)
     {
         $users = User::get([
             'id',

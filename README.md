@@ -99,7 +99,7 @@ This will create a VM box (a [Vagrant](https://www.vagrantup.com/) one) where al
 
 Prior this installation, you **need to have installed** this software:
 
-* [Vagrant 1.9.0+](https://www.vagrantup.com/)
+* [Vagrant 2.1.0+](https://www.vagrantup.com/)
 * [Composer](https://getcomposer.org/download/)
 * PHP extensions/modules installed: `php-mbstring php-xml`
 
@@ -120,7 +120,7 @@ Prior this installation, you **need to have installed** this software:
 1. Prepare Homestead envionment and Vagrant box
 
     ```bash
-    $ php vendor/laravel/homestead/homestead make
+    $ php vendor/bin/homestead make
     $ vagrant box add laravel/homestead
     $ vagrant up
     ```
@@ -129,7 +129,7 @@ Prior this installation, you **need to have installed** this software:
 
     ```bash
     $ vagrant ssh
-    $ cd probind
+    $ cd code
     $ php artisan key:generate
     $ php artisan migrate --seed
     $ exit

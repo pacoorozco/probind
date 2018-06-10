@@ -166,7 +166,6 @@ return [
          * Third Party Service Providers...
          */
         Collective\Html\HtmlServiceProvider::class, // HTML helpers
-        Yajra\Datatables\DatatablesServiceProvider::class, // DataTables helpers
         Spatie\Activitylog\ActivitylogServiceProvider::class, // Activity Log helpers
         Larapacks\Setting\SettingServiceProvider::class, // Settings
 
@@ -231,7 +230,6 @@ return [
          */
         'Form'         => Collective\Html\FormFacade::class, // HTML Form helpers
         'HTML'         => Collective\Html\HtmlFacade::class, // HTML helpers
-        'Datatables'   => Yajra\Datatables\Facades\Datatables::class, // DataTables helpers
         'Setting'      => Larapacks\Setting\Facades\Setting::class, // Setting helper
 
     ],

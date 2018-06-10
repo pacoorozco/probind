@@ -21,7 +21,7 @@ use App\Helpers\Helper;
 use App\Http\Requests\ServerCreateRequest;
 use App\Http\Requests\ServerUpdateRequest;
 use App\Server;
-use Yajra\Datatables\Datatables;
+use DataTables;
 
 class ServerController extends Controller
 {
@@ -140,13 +140,13 @@ class ServerController extends Controller
     }
 
     /**
-     * Show a list of all the Servers formatted for Datatables.
+     * Show a list of all the Servers formatted for DataTables.
      *
-     * @param Datatables $dataTable
+     * @param DataTables $dataTable
      *
-     * @return Datatables JsonResponse
+     * @return DataTables JsonResponse
      */
-    public function data(Datatables $dataTable)
+    public function data(DataTables $dataTable)
     {
         $servers = Server::get([
             'id',

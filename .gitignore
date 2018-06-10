@@ -1,6 +1,10 @@
 vendor/
 node_modules/
 
+# NPM & Yarn
+npm-debug.log
+yarn-error.log
+
 # Laravel 5 & Lumen specific
 .env.*.php
 .env.php
@@ -18,6 +22,6 @@ Homestead.json
 
 # Developement & editor stuff
 .idea/
+.vscode/
 _ide_helper.php
 .phpstorm.meta.php
-
