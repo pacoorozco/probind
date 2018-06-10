@@ -16,10 +16,11 @@
  *
  */
 
-use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+namespace Tests\Feature;
 
-class InstallHttpTest extends TestCase
+use Tests\BrowserKitTestCase;
+
+class InstallHttpTest extends BrowserKitTestCase
 {
     /**
      * Test install URI with a previous installation
@@ -29,7 +30,7 @@ class InstallHttpTest extends TestCase
         \Storage::disk('local')->put('installed', '');
 
         $this->get('/install')
-        ->seeStatusCode(404);
+            ->seeStatusCode(404);
 
     }
 

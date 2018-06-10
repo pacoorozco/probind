@@ -184,6 +184,7 @@ class RecordController extends Controller
                     ->with('record', $record)
                     ->render();
             })
+            ->rawColumns(['actions'])
             ->removeColumn('id')
             ->make(true);
     }

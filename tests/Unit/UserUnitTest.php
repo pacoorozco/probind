@@ -15,7 +15,10 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
+namespace Tests\Unit;
+
 use App\User;
+use Tests\TestCase;
 
 class UserUnitTest extends TestCase
 {

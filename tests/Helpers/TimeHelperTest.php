@@ -9,10 +9,10 @@
  *  Licensed under GNU General Public License 3.0.
  *  Some rights reserved. See LICENSE, AUTHORS.
  *
- *  @author      Paco Orozco <paco@pacoorozco.info>
- *  @copyright  2017 Paco Orozco
- *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
- *  @link        https://github.com/pacoorozco/probind
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright  2017 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
  */
 
 use App\Helpers\TimeHelper;
@@ -25,10 +25,10 @@ class TimeHelperTest extends TestCase
     public function testParseToSeconds()
     {
         $testTimeTranslations = [
-            '7200'   => 7200,
+            '7200' => 7200,
             '10800S' => 10800 * 1,
-            '15m'    => 15 * 60,
-            '3W12h'  => 3 * 7 * 24 * 60 * 60 + 12 * 60 * 60,
+            '15m' => 15 * 60,
+            '3W12h' => 3 * 7 * 24 * 60 * 60 + 12 * 60 * 60,
         ];
 
         foreach (array_keys($testTimeTranslations) as $time) {

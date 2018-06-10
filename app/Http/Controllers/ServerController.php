@@ -140,7 +140,7 @@ class ServerController extends Controller
     }
 
     /**
-     * Show a list of all the levels formatted for Datatables.
+     * Show a list of all the Servers formatted for Datatables.
      *
      * @param Datatables $dataTable
      *
@@ -174,6 +174,7 @@ class ServerController extends Controller
                     'id'    => $server->id,
                 ])->render();
             })
+            ->rawColumns(['actions'])
             ->removeColumn('id')
             ->make(true);
     }

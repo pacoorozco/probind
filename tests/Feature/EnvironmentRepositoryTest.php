@@ -1,8 +1,11 @@
 <?php
 
-use App\Repositories\EnvironmentRepository;
+namespace Tests\Feature;
 
-class EnvironmentRepositoryTest extends TestCase
+use App\Repositories\EnvironmentRepository;
+use Tests\BrowserKitTestCase;
+
+class EnvironmentRepositoryTest extends BrowserKitTestCase
 {
     public function testSetDatabaseSetting()
     {
@@ -18,7 +21,7 @@ class EnvironmentRepositoryTest extends TestCase
             'database' => 'database_value',
             'username' => 'username_value',
             'password' => 'password_value',
-            'host'     => 'host_value'
+            'host' => 'host_value'
         ];
 
         // Success set connection settings.

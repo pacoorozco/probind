@@ -159,6 +159,7 @@ class UserController extends Controller
                     ->with('id', $user->id)
                     ->render();
             })
+            ->rawColumns(['actions'])
             ->removeColumn('id')
             ->removeColumn('active')
             ->make(true);

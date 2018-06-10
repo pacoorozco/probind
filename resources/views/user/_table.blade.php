@@ -24,9 +24,15 @@
 
 {{-- Scripts --}}
 @push('scripts')
-{!! HTML::script('themes/admin-lte/plugins/datatables/jquery.dataTables.min.js') !!}
-{!! HTML::script('themes/admin-lte/plugins/datatables/dataTables.bootstrap.min.js') !!}
+    <!-- jQuery -->
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <!-- DataTables -->
+    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
+    {{-- !! HTML::script('themes/admin-lte/plugins/datatables/jquery.dataTables.min.js') !! --}}
+    {{-- !! HTML::script('themes/admin-lte/plugins/datatables/dataTables.bootstrap.min.js') !! --}}
 <script>
     $(function () {
         $('#users-table').DataTable({

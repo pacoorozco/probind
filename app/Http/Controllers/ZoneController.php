@@ -171,6 +171,7 @@ class ZoneController extends Controller
                     ->with('zone', $zone)
                     ->render();
             })
+            ->rawColumns(['actions'])
             ->removeColumn('id')
             ->make(true);
     }

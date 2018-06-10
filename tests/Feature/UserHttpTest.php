@@ -15,10 +15,14 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+namespace Tests\Feature;
 
-class UserHttpTest extends TestCase
+use App\User;
+use Auth;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\BrowserKitTestCase;
+
+class UserHttpTest extends BrowserKitTestCase
 {
     use DatabaseMigrations;
 
@@ -69,7 +73,7 @@ class UserHttpTest extends TestCase
     {
         $originalUser = factory(User::class)->create([
             'username' => 'user.test',
-            'email'    => 'user.test@domain.local'
+            'email' => 'user.test@domain.local'
         ]);
 
         $this->visit('users/' . $originalUser->id . '/edit')
@@ -129,13 +133,13 @@ class UserHttpTest extends TestCase
     {
         $originalUser = factory(User::class)->create([
             'username' => 'user.test',
-            'email'    => 'user.test@domain.local'
+            'email' => 'user.test@domain.local'
         ]);
 
         $this->json('GET', '/users/data')
             ->seeJson([
                 'username' => $originalUser->username,
-                'email'    => $originalUser->email,
+                'email' => $originalUser->email,
             ]);
     }
 }

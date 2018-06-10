@@ -15,8 +15,11 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
+namespace Tests\Unit;
+
 use App\Server;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class ServerUnitTest extends TestCase
 {
@@ -30,9 +33,9 @@ class ServerUnitTest extends TestCase
         $expectedHostname = 'server01.local';
 
         $server = new Server([
-                'hostname'   => strtoupper($expectedHostname),
+                'hostname' => strtoupper($expectedHostname),
                 'ip_address' => '192.168.1.2',
-                'type'       => 'master',
+                'type' => 'master',
             ]
         );
 
@@ -48,9 +51,9 @@ class ServerUnitTest extends TestCase
         $expectedType = 'master';
 
         $server = new Server([
-                'hostname'   => 'server01.local',
+                'hostname' => 'server01.local',
                 'ip_address' => '192.168.1.2',
-                'type'       => strtoupper($expectedType),
+                'type' => strtoupper($expectedType),
             ]
         );
 
@@ -66,9 +69,9 @@ class ServerUnitTest extends TestCase
         $expectedType = 'invalid_value';
 
         $server = new Server([
-            'hostname'   => 'server01.local',
+            'hostname' => 'server01.local',
             'ip_address' => '192.168.1.2',
-            'type'       => $expectedType,
+            'type' => $expectedType,
         ]);
 
         // Attribute must be defined as one of Server::$validServerTypes.
@@ -84,9 +87,9 @@ class ServerUnitTest extends TestCase
         $expectedNSRecord = sprintf("%-32s IN\tNS\t%s.", ' ', $hostname);
 
         $server = new Server([
-                'hostname'   => $hostname,
+                'hostname' => $hostname,
                 'ip_address' => '192.168.1.2',
-                'type'       => 'master',
+                'type' => 'master',
             ]
         );
 

@@ -15,9 +15,13 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+namespace Tests\Feature;
 
-class DashboardHttpTest extends TestCase
+use App\Zone;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\BrowserKitTestCase;
+
+class ToolsHttpTest extends BrowserKitTestCase
 {
     use DatabaseMigrations;
 
@@ -30,13 +34,23 @@ class DashboardHttpTest extends TestCase
     }
 
     /**
-     * Test Dashboard creation.
+     * Test Bulk Update feature.
      */
-    public function testVisitDashboard()
+    public function testDoBulkUpdate()
     {
-        $this->visit('/')
-            ->seeElement('#info-boxes')
-            ->seeElement('#latest-activity-widget')
-            ->seeElement('#latest-jobs-widget');
+        // Create some zones to test
+        factory(Zone::class, 5)->create([
+            'has_modifications' => false
+        ]);
+
+        // Visit URL to do bulk update
+        $this->visit('/tools/update')
+            ->press('Bulk update');
+
+        // Get all zones
+        $zones = Zone::all();
+        foreach ($zones as $zone) {
+            $this->assertTrue($zone->hasPendingChanges());
+        }
     }
 }

@@ -1,11 +1,15 @@
 <?php
 
+namespace Tests\Feature;
+
 use App\Zone;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\BrowserKitTestCase;
+use Artisan;
 
 
-class ProBINDImportZoneTest extends TestCase
+class ProBINDImportZoneTest extends BrowserKitTestCase
 {
     use DatabaseMigrations;
 
@@ -81,9 +85,9 @@ $TTL 172800
 
         // Call the command with the created file.
         Artisan::call('probind:import', [
-            'zone'     => $expectedZone,
+            'zone' => $expectedZone,
             'zonefile' => $this->tempDir . '/forward-zone.db',
-            '--force'  => true,
+            '--force' => true,
         ]);
 
         $zone = Zone::where(['domain' => $expectedZone])->first();
@@ -100,9 +104,9 @@ $TTL 172800
 
         // Call the command with the created file.
         Artisan::call('probind:import', [
-            'zone'     => $expectedZone,
+            'zone' => $expectedZone,
             'zonefile' => $this->tempDir . '/reverse-zone.db',
-            '--force'  => true,
+            '--force' => true,
         ]);
 
         $zone = Zone::where(['domain' => $expectedZone])->first();
@@ -119,9 +123,9 @@ $TTL 172800
 
         // Call the command with the created file.
         Artisan::call('probind:import', [
-            'zone'     => $expectedZone->domain,
+            'zone' => $expectedZone->domain,
             'zonefile' => $this->tempDir . '/forward-zone.db',
-            '--force'  => true,
+            '--force' => true,
         ]);
 
         $zone = Zone::where(['domain' => $expectedZone->domain])->first();
@@ -137,9 +141,9 @@ $TTL 172800
 
         // Call the command with the created file.
         Artisan::call('probind:import', [
-            'zone'     => $expectedZone->domain,
+            'zone' => $expectedZone->domain,
             'zonefile' => $this->tempDir . '/forward-zone.db',
-            '--force'  => false,
+            '--force' => false,
         ]);
 
         $zone = Zone::where(['domain' => $expectedZone->domain])->first();
@@ -156,9 +160,9 @@ $TTL 172800
     {
         // Call the command with the created file.
         Artisan::call('probind:import', [
-            'zone'     => 'domain.com',
+            'zone' => 'domain.com',
             'zonefile' => $this->tempDir . '/not.exist.db',
-            '--force'  => true,
+            '--force' => true,
         ]);
     }
 }

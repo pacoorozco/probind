@@ -15,9 +15,14 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+namespace Tests\Feature;
 
-class SettingsHttpTest extends TestCase
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\BrowserKitTestCase;
+use TestingDatabaseSeeder;
+use Setting;
+
+class SettingsHttpTest extends BrowserKitTestCase
 {
     use DatabaseMigrations;
 
@@ -38,17 +43,17 @@ class SettingsHttpTest extends TestCase
         $this->seed(TestingDatabaseSeeder::class);
 
         $expectedSettings = [
-            'zone_default_mname'        => 'dns.domain.com',
-            'zone_default_rname'        => 'my_mail@domain.com',
-            'zone_default_refresh'      => '1001',
-            'zone_default_retry'        => '1002',
-            'zone_default_expire'       => '1003',
+            'zone_default_mname' => 'dns.domain.com',
+            'zone_default_rname' => 'my_mail@domain.com',
+            'zone_default_refresh' => '1001',
+            'zone_default_retry' => '1002',
+            'zone_default_expire' => '1003',
             'zone_default_negative_ttl' => '1004',
-            'zone_default_default_ttl'  => '1005',
+            'zone_default_default_ttl' => '1005',
 
-            'ssh_default_user'        => 'user',
-            'ssh_default_key'         => 'My SSH Public Key',
-            'ssh_default_port'        => '2022',
+            'ssh_default_user' => 'user',
+            'ssh_default_key' => 'My SSH Public Key',
+            'ssh_default_port' => '2022',
             'ssh_default_remote_path' => '/etc/named/user',
         ];
 

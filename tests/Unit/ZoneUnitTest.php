@@ -15,10 +15,13 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
+namespace Tests\Unit;
+
 use App\Record;
 use App\Zone;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class ZoneUnitTest extends TestCase
 {

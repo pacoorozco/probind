@@ -1,6 +1,10 @@
 <?php
 
+namespace Tests\Unit;
+
 use App\FileDNSParser;
+use Tests\TestCase;
+use File;
 
 class FileDNSParserUnitTest extends TestCase
 {
@@ -30,73 +34,73 @@ text                                    7200    IN      TXT     "Somewhere over 
     protected $expectedRecords = [
 
         [
-            'name'  => '@',
-            'ttl'   => 172800,
+            'name' => '@',
+            'ttl' => 172800,
             'class' => 'IN',
-            'type'  => 'NS',
-            'data'  => 'dns1.domain.com.',
+            'type' => 'NS',
+            'data' => 'dns1.domain.com.',
         ],
         [
-            'name'  => '@',
-            'ttl'   => 172800,
+            'name' => '@',
+            'ttl' => 172800,
             'class' => 'IN',
-            'type'  => 'NS',
-            'data'  => 'dns2.domain.com.',
+            'type' => 'NS',
+            'data' => 'dns2.domain.com.',
         ],
         [
-            'name'    => '@',
-            'ttl'     => 172800,
-            'class'   => 'IN',
-            'type'    => 'MX',
-            'data'    => '10.10.10.1',
+            'name' => '@',
+            'ttl' => 172800,
+            'class' => 'IN',
+            'type' => 'MX',
+            'data' => '10.10.10.1',
             'options' => [
                 'preference' => '10',
             ],
         ],
         [
-            'name'    => '@',
-            'ttl'     => 7200,
-            'class'   => 'IN',
-            'type'    => 'MX',
-            'data'    => '10.10.10.2',
+            'name' => '@',
+            'ttl' => 7200,
+            'class' => 'IN',
+            'type' => 'MX',
+            'data' => '10.10.10.2',
             'options' => [
                 'preference' => '20',
             ],
         ],
         [
-            'name'  => 'ftp',
-            'ttl'   => 7200,
+            'name' => 'ftp',
+            'ttl' => 7200,
             'class' => 'IN',
-            'type'  => 'A',
-            'data'  => '10.10.10.3',
+            'type' => 'A',
+            'data' => '10.10.10.3',
         ],
         [
-            'name'  => 'www',
-            'ttl'   => 7200,
+            'name' => 'www',
+            'ttl' => 7200,
             'class' => 'IN',
-            'type'  => 'CNAME',
-            'data'  => 'webserver.domain.com.',
+            'type' => 'CNAME',
+            'data' => 'webserver.domain.com.',
         ],
         [
-            'name'  => 'www1.subdomain',
-            'ttl'   => 7200,
+            'name' => 'www1.subdomain',
+            'ttl' => 7200,
             'class' => 'IN',
-            'type'  => 'A',
-            'data'  => '10.10.10.10',
+            'type' => 'A',
+            'data' => '10.10.10.10',
         ],
         [
-            'name'  => 'www1.subdomain',
-            'ttl'   => 172800,
+            'name' => 'www1.subdomain',
+            'ttl' => 172800,
             'class' => 'IN',
-            'type'  => 'A',
-            'data'  => '10.10.10.11',
+            'type' => 'A',
+            'data' => '10.10.10.11',
         ],
         [
-            'name'  => 'text.subdomain',
-            'ttl'   => 7200,
+            'name' => 'text.subdomain',
+            'ttl' => 7200,
             'class' => 'IN',
-            'type'  => 'TXT',
-            'data'  => '"Somewhere over the rainbow"',
+            'type' => 'TXT',
+            'data' => '"Somewhere over the rainbow"',
         ]
     ];
 

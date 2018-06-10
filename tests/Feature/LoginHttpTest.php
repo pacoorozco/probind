@@ -15,10 +15,13 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
+namespace Tests\Feature;
+
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\BrowserKitTestCase;
 
-class LoginHttpTest extends TestCase
+class LoginHttpTest extends BrowserKitTestCase
 {
     use DatabaseMigrations;
 
