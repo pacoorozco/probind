@@ -4,14 +4,14 @@ namespace Tests\Feature;
 
 use App\Zone;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\BrowserKitTestCase;
 use Artisan;
 
 
 class ProBINDImportZoneTest extends BrowserKitTestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     protected $forwardZoneFileContents = '
 ; This is a comment

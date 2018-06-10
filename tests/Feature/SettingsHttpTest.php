@@ -17,14 +17,14 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\BrowserKitTestCase;
 use TestingDatabaseSeeder;
 use Setting;
 
 class SettingsHttpTest extends BrowserKitTestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function setUp()
     {

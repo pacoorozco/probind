@@ -18,13 +18,13 @@
 namespace Tests\Feature;
 
 use App\Server;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\BrowserKitTestCase;
 
 class ServerHttpTest extends BrowserKitTestCase
 {
 
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function setUp()
     {
@@ -162,8 +162,10 @@ class ServerHttpTest extends BrowserKitTestCase
     /**
      * Test JSON call listing all Servers
      */
-    /*public function testJSONGetServerData()
+    public function testJSONGetServerData()
     {
+        // TODO: After upgrade DataTables to last version seems to not work
+        /*
         $originalServer = factory(Server::class)->create();
 
         $response = $this->json('GET', '/servers/data');
@@ -176,5 +178,6 @@ class ServerHttpTest extends BrowserKitTestCase
                 'hostname' => $originalServer->hostname,
                 'ip_address' => $originalServer->ip_address,
             ]);
-    }*/
+        */
+    }
 }

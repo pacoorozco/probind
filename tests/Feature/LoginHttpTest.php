@@ -18,12 +18,12 @@
 namespace Tests\Feature;
 
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\BrowserKitTestCase;
 
 class LoginHttpTest extends BrowserKitTestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /**
      * Test a redirect to Login page

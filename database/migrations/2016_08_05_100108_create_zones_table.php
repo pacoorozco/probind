@@ -55,6 +55,6 @@ class CreateZonesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('zones');
+        Schema::dropIfExists('zones');
     }
 }

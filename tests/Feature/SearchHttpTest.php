@@ -19,13 +19,13 @@ namespace Tests\Feature;
 
 use App\Record;
 use App\Zone;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\BrowserKitTestCase;
 
 class SearchHttpTest extends BrowserKitTestCase
 {
 
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function setUp()
     {

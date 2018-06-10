@@ -19,12 +19,12 @@ namespace Tests\Feature;
 
 use App\User;
 use Auth;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\BrowserKitTestCase;
 
 class UserHttpTest extends BrowserKitTestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function setUp()
     {
@@ -129,8 +129,10 @@ class UserHttpTest extends BrowserKitTestCase
     /**
      * Test JSON call listing all Users
      */
-    /*public function testJSONGetZoneData()
+    public function testJSONGetZoneData()
     {
+        // TODO: After upgrade DataTables to last version seems to not work
+        /*
         $originalUser = factory(User::class)->create([
             'username' => 'user.test',
             'email' => 'user.test@domain.local'
@@ -141,5 +143,6 @@ class UserHttpTest extends BrowserKitTestCase
                 'username' => $originalUser->username,
                 'email' => $originalUser->email,
             ]);
-    }*/
+        */
+    }
 }
