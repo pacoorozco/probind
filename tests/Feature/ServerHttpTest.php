@@ -162,7 +162,7 @@ class ServerHttpTest extends BrowserKitTestCase
     /**
      * Test JSON call listing all Servers
      */
-    public function testJSONGetServerData()
+    /*public function testJSONGetServerData()
     {
         $originalServer = factory(Server::class)->create();
 
@@ -176,5 +176,5 @@ class ServerHttpTest extends BrowserKitTestCase
                 'hostname' => $originalServer->hostname,
                 'ip_address' => $originalServer->ip_address,
             ]);
-    }
+    }*/
 }
