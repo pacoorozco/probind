@@ -42,13 +42,15 @@ class RecordHttpTest extends BrowserKitTestCase
     {
         $zone = factory(Zone::class)->create();
 
-        $this->visit('zones/' . $zone->id . '/records/create')
+        $hola = $this->visit('zones/' . $zone->id . '/records/create')
             ->see($zone->domain)
             ->type('testRR', 'name')
             ->type('128', 'ttl')
             ->select('CNAME', 'type')
             ->type('testdata', 'data')
             ->press('Save data');
+
+        var_dump($hola);
 
         // Get from DB if Record has been created.
         $record = Record::where('name', 'testrr')
