@@ -5,6 +5,7 @@ public/assets/
 # NPM & Yarn
 npm-debug.log
 yarn-error.log
+package-lock.json
 
 # Laravel 5 & Lumen specific
 .env.*.php
