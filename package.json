@@ -14,7 +14,6 @@
         "bootstrap": "^3.3.7",
         "cross-env": "^5.1",
         "jquery": "^3.2",
-        "jquery-ui-dist": "^1.11.4",
         "laravel-mix": "^2.0",
         "datatables": "^1.10.13",
         "datatables-all": "^1.10.13",

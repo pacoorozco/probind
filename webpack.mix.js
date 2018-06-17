@@ -31,11 +31,10 @@ mix.styles([
 // Combine all JS files in one
 mix.scripts([
     'node_modules/jquery/dist/jquery.min.js',
-    'node_modules/jquery-ui-dist/jquery-ui.min.js',
     'node_modules/bootstrap/dist/js/bootstrap.min.js',
     'public/assets/js/app.js',
     'node_modules/datatables-all/media/js/jquery.dataTables.min.js',
-    'node_modules/datatables-all/media/js/dataTables.bootstrap.js',
+    'node_modules/datatables-all/media/js/dataTables.bootstrap.js'
 ], 'public/js/vendor.js');
 
 mix.scripts([
