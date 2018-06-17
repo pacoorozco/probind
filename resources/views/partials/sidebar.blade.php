@@ -1,5 +1,5 @@
 <!-- start: MAIN NAVIGATION MENU -->
-<ul class="sidebar-menu">
+<ul class="sidebar-menu" data-widget="tree">
     <li class="header">{{ trans('site.navigation') }}</li>
     <li {!! (Request::is('home') ? ' class="active"' : '') !!}>
         <a href="{{ route('home') }}">

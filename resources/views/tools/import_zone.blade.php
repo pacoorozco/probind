@@ -61,10 +61,8 @@
 
             <div class="box-footer">
                 <!-- Form Actions -->
-                <a href="{{ route('home') }}">
-                    <button type="button" class="btn btn-primary">
+                <a href="{{ route('home') }}" class="btn btn-primary" role="button">
                         <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
-                    </button>
                 </a>
             {!! Form::button('<i class="fa fa-upload"></i> ' . trans('tools/messages.import_button'), array('type' => 'submit', 'class' => 'btn btn-success')) !!}
             <!-- ./ form actions -->

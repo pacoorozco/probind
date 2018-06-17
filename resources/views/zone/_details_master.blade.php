@@ -80,26 +80,18 @@
 
     </div>
     <div class="box-footer">
-        <a href="{{ route('zones.index') }}">
-            <button type="button" class="btn btn-primary">
+        <a href="{{ route('zones.index') }}" class="btn btn-primary" role="button">
                 <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
-            </button>
         </a>
-        <a href="{{ route('zones.edit', $zone) }}">
-            <button type="button" class="btn btn-primary">
+        <a href="{{ route('zones.edit', $zone) }}" class="btn btn-primary" role="button">
                 <i class="fa fa-pencil"></i> {{ trans('general.edit') }}
-            </button>
         </a>
         <div class="pull-right">
-            <a href="{{ route('zones.records.index', $zone) }}">
-                <button type="button" class="btn btn-info">
+            <a href="{{ route('zones.records.index', $zone) }}" class="btn btn-info" role="button">
                     <i class="fa fa-database"></i> {{ trans('record/title.view_records') }}
-                </button>
             </a>
-            <a href="{{ route('zones.records.create', $zone) }}">
-                <button type="button" class="btn btn-success">
+            <a href="{{ route('zones.records.create', $zone) }}" class="btn btn-success" role="button">
                     <i class="fa fa-plus"></i> {{ trans('record/title.create_new') }}
-                </button>
             </a>
         </div>
     </div>

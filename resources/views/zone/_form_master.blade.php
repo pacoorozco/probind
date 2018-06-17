@@ -129,10 +129,8 @@
 
     <div class="box-footer">
         <!-- Form Actions -->
-        <a href="{{ route('zones.index') }}">
-            <button type="button" class="btn btn-primary">
+        <a href="{{ route('zones.index') }}" class="btn btn-primary" role="button">
                 <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
-            </button>
         </a>
     {!! Form::button('<i class="fa fa-floppy-o"></i> ' . trans('general.save'), array('type' => 'submit', 'class' => 'btn btn-success', 'id' => 'master_zone')) !!}
     <!-- ./ form actions -->

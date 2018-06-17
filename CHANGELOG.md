@@ -4,14 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 0.9.0 - 2018-06-17
+### Added
+- CSS and Javascript management via Webpack. `AdminLTE` now resided in `public/css` and `public/js`.
+
+### Changed
+- **Important**: This application has upgraded to [Laravel 5.6](https://laravel.com/docs) with a new testing framework. **Browser test are not working yet**
+
+## 0.8.2 - 2018-05-27
 ### Added
 - Add support to [NAPRT DNS record type](https://en.wikipedia.org/wiki/NAPTR_record). 
+- Added `AdminLTE` as default theme, now all files are included in source code (see `public/themes` folder).
 
 ### Changed
 - Move valid record types definition and `validateRecordType()` method to `DNSHelper` class.
+- Theme integration has changed to be maintained with `npm` and compiled with `gulp`. 
 
 ### Fixed
 - Fix an error in Record model. Data attribute was lowercase, but this data field may contain uppercase and lowercase.
+- Fix dockers creation and improve performance using better images.
+
+### Removed
+- Remove unused `redis` container. This docker was never used.
+- Remove `bower` dependency. Now `AdminLTE` is maintained with `npm`.
 
 ## 0.8.1 - 2018-05-20
 ### Fixed

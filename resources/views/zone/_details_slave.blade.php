@@ -21,15 +21,11 @@
 
     </div>
     <div class="box-footer">
-        <a href="{{ route('zones.index') }}">
-            <button type="button" class="btn btn-primary">
+        <a href="{{ route('zones.index') }}" class="btn btn-primary" role="button">
                 <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
-            </button>
         </a>
-        <a href="{{ route('zones.edit', $zone) }}">
-            <button type="button" class="btn btn-primary">
+        <a href="{{ route('zones.edit', $zone) }}" class="btn btn-primary" role="button">
                 <i class="fa fa-pencil"></i> {{ trans('general.edit') }}
-            </button>
         </a>
     </div>
 </div>

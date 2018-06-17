@@ -15,10 +15,8 @@
             <p>{{ trans('installer.end.sub-title') }}</p>
         </div>
         <div class="box-footer">
-            <a href="{{ route('login') }}">
-                <button type="button" class="btn btn-primary margin-bottom pull-center">
+            <a href="{{ route('login') }}" class="btn btn-primary margin-bottom pull-center" role="button">
                     {{ trans('auth.login') }}
-                </button>
             </a>
 
         </div>

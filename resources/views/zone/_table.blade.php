@@ -1,8 +1,3 @@
-{{-- Styles --}}
-@push('styles')
-{!! HTML::style('vendor/admin-lte/plugins/datatables/dataTables.bootstrap.css') !!}
-@endpush
-
 <table id="zones-table" class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -26,9 +21,6 @@
 
 {{-- Scripts --}}
 @push('scripts')
-{!! HTML::script('vendor/admin-lte/plugins/datatables/jquery.dataTables.min.js') !!}
-{!! HTML::script('vendor/admin-lte/plugins/datatables/dataTables.bootstrap.min.js') !!}
-
 <script>
     $(function () {
         $('#zones-table').DataTable({
