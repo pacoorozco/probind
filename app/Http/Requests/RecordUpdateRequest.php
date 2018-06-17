@@ -17,7 +17,9 @@
 
 namespace App\Http\Requests;
 
-class RecordUpdateRequest extends Request
+use Illuminate\Foundation\Http\FormRequest;
+
+class RecordUpdateRequest extends FormRequest
 {
 
     /**

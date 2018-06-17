@@ -63,6 +63,9 @@ class RecordHttpTest extends BrowserKitTestCase
     /**
      * Test a successful new Record creation
      */
+    /*
+     * TODO: It depends on Javascript
+
     public function testNewSRVRecordCreationSuccess()
     {
         $zone = factory(Zone::class)->create();
@@ -86,6 +89,7 @@ class RecordHttpTest extends BrowserKitTestCase
 
         $this->assertNotNull($record);
     }
+    */
 
     /**
      * Test a Record view
