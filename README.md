@@ -5,14 +5,14 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/pacoorozco/probind/badges/coverage.png)](https://scrutinizer-ci.com/g/pacoorozco/probind)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/98bafc58-957b-476c-8711-f3d81b6938dd/mini.png)](https://insight.sensiolabs.com/projects/98bafc58-957b-476c-8711-f3d81b6938dd)
 [![License](https://img.shields.io/github/license/pacoorozco/probind.svg)](https://github.com/pacoorozco/probind/blob/master/LICENSE)
-[![Laravel Version](https://img.shields.io/badge/Laravel-5.3-orange.svg)](https://laravel.com/docs/5.3)
+[![Laravel Version](https://img.shields.io/badge/Laravel-5.6-orange.svg)](https://laravel.com/docs)
 [![GitHub release](https://img.shields.io/github/release/pacoorozco/probind.svg?style=flat-square)](https://github.com/pacoorozco/probind/releases)
  	
 ## Presentation
 
 **ProBIND** is a web application designed for managing the DNS zones for one or more servers running the [ISC BIND DNS server](https://www.isc.org/downloads/bind/) software. It works best for companies that need to manage a medium-sized pool of domains across a set of servers.
 
-The application has been written using [Laravel 5.3 framework](https://www.laravel.com/docs/5.3/). It stores its data in a MySQL, Postgres database (see [Laravel Database Backend](https://www.laravel.com/docs/5.3/database)) and generates configuration files for BIND on-demand.
+The application has been written using [Laravel 5 framework](https://www.laravel.com/docs). It stores its data in a MySQL, Postgres database (see [Laravel Database Backend](https://www.laravel.com/docs/5.3/database)) and generates configuration files for BIND on-demand.
 
 ### What ProBIND Is
 
