@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+- Update old `README` references to Laravel 5.3. We use a more generic ones.
+- Fix Travis CI to use PHP 7.1+. **Prior versions of PHP are not working properly**.
 
 ## 0.9.1 - 2018-06-17
 ### Fixed
