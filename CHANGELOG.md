@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.9.0 - 2018-06-17
+### Added
+- CSS and Javascript management via Webpack. `AdminLTE` now resided in `public/css` and `public/js`.
+
+### Changed
+- **Important**: This application has upgraded to [Laravel 5.6](https://laravel.com/docs) with a new testing framework. **Browser test are not working yet**
+
 ## 0.8.2 - 2018-05-27
 ### Added
 - Add support to [NAPRT DNS record type](https://en.wikipedia.org/wiki/NAPTR_record). 
