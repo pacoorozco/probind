@@ -43,10 +43,8 @@
     <!-- ./ box-body -->
     <!-- box-footer -->
     <div class="box-footer">
-        <a href="{{-- route('tools.activity') --}}">
-            <button type="button" class="btn btn-default pull-right">
+        <a href="{{-- route('tools.activity') --}}"  class="btn btn-default pull-right" role="button">
                 <i class="fa fa-eye"></i> {{ trans('dashboard/messages.more_activity') }}
-            </button>
         </a>
     </div>
     <!-- ./ box-footer -->

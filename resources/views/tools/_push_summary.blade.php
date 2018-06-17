@@ -36,10 +36,8 @@
     </div>
 </div>
 <div class="box-footer">
-    <a href="{{ route('home') }}">
-        <button type="button" class="btn btn-primary">
+    <a href="{{ route('home') }}" class="btn btn-primary" role="button">
             <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
-        </button>
     </a>
     {!! Form::open(['route' => 'tools.push_updates']) !!}
     {!! Form::button('<i class="fa fa-download"></i> Push updates', array('type' => 'submit', 'class' => 'btn btn-warning pull-right')) !!}

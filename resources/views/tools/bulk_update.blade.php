@@ -44,10 +44,8 @@
         <div class="box-footer">
             {!! Form::open(['route' => 'tools.do_bulk_update']) !!}
 
-            <a href="{{ route('home') }}">
-                <button type="button" class="btn btn-primary">
+            <a href="{{ route('home') }}" class="btn btn-primary" role="button">
                     <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
-                </button>
             </a>
             {!! Form::button('<i class="fa fa-download"></i> Bulk update', array('type' => 'submit', 'class' => 'btn btn-warning pull-right')) !!}
             {!! Form::close() !!}

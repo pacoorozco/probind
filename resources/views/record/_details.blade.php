@@ -59,16 +59,12 @@
 
     </div>
     <div class="box-footer">
-        <a href="{{ route('zones.records.index', $zone) }}">
-            <button type="button" class="btn btn-primary">
+        <a href="{{ route('zones.records.index', $zone) }}" class="btn btn-primary" role="button">
                 <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
-            </button>
         </a>
         @if ($action == 'show')
-            <a href="{{ route('zones.records.edit', [$zone, $record]) }}">
-                <button type="button" class="btn btn-primary">
+            <a href="{{ route('zones.records.edit', [$zone, $record]) }}" class="btn btn-primary" role="button">
                     <i class="fa fa-pencil"></i> {{ trans('general.edit') }}
-                </button>
             </a>
         @else
             {!! Form::button('<i class="fa fa-trash-o"></i>' . trans('general.delete'), array('type' => 'submit', 'class' => 'btn btn-danger')) !!}
