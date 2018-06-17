@@ -32,10 +32,8 @@
     <!-- ./ notifications -->
 
     <!-- actions -->
-    <a href="{{ route('users.create') }}">
-        <button type="button" class="btn btn-success margin-bottom">
+    <a href="{{ route('users.create') }}" class="btn btn-success margin-bottom" role="button">
             <i class="fa fa-plus"></i> {{ trans('user/title.create_new') }}
-        </button>
     </a>
     <!-- /.actions -->
     <div class="box">

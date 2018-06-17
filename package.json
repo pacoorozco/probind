@@ -1,19 +1,24 @@
 {
     "private": true,
     "scripts": {
-        "prod": "gulp --production",
-        "dev": "gulp watch"
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "gulp": "^3.9.1",
-        "laravel-elixir": "^6.0.0-14",
-        "laravel-elixir-vue-2": "^0.3.0",
-        "laravel-elixir-webpack-official": "^1.0.2",
-        "lodash": "^4.16.2",
-        "vue-resource": "^1.0.3"
-    },
-    "dependencies": {
         "admin-lte": "^2.3.11",
-        "font-awesome": "^4.4.0"
+        "bootstrap": "^3.3.7",
+        "cross-env": "^5.1",
+        "jquery": "^3.2",
+        "jquery-ui-dist": "^1.11.4",
+        "laravel-mix": "^2.0",
+        "datatables": "^1.10.13",
+        "datatables-all": "^1.10.13",
+        "font-awesome": "^4.7.0",
+        "ionicons": "^3.0.0"
     }
 }

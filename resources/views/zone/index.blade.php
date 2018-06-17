@@ -32,10 +32,8 @@
     <!-- ./ notifications -->
 
     <!-- actions -->
-    <a href="{{ route('zones.create') }}">
-        <button type="button" class="btn btn-success margin-bottom">
+    <a href="{{ route('zones.create') }}" class="btn btn-success margin-bottom" role="button">
             <i class="fa fa-plus"></i> {{ trans('zone/title.create_new') }}
-        </button>
     </a>
     <!-- /.actions -->
     <div class="box">
