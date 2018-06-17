@@ -1,38 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <!-- start: HEAD -->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@yield('title', 'Installer') :: ProBIND v3</title>
     <!-- start: META -->
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <meta content="ProBIND v3: Professional DNS Management - Login" name="description">
     <meta content="Paco Orozco" name="author">
-@yield('meta')
-<!-- end: META -->
+    @yield('meta')
+    <!-- end: META -->
     <!-- start: GLOBAL CSS -->
-{!! HTML::style('themes/admin-lte/bootstrap/css/bootstrap.min.css') !!}
-{!! HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css') !!}
-{!! HTML::style('//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') !!}
-<!-- end: GLOBAL CSS -->
-    <!-- start: CSS REQUIRED FOR THIS PAGE ONLY -->
-@stack('styles')
-<!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
-    <!-- start: MAIN CSS -->
-{!! HTML::style('themes/admin-lte/dist/css/AdminLTE.min.css') !!}
-{!! HTML::style('themes/admin-lte/dist/css/skins/skin-blue.min.css') !!}
-{!! HTML::style('css/probind.css') !!}
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <link rel="stylesheet" href="{{ mix('css/vendor.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/theme.css') }}">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-    {!! HTML::script('//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') !!}
-    {!! HTML::script('//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js') !!}
+    <link rel="stylesheet" href="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js">
+    <link rel="stylesheet" href="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js">
     <![endif]-->
-    <!-- end: MAIN CSS -->
+    <!-- end: GLOBAL CSS -->
     <!-- start: CSS REQUIRED FOR THIS PAGE ONLY -->
-@yield('styles')
-<!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
+    @yield('styles')
+    <!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 </head>
 <!-- start: BODY -->
@@ -63,7 +53,8 @@
     </div>
     <!-- end: MAIN CONTAINER -->
     <!-- start: GLOBAL JAVASCRIPT -->
-    <script src="{{ mix('js/probind.js') }} "></script>
+    <script src="{{ mix('js/vendor.js') }} "></script>
+    <script src="{{ mix('js/theme.js') }} "></script>
     <!-- end: GLOBAL JAVASCRIPT -->
     <!-- start: JAVASCRIPT REQUIRED FOR THIS PAGE ONLY -->
     @stack('scripts')
