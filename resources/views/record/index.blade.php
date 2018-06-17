@@ -32,10 +32,8 @@
     <!-- ./ notifications -->
 
     <!-- actions -->
-    <a href="{{ route('zones.records.create', $zone) }}">
-        <button type="button" class="btn btn-success margin-bottom">
+    <a href="{{ route('zones.records.create', $zone) }}" class="btn btn-success margin-bottom" role="button">
             <i class="fa fa-plus"></i> {{ trans('record/title.create_new') }}
-        </button>
     </a>
     <!-- /.actions -->
     <div class="box">

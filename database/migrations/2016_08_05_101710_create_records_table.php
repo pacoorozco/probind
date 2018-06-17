@@ -50,6 +50,6 @@ class CreateRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('records');
+        Schema::dropIfExists('records');
     }
 }

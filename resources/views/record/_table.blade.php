@@ -1,8 +1,3 @@
-{{-- Styles --}}
-@push('styles')
-{!! HTML::style('themes/admin-lte/plugins/datatables/dataTables.bootstrap.css') !!}
-@endpush
-
 <table id="records-table" class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -26,9 +21,6 @@
 
 {{-- Scripts --}}
 @push('scripts')
-{!! HTML::script('themes/admin-lte/plugins/datatables/jquery.dataTables.min.js') !!}
-{!! HTML::script('themes/admin-lte/plugins/datatables/dataTables.bootstrap.min.js') !!}
-
 <script>
     $(function () {
         $('#records-table').DataTable({

@@ -42,16 +42,12 @@
 
     </div>
     <div class="box-footer">
-        <a href="{{ route('users.index') }}">
-            <button type="button" class="btn btn-primary">
+        <a href="{{ route('users.index') }}" class="btn btn-primary" role="button">
                 <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
-            </button>
         </a>
         @if ($action == 'show')
-            <a href="{{ route('users.edit', $user) }}">
-                <button type="button" class="btn btn-primary">
+            <a href="{{ route('users.edit', $user) }}" class="btn btn-primary" role="button">
                     <i class="fa fa-pencil"></i> {{ trans('general.edit') }}
-                </button>
             </a>
         @else
             {!! Form::button('<i class="fa fa-trash-o"></i> ' . trans('general.delete'), array('type' => 'submit', 'class' => 'btn btn-danger')) !!}

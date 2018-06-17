@@ -58,20 +58,16 @@
     <!-- end: PAGE -->
 
     <!-- start: FOOTER -->
-@include('partials.footer')
-<!-- end: FOOTER -->
-</div>
-<!-- end: MAIN CONTAINER -->
-<!-- start: GLOBAL JAVASCRIPT -->
-{!! HTML::script('themes/admin-lte/plugins/jQuery/jquery-2.2.3.min.js') !!}
-{!! HTML::script('themes/admin-lte/bootstrap/js/bootstrap.min.js') !!}
-<!-- end: GLOBAL JAVASCRIPT -->
-<!-- start: JAVASCRIPT REQUIRED FOR THIS PAGE ONLY -->
-@stack('scripts')
-<!-- end: JAVASCRIPT REQUIRED FOR THIS PAGE ONLY -->
-<!-- start: MAIN JAVASCRIPT -->
-{!! HTML::script('themes/admin-lte/dist/js/app.min.js') !!}
-<!-- end: MAIN JAVASCRIPT -->
+    @include('partials.footer')
+    <!-- end: FOOTER -->
+    </div>
+    <!-- end: MAIN CONTAINER -->
+    <!-- start: GLOBAL JAVASCRIPT -->
+    <script src="{{ mix('js/probind.js') }} "></script>
+    <!-- end: GLOBAL JAVASCRIPT -->
+    <!-- start: JAVASCRIPT REQUIRED FOR THIS PAGE ONLY -->
+    @stack('scripts')
+    <!-- end: JAVASCRIPT REQUIRED FOR THIS PAGE ONLY -->
 </body>
 <!-- end: BODY -->
 </html>

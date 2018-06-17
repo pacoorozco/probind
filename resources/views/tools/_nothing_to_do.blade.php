@@ -6,9 +6,7 @@
     </div>
 </div>
 <div class="box-footer">
-    <a href="{{ route('home') }}">
-        <button type="button" class="btn btn-primary">
+    <a href="{{ route('home') }}" class="btn btn-primary" role="button">
             <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
-        </button>
     </a>
 </div>

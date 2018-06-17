@@ -12,11 +12,8 @@
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top">
         <!-- start: RESPONSIVE MENU TOGGLER -->
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
         </a>
         <!-- end: RESPONSIVE MENU TOGGLER -->
         <div class="navbar-custom-menu">
