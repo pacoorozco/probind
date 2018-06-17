@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.9.1 - 2018-06-17
+### Fixed
+- Fix incorrect statement in README
+
 ## 0.9.0 - 2018-06-17
 ### Added
 - CSS and Javascript management via Webpack. `AdminLTE` now resided in `public/css` and `public/js`.
