@@ -34,11 +34,14 @@ class EnvironmentRepository
 
     /**
      * Create a new EnvironmentRepository instance.
+     *
+     * @param string $envPath
+     * @param string $envExamplePath
      */
-    public function __construct()
+    public function __construct($envPath = '.env', $envExamplePath = '.env.example')
     {
-        $this->envPath = base_path('.env');
-        $this->envExamplePath = base_path('.env.example');
+        $this->envPath = base_path($envPath);
+        $this->envExamplePath = base_path($envExamplePath);
         $this->env = $this->all();
     }
 

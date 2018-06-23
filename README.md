@@ -12,7 +12,7 @@
 
 **ProBIND** is a web application designed for managing the DNS zones for one or more servers running the [ISC BIND DNS server](https://www.isc.org/downloads/bind/) software. It works best for companies that need to manage a medium-sized pool of domains across a set of servers.
 
-The application has been written using [Laravel 5 framework](https://www.laravel.com/docs). It stores its data in a MySQL, Postgres database (see [Laravel Database Backend](https://www.laravel.com/docs/5.3/database)) and generates configuration files for BIND on-demand.
+The application has been written using [Laravel framework](https://www.laravel.com/docs). It stores its data in a MySQL, Postgres database (see [Laravel Database Backend](https://www.laravel.com/docs)) and generates configuration files for BIND on-demand.
 
 ### What ProBIND Is
 
@@ -34,8 +34,8 @@ See our [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.
 
 ## Requirements
 
-* PHP >= 7.0
-* A [supported relational database](http://laravel.com/docs/5.3/database#introduction) and corresponding PHP extension.
+* PHP 7.1+
+* A [supported relational database](http://laravel.com/docs) and corresponding PHP extension.
 * [Composer](https://getcomposer.org/download/).
 
 ## How to test ProBIND
@@ -47,12 +47,11 @@ There are two methods in order to test **ProBIND**:
 
 ### Docker method
 
-This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND needings. An application server, a web server, a database server.
+This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND needs. An application server, a web server, a database server.
 
 Prior this installation, you **need to have installed** this software:
 
 * [Docker](https://www.docker.com/)
-* [Docker Compose](https://docs.docker.com/compose/)
 
 1. Clone the repository locally
 
@@ -89,7 +88,7 @@ Prior this installation, you **need to have installed** this software:
     $ docker-compose exec app php artisan migrate --seed
     ```
     
-1. Go to `http://localhost/install` and finsh **ProBIND** installation. Enjoy!
+1. Go to `http://localhost/install` and finish **ProBIND** installation. Enjoy!
 
    > **NOTE**: Default credentials are `admin/secret`.
 
@@ -99,7 +98,7 @@ This will create a VM box (a [Vagrant](https://www.vagrantup.com/) one) where al
 
 Prior this installation, you **need to have installed** this software:
 
-* [Vagrant 2.1.0+](https://www.vagrantup.com/)
+* [Vagrant 2.1+](https://www.vagrantup.com/)
 * [Composer](https://getcomposer.org/download/)
 * PHP extensions/modules installed: `php-mbstring php-xml`
 
@@ -134,7 +133,7 @@ Prior this installation, you **need to have installed** this software:
     $ php artisan migrate --seed
     $ exit
     ```
-1. Go to `http://192.168.10.10/install` and finsh **ProBIND** installation. Enjoy!
+1. Go to `http://192.168.10.10/install` and finish **ProBIND** installation. Enjoy!
 
    > **NOTE**: Default credentials are `admin/secret`.
 

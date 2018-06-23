@@ -18,9 +18,9 @@
 
 namespace Tests\Feature;
 
-use Tests\BrowserKitTestCase;
+use Tests\TestCase;
 
-class InstallHttpTest extends BrowserKitTestCase
+class InstallHttpTest extends TestCase
 {
     /**
      * Test install URI with a previous installation
@@ -30,7 +30,7 @@ class InstallHttpTest extends BrowserKitTestCase
         \Storage::disk('local')->put('installed', '');
 
         $this->get('/install')
-            ->seeStatusCode(404);
+            ->assertStatus(404);
 
     }
 
@@ -41,7 +41,7 @@ class InstallHttpTest extends BrowserKitTestCase
     {
         \Storage::disk('local')->delete('installed');
 
-        $this->visit('/install')
-            ->assertResponseOk();
+        $this->get('/install')
+            ->assertStatus(200);
     }
 }

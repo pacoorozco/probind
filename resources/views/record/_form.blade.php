@@ -62,7 +62,7 @@
         <div class="form-group {{ $errors->has('priority') ? 'has-error' : '' }}" id="priorityGroup">
             {!! Form::label('priority', trans('record/model.priority'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::number('priority', null, array('class' => 'form-control', 'required' => 'required', 'readonly' => 'readonly')) !!}
+                {!! Form::number('priority', null, array('class' => 'form-control', 'required' => 'required', 'disabled' => 'disabled')) !!}
                 <span class="help-block">
                     {{ trans('record/model.priority_help') }}
                     {{ $errors->first('priority', ':message') }}
@@ -107,11 +107,11 @@
     function changeVisibility(type) {
         if (type == "MX" || type == "SRV") {
             $('#priorityGroup').show();
-            $('#priority').prop('readonly', false);
+            $('#priority').prop('disabled', false);
         }
         else {
             $('#priorityGroup').hide();
-            $('#priority').prop('readonly', true);
+            $('#priority').prop('disabled', true);
         }
     }
     $(function () {

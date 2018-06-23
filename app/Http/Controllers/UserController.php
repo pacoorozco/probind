@@ -6,8 +6,8 @@ use App\Helpers\Helper;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\User;
-use Gate;
 use DataTables;
+use Gate;
 
 class UserController extends Controller
 {
@@ -86,13 +86,19 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  UserUpdateRequest $request
-     * @param  User              $user
+     * @param  User $user
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UserUpdateRequest $request, User $user)
     {
-        $user->fill($request->all())->save();
+        if ($request->get('password') == '') {
+            $user->fill($request->except('password'));
+        } else {
+            $user->fill($request->all());
+        }
+
+        $user->save();
 
         return redirect()->route('users.index')
             ->with('success', trans('user/messages.update.success'));

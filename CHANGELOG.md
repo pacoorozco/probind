@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.9.2 - 2018-06-23
+### Fixed
+- Update old `README` references to Laravel 5.3. We use a more generic ones.
+- Fix Travis CI to use PHP 7.1+. **Prior versions of PHP are not working properly**.
+
 ## 0.9.1 - 2018-06-17
 ### Fixed
 - Fix incorrect statement in README
