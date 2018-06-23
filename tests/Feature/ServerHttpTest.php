@@ -164,20 +164,12 @@ class ServerHttpTest extends BrowserKitTestCase
      */
     public function testJSONGetServerData()
     {
-        // TODO: After upgrade DataTables to last version seems to not work
-        /*
         $originalServer = factory(Server::class)->create();
 
-        $response = $this->json('GET', '/servers/data');
-
-        //var_dump($response);
-
-        $response
-            ->assertStatus(200)
-            ->assertJson([
+        $this->json('GET', '/servers/data')
+            ->seeJson([
                 'hostname' => $originalServer->hostname,
                 'ip_address' => $originalServer->ip_address,
             ]);
-        */
     }
 }

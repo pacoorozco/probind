@@ -29,7 +29,7 @@ class UserUpdateRequest extends FormRequest
 
             'name'     => 'required|string',
             'email'    => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'sometimes|alpha_num|min:6|confirmed',
+            'password' => 'nullable|alpha_num|min:6|confirmed',
 
         ];
     }

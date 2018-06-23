@@ -131,8 +131,6 @@ class UserHttpTest extends BrowserKitTestCase
      */
     public function testJSONGetZoneData()
     {
-        // TODO: After upgrade DataTables to last version seems to not work
-        /*
         $originalUser = factory(User::class)->create([
             'username' => 'user.test',
             'email' => 'user.test@domain.local'
@@ -143,6 +141,5 @@ class UserHttpTest extends BrowserKitTestCase
                 'username' => $originalUser->username,
                 'email' => $originalUser->email,
             ]);
-        */
     }
 }
