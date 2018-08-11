@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.9.3 - 2018-08-11
+### Fixed
+- Fix PHP docker version to be php-7.1-fpm for Laravel 5.6 compatibility.
+
 ## 0.9.2 - 2018-06-23
 ### Fixed
 - Update old `README` references to Laravel 5.3. We use a more generic ones.
@@ -23,12 +27,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 0.8.2 - 2018-05-27
 ### Added
-- Add support to [NAPRT DNS record type](https://en.wikipedia.org/wiki/NAPTR_record). 
+- Add support to [NAPRT DNS record type](https://en.wikipedia.org/wiki/NAPTR_record).
 - Added `AdminLTE` as default theme, now all files are included in source code (see `public/themes` folder).
 
 ### Changed
 - Move valid record types definition and `validateRecordType()` method to `DNSHelper` class.
-- Theme integration has changed to be maintained with `npm` and compiled with `gulp`. 
+- Theme integration has changed to be maintained with `npm` and compiled with `gulp`.
 
 ### Fixed
 - Fix an error in Record model. Data attribute was lowercase, but this data field may contain uppercase and lowercase.
@@ -66,7 +70,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - From this version, tags will be GPG signed in order to improve trust.
 
 ### Changed
-- Complete the **web installer**. You can use `/install` in order to configure database settings. 
+- Complete the **web installer**. You can use `/install` in order to configure database settings.
 
 ### Removed
 - Remove [Bower](https://bower.io) requirement. Now you must call `bower install` inside homestead vagrant box or it will automatically included on docker image.
@@ -78,7 +82,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 - Fix redirection for logged in users. Before this a logged user who pointed to `/login` was redirected to `/home`. No goes to `/`.
- 
+
 ## 0.5.0 - 2017-05-26
 ### Added
 - Add [Docker](https://www.docker.com/) containers to deploy **ProBIND**. Please read project's [README](README.md) for more information.
@@ -89,7 +93,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Improve documentation about **How to test ProBIND** on [README](README.md).
 
 ### Fixed
-- Update [Homestead](https://laravel.com/docs/5.3/homestead) to latest `laravel/homestead` version. 
+- Update [Homestead](https://laravel.com/docs/5.3/homestead) to latest `laravel/homestead` version.
 
 ## 0.4.0 - 2016-10-05
 ### Added
