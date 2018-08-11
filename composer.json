@@ -8,7 +8,7 @@
         "isc bind"
     ],
     "homepage": "https://github.com/pacoorozco/probind",
-    "license": "GPL-3.0",
+    "license": "GPL-3.0-or-later",
     "type": "project",
     "authors": [
         {
