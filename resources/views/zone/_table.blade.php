@@ -1,3 +1,8 @@
+{{-- Styles --}}
+@push('styles')
+    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/AdminLTE/datatables/dataTables.bootstrap.css') }}">
+@endpush
+
 <table id="zones-table" class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -21,7 +26,9 @@
 
 {{-- Scripts --}}
 @push('scripts')
-<script>
+    <script type="text/javascript" src="{{ asset('vendor/AdminLTE/datatables/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/AdminLTE/datatables/dataTables.bootstrap.min.js') }}"></script>
+    <script>
     $(function () {
         $('#zones-table').DataTable({
             "ajax": "{{ route('zones.data') }}",
@@ -41,5 +48,5 @@
             "iDisplayLength": 10
         });
     });
-</script>
+    </script>
 @endpush
