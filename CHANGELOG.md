@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.9.4 - 2018-12-21
+
+### Changed
+- `AdminLTE` has updated to latest version.
+- `AdminLTE` now reside in `public/vendor` to facilitate upgrades.
+
 ## 0.9.3 - 2018-08-11
 ### Fixed
 - Fix PHP docker version to be php-7.1-fpm for Laravel 5.6 compatibility.
