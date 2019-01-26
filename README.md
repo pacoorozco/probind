@@ -1,6 +1,6 @@
 # ProBIND - Professional DNS management made easy
 
-[![Build Status](https://travis-ci.org/pacoorozco/probind.svg)](https://travis-ci.org/pacoorozco/probind)
+[![Build Status](https://travis-ci.com/pacoorozco/probind.svg)](https://travis-ci.com/pacoorozco/probind)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/pacoorozco/probind.svg?style=flat-square)](https://scrutinizer-ci.com/g/pacoorozco/probind)
 [![Code Coverage](https://scrutinizer-ci.com/g/pacoorozco/probind/badges/coverage.png)](https://scrutinizer-ci.com/g/pacoorozco/probind)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/98bafc58-957b-476c-8711-f3d81b6938dd/mini.png)](https://insight.sensiolabs.com/projects/98bafc58-957b-476c-8711-f3d81b6938dd)
