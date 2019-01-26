@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.9.5 - 2019-01-26
+### Fixed
+- Fix Travis link in README. Thanks @marado!
+
+
 ## 0.9.4 - 2018-12-21
 
 ### Changed
