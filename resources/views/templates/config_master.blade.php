@@ -100,9 +100,9 @@ zone "{{ $zone->domain }}" {
     type master;
     file "primary/{{ $zone->domain }}";
 
-    allow-query {
-        any;
-    };
+   // allow-query {
+   //     any;
+   // };
     @else
     type slave;
     file "secondary/{{ $zone->domain }}";
