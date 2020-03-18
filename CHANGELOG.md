@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.9.6 - 2020-03-18
+
+
 ## 0.9.5 - 2019-01-26
 ### Fixed
 - Fix Travis link in README. Thanks @marado!
