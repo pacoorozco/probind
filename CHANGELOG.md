@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.9.6 - 2020-03-18
+### Fixed
+- Update PHP minimum version to 7.2
+- Fix issue related with docker creation. Thanks @AnatoliyKizyulya ([#54][i54])
+- Fix [vulnerability](https://github.com/pacoorozco/probind/network/alert/composer.lock/symfony%2Fhttp-foundation/closed) on `http
+-foundation`
+
+[i54]: https://github.com/pacoorozco/ssham/issues/54
+
 ## 0.9.5 - 2019-01-26
 ### Fixed
 - Fix Travis link in README. Thanks @marado!

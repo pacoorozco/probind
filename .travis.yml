@@ -1,7 +1,10 @@
 language: php
 
 php:
-  - 7.1
+  - 7.2
+
+services:
+  - mysql
 
 # This triggers builds to run on the new TravisCI infrastructure.
 # See: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
@@ -16,8 +19,12 @@ cache:
     - $HOME/.composer/cache
 
 before_script:
+  - cp .env.travis .env
+  - mysql -e 'create database testing;'
   - travis_retry composer self-update
-  - travis_retry composer install ${COMPOSER_FLAGS} --no-interaction --prefer-dist
+  - travis_retry composer install --prefer-dist --no-interaction --no-progress --no-suggest ${COMPOSER_FLAGS}
+  - php artisan key:generate
+  - php artisan migrate --seed
 
 script:
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover

@@ -22,7 +22,7 @@
         "issues": "https://github.com/pacoorozco/probind/issues"
     },
     "require": {
-        "php": "^7.1.3",
+        "php": "^7.2",
         "laravel/framework": "5.6.*",
         "laravelcollective/html": "5.5.*",
         "yajra/laravel-datatables-oracle": "^8.0",
@@ -32,7 +32,6 @@
         "larapacks/setting": "1.0.*"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.4",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
         "laravel/browser-kit-testing": "4.*",
@@ -73,9 +72,7 @@
             "@php artisan package:discover"
         ],
         "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "@php artisan ide-helper:generate",
-            "@php artisan ide-helper:meta"
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate"
         ]
     },
     "config": {
