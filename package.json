@@ -11,13 +11,7 @@
     },
     "devDependencies": {
         "admin-lte": "^2.3.11",
-        "bootstrap": "^3.3.7",
         "cross-env": "^5.1",
-        "jquery": "^3.2",
-        "laravel-mix": "^2.0",
-        "datatables": "^1.10.13",
-        "datatables-all": "^1.10.13",
-        "font-awesome": "^4.7.0",
-        "ionicons": "^3.0.0"
+        "laravel-mix": "^2.0"
     }
 }
