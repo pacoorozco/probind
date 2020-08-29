@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.2-fpm
 
 MAINTAINER Paco Orozco <paco@pacoorozco.info>
 
@@ -11,7 +11,6 @@ RUN apt-get update \
 # Install the PHP needed extentions
 RUN docker-php-ext-install \
     mbstring \
-    mcrypt \
     pdo_mysql \
     zip
 
