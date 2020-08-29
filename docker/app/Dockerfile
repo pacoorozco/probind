@@ -2,11 +2,16 @@ FROM php:7.2-fpm
 
 MAINTAINER Paco Orozco <paco@pacoorozco.info>
 
-# Install "libmcrypt-dev, "zlib1g-dev".
+# Install "zlib1g-dev".
 RUN apt-get update \
     && apt-get install -y --no-install-recommends --no-install-suggests \
-        libmcrypt-dev \
         zlib1g-dev
+
+# Install mcrypt
+RUN apt-get update -y && \
+apt-get install -y libmcrypt-dev && \
+pecl install mcrypt-1.0.1 && \
+docker-php-ext-enable mcrypt
 
 # Install the PHP needed extentions
 RUN docker-php-ext-install \
