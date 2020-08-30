@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.9.7 - 2020-08-30
+### Fixed
+- Fix PHP version on docker. Thanks [@thermionic](https://github.com/thermionic). ([#60][i60])
+- Removed manual database migration and seed. It's done by `/install` endpoint.
+
+[i60]: https://github.com/pacoorozco/ssham/issues/60
+
 ## 0.9.6 - 2020-03-18
 ### Fixed
 - Update PHP minimum version to 7.2

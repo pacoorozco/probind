@@ -80,13 +80,6 @@ Prior this installation, you **need to have installed** this software:
     $ docker-compose build
     $ docker-compose up -d
     ```
-
-1. Seed database in order to play with some data
-
-    ```bash
-    $ docker-compose exec app php artisan key:generate 
-    $ docker-compose exec app php artisan migrate --seed
-    ```
     
 1. Go to `http://localhost/install` and finish **ProBIND** installation. Enjoy!
 
