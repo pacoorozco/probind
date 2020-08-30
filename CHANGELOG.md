@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+- Fix PHP version on docker. Thanks [@thermionic](https://github.com/thermionic). ([#60][i60])
+- Removed manual database migration and seed. It's done by `/install` endpoint.
+
+[i60]: https://github.com/pacoorozco/ssham/issues/60
 
 ## 0.9.6 - 2020-03-18
 ### Fixed
