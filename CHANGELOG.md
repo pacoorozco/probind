@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 0.9.7 - 2020-08-30
 ### Fixed
 - Fix PHP version on docker. Thanks [@thermionic](https://github.com/thermionic). ([#60][i60])
 - Removed manual database migration and seed. It's done by `/install` endpoint.
