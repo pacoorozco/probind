@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
+## 0.9.8 - 2020-09-10
+
+> This release includes a security bug fix. It's encouraged to **update to this version ASAP**.
+
+### Changed
+- Bump `symfony/http-kernel` from 4.4.5 to 4.4.13.
+
+### Fixed
+- Fix a bug that was keeping passwords in plaintext. ([#64][i64])
+
+[i64]: https://github.com/pacoorozco/ssham/issues/64
+
+#### Upgrading notes
+After upgrading to this version you should run `php artisan hash-passwords` to hash existing plaintext passwords. Otherwise you will not be able to login with any existing user.
+
+
 ## 0.9.7 - 2020-08-30
 ### Fixed
 - Fix PHP version on docker. Thanks [@thermionic](https://github.com/thermionic). ([#60][i60])

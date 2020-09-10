@@ -53,6 +53,9 @@ class UserHttpTest extends BrowserKitTestCase
         $user = User::where('username', $expectedUser->username)->first();
 
         $this->assertNotNull($user);
+
+        // Ensure User's password is encrypted on DB.
+        $this->assertNotEquals('VeryS3cr3t', $user->password);
     }
 
     /**
@@ -73,11 +76,13 @@ class UserHttpTest extends BrowserKitTestCase
     {
         $originalUser = factory(User::class)->create([
             'username' => 'user.test',
-            'email' => 'user.test@domain.local'
+            'email' => 'user.test@domain.local',
         ]);
 
         $this->visit('users/' . $originalUser->id . '/edit')
             ->type('new.email@domain.local', 'email')
+            ->type('secret', 'password')
+            ->type('secret', 'password_confirmation')
             ->press('submit');
 
         // Get the zone once has been modified
@@ -85,6 +90,9 @@ class UserHttpTest extends BrowserKitTestCase
 
         // Test modified email field
         $this->assertEquals('new.email@domain.local', $modifiedUser->email);
+
+        // Ensure User's password is encrypted on DB.
+        $this->assertNotEquals('secret', $modifiedUser->password);
 
         // Test field that has not been modified
         $this->assertEquals($originalUser->name, $modifiedUser->name);

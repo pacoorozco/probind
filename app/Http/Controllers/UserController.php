@@ -48,9 +48,18 @@ class UserController extends Controller
      */
     public function store(UserCreateRequest $request)
     {
-        $user = new User();
-        $user->username = $request->input('username');
-        $user->fill($request->all())->save();
+        try {
+            User::create([
+                'username' => $request->username,
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
+        } catch (\Exception $exception) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(__('user/messages.create.error'));
+        }
 
         return redirect()->route('users.index')
             ->with('success', trans('user/messages.create.success'));
@@ -92,13 +101,22 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user)
     {
-        if ($request->get('password') == '') {
-            $user->fill($request->except('password'));
-        } else {
-            $user->fill($request->all());
-        }
+        try {
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'active' => $request->active,
+            ]);
 
-        $user->save();
+            if ($request->filled('password')) {
+                $user->password = bcrypt($request->password);
+                $user->save();
+            }
+        } catch (\Exception $exception) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(__('user/messages.update.error'));
+        }
 
         return redirect()->route('users.index')
             ->with('success', trans('user/messages.update.success'));
