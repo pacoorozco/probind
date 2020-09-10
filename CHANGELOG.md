@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+> This release includes a security bug fix. It's encouraged to **update to this version ASAP**.
+
+### Fixed
+- Fix a bug that was keeping passwords in plaintext. ([#64][i64])
+
+[i64]: https://github.com/pacoorozco/ssham/issues/64
+
+#### Upgrading notes
+After upgrading to this version you should run `php artisan hash-passwords` to hash existing plaintext passwords. Otherwise you will not be able to login with any existing user.
+
 
 ## 0.9.7 - 2020-08-30
 ### Fixed
