@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 0.9.8 - 2020-09-10
+
 > This release includes a security bug fix. It's encouraged to **update to this version ASAP**.
+
+### Changed
+- Bump `symfony/http-kernel` from 4.4.5 to 4.4.13.
 
 ### Fixed
 - Fix a bug that was keeping passwords in plaintext. ([#64][i64])
