@@ -63,6 +63,29 @@ class RecordHttpTest extends BrowserKitTestCase
     /**
      * Test a successful new Record creation
      */
+    public function testNewRecordCreationWithBlankTTLSuccess()
+    {
+        $zone = factory(Zone::class)->create();
+
+        $this->visit('zones/' . $zone->id . '/records/create')
+            ->see($zone->domain)
+            ->type('testRR', 'name')
+            ->select('CNAME', 'type')
+            ->type('testdata', 'data')
+            ->press('Save data');
+
+        // Get from DB if Record has been created.
+        $record = Record::where('name', 'testrr')
+            ->where('type', 'CNAME')
+            ->where('data', 'testdata')
+            ->first();
+
+        $this->assertNotNull($record);
+    }
+
+    /**
+     * Test a successful new Record creation
+     */
     /*
      * TODO: It depends on Javascript
 

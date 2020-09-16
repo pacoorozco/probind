@@ -20,6 +20,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RecordCreateRequest;
 use App\Http\Requests\RecordUpdateRequest;
 use App\Record;
+use App\User;
 use App\Zone;
 use DataTables;
 
@@ -67,16 +68,22 @@ class RecordController extends Controller
      */
     public function store(RecordCreateRequest $request, Zone $zone)
     {
-        $record = new Record();
-
-        // Only MX & SRV types use Priority
-        $record->priority = ($request->input('type') == 'MX' || $request->input('type') == 'SRV')
-            ? $request->input('priority')
-            : null;
-
-        $record->fill($request->all());
-
-        $zone->records()->save($record);
+        try {
+            $record = Record::make([
+                'name' => $request->name,
+                'ttl' => $request->ttl,
+                'type' => $request->type,
+                'priority' => ($request->type == 'MX' || $request->type == 'SRV')
+                    ? $request->priority
+                    : null,
+                'data' => $request->data,
+            ]);
+            $zone->records()->save($record);
+        } catch (\Exception $exception) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(__('record/messages.create.error'));
+        }
 
         return redirect()->route('zones.records.index', ['zone' => $zone])
             ->with('success', trans('record/messages.create.success'));
@@ -123,12 +130,20 @@ class RecordController extends Controller
      */
     public function update(RecordUpdateRequest $request, Zone $zone, Record $record)
     {
-        // Only MX & SRV types use Priority
-        $record->priority = ($record->type == 'MX' || $record->type == 'SRV')
-            ? $request->input('priority')
-            : null;
-
-        $record->fill($request->except('type'))->save();
+        try {
+            $record->update([
+                'name' => $request->name,
+                'ttl' => $request->ttl,
+                'priority' => ($record->type == 'MX' || $record->type == 'SRV')
+                    ? $record->priority
+                    : null,
+                'data' => $request->data,
+            ]);
+        } catch (\Exception $exception) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(__('record/messages.update.error'));
+        }
 
         return redirect()->route('zones.records.index', ['zone' => $zone])
             ->with('success', trans('record/messages.update.success'));
