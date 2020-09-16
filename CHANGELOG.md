@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Fixed
+- Fix a bug related with TTL validation error when creating a new record. ([#66][i66])
+
+[i66]: https://github.com/pacoorozco/probind/issues/66
 
 ## 0.9.8 - 2020-09-10
 
@@ -15,7 +19,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - Fix a bug that was keeping passwords in plaintext. ([#64][i64])
 
-[i64]: https://github.com/pacoorozco/ssham/issues/64
+[i64]: https://github.com/pacoorozco/probind/issues/64
 
 #### Upgrading notes
 After upgrading to this version you should run `php artisan hash-passwords` to hash existing plaintext passwords. Otherwise you will not be able to login with any existing user.
@@ -26,7 +30,7 @@ After upgrading to this version you should run `php artisan hash-passwords` to h
 - Fix PHP version on docker. Thanks [@thermionic](https://github.com/thermionic). ([#60][i60])
 - Removed manual database migration and seed. It's done by `/install` endpoint.
 
-[i60]: https://github.com/pacoorozco/ssham/issues/60
+[i60]: https://github.com/pacoorozco/probind/issues/60
 
 ## 0.9.6 - 2020-03-18
 ### Fixed
