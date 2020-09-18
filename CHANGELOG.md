@@ -4,8 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Changed
+- Change default folder for test-coverage reports and package creation to `.tmp/`.
+- Package creation is now called using `composer build`.
 ### Fixed
+- Fix configuration for default environments: `.env.example` and `.env.travis`.
+- Fix `shellcheck` warnings for `utils/bumpversion.sh`.
 - Fix a bug related with TTL validation error when creating a new record. ([#66][i66])
+### Removed
+- Remove `utils/create_package.sh`. Use `composer build` instead.
 
 [i66]: https://github.com/pacoorozco/probind/issues/66
 
