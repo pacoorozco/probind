@@ -28,7 +28,7 @@
 # ----------------------------------------------------------------------
 # Program name and version
 PN=$(basename "$0")
-VER='0.2'
+VER='0.3'
 # Root directory where files reside in
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
@@ -38,7 +38,7 @@ ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 usage()
 {
 	cat <<-EndUsage
-	Bump the version of ProBIND!
+	Bump the version of ProBIND! (ver. ${VER})
 
 	usage: ${PN} [-h|--help] part
 
@@ -71,12 +71,14 @@ print_finish_release_note()
     #
     # Get the current branch name
     #
-    local _current_branch=`git rev-parse --abbrev-ref HEAD`
+    local _current_branch
+    _current_branch=$(git rev-parse --abbrev-ref HEAD)
 
     #
     # Get last commit messages
     #
-    local _last_commits=`git log --pretty=short v${current_version}.. | git shortlog | cat`
+    local _last_commits
+    _last_commits=$(git log --pretty=short "v${current_version}".. | git shortlog | cat)
 
     cat <<-EndFinishReleaseNote
     Remember to:
@@ -111,9 +113,9 @@ get_new_version_number()
     # Set new version
     #
     case $1 in
-        major) new_version=`echo ${current_version} | awk -F. '{ printf ("%d.%d.%d\n", $1 + 1, 0, 0); }'` ;;
-        minor) new_version=`echo ${current_version} | awk -F. '{ printf ("%d.%d.%d\n", $1, $2 + 1, 0); }'` ;;
-        patch) new_version=`echo ${current_version} | awk -F. '{ printf ("%d.%d.%d\n", $1, $2, $3 + 1); }'` ;;
+        major) new_version=$(echo "${current_version}" | awk -F. '{ printf ("%d.%d.%d\n", $1 + 1, 0, 0); }') ;;
+        minor) new_version=$(echo "${current_version}" | awk -F. '{ printf ("%d.%d.%d\n", $1, $2 + 1, 0); }') ;;
+        patch) new_version=$(echo "${current_version}" | awk -F. '{ printf ("%d.%d.%d\n", $1, $2, $3 + 1); }') ;;
     esac
 }
 
@@ -122,9 +124,9 @@ get_current_version_number()
     #
     # Get current version from config/app.php
     #
-    current_version=`grep "'version' => '\(.*\)'" ${ROOT_DIR}/config/app.php |
+    current_version=$(grep "'version' => '\(.*\)'" "${ROOT_DIR}/config/app.php" |
     	head -1 |
-    	awk '{ print $3 }' | sed "s/[',]//g"`
+    	awk '{ print $3 }' | sed "s/[',]//g")
 }
 
 bump_version()
@@ -132,15 +134,16 @@ bump_version()
     #
     # Format the current date for the README header
     #
-    local date=`date '+%Y-%m-%d'`
+    local _date
+    _date=$(date '+%Y-%m-%d')
 
     echo -e "Bump version: ${current_version} -> ${new_version}\n"
 
     # Update version number on config/app.php
-    sed -i ${ROOT_DIR}/config/app.php -e "s/'version' => '\(.*\)'/'version' => '${new_version}'/g"
+    sed -i "${ROOT_DIR}/config/app.php" -e "s/'version' => '\(.*\)'/'version' => '${new_version}'/g"
 
 	# Create a new section on CHANGELOG
-	sed -i ${ROOT_DIR}/CHANGELOG.md -e "s/^## Unreleased/## Unreleased\n\n## ${new_version} - ${date}\n/g"
+	sed -i "${ROOT_DIR}/CHANGELOG.md" -e "s/^## Unreleased/## Unreleased\n\n## ${new_version} - ${_date}\n/g"
 }
 
 # ----------------------------------------------------------------------
@@ -159,7 +162,7 @@ case $1 in
         usage
         ;;
 	major|minor|patch)
-    	if [ "x`git status -s -uno`" != "x" ]; then
+    	if [ "x$(git status -s -uno)" != "x" ]; then
         	echo 'ERROR: Uncommited changes in repository. Commit before bump version' 1>&2
 	        exit 1
         fi
