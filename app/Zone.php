@@ -61,7 +61,6 @@ class Zone extends Model
     protected $dates = [
         'created_at',
         'updated_at',
-        'deleted_at'
     ];
     /**
      * The database table used by the model.

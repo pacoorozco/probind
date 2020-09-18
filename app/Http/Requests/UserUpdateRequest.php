@@ -28,7 +28,7 @@ class UserUpdateRequest extends FormRequest
         return [
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|alpha_num|min:6|confirmed',
+            'password' => 'nullable|alpha_num|min:8|confirmed',
             'active' => 'required|boolean',
         ];
     }
