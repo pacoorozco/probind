@@ -24,7 +24,7 @@ class DashboardHttpTest extends BrowserKitTestCase
 {
     use RefreshDatabase;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
