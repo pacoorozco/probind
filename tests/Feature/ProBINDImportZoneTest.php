@@ -59,7 +59,7 @@ $TTL 172800
 
     private $tempDir;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -71,7 +71,7 @@ $TTL 172800
         file_put_contents($this->tempDir . '/reverse-zone.db', $this->reverseZoneFileContents);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $files = new Filesystem();
         $files->deleteDirectory($this->tempDir);

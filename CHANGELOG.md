@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 ### Changed
+- Bump `laravelcollective/html` from `v5.5` to `v5.7`.
+- Bump `laravel/framework` from `v5.6` to `v5.7`.
 - Change default folder for test-coverage reports and package creation to `.tmp/`.
 - Package creation is now called using `composer build`.
 ### Fixed
