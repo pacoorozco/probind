@@ -7,14 +7,11 @@ package-lock.json
 # Laravel 5 & Lumen specific
 /vendor
 /public/storage
-/public/hot
 /storage/*.key
 /storage/debugbar
-/test-coverage
 /resources/views/custom/*
-/dist
+/.tmp
 .env
-.env.backup
 .phpunit.result.cache
 
 # Homestead deployment. https://laravel.com/docs/master/homestead

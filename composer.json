@@ -72,10 +72,10 @@
             "vendor/bin/phpunit"
         ],
         "test-coverage": [
-            "vendor/bin/phpunit --coverage-html test-coverage"
+            "vendor/bin/phpunit --coverage-html .tmp/test-coverage"
         ],
         "build": [
-            "@composer archive --format=zip --dir=dist"
+            "@composer archive --format=zip --dir=.tmp/dist"
         ]
     },
     "config": {
