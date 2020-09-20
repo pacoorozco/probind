@@ -143,7 +143,7 @@ class Zone extends Model
      */
     public function getDescriptionForEvent(string $eventName) : string
     {
-        return (string)__('zone/messages.activity.' . $eventName, [
+        return (string)trans('zone/messages.activity.' . $eventName, [
             'domain' => $this->domain
         ]);
     }

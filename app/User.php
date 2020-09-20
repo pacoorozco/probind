@@ -81,7 +81,7 @@ class User extends Authenticatable
      */
     public function getDescriptionForEvent(string $eventName): string
     {
-        return (string)__('user/messages.activity.' . $eventName, [
+        return (string)trans('user/messages.activity.' . $eventName, [
             'username' => $this->username
         ]);
     }

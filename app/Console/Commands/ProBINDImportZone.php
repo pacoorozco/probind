@@ -94,7 +94,7 @@ class ProBINDImportZone extends Command
                 'name' => $item['name'],
                 'ttl' => $item['ttl'],
                 'type' => $item['type'],
-                'priority' => array_get($item, 'options.preference', null),
+                'priority' => Arr::get($item, 'options.preference', null),
                 'data' => $item['data']
             ]);
         }
