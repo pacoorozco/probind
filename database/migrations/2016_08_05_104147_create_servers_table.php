@@ -29,7 +29,7 @@ class CreateServersTable extends Migration
     public function up()
     {
         Schema::create('servers', function(Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('hostname')->unique();
             $table->string('ip_address', 45);
             $table->enum('type', ['master', 'slave']);

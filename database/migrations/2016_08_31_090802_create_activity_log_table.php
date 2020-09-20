@@ -11,7 +11,7 @@ class CreateActivityLogTable extends Migration
     public function up()
     {
         Schema::create('activity_log', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('log_name')->nullable();
             $table->string('description');
             $table->integer('subject_id')->nullable();

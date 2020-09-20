@@ -29,7 +29,7 @@ class CreateRecordsTable extends Migration
     public function up()
     {
         Schema::create('records', function(Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('name', 253);
             $table->integer('zone_id')->unsigned();
             $table->foreign('zone_id')

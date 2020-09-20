@@ -29,7 +29,7 @@ class CreateZonesTable extends Migration
     public function up()
     {
         Schema::create('zones', function(Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('domain', 253)->unique();
             $table->integer('serial')->unsigned()->default(0);
             $table->string('master_server', 45)->nullable();
