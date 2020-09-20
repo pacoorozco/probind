@@ -19,6 +19,7 @@ use Iatstuti\Database\Support\NullableFields;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Setting;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -142,7 +143,7 @@ class Zone extends Model
      */
     public function getDescriptionForEvent(string $eventName) : string
     {
-        return trans('zone/messages.activity.' . $eventName, [
+        return (string)__('zone/messages.activity.' . $eventName, [
             'domain' => $this->domain
         ]);
     }
@@ -423,7 +424,7 @@ class Zone extends Model
     public function getValidRecordTypesForThisZone() : array
     {
         return ($this->reverse_zone)
-            ? array_only(DNSHelper::getValidRecordTypesWithDescription(), ['PTR', 'TXT', 'NS'])
-            : array_except(DNSHelper::getValidRecordTypesWithDescription(), ['PTR']);
+            ? Arr::only(DNSHelper::getValidRecordTypesWithDescription(), ['PTR', 'TXT', 'NS'])
+            : Arr::except(DNSHelper::getValidRecordTypesWithDescription(), ['PTR']);
     }
 }

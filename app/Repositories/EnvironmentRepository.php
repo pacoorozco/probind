@@ -17,6 +17,8 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Arr;
+
 class EnvironmentRepository
 {
     /**
@@ -78,7 +80,7 @@ class EnvironmentRepository
      */
     public function setDatabaseSetting(array $connectionSettings): bool
     {
-        if (!array_has($connectionSettings, ['database', 'username', 'password', 'host'])) {
+        if (!Arr::has($connectionSettings, ['database', 'username', 'password', 'host'])) {
             return false;
         }
 

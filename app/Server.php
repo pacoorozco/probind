@@ -78,7 +78,7 @@ class Server extends Model
      */
     public function getDescriptionForEvent(string $eventName): string
     {
-        return trans('server/messages.activity.' . $eventName, [
+        return (string) __('server/messages.activity.' . $eventName, [
             'hostname' => $this->hostname,
             'type'     => $this->type,
         ]);

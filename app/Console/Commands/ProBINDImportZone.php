@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\FileDNSParser;
 use App\Zone;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 
 class ProBINDImportZone extends Command
 {
@@ -13,9 +14,9 @@ class ProBINDImportZone extends Command
      *
      * @var string
      */
-    protected $signature = 'probind:import 
+    protected $signature = 'probind:import
                 {zone : The zone domain name to create}
-                {zonefile : The file name to import} 
+                {zonefile : The file name to import}
                 {--force : Delete existing zone before import}';
 
     /**
@@ -38,7 +39,7 @@ class ProBINDImportZone extends Command
      *
      * @param string $domain
      */
-    private function deleteZoneIfExists(string $domain)
+    private function deleteZoneIfExists(string $domain): void
     {
         // Check if Zone exists on database, including trashed zones.
         $existingZone = Zone::withTrashed()
@@ -52,9 +53,9 @@ class ProBINDImportZone extends Command
     /**
      * Execute the console command.
      *
-     * @return int
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function handle() : int
+    public function handle(): void
     {
         // Cast supplied arguments and options.
         $domain = (string)$this->argument('zone');
@@ -69,7 +70,7 @@ class ProBINDImportZone extends Command
 
             if ($existingZone) {
                 $this->error('Zone \'' . $existingZone->domain . '\' exists on ProBIND. Use \'--force\' option if you want to import this zone.');
-                return 1;
+                return;
             }
         }
 
@@ -83,24 +84,24 @@ class ProBINDImportZone extends Command
         $zone->reverse_zone = Zone::validateReverseDomainName($domain);
         $zone->serial = $zoneData['serial'];
         $zone->custom_settings = true;
-        $zone->fill(array_only($zoneData, ['refresh', 'retry', 'expire', 'negative_ttl', 'default_ttl']));
+        $zone->fill(Arr::only($zoneData, ['refresh', 'retry', 'expire', 'negative_ttl', 'default_ttl']));
         $zone->save();
 
         // Associate parsed RR
         $records = $fileDNS->getRecords();
         foreach ($records as $item) {
             $zone->records()->create([
-                'name'     => $item['name'],
-                'ttl'      => $item['ttl'],
-                'type'     => $item['type'],
+                'name' => $item['name'],
+                'ttl' => $item['ttl'],
+                'type' => $item['type'],
                 'priority' => array_get($item, 'options.preference', null),
-                'data'     => $item['data']
+                'data' => $item['data']
             ]);
         }
 
         $this->info('Import zone \'' . $zone->domain . '\' has created with ' . $zone->records()->count() . ' imported records.');
         activity()->log('Import zone <strong>' . $zone->domain . '</strong> has created <strong>' . $zone->records()->count() . '</strong> records.');
-        return 0;
+        return;
     }
 }
 

@@ -57,10 +57,10 @@ class User extends Authenticatable
      */
     protected $casts = [
         'username' => 'string',
-        'name'     => 'string',
-        'email'    => 'string',
+        'name' => 'string',
+        'email' => 'string',
         'password' => 'string',
-        'active'   => 'boolean',
+        'active' => 'boolean',
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -79,9 +79,9 @@ class User extends Authenticatable
      *
      * @return string
      */
-    public function getDescriptionForEvent(string $eventName) : string
+    public function getDescriptionForEvent(string $eventName): string
     {
-        return trans('user/messages.activity.' . $eventName, [
+        return (string)__('user/messages.activity.' . $eventName, [
             'username' => $this->username
         ]);
     }
@@ -89,7 +89,7 @@ class User extends Authenticatable
     /**
      * Set the username User attribute to lowercase.
      *
-     * @param  string $value
+     * @param string $value
      */
     public function setUsernameAttribute(string $value)
     {
