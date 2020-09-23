@@ -28,3 +28,4 @@ ipv6.domain    AAAA ::1 ; This is an IPv6 domain.
 @               MX   30 mail-gw3.example.net.
 
 mail     IN     TXT  "THIS IS SOME TEXT; WITH A SEMICOLON"
+_dmarc   IN     TXT  "v=DMARC1; p=quarantine; rua=mailto:postmaster@domain.local; ruf=mailto:postmaster@domain.local; fo=1; adkim=r; aspf=r; pct=100; sp=quarantine"
