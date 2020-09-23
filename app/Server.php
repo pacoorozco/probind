@@ -78,10 +78,10 @@ class Server extends Model
      */
     public function getDescriptionForEvent(string $eventName): string
     {
-        return trans('server/messages.activity.' . $eventName, [
+        return sprintf("%s", trans('server/messages.activity.' . $eventName, [
             'hostname' => $this->hostname,
             'type'     => $this->type,
-        ]);
+        ]));
     }
 
     /**

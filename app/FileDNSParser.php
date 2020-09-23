@@ -6,6 +6,7 @@ use App\Helpers\TimeHelper;
 use Exception;
 use File;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Arr;
 
 
 /**
@@ -127,7 +128,7 @@ class FileDNSParser
      */
     public function getZoneData(): array
     {
-        return array_only($this->zoneData, [
+        return Arr::only($this->zoneData, [
             'domain',
             'serial',
             'refresh',

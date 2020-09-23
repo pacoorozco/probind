@@ -9,9 +9,9 @@
  * Licensed under GNU General Public License 3.0.
  * Some rights reserved. See LICENSE, AUTHORS.
  *
- * @author         Paco Orozco <paco@pacoorozco.info>
- * @copyright   2018 Paco Orozco
- * @license         GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @author             Paco Orozco <paco@pacoorozco.info>
+ * @copyright          2018 Paco Orozco
+ * @license            GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
  * @link               https://github.com/pacoorozco/probind
  */
 
@@ -32,7 +32,8 @@ class EnvironmentRepositoryTest extends TestCase
      */
     private $environmentRepository;
 
-    public function setUp(){
+    public function setUp(): void
+    {
         parent::setUp();
 
         if (file_exists($this->filename)) {
@@ -42,7 +43,8 @@ class EnvironmentRepositoryTest extends TestCase
         $this->environmentRepository = new EnvironmentRepository($this->filename);
     }
 
-    public function tearDown(){
+    public function tearDown(): void
+    {
         parent::tearDown();
 
         if (file_exists($this->filename)) {

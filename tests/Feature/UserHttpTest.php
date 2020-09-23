@@ -81,8 +81,8 @@ class UserHttpTest extends BrowserKitTestCase
 
         $this->visit('users/' . $originalUser->id . '/edit')
             ->type('new.email@domain.local', 'email')
-            ->type('secret', 'password')
-            ->type('secret', 'password_confirmation')
+            ->type('secret123', 'password')
+            ->type('secret123', 'password_confirmation')
             ->press('submit');
 
         // Get the zone once has been modified
@@ -92,7 +92,7 @@ class UserHttpTest extends BrowserKitTestCase
         $this->assertEquals('new.email@domain.local', $modifiedUser->email);
 
         // Ensure User's password is encrypted on DB.
-        $this->assertNotEquals('secret', $modifiedUser->password);
+        $this->assertNotEquals('secret123', $modifiedUser->password);
 
         // Test field that has not been modified
         $this->assertEquals($originalUser->name, $modifiedUser->name);

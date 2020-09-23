@@ -111,7 +111,7 @@ class ProBINDPushZones extends Command
      * @param array $deletedZones
      * @return string
      */
-    public function generateDeletedZonesContent($deletedZones)
+    public function generateDeletedZonesContent(array $deletedZones):string
     {
         $content = [];
         foreach ($deletedZones as $zone) {
