@@ -34,7 +34,7 @@ See our [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.
 
 ## Requirements
 
-* PHP 7.1+
+* PHP 7.1+ with `ext-gmp` extension.
 * A [supported relational database](http://laravel.com/docs) and corresponding PHP extension.
 * [Composer](https://getcomposer.org/download/).
 
