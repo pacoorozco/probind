@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Zone;
 use Badcow\DNS\Parser;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class ProBINDImportZone extends Command
 {
@@ -43,6 +44,8 @@ class ProBINDImportZone extends Command
         $domain = (string)$this->option('domain');
         $filename = (string)$this->option('file');
 
+        $domain = (substr($domain, -1) != '.') ? $domain . '.' : $domain;
+
         if (!$this->option('force')) {
             // Check if Zone exists on database.
             $existingZone = Zone::where('domain', $domain)->first();
@@ -71,7 +74,7 @@ class ProBINDImportZone extends Command
                     'refresh' => $record->getRdata()->getRefresh(),
                     'retry' => $record->getRdata()->getRetry(),
                     'expire' => $record->getRdata()->getExpire(),
-                    'default_ttl' => $record->getRdata()->getMinimum()
+                    'negative_ttl' => $record->getRdata()->getMinimum()
                 ]);
                 continue;
             }
@@ -112,11 +115,15 @@ class ProBINDImportZone extends Command
      * @param string $filename
      *
      * @return \Badcow\DNS\Zone
-     * @throws \Badcow\DNS\Parser\ParseException
+     * @throws \ErrorException
      */
     private function parseFile(string $domain, string $filename): \Badcow\DNS\Zone {
-        $file = file_get_contents($filename);
-        return Parser\Parser::parse($domain, $file);
+        try {
+            $file = file_get_contents($filename);
+            return Parser\Parser::parse($domain, $file);
+        } catch (\Exception $exception) {
+            throw new \ErrorException();
+        }
     }
 }
 
