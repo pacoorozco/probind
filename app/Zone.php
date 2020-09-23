@@ -67,14 +67,7 @@ class Zone extends Model
      * The database table used by the model.
      */
     protected $table = 'zones';
-    protected $fillable = [
-        'master_server',
-        'refresh',
-        'retry',
-        'expire',
-        'negative_ttl',
-        'default_ttl'
-    ];
+    protected $guarded = [];
     /**
      * The attributes that should be casted to native types.
      *

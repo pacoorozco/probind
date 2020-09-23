@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\FileDNSParser;
 use App\Zone;
+use Badcow\DNS\Parser;
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 
 class ProBINDImportZone extends Command
 {
@@ -15,8 +14,8 @@ class ProBINDImportZone extends Command
      * @var string
      */
     protected $signature = 'probind:import
-                {zone : The zone domain name to create}
-                {zonefile : The file name to import}
+                {--domain= : The zone domain name to create}
+                {--file= : The file name to import}
                 {--force : Delete existing zone before import}';
 
     /**
@@ -32,6 +31,62 @@ class ProBINDImportZone extends Command
     public function __construct()
     {
         parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     */
+    public function handle(): void
+    {
+        // Cast supplied arguments and options.
+        $domain = (string)$this->option('domain');
+        $filename = (string)$this->option('file');
+
+        if (!$this->option('force')) {
+            // Check if Zone exists on database.
+            $existingZone = Zone::where('domain', $domain)->first();
+
+            if ($existingZone) {
+                $this->error('Zone \'' . $existingZone->domain . '\' exists on ProBIND. Use \'--force\' option if you want to import this zone.');
+                return;
+            }
+        }
+
+        // Delete zone, if exists on database.
+        $this->deleteZoneIfExists($domain);
+
+        $zoneData = $this->parseFile($domain, $filename);
+        $zone = Zone::create([
+            'custom_settings' => true,
+            'domain' => $domain,
+        ]);
+
+        $createdRecordsCount = 0;
+        foreach ($zoneData->getResourceRecords() as $record) {
+            if ($record->getType() === "SOA") {
+                $zone->update([
+                    'reverse_zone' => Zone::validateReverseDomainName($domain),
+                    'serial' => $record->getRdata()->getSerial(),
+                    'refresh' => $record->getRdata()->getRefresh(),
+                    'retry' => $record->getRdata()->getRetry(),
+                    'expire' => $record->getRdata()->getExpire(),
+                    'default_ttl' => $record->getRdata()->getMinimum()
+                ]);
+                continue;
+            }
+            $zone->records()->create([
+                'name' => $record->getName(),
+                'ttl' => $record->getTtl(),
+                'type' => $record->getType(),
+                'data' => $record->getRdata()->toText(),
+            ]);
+            $createdRecordsCount++;
+        }
+
+        $this->info('Import zone \'' . $domain . '\' has created with ' . $createdRecordsCount . ' imported records.');
+        activity()->log('Import zone <strong>' . $zone->domain . '</strong> has created <strong>' . $createdRecordsCount . '</strong> records.');
+        return;
     }
 
     /**
@@ -51,58 +106,20 @@ class ProBINDImportZone extends Command
     }
 
     /**
-     * Execute the console command.
+     * Parses a DNS zone file and returns its content.
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @param string $domain
+     * @param string $filename
+     *
+     * @return \Badcow\DNS\Zone
+     * @throws \Badcow\DNS\Parser\ParseException
      */
-    public function handle(): void
-    {
-        // Cast supplied arguments and options.
-        $domain = (string)$this->argument('zone');
-        $zonefile = (string)$this->argument('zonefile');
-
-        $fileDNS = new FileDNSParser($domain);
-        $fileDNS->load($zonefile);
-
-        if (!$this->option('force')) {
-            // Check if Zone exists on database.
-            $existingZone = Zone::where('domain', $domain)->first();
-
-            if ($existingZone) {
-                $this->error('Zone \'' . $existingZone->domain . '\' exists on ProBIND. Use \'--force\' option if you want to import this zone.');
-                return;
-            }
-        }
-
-        // Delete zone, if exists on database.
-        $this->deleteZoneIfExists($domain);
-
-        // Create the zone and fill with parsed data.
-        $zoneData = $fileDNS->getZoneData();
-        $zone = new Zone();
-        $zone->domain = $domain;
-        $zone->reverse_zone = Zone::validateReverseDomainName($domain);
-        $zone->serial = $zoneData['serial'];
-        $zone->custom_settings = true;
-        $zone->fill(Arr::only($zoneData, ['refresh', 'retry', 'expire', 'negative_ttl', 'default_ttl']));
-        $zone->save();
-
-        // Associate parsed RR
-        $records = $fileDNS->getRecords();
-        foreach ($records as $item) {
-            $zone->records()->create([
-                'name' => $item['name'],
-                'ttl' => $item['ttl'],
-                'type' => $item['type'],
-                'priority' => Arr::get($item, 'options.preference', null),
-                'data' => $item['data']
-            ]);
-        }
-
-        $this->info('Import zone \'' . $zone->domain . '\' has created with ' . $zone->records()->count() . ' imported records.');
-        activity()->log('Import zone <strong>' . $zone->domain . '</strong> has created <strong>' . $zone->records()->count() . '</strong> records.');
-        return;
+    private function parseFile(string $domain, string $filename): \Badcow\DNS\Zone {
+        $file = file_get_contents($filename);
+        return Parser\Parser::parse($domain, $file);
     }
 }
+
+
 
 
