@@ -4,8 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+### Added
+- Support for [Trusted Proxies](https://laravel.com/docs/6.x/requests#configuring-trusted-proxies). You can configure it through environment variables. See `config/trustedproxies.php`.
+- Added `doctrine/dbal` to allow database schema changes in migrations.
 ### Changed
 - Update Travis distribution to `focal`. It has reduced build time by 1 minute.
+- Bump `laravel/framework` from `v5.8` to `v6.0`.
+- Bump `laravelcollective/html` from `v5.8` to `v6.0`.
+- Bump `laravel-nullable-fields`from `v1.6` to `v2.0`.
+- Bump `larapacks/setting` from `v1.0` to `v2.0`.
+- Bump `fzaninotto/faker` (dev) from `v1.4` to `v1.9.1`.
+- Bump `nunomaduro/collision` (dev) from `v2.0` to `v3.0`.
+- Bump `phpunit/phpunit` (dev) from `v7.0` to `v8.0`.
+- Bump `spatie/laravel-activitylog` from `v1.7` to `v3.8`. This version implements a new schema on the DB (not-backwards compatible).
+### Removed
+- Support for `laravel/homestead`. You can still use it by your own, [read how] (https://laravel.com/docs/6.x/homestead).
 
 ## 0.10.0
 ### Changed
