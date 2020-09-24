@@ -67,14 +67,7 @@ class Zone extends Model
      * The database table used by the model.
      */
     protected $table = 'zones';
-    protected $fillable = [
-        'master_server',
-        'refresh',
-        'retry',
-        'expire',
-        'negative_ttl',
-        'default_ttl'
-    ];
+    protected $guarded = [];
     /**
      * The attributes that should be casted to native types.
      *
@@ -116,7 +109,7 @@ class Zone extends Model
      */
     public static function validateNormalDomainName(string $domain) : bool
     {
-        return preg_match('/^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$/',
+        return preg_match('/^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})\.$/',
             $domain);
 
     }
@@ -130,7 +123,7 @@ class Zone extends Model
      */
     public static function validateReverseDomainName(string $domain) : bool
     {
-        return preg_match('/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){0,2}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.in-addr.arpa$/',
+        return preg_match('/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){0,2}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.in-addr.arpa\.$/',
             $domain);
     }
 

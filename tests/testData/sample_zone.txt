@@ -1,0 +1,31 @@
+$ORIGIN example.com.
+$TTL 3600
+@            IN SOA  (
+                     example.com.       ; MNAME
+                     post.example.com.  ; RNAME
+                     2014110501         ; SERIAL
+                     3600               ; REFRESH
+                     14400              ; RETRY
+                     604800             ; EXPIRE
+                     3600               ; MINIMUM
+                     )
+
+ ; NS RECORDS
+@               NS   ns1.nameserver.com.
+@               NS   ns2.nameserver.com.
+
+info            TXT "This is some additional \"information\""
+
+ ; A RECORDS
+sub.domain      A    192.168.1.42 ; This is a local ip.
+
+ ; AAAA RECORDS
+ipv6.domain    AAAA ::1 ; This is an IPv6 domain.
+
+ ; MX RECORDS
+@               MX   10 mail-gw1.example.net.
+@               MX   20 mail-gw2.example.net.
+@               MX   30 mail-gw3.example.net.
+
+mail     IN     TXT  "THIS IS SOME TEXT; WITH A SEMICOLON"
+_dmarc   IN     TXT  "v=DMARC1; p=quarantine; rua=mailto:postmaster@domain.local; ruf=mailto:postmaster@domain.local; fo=1; adkim=r; aspf=r; pct=100; sp=quarantine"

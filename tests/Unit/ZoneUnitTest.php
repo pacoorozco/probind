@@ -222,8 +222,8 @@ class ZoneUnitTest extends TestCase
     public function testValidateNormalZoneName()
     {
         $validDomainTestCase = [
-            'domain.com',
-            'sub.domain.com',
+            'domain.com.',
+            'sub.domain.com.',
         ];
 
         foreach ($validDomainTestCase as $domain) {
@@ -232,15 +232,16 @@ class ZoneUnitTest extends TestCase
         }
 
         $invalidDomainTestCase = [
-            'domain',
-            '.com',
-            '_domain.com',
-            'domain._com',
-            'sub domain.com',
-            'domain..com',
-            'domain___.com',
-            '10.10.10.in-addr.arpa',
-            '168.192.in-addr.arpa',
+            'domain.',
+            '.com.',
+            '_domain.com.',
+            'domain._com.',
+            'sub domain.com.',
+            'domain..com.',
+            'domain___.com.',
+            '10.10.10.in-addr.arpa.',
+            '168.192.in-addr.arpa.',
+            'domain.com',
         ];
 
         foreach ($invalidDomainTestCase as $domain) {
@@ -255,9 +256,9 @@ class ZoneUnitTest extends TestCase
     public function testValidateReverseZoneName()
     {
         $validDomainTestCase = [
-            '10.in-addr.arpa',
-            '11.10.in-addr.arpa',
-            '12.11.10.in-addr.arpa',
+            '10.in-addr.arpa.',
+            '11.10.in-addr.arpa.',
+            '12.11.10.in-addr.arpa.',
         ];
 
         foreach ($validDomainTestCase as $domain) {
@@ -266,11 +267,12 @@ class ZoneUnitTest extends TestCase
         }
 
         $invalidDomainTestCase = [
-            'domain.com',
-            'sub.domain.com',
-            '256.in-addr.arpa',
-            '10.256.in-addr.arpa',
-            '13.12.11.10.in-addr.arpa',
+            'domain.com.',
+            'sub.domain.com.',
+            '256.in-addr.arpa.',
+            '10.256.in-addr.arpa.',
+            '13.12.11.10.in-addr.arpa.',
+            '10.in-addr.arpa',
         ];
 
         foreach ($invalidDomainTestCase as $domain) {
