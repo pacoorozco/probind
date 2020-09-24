@@ -29,11 +29,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Fix `shellcheck` warnings for `utils/bumpversion.sh`.
 - Fix a bug related with TTL validation error when creating a new record. ([#66][i66])
 - Fix small bugs found during upgrades.
+- Fix issue parsing BIND zone files with `;` (semi-colon) in resource records. ([#67][i67])
 ### Removed
 - Script `utils/create_package.sh`. Use `composer build` instead.
 - Support for Vagrant. You can still use it by your own, [read how] (https://laravel.com/docs/6.x/homestead).
 
 [i66]: https://github.com/pacoorozco/probind/issues/66
+[i67]: https://github.com/pacoorozco/probind/issues/67
 
 ## 0.9.8 - 2020-09-10
 
