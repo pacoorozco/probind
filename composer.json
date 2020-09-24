@@ -27,6 +27,7 @@
         "doctrine/dbal": "^2.11",
         "dyrynda/laravel-nullable-fields": "^2.0",
         "fideloper/proxy": "^4.0",
+        "laracasts/presenter": "^0.2",
         "larapacks/setting": "^2.0",
         "laravel/framework": "^6.0",
         "laravelcollective/html": "^6.0",
