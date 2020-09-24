@@ -22,7 +22,7 @@
         "issues": "https://github.com/pacoorozco/probind/issues"
     },
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "badcow/dns": "^3.5",
         "dyrynda/laravel-nullable-fields": "^1.6",
         "larapacks/setting": "1.0.*",
