@@ -5,7 +5,7 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/pacoorozco/probind/badges/coverage.png)](https://scrutinizer-ci.com/g/pacoorozco/probind)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/98bafc58-957b-476c-8711-f3d81b6938dd/mini.png)](https://insight.sensiolabs.com/projects/98bafc58-957b-476c-8711-f3d81b6938dd)
 [![License](https://img.shields.io/github/license/pacoorozco/probind.svg)](https://github.com/pacoorozco/probind/blob/master/LICENSE)
-[![Laravel Version](https://img.shields.io/badge/Laravel-5.6-orange.svg)](https://laravel.com/docs)
+[![Laravel Version](https://img.shields.io/badge/Laravel-6.x-purple.svg)](https://laravel.com/docs)
 [![GitHub release](https://img.shields.io/github/release/pacoorozco/probind.svg?style=flat-square)](https://github.com/pacoorozco/probind/releases)
  	
 ## Presentation
@@ -34,19 +34,11 @@ See our [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.
 
 ## Requirements
 
-* PHP 7.1+ with `ext-gmp` extension.
+* PHP 7.4+ with `gmp` extension.
 * A [supported relational database](http://laravel.com/docs) and corresponding PHP extension.
 * [Composer](https://getcomposer.org/download/).
 
 ## How to test ProBIND
-
-There are two methods in order to test **ProBIND**:
-
-* [Method 1](#docker-method): Using [Docker](https://www.docker.com/) containers. **This is the quickest way**
-* [Method 2](#homestead-vagrant-box-method): Using [Vagrant](https://www.vagrantup.com/) box. This is a preferred way to developers
-
-### Docker method
-
 This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND needs. An application server, a web server, a database server.
 
 Prior this installation, you **need to have installed** this software:
@@ -82,51 +74,6 @@ Prior this installation, you **need to have installed** this software:
     ```
     
 1. Go to `http://localhost/install` and finish **ProBIND** installation. Enjoy!
-
-   > **NOTE**: Default credentials are `admin/secret`.
-
-### Homestead Vagrant Box method
-
-This will create a VM box (a [Vagrant](https://www.vagrantup.com/) one) where all needed software will be installed and configured. **It's the best way to develop and test ProBIND**.
-
-Prior this installation, you **need to have installed** this software:
-
-* [Vagrant 2.1+](https://www.vagrantup.com/)
-* [Composer](https://getcomposer.org/download/)
-* PHP extensions/modules installed: `php-mbstring php-xml`
-
-1. Clone the repository locally
-
-    ```bash
-    $ git clone https://github.com/pacoorozco/probind.git probind
-    ```
-
-1. [Install dependencies](https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies) with:
-
-    ```bash
-    $ cd probind
-    $ composer install
-    ```
-
-1. Copy [`.env.example`](https://github.com/pacoorozco/probind/blob/master/.env.example) to `.env`. By default this configuration will work with Homestead Vagrant Box.
-1. Prepare Homestead envionment and Vagrant box
-
-    ```bash
-    $ php vendor/bin/homestead make
-    $ vagrant box add laravel/homestead
-    $ vagrant up
-    ```
-
-1. Create a new application key and seed some values.
-
-    ```bash
-    $ vagrant ssh
-    $ cd code
-    $ php artisan key:generate
-    $ php artisan migrate --seed
-    $ exit
-    ```
-1. Go to `http://192.168.10.10/install` and finish **ProBIND** installation. Enjoy!
 
    > **NOTE**: Default credentials are `admin/secret`.
 

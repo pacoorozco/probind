@@ -17,8 +17,8 @@ services:
       environment:
         DB_HOST: database
         REDIS_HOST: redis
-        DB_DATABASE: homestead
-        DB_USERNAME: homestead
+        DB_DATABASE: laravel
+        DB_USERNAME: laravel
         DB_PASSWORD: secret
       ports:
         - "9000:9000"
@@ -49,8 +49,8 @@ services:
             - dbdata:/var/lib/mysql
       environment:
         MYSQL_ROOT_PASSWORD: verysecret
-        MYSQL_DATABASE: homestead
-        MYSQL_USER: homestead
+        MYSQL_DATABASE: laravel
+        MYSQL_USER: laravel
         MYSQL_PASSWORD: secret
       ports:
         - "3306:3306"

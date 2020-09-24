@@ -15,6 +15,7 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
+use App\User;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -28,12 +29,12 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         // Create an admin user.
-        \App\User::create([
+        User::create([
             'username'       => 'admin',
             'name'           => 'Administrator',
             'email'          => 'admin@domain.local',
             'password'       => bcrypt('secret'),
-            'remember_token' => str_random(10),
+            'remember_token' => Str::random(10),
         ]);
 
         // Create more users.

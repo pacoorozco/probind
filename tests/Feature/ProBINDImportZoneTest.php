@@ -89,11 +89,9 @@ class ProBINDImportZoneTest extends BrowserKitTestCase
         $this->assertNotCount(9, $zone->records);
     }
 
-    /**
-     * @expectedException \ErrorException
-     */
     public function testCommandFileNotFound()
     {
+        $this->expectException(\ErrorException::class);
         // Call the command with the created file.
         Artisan::call('probind:import', [
             '--domain' => 'domain.com',

@@ -15,7 +15,7 @@
  * @link               https://github.com/pacoorozco/probind
  */
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use App\Repositories\EnvironmentRepository;
 use Tests\TestCase;
