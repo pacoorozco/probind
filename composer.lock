@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f923f33e0b442b62a0b8ab718ef88c9e",
+    "content-hash": "d970baacb1cbeb6b30a3aa63798499d7",
     "packages": [
         {
             "name": "ademarre/binary-to-text-php",
@@ -5619,7 +5619,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.2"
+        "php": "^7.4"
     },
     "platform-dev": []
 }
