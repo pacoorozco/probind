@@ -16,7 +16,7 @@ notifications:
 ## Cache composer
 cache:
   directories:
-    - $HOME/.composer/cache/files
+    - $HOME/.composer/cache
 
 before_script:
   - cp .env.travis .env
