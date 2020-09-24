@@ -13,7 +13,7 @@ class UpdateActivityLogTableToV3 extends Migration
      */
     public function up()
     {
-        Schema::table('v3', function (Blueprint $table) {
+        Schema::connection(config('activitylog.database_connection'))->table(config('activitylog.table_name'), function (Blueprint $table) {
             $table->text('description')->change();
             $table->unsignedInteger('subject_id')->nullable()->change();
             $table->unsignedInteger('causer_id')->nullable()->change();
