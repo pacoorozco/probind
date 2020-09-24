@@ -24,22 +24,22 @@
     "require": {
         "php": "^7.4",
         "badcow/dns": "^3.5",
-        "dyrynda/laravel-nullable-fields": "^1.6",
-        "larapacks/setting": "1.0.*",
-        "laravel/framework": "5.8.*",
-        "laravelcollective/html": "5.8.*",
+        "doctrine/dbal": "^2.11",
+        "dyrynda/laravel-nullable-fields": "^2.0",
+        "fideloper/proxy": "^4.0",
+        "larapacks/setting": "^2.0",
+        "laravel/framework": "^6.0",
+        "laravelcollective/html": "^6.0",
         "phpseclib/phpseclib": "^2.0",
-        "spatie/laravel-activitylog": "^1.7",
+        "spatie/laravel-activitylog": "^3.8",
         "yajra/laravel-datatables-oracle": "^9.0"
     },
     "require-dev": {
-        "filp/whoops": "^2.0",
-        "fzaninotto/faker": "^1.4",
+        "fzaninotto/faker": "^1.9.1",
         "laravel/browser-kit-testing": "^5.0",
-        "laravel/homestead": "^7.7",
         "mockery/mockery": "^1.0",
-        "phpunit/phpunit": "^7.0",
-        "nunomaduro/collision": "^2.0"
+        "phpunit/phpunit": "^8.0",
+        "nunomaduro/collision": "^3.0"
     },
     "autoload": {
         "classmap": [
