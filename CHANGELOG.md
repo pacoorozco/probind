@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
+
+## 0.10.0 - 2020-09-24
 ### Added
 - Support for [Trusted Proxies](https://laravel.com/docs/6.x/requests#configuring-trusted-proxies). You can configure it through environment variables. See `config/trustedproxies.php`.
 - Added `doctrine/dbal` to allow database schema changes in migrations.
@@ -11,6 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Update Travis distribution to `focal`. It has reduced build time by 1 minute.
 - Change default folder for test-coverage reports and package creation to `.tmp/`.
 - Package creation is now called using `composer build`.
+- PHP minimum version is now `7.4`.
 - Bump `laravel/framework` from `v5.5` to `v6.0`.
 - Bump `laravelcollective/html` from `v5.6` to `v6.0`.
 - Bump `yajra/laravel-datatables-oracle` for `v8.0` to `v9.0`.
@@ -25,9 +28,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Fix configuration for default environments: `.env.example` and `.env.travis`.
 - Fix `shellcheck` warnings for `utils/bumpversion.sh`.
 - Fix a bug related with TTL validation error when creating a new record. ([#66][i66])
+- Fix small bugs found during upgrades.
 ### Removed
 - Script `utils/create_package.sh`. Use `composer build` instead.
-- Support for `laravel/homestead`. You can still use it by your own, [read how] (https://laravel.com/docs/6.x/homestead).
+- Support for Vagrant. You can still use it by your own, [read how] (https://laravel.com/docs/6.x/homestead).
 
 [i66]: https://github.com/pacoorozco/probind/issues/66
 
