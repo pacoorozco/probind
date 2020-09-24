@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 ### Changed
+- Update Travis distribution to `focal`. It has reduced build time by 1 minute.
+
+## 0.10.0
+### Changed
 - Bump `laravelcollective/html` from `v5.5` to `v5.8`.
 - Bump `laravel/framework` from `v5.6` to `v5.8`.
 - Bump `yajra/laravel-datatables-oracle` for `v8.0` to `v9.0`.
