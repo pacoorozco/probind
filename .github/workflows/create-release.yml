@@ -1,0 +1,45 @@
+name: Create Release
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - name: Create dist package
+        id: build_project
+        env:
+          DIST_FILE: ./dist/probind-dist-${{ steps.get_version.outputs.VERSION }}
+        run: |
+          composer archive --format=zip --file=$DIST_FILE
+          echo ::set-output name=DIST_FILE::$DIST_FILE
+      - name: Publish Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+          body: |
+            Review [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.md) to see changes.
+      - name: Upload Release Asset (zip)
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ steps.build_project.outputs.DIST_FILE }}.zip
+          asset_name: probind-dist-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_content_type: application/zip
