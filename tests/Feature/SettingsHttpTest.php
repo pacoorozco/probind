@@ -18,6 +18,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Arr;
 use Tests\BrowserKitTestCase;
 use TestingDatabaseSeeder;
 use Setting;
@@ -73,7 +74,7 @@ class SettingsHttpTest extends BrowserKitTestCase
             ->press('Save data');
 
         // Get new settings from database.
-        $settings = array_only(Setting::all()->toArray(), array_keys($expectedSettings));
+        $settings = Arr::only(Setting::all()->toArray(), array_keys($expectedSettings));
 
         $this->assertEquals($expectedSettings, $settings);
     }
