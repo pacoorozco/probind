@@ -1,6 +1,8 @@
-language: php
-
+arch: amd64
+os: linux
 dist: focal
+
+language: php
 
 php:
   - 7.4
@@ -8,17 +10,13 @@ php:
 services:
   - mysql
 
-# This triggers builds to run on the new TravisCI infrastructure.
-# See: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
-sudo: false
-
 notifications:
   email: false
 
 ## Cache composer
 cache:
   directories:
-    - $HOME/.composer/cache
+    - $HOME/.composer/cache/files
 
 before_script:
   - cp .env.travis .env
