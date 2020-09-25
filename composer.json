@@ -36,6 +36,8 @@
         "yajra/laravel-datatables-oracle": "^9.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.2",
+        "barryvdh/laravel-ide-helper": "^2.7",
         "fzaninotto/faker": "^1.9.1",
         "laravel/browser-kit-testing": "^5.0",
         "mockery/mockery": "^1.0",
@@ -68,7 +70,9 @@
             "@php artisan package:discover"
         ],
         "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate"
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:meta"
         ],
         "test": [
             "vendor/bin/phpunit"
