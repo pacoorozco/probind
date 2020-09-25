@@ -30,22 +30,24 @@
     <script type="text/javascript" src="{{ asset('vendor/AdminLTE/datatables/dataTables.bootstrap.min.js') }}"></script>
     <script>
     $(function () {
-        $('#zones-table').DataTable({
-            "ajax": "{{ route('zones.data') }}",
-            "columns": [
-                {data: "domain"},
-                {data: "type"},
-                {data: "master_server"},
-                {data: "has_modifications", "orderable": false, "searchable": false},
-                {data: "actions", "orderable": false, "searchable": false}
-            ],
-            "order": [[1, 'asc'], [0, 'asc']],
-            "aLengthMenu": [
-                [5, 10, 15, 20, -1],
-                [5, 10, 15, 20, "{{ __('general.all') }}"]
-            ],
-            // set the initial value
-            "iDisplayLength": 10
+        $(function () {
+            $('#zones-table').DataTable({
+                "ajax": "{{ route('zones.data') }}",
+                "columns": [
+                    {data: "domain"},
+                    {data: "type"},
+                    {data: "master_server"},
+                    {data: "has_modifications", "orderable": false, "searchable": false},
+                    {data: "actions", "orderable": false, "searchable": false}
+                ],
+                "order": [[1, 'asc'], [0, 'asc']],
+                "aLengthMenu": [
+                    [5, 10, 15, 20, -1],
+                    [5, 10, 15, 20, "{{ __('general.all') }}"]
+                ],
+                // set the initial value
+                "iDisplayLength": 10
+            });
         });
     });
     </script>

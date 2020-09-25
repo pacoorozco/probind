@@ -20,8 +20,11 @@ return [
     'zone_management_subtitle' => 'create and edit DNS zones',
     'zone_show'                => 'Zone details',
     'create_new'               => 'Create DNS zone',
-    'create_new_subtitle'      => 'create a new zone',
+    'create_new_subtitle'      => 'create a new DNS zone',
     'zone_edit'                => 'Edit DNS zone',
     'zone_delete'              => 'Delete DNS zone',
     'custom_settings'          => 'Zone specific settings',
+
+    'primary_dns_zone' => 'Primary DNS zone (master)',
+    'secondary_dns_zone' => 'Secondary DNS zone (slave)',
 ];

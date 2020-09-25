@@ -16,15 +16,16 @@
  */
 
 return [
-    'domain'          => 'Domain',
+    'domain'          => 'Domain (FQDN)',
     'serial'          => 'Serial',
-    'master_server'   => 'Master DNS',
+    'master_server'   => 'Primary DNS (server IP)',
     'type'            => 'Type',
     'types'           => [
-        'master' => 'Master',
-        'slave'  => 'Slave'
+        'master' => 'Primary',
+        'slave'  => 'Secondary',
     ],
-    'custom_settings' => 'Use zone specific settings',
+    'custom_settings' => 'Use specific settings for this zone',
+    'copy_values_from_defaults' => 'Copy values from defaults',
 
     'refresh'      => 'Refresh time (seconds)',
     'refresh_help' => 'Sets how often the zone should be synchronized from master name server to slave name server.',
