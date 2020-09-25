@@ -66,7 +66,7 @@ class ServerController extends Controller
         $server->fill($request->all())->save();
 
         return redirect()->route('servers.index')
-            ->with('success', trans('server/messages.create.success'));
+            ->with('success', __('server/messages.create.success'));
     }
 
     /**
@@ -108,7 +108,7 @@ class ServerController extends Controller
         $server->fill($request->all())->save();
 
         return redirect()->route('servers.index')
-            ->with('success', trans('server/messages.update.success'));
+            ->with('success', __('server/messages.update.success'));
     }
 
     /**
@@ -136,7 +136,7 @@ class ServerController extends Controller
         $server->delete();
 
         return redirect()->route('servers.index')
-            ->with('success', trans('server/messages.delete.success'));
+            ->with('success', __('server/messages.delete.success'));
     }
 
     /**

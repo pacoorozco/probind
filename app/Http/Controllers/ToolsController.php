@@ -70,7 +70,7 @@ class ToolsController extends Controller
         // mark zones delete
 
         return redirect()->route('home')
-            ->with('success', trans('tools/messages.push_updates_success'));
+            ->with('success', __('tools/messages.push_updates_success'));
     }
 
     /**
@@ -96,7 +96,7 @@ class ToolsController extends Controller
         }
 
         return redirect()->route('home')
-            ->with('success', trans('tools/messages.bulk_update_success'));
+            ->with('success', __('tools/messages.bulk_update_success'));
     }
 
     /**
@@ -133,6 +133,6 @@ class ToolsController extends Controller
 
         return redirect()->route('home')
             ->with('success',
-                trans('tools/messages.import_zone_success', ['zone' => $request->input('domain')]));
+                __('tools/messages.import_zone_success', ['zone' => $request->input('domain')]));
     }
 }

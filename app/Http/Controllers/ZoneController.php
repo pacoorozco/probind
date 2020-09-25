@@ -20,7 +20,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ZoneCreateRequest;
 use App\Http\Requests\ZoneUpdateRequest;
 use App\Zone;
-use DataTables;
+use Yajra\Datatables\Datatables;
 
 class ZoneController extends Controller
 {
@@ -52,7 +52,7 @@ class ZoneController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ZoneCreateRequest $request
+     * @param ZoneCreateRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -74,13 +74,13 @@ class ZoneController extends Controller
         $zone->fill($request->all())->save();
 
         return redirect()->route('zones.index')
-            ->with('success', trans('zone/messages.create.success'));
+            ->with('success', __('zone/messages.create.success'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Zone $zone
+     * @param Zone $zone
      *
      * @return \Illuminate\View\View
      */
@@ -93,7 +93,7 @@ class ZoneController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Zone $zone
+     * @param Zone $zone
      *
      * @return \Illuminate\View\View
      */
@@ -106,8 +106,8 @@ class ZoneController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  ZoneUpdateRequest $request
-     * @param  Zone              $zone
+     * @param ZoneUpdateRequest $request
+     * @param Zone              $zone
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -125,7 +125,7 @@ class ZoneController extends Controller
         $zone->fill($request->all())->save();
 
         return redirect()->route('zones.index')
-            ->with('success', trans('zone/messages.update.success'));
+            ->with('success', __('zone/messages.update.success'));
     }
 
     /**
@@ -140,15 +140,16 @@ class ZoneController extends Controller
         $zone->delete();
 
         return redirect()->route('zones.index')
-            ->with('success', trans('zone/messages.delete.success'));
+            ->with('success', __('zone/messages.delete.success'));
     }
 
     /**
      * Show a list of all the levels formatted for DataTables.
      *
-     * @param DataTables $dataTable
+     * @param \Yajra\Datatables\Datatables $dataTable
      *
-     * @return DataTables JsonResponse
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function data(DataTables $dataTable)
     {
@@ -157,11 +158,11 @@ class ZoneController extends Controller
             'domain',
             'master_server',
             'has_modifications'
-        ]);
+        ])->orderBy('domain', 'ASC');
 
-        return $dataTable::of($zones)
+        return $dataTable->eloquent($zones)
             ->addColumn('type', function (Zone $zone) {
-                return trans('zone/model.types.' . $zone->getTypeOfZone());
+                return __('zone/model.types.' . $zone->getTypeOfZone());
             })
             ->editColumn('has_modifications', function (Zone $zone) {
                 return trans_choice('general.boolean', intval($zone->hasPendingChanges()));
@@ -173,6 +174,6 @@ class ZoneController extends Controller
             })
             ->rawColumns(['actions'])
             ->removeColumn('id')
-            ->make(true);
+            ->toJson();
     }
 }

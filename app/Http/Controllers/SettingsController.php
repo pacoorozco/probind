@@ -49,6 +49,6 @@ class SettingsController extends Controller
         Setting::set($request->except('_token', '_method'));
 
         return redirect()->route('settings.index')
-            ->with('success', trans('settings/messages.update.success'));
+            ->with('success', __('settings/messages.update.success'));
     }
 }
