@@ -2,7 +2,7 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ __('settings/title.settings_management') }} :: @parent
+    {{ __('settings/title.settings_management') }} @parent
 @endsection
 
 {{-- Content Header --}}

@@ -2,7 +2,7 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ __('record/title.create_new') }} :: @parent
+    {{ __('record/title.create_new') }} @parent
 @endsection
 
 {{-- Content Header --}}

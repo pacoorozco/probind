@@ -2,7 +2,7 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ __('record/title.record_delete') }} :: @parent
+    {{ __('record/title.record_delete') }} @parent
 @endsection
 
 {{-- Content Header --}}

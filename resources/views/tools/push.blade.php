@@ -2,7 +2,7 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ __('tools/title.push_updates') }} :: @parent
+    {{ __('tools/title.push_updates') }} @parent
 @endsection
 
 {{-- Content Header --}}

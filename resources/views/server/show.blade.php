@@ -2,7 +2,7 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ __('server/title.server_show') }} :: @parent
+    {{ __('server/title.server_show') }} @parent
 @endsection
 
 {{-- Content Header --}}

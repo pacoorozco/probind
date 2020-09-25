@@ -2,7 +2,7 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ __('tools/title.import_zone') }} :: @parent
+    {{ __('tools/title.import_zone') }} @parent
 @endsection
 
 {{-- Content Header --}}
