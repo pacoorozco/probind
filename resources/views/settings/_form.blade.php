@@ -6,12 +6,12 @@
     <ul class="nav nav-tabs">
         <li class="active">
             <a href="#panel_settings_tab1" data-toggle="tab">
-                {{ trans('settings/title.zone_settings') }}
+                {{ __('settings/title.zone_settings') }}
             </a>
         </li>
         <li>
             <a href="#panel_settings_tab2" data-toggle="tab">
-                {{ trans('settings/title.ssh_settings') }}
+                {{ __('settings/title.ssh_settings') }}
             </a>
         </li>
     </ul>
@@ -34,7 +34,7 @@
 </div>
 
 <!-- Form Actions -->
-{!! Form::button('<i class="fa fa-floppy-o"></i> ' . trans('general.save'), array('id' => 'submitButton', 'type' => 'submit', 'class' => 'btn btn-success')) !!}
+{!! Form::button('<i class="fa fa-floppy-o"></i> ' . __('general.save'), array('id' => 'submitButton', 'type' => 'submit', 'class' => 'btn btn-success')) !!}
 <!-- ./ form actions -->
 {!! Form::close() !!}
 

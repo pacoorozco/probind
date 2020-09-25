@@ -7,13 +7,13 @@
 
 <div class="box box-solid">
     <div class="box-header">
-        <h3 class="box-title">{{ trans('zone/model.types.master') }}</h3>
+        <h3 class="box-title">{{ __('zone/model.types.master') }}</h3>
     </div>
     <div class="box-body">
 
         <!-- domain -->
         <div class="form-group {{ $errors->has('domain') ? 'has-error' : '' }}">
-            {!! Form::label('domain', trans('zone/model.domain'), array('class' => 'control-label required')) !!}
+            {!! Form::label('domain', __('zone/model.domain'), array('class' => 'control-label required')) !!}
             <div class="controls">
                 @if (isset($zone))
                     {!! Form::text('domain', null, array('class' => 'form-control', 'disabled' => 'disabled')) !!}
@@ -30,7 +30,7 @@
             <div class="checkbox">
                 <label class="control-label" data-toggle="collapse" data-target="#custom_settings_section">
                     {{ Form::checkbox('custom_settings', true, null, ['id' => 'custom_settings']) }}
-                    {{ trans('zone/model.custom_settings') }}
+                    {{ __('zone/model.custom_settings') }}
                 </label>
             </div>
         </div>
@@ -40,7 +40,7 @@
         <div class="{{ (empty($zone->custom_settings) && empty(old('custom_settings'))) ? 'collapse' : 'collapse in' }}"
              id="custom_settings_section">
 
-            <h4>{{ trans('zone/title.custom_settings') }}</h4>
+            <h4>{{ __('zone/title.custom_settings') }}</h4>
 
             <fieldset id="custom_settings_fields">
 
@@ -56,10 +56,10 @@
                     <div class="col-md-6">
                         <!-- refresh -->
                         <div class="form-group {{ $errors->has('refresh') ? 'has-error' : '' }}">
-                            {!! Form::label('refresh', trans('zone/model.refresh'), array('class' => 'control-label required')) !!}
+                            {!! Form::label('refresh', __('zone/model.refresh'), array('class' => 'control-label required')) !!}
                             <div class="controls">
                                 {!! Form::number('refresh', null, array('class' => 'form-control', 'required' => 'required')) !!}
-                                <span class="help-block">{{ trans('zone/model.refresh_help') }}</span>
+                                <span class="help-block">{{ __('zone/model.refresh_help') }}</span>
                                 <span class="help-block">{{ $errors->first('refresh', ':message') }}</span>
                             </div>
                         </div>
@@ -69,10 +69,10 @@
 
                         <!-- retry -->
                         <div class="form-group {{ $errors->has('retry') ? 'has-error' : '' }}">
-                            {!! Form::label('retry', trans('zone/model.retry'), array('class' => 'control-label required')) !!}
+                            {!! Form::label('retry', __('zone/model.retry'), array('class' => 'control-label required')) !!}
                             <div class="controls">
                                 {!! Form::number('retry', null, array('class' => 'form-control', 'required' => 'required')) !!}
-                                <span class="help-block">{{ trans('zone/model.retry_help') }}</span>
+                                <span class="help-block">{{ __('zone/model.retry_help') }}</span>
                                 <span class="help-block">{{ $errors->first('retry', ':message') }}</span>
                             </div>
                         </div>
@@ -86,10 +86,10 @@
                     <div class="col-md-6">
                         <!-- expire -->
                         <div class="form-group {{ $errors->has('expire') ? 'has-error' : '' }}">
-                            {!! Form::label('expire', trans('zone/model.expire'), array('class' => 'control-label required')) !!}
+                            {!! Form::label('expire', __('zone/model.expire'), array('class' => 'control-label required')) !!}
                             <div class="controls">
                                 {!! Form::number('expire', null, array('class' => 'form-control', 'required' => 'required')) !!}
-                                <span class="help-block">{{ trans('zone/model.expire_help') }}</span>
+                                <span class="help-block">{{ __('zone/model.expire_help') }}</span>
                                 <span class="help-block">{{ $errors->first('expire', ':message') }}</span>
                             </div>
                         </div>
@@ -99,10 +99,10 @@
 
                         <!-- negative_ttl -->
                         <div class="form-group {{ $errors->has('negative_ttl') ? 'has-error' : '' }}">
-                            {!! Form::label('negative_ttl', trans('zone/model.negative_ttl'), array('class' => 'control-label required')) !!}
+                            {!! Form::label('negative_ttl', __('zone/model.negative_ttl'), array('class' => 'control-label required')) !!}
                             <div class="controls">
                                 {!! Form::number('negative_ttl', null, array('class' => 'form-control', 'required' => 'required')) !!}
-                                <span class="help-block">{{ trans('zone/model.negative_ttl_help') }}</span>
+                                <span class="help-block">{{ __('zone/model.negative_ttl_help') }}</span>
                                 <span class="help-block">{{ $errors->first('negative_ttl', ':message') }}</span>
                             </div>
                         </div>
@@ -113,10 +113,10 @@
 
                 <!-- default_ttl -->
                 <div class="form-group {{ $errors->has('default_ttl') ? 'has-error' : '' }}">
-                    {!! Form::label('default_ttl', trans('zone/model.default_ttl'), array('class' => 'control-label required')) !!}
+                    {!! Form::label('default_ttl', __('zone/model.default_ttl'), array('class' => 'control-label required')) !!}
                     <div class="controls">
                         {!! Form::number('default_ttl', null, array('class' => 'form-control', 'required' => 'required')) !!}
-                        <span class="help-block">{{ trans('zone/model.default_ttl_help') }}</span>
+                        <span class="help-block">{{ __('zone/model.default_ttl_help') }}</span>
                         <span class="help-block">{{ $errors->first('default_ttl', ':message') }}</span>
                     </div>
                 </div>
@@ -130,9 +130,9 @@
     <div class="box-footer">
         <!-- Form Actions -->
         <a href="{{ route('zones.index') }}" class="btn btn-primary" role="button">
-                <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
+                <i class="fa fa-arrow-left"></i> {{ __('general.back') }}
         </a>
-    {!! Form::button('<i class="fa fa-floppy-o"></i> ' . trans('general.save'), array('type' => 'submit', 'class' => 'btn btn-success', 'id' => 'master_zone')) !!}
+    {!! Form::button('<i class="fa fa-floppy-o"></i> ' . __('general.save'), array('type' => 'submit', 'class' => 'btn btn-success', 'id' => 'master_zone')) !!}
     <!-- ./ form actions -->
     </div>
 </div>

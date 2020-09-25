@@ -6,22 +6,22 @@
 <table id="servers-table" class="table table-striped table-bordered">
     <thead>
     <tr>
-        <th class="col-md-4">{{ trans('server/table.hostname') }}</th>
-        <th class="col-md-3">{{ trans('server/table.ip_address') }}</th>
-        <th class="col-md-1">{{ trans('server/table.type') }}</th>
-        <th class="col-md-1">{{ trans('server/table.push_updates') }}</th>
-        <th class="col-md-1">{{ trans('server/table.ns_record') }}</th>
-        <th class="col-md-2">{{ trans('general.actions') }}</th>
+        <th class="col-md-4">{{ __('server/table.hostname') }}</th>
+        <th class="col-md-3">{{ __('server/table.ip_address') }}</th>
+        <th class="col-md-1">{{ __('server/table.type') }}</th>
+        <th class="col-md-1">{{ __('server/table.push_updates') }}</th>
+        <th class="col-md-1">{{ __('server/table.ns_record') }}</th>
+        <th class="col-md-2">{{ __('general.actions') }}</th>
     </tr>
     </thead>
     <tfoot>
     <tr>
-        <th class="col-md-4">{{ trans('server/table.hostname') }}</th>
-        <th class="col-md-3">{{ trans('server/table.ip_address') }}</th>
-        <th class="col-md-1">{{ trans('server/table.type') }}</th>
-        <th class="col-md-1">{{ trans('server/table.push_updates') }}</th>
-        <th class="col-md-1">{{ trans('server/table.ns_record') }}</th>
-        <th class="col-md-2">{{ trans('general.actions') }}</th>
+        <th class="col-md-4">{{ __('server/table.hostname') }}</th>
+        <th class="col-md-3">{{ __('server/table.ip_address') }}</th>
+        <th class="col-md-1">{{ __('server/table.type') }}</th>
+        <th class="col-md-1">{{ __('server/table.push_updates') }}</th>
+        <th class="col-md-1">{{ __('server/table.ns_record') }}</th>
+        <th class="col-md-2">{{ __('general.actions') }}</th>
     </tr>
     </tfoot>
 </table>
@@ -44,7 +44,7 @@
             ],
             "aLengthMenu": [
                 [5, 10, 15, 20, -1],
-                [5, 10, 15, 20, "{{ trans('general.all') }}"]
+                [5, 10, 15, 20, "{{ __('general.all') }}"]
             ],
             // set the initial value
             "iDisplayLength": 10

@@ -10,7 +10,7 @@
 
         <!-- hostname -->
         <div class="form-group {{ $errors->has('hostname') ? 'has-error' : '' }}">
-            {!! Form::label('hostname', trans('server/model.hostname'), array('class' => 'control-label required')) !!}
+            {!! Form::label('hostname', __('server/model.hostname'), array('class' => 'control-label required')) !!}
             <div class="controls">
                 {!! Form::text('hostname', null, array('class' => 'form-control', 'required' => 'required')) !!}
                 <span class="help-block">{{ $errors->first('hostname', ':message') }}</span>
@@ -20,7 +20,7 @@
 
         <!-- ip_address -->
         <div class="form-group {{ $errors->has('ip_address') ? 'has-error' : '' }}">
-            {!! Form::label('ip_address', trans('server/model.ip_address'), array('class' => 'control-label required')) !!}
+            {!! Form::label('ip_address', __('server/model.ip_address'), array('class' => 'control-label required')) !!}
             <div class="controls">
                 {!! Form::text('ip_address', null, array('class' => 'form-control', 'required' => 'required')) !!}
                 <span class="help-block">{{ $errors->first('ip_address', ':message') }}</span>
@@ -30,9 +30,9 @@
 
         <!-- type -->
         <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
-            {!! Form::label('type', trans('server/model.type'), array('class' => 'control-label required')) !!}
+            {!! Form::label('type', __('server/model.type'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::select('type', array('master' => trans('server/model.types.master'), 'slave' => trans('server/model.types.slave')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {!! Form::select('type', array('master' => __('server/model.types.master'), 'slave' => __('server/model.types.slave')), null, array('class' => 'form-control', 'required' => 'required')) !!}
                 {{ $errors->first('type', '<span class="help-inline">:message</span>') }}
             </div>
         </div>
@@ -40,9 +40,9 @@
 
         <!-- ns_record -->
         <div class="form-group {{ $errors->has('ns_record') ? 'has-error' : '' }}">
-            {!! Form::label('ns_record', trans('server/model.ns_record'), array('class' => 'control-label required')) !!}
+            {!! Form::label('ns_record', __('server/model.ns_record'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::select('ns_record', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {!! Form::select('ns_record', array('1' => __('general.yes'), '0' => __('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
                 {{ $errors->first('ns_record', '<span class="help-inline">:message</span>') }}
             </div>
         </div>
@@ -50,9 +50,9 @@
 
         <!-- push_updates -->
         <div class="form-group {{ $errors->has('push_updates') ? 'has-error' : '' }}">
-            {!! Form::label('push_updates', trans('server/model.push_updates'), array('class' => 'control-label required')) !!}
+            {!! Form::label('push_updates', __('server/model.push_updates'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::select('push_updates', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {!! Form::select('push_updates', array('1' => __('general.yes'), '0' => __('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
                 {{ $errors->first('push_updates', '<span class="help-inline">:message</span>') }}
             </div>
         </div>
@@ -60,9 +60,9 @@
 
         <!-- active -->
         <div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
-            {!! Form::label('active', trans('server/model.active'), array('class' => 'control-label required')) !!}
+            {!! Form::label('active', __('server/model.active'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::select('active', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {!! Form::select('active', array('1' => __('general.yes'), '0' => __('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
                 {{ $errors->first('active', '<span class="help-inline">:message</span>') }}
             </div>
         </div>
@@ -73,9 +73,9 @@
     <div class="box-footer">
         <!-- Form Actions -->
         <a href="{{ route('servers.index') }}" class="btn btn-primary" role="button">
-                <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
+                <i class="fa fa-arrow-left"></i> {{ __('general.back') }}
         </a>
-    {!! Form::button('<i class="fa fa-floppy-o"></i> ' . trans('general.save'), array('type' => 'submit', 'class' => 'btn btn-success')) !!}
+    {!! Form::button('<i class="fa fa-floppy-o"></i> ' . __('general.save'), array('type' => 'submit', 'class' => 'btn btn-success')) !!}
     <!-- ./ form actions -->
     </div>
 </div>

@@ -16,8 +16,8 @@
  */
 
 return [
-    'domain'            => 'Domain',
-    'master_server'     => 'Master DNS',
+    'domain'            => 'Domain (FQDN)',
+    'master_server'     => 'Primary DNS (server)',
     'has_modifications' => 'Modified',
     'type'              => 'Type',
 ];

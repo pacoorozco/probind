@@ -30,7 +30,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
                         <img src="{{ asset('images/missing_profile.png') }}" class="user-image"
-                             alt="{{ trans('user/profile.avatar') }}"/>
+                             alt="{{ __('user/profile.avatar') }}"/>
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
                         <span class="hidden-xs">{{ auth()->user()->name }}</span>
                     </a>
@@ -38,7 +38,7 @@
                         <!-- The user image in the menu -->
                         <li class="user-header">
                             <img src="{{ asset('images/missing_profile.png') }}" class="img-circle"
-                                 alt="{{ trans('user/profile.avatar') }}"/>
+                                 alt="{{ __('user/profile.avatar') }}"/>
                             <p>
                                 {{ auth()->user()->name }} - Admin
                                 <small>Member since {{ auth()->user()->created_at->format('M Y') }}</small>
@@ -48,7 +48,7 @@
                         <li class="user-footer">
                             <div class="pull-right">
                                 {!! Form::open(['url' => '/logout']) !!}
-                                {!! Form::button(trans('auth.logout'), ['type' => 'submit', 'class' => 'btn btn-default btn-flat']) !!}
+                                {!! Form::button(__('auth.logout'), ['type' => 'submit', 'class' => 'btn btn-default btn-flat']) !!}
                                 {!! Form::close() !!}
                             </div>
                         </li>

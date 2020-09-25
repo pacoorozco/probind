@@ -2,24 +2,24 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('user/title.user_management') }} :: @parent
+    {{ __('user/title.user_management') }} :: @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('user/title.user_management') }}
-    <small>{{ trans('user/title.user_management_subtitle') }}</small>
+    {{ __('user/title.user_management') }}
+    <small>{{ __('user/title.user_management_subtitle') }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
 @section('breadcrumbs')
     <li>
         <a href="{{ route('home') }}">
-            <i class="fa fa-dashboard"></i> {{ trans('site.dashboard') }}
+            <i class="fa fa-dashboard"></i> {{ __('site.dashboard') }}
         </a>
     </li>
     <li class="active">
-        {{ trans('site.users') }}
+        {{ __('site.users') }}
     </li>
 @endsection
 
@@ -33,7 +33,7 @@
 
     <!-- actions -->
     <a href="{{ route('users.create') }}" class="btn btn-success margin-bottom" role="button">
-            <i class="fa fa-plus"></i> {{ trans('user/title.create_new') }}
+            <i class="fa fa-plus"></i> {{ __('user/title.create_new') }}
     </a>
     <!-- /.actions -->
     <div class="box">

@@ -3,7 +3,7 @@
 
 // Fixem les llistes de control acces (ACL)
 acl "xfer" {
-    // No s'accepten transferencies cap a
+    // No s'accepten __ferencies cap a
     // cap servidor.
 };
 
@@ -39,15 +39,15 @@ options {
     // In order to increase performance we disable these statistics
     zone-statistics no;
 
-    // Genera una transferencia de zones mes eficient
+    // Genera una __ferencia de zones mes eficient
     // Coloca mes d'un registre DNS en el mateix
     // missatge, en comptes de nomes un.
-    transfer-format many-answers;
+    __fer-format many-answers;
 
-    // Fixa el maxim temps per a la transferencia
+    // Fixa el maxim temps per a la __ferencia
     // d'una zona. En cas de que trigui mes la
     // considera no completada.
-    max-transfer-time-in 60;
+    max-__fer-time-in 60;
 
     // Seguim en aquest cas la RFC1035
     auth-nxdomain no;
@@ -58,8 +58,8 @@ options {
 
     blackhole { bogusnets; };
 
-    allow-transfer {
-        // Per defecte limitem la transferencia
+    allow-__fer {
+        // Per defecte limitem la __ferencia
         // de zones a ACL "xfer"
         xfer;
     };

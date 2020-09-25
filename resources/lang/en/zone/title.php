@@ -17,11 +17,11 @@
 
 return [
     'zone_management'          => 'Zone Management',
-    'zone_management_subtitle' => 'create and edit zones',
-    'zone_show'                => 'Zone Details',
-    'create_new'               => 'Create a New Zone',
+    'zone_management_subtitle' => 'create and edit DNS zones',
+    'zone_show'                => 'Zone details',
+    'create_new'               => 'Create DNS zone',
     'create_new_subtitle'      => 'create a new zone',
-    'zone_edit'                => 'Edit Zone',
-    'zone_delete'              => 'Delete Zone',
+    'zone_edit'                => 'Edit DNS zone',
+    'zone_delete'              => 'Delete DNS zone',
     'custom_settings'          => 'Zone specific settings',
 ];

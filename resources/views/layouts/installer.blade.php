@@ -32,7 +32,7 @@
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 </head>
 <!-- start: BODY -->
-<body class="hold-transition skin-blue layout-top-nav">
+<body class="hold-__ition skin-blue layout-top-nav">
 <!-- start: MAIN CONTAINER -->
 <div class="wrapper">
 

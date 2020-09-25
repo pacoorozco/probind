@@ -2,12 +2,12 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('zone/title.zone_show') }} :: @parent
+    {{ __('zone/title.zone_show') }} :: @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('zone/title.zone_show') }}
+    {{ __('zone/title.zone_show') }}
     <small>{{ $zone->domain }}</small>
 @endsection
 
@@ -15,16 +15,16 @@
 @section('breadcrumbs')
     <li>
         <a href="{{ route('home') }}">
-            <i class="fa fa-dashboard"></i> {{ trans('site.dashboard') }}
+            <i class="fa fa-dashboard"></i> {{ __('site.dashboard') }}
         </a>
     </li>
     <li>
         <a href="{{ route('zones.index') }}">
-            {{ trans('site.zones') }}
+            {{ __('site.zones') }}
         </a>
     </li>
     <li class="active">
-        {{ trans('zone/title.zone_show') }}
+        {{ __('zone/title.zone_show') }}
     </li>
 @endsection
 

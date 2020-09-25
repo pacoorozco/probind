@@ -2,29 +2,29 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('server/title.server_show') }} :: @parent
+    {{ __('server/title.server_show') }} :: @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('server/title.server_show') }}
-    <small>{{ trans('server/title.server_show_subtitle', ['server' => $server->hostname]) }}</small>
+    {{ __('server/title.server_show') }}
+    <small>{{ __('server/title.server_show_subtitle', ['server' => $server->hostname]) }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
 @section('breadcrumbs')
     <li>
         <a href="{{ route('home') }}">
-            <i class="fa fa-dashboard"></i> {{ trans('site.dashboard') }}
+            <i class="fa fa-dashboard"></i> {{ __('site.dashboard') }}
         </a>
     </li>
     <li>
         <a href="{{ route('servers.index') }}">
-            {{ trans('site.servers') }}
+            {{ __('site.servers') }}
         </a>
     </li>
     <li class="active">
-        {{ trans('server/title.server_show') }}
+        {{ __('server/title.server_show') }}
     </li>
 @endsection
 

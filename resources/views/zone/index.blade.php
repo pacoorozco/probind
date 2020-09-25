@@ -2,24 +2,24 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('zone/title.zone_management') }} :: @parent
+    {{ __('zone/title.zone_management') }} @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('zone/title.zone_management') }}
-    <small>{{ trans('zone/title.zone_management_subtitle') }}</small>
+    {{ __('zone/title.zone_management') }}
+    <small>{{ __('zone/title.zone_management_subtitle') }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
 @section('breadcrumbs')
     <li>
         <a href="{{ route('home') }}">
-            <i class="fa fa-dashboard"></i> {{ trans('site.dashboard') }}
+            <i class="fa fa-dashboard"></i> {{ __('site.dashboard') }}
         </a>
     </li>
     <li class="active">
-        {{ trans('site.zones') }}
+        {{ __('site.zones') }}
     </li>
 @endsection
 
@@ -33,7 +33,7 @@
 
     <!-- actions -->
     <a href="{{ route('zones.create') }}" class="btn btn-success margin-bottom" role="button">
-            <i class="fa fa-plus"></i> {{ trans('zone/title.create_new') }}
+            <i class="fa fa-plus"></i> {{ __('zone/title.create_new') }}
     </a>
     <!-- /.actions -->
     <div class="box">

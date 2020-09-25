@@ -10,7 +10,7 @@
 
         <!-- username -->
         <div class="form-group {{ $errors->has('username') ? 'has-error' : '' }}">
-            {!! Form::label('username', trans('user/model.username'), array('class' => 'control-label required')) !!}
+            {!! Form::label('username', __('user/model.username'), array('class' => 'control-label required')) !!}
             <div class="controls">
                 @if (isset($user))
                     {!! Form::text('username', null, array('class' => 'form-control', 'disabled' => 'disabled')) !!}
@@ -24,7 +24,7 @@
 
         <!-- name -->
         <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-            {!! Form::label('name', trans('user/model.name'), array('class' => 'control-label required')) !!}
+            {!! Form::label('name', __('user/model.name'), array('class' => 'control-label required')) !!}
             <div class="controls">
                 {!! Form::text('name', null, array('class' => 'form-control', 'required' => 'required')) !!}
                 <span class="help-block">{{ $errors->first('name', ':message') }}</span>
@@ -34,7 +34,7 @@
 
         <!-- email -->
         <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
-            {!! Form::label('email', trans('user/model.email'), array('class' => 'control-label required')) !!}
+            {!! Form::label('email', __('user/model.email'), array('class' => 'control-label required')) !!}
             <div class="controls">
                 {!! Form::email('email', null, array('class' => 'form-control', 'required' => 'required')) !!}
                 {{ $errors->first('email', '<span class="help-inline">:message</span>') }}
@@ -44,7 +44,7 @@
 
         <!-- password -->
         <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
-            {!! Form::label('password', trans('user/model.password'), array('class' => 'control-label')) !!}
+            {!! Form::label('password', __('user/model.password'), array('class' => 'control-label')) !!}
             <div class="controls">
                 {!! Form::password('password', array('class' => 'form-control')) !!}
                 <span class="help-block">{{ $errors->first('password', ':message') }}</span>
@@ -54,7 +54,7 @@
 
         <!-- password_confirmation -->
         <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
-            {!! Form::label('password_confirmation', trans('user/model.password_confirmation'), array('class' => 'control-label')) !!}
+            {!! Form::label('password_confirmation', __('user/model.password_confirmation'), array('class' => 'control-label')) !!}
             <div class="controls">
                 {!! Form::password('password_confirmation', array('class' => 'form-control')) !!}
                 <span class="help-block">{{ $errors->first('password', ':message') }}</span>
@@ -66,9 +66,9 @@
 
         <!-- active -->
             <div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
-                {!! Form::label('active', trans('user/model.active'), array('class' => 'control-label required')) !!}
+                {!! Form::label('active', __('user/model.active'), array('class' => 'control-label required')) !!}
                 <div class="controls">
-                    {!! Form::select('active', array('1' => trans('general.yes'), '0' => trans('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                    {!! Form::select('active', array('1' => __('general.yes'), '0' => __('general.no')), null, array('class' => 'form-control', 'required' => 'required')) !!}
                     {{ $errors->first('active', '<span class="help-inline">:message</span>') }}
                 </div>
             </div>
@@ -80,9 +80,9 @@
     <div class="box-footer">
         <!-- Form Actions -->
         <a href="{{ route('users.index') }}" class="btn btn-primary" role="button">
-                <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
+                <i class="fa fa-arrow-left"></i> {{ __('general.back') }}
         </a>
-    {!! Form::button('<i class="fa fa-floppy-o"></i> ' . trans('general.save'), array('type' => 'submit', 'class' => 'btn btn-success', 'id' => 'submit')) !!}
+    {!! Form::button('<i class="fa fa-floppy-o"></i> ' . __('general.save'), array('type' => 'submit', 'class' => 'btn btn-success', 'id' => 'submit')) !!}
     <!-- ./ form actions -->
     </div>
 </div>

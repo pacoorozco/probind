@@ -6,20 +6,20 @@
 <table id="zones-table" class="table table-striped table-bordered">
     <thead>
     <tr>
-        <th class="col-md-4">{{ trans('zone/table.domain') }}</th>
-        <th class="col-md-1">{{ trans('zone/table.type') }}</th>
-        <th class="col-md-4">{{ trans('zone/table.master_server') }}</th>
-        <th class="col-md-1">{{ trans('zone/table.has_modifications') }}</th>
-        <th class="col-md-2">{{ trans('general.actions') }}</th>
+        <th class="col-md-4">{{ __('zone/table.domain') }}</th>
+        <th class="col-md-1">{{ __('zone/table.type') }}</th>
+        <th class="col-md-4">{{ __('zone/table.master_server') }}</th>
+        <th class="col-md-1">{{ __('zone/table.has_modifications') }}</th>
+        <th class="col-md-2">{{ __('general.actions') }}</th>
     </tr>
     </thead>
     <tfoot>
     <tr>
-        <th class="col-md-4">{{ trans('zone/table.domain') }}</th>
-        <th class="col-md-1">{{ trans('zone/table.type') }}</th>
-        <th class="col-md-4">{{ trans('zone/table.master_server') }}</th>
-        <th class="col-md-1">{{ trans('zone/table.has_modifications') }}</th>
-        <th class="col-md-2">{{ trans('general.actions') }}</th>
+        <th class="col-md-4">{{ __('zone/table.domain') }}</th>
+        <th class="col-md-1">{{ __('zone/table.type') }}</th>
+        <th class="col-md-4">{{ __('zone/table.master_server') }}</th>
+        <th class="col-md-1">{{ __('zone/table.has_modifications') }}</th>
+        <th class="col-md-2">{{ __('general.actions') }}</th>
     </tr>
     </tfoot>
 </table>
@@ -42,7 +42,7 @@
             "order": [[1, 'asc'], [0, 'asc']],
             "aLengthMenu": [
                 [5, 10, 15, 20, -1],
-                [5, 10, 15, 20, "{{ trans('general.all') }}"]
+                [5, 10, 15, 20, "{{ __('general.all') }}"]
             ],
             // set the initial value
             "iDisplayLength": 10
