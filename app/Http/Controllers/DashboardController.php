@@ -44,7 +44,7 @@ class DashboardController extends Controller
         $data['records'] = Record::all()->count();
         $data['users'] = User::all()->count();
 
-        $activityLog = Activity::orderBy('created_at', 'desc')->simplePaginate(10);
+        $activityLog = Activity::orderBy('created_at', 'desc')->orderBy('id', 'desc')->simplePaginate(10);
 
         return view('dashboard.index')
             ->with('data', $data)

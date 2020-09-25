@@ -54,6 +54,8 @@ class Zone extends Model
     use LogsActivity;
     use NullableFields;
 
+    protected static $logUnguarded = true;
+
     /**
      * The attributes that should be mutated to dates.
      *

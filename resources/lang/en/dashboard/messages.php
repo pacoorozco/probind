@@ -17,11 +17,12 @@
 
 return [
     'latest_activity' => 'Latest Activity',
-    'latest_jobs'     => 'Latest Job Executions',
+    'latest_jobs' => 'Latest Job Executions',
 
+    'id' => 'Id',
     'description' => 'Description',
-    'causer'      => 'User',
-    'created_at'  => 'When',
+    'causer' => 'User',
+    'created_at' => 'When',
 
     'more_activity' => 'More activity'
 ];
