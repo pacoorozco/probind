@@ -58,20 +58,32 @@ class ZoneController extends Controller
      */
     public function store(ZoneCreateRequest $request)
     {
-        $zone = new Zone();
-        $zone->domain = $request->input('domain');
-        $zone->reverse_zone = Zone::validateReverseDomainName($zone->domain);
+        try {
+            $zone = new Zone();
+            $zone->domain = $request->input('domain');
+            $zone->reverse_zone = Zone::isReverseZoneName($zone->domain);
 
-        // if it's a Master zone, assign new Serial Number and flag pending changes.
-        if (!$request->has('master_server')) {
-            $zone->serial = Zone::generateSerialNumber();
-            $zone->has_modifications = true;
+            // if it's a Master zone, assign new Serial Number and flag pending changes.
+            if (!$request->has('master_server')) {
+                $zone->serial = Zone::generateSerialNumber();
+                $zone->has_modifications = true;
+            }
+
+            // deal with checkboxes
+            $zone->custom_settings = $request->has('custom_settings');
+
+            $zone->fill($request->only([
+                'refresh',
+                'retry',
+                'expire',
+                'negative_ttl',
+                'default_ttl'
+            ]))->save();
+        } catch (\Throwable $exception) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', __('zone/messages.create.error'));
         }
-
-        // deal with checkboxes
-        $zone->custom_settings = $request->has('custom_settings');
-
-        $zone->fill($request->all())->save();
 
         return redirect()->route('zones.index')
             ->with('success', __('zone/messages.create.success'));

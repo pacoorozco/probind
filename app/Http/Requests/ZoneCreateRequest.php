@@ -17,6 +17,9 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\FullyQualifiedDomainName;
+use Illuminate\Validation\Rule;
+
 class ZoneCreateRequest extends ZoneRequest
 {
 
@@ -38,7 +41,7 @@ class ZoneCreateRequest extends ZoneRequest
     public function rules()
     {
         $rules = [
-            'domain'          => 'required|string|unique:zones',
+            'domain' => ['required', new FullyQualifiedDomainName, Rule::unique('zones')],
         ];
 
         return array_merge($rules, parent::rules());

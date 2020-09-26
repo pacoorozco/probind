@@ -5,6 +5,7 @@
  * This file is part of some open source application.
  * Licensed under GNU General Public License 3.0.
  * Some rights reserved. See LICENSE, AUTHORS.
+ *
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
@@ -14,6 +15,7 @@
 namespace App;
 
 use App\Helpers\DNSHelper;
+use App\Rules\FullyQualifiedDomainName;
 use Carbon\Carbon;
 use Iatstuti\Database\Support\NullableFields;
 use Illuminate\Database\Eloquent\Builder;
@@ -68,7 +70,7 @@ class Zone extends Model
     /**
      * The database table used by the model.
      */
-    protected $table = 'zones';
+    protected $table   = 'zones';
     protected $guarded = [];
     /**
      * The attributes that should be casted to native types.
@@ -76,17 +78,17 @@ class Zone extends Model
      * @var array
      */
     protected $casts = [
-        'domain'            => 'string',
-        'serial'            => 'integer',
-        'master_server'     => 'string',
+        'domain' => 'string',
+        'serial' => 'integer',
+        'master_server' => 'string',
         'has_modifications' => 'boolean',
-        'custom_settings'   => 'boolean',
-        'reverse_zone'      => 'boolean',
-        'refresh'           => 'integer',
-        'retry'             => 'integer',
-        'expire'            => 'integer',
-        'negative_ttl'      => 'integer',
-        'default_ttl'       => 'integer',
+        'custom_settings' => 'boolean',
+        'reverse_zone' => 'boolean',
+        'refresh' => 'integer',
+        'retry' => 'integer',
+        'expire' => 'integer',
+        'negative_ttl' => 'integer',
+        'default_ttl' => 'integer',
     ];
     /**
      * The attributes that should be casted to null if is empty.
@@ -99,32 +101,35 @@ class Zone extends Model
         'retry',
         'expire',
         'negative_ttl',
-        'default_ttl'
+        'default_ttl',
     ];
 
     /**
-     * Returns true if $domain is a valid NORMAL zone name.
+     * Returns true if the provided string is a valid zone name.
      *
-     * @param string $domain The domain to be validated.
+     * @see https://en.m.wikipedia.org/wiki/Fully_qualified_domain_name
+     *
+     * @param string $domain
      *
      * @return bool
      */
-    public static function validateNormalDomainName(string $domain) : bool
+    public static function isValidZoneName(string $domain): bool
     {
-        return \Badcow\DNS\Validator::fullyQualifiedDomainName($domain);
+        $rule = new FullyQualifiedDomainName();
+        return $rule->passes(null, $domain);
     }
 
+
     /**
-     * Returns true if $domain is a valid REVERSE zone name.
+     * Returns true if the provided string is a valid reverse zone name.
      *
      * @param string $domain The domain to be validated.
      *
      * @return bool
      */
-    public static function validateReverseDomainName(string $domain) : bool
+    public static function isReverseZoneName(string $domain): bool
     {
-        return preg_match('/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){0,2}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.in-addr.arpa\.$/',
-            $domain);
+        return (\Badcow\DNS\Validator::reverseIpv4($domain) || \Badcow\DNS\Validator::reverseIpv6($domain));
     }
 
     /**
@@ -134,17 +139,17 @@ class Zone extends Model
      *
      * @return string
      */
-    public function getDescriptionForEvent(string $eventName) : string
+    public function getDescriptionForEvent(string $eventName): string
     {
         return (string)trans('zone/messages.activity.' . $eventName, [
-            'domain' => $this->domain
+            'domain' => $this->domain,
         ]);
     }
 
     /**
      * Set the domain Zone attribute to lowercase.
      *
-     * @param  string $value
+     * @param string $value
      */
     public function setDomainAttribute(string $value)
     {
@@ -171,11 +176,11 @@ class Zone extends Model
      * up to 100 edits per day. After that the serial wraps into the next day and it still works.
      * We don't need to raise Serial Number in every change, only when last change was pushed.
      *
-     * @param  bool $force This flag force to raise the Serial Number.
+     * @param bool $force This flag force to raise the Serial Number.
      *
      * @return int
      */
-    public function getNewSerialNumber(bool $force = false) : int
+    public function getNewSerialNumber(bool $force = false): int
     {
         // Get current Zone serial number.
         $currentSerial = $this->serial;
@@ -202,7 +207,7 @@ class Zone extends Model
      *
      * @return bool
      */
-    public function hasPendingChanges() : bool
+    public function hasPendingChanges(): bool
     {
         return $this->has_modifications;
     }
@@ -214,7 +219,7 @@ class Zone extends Model
      *
      * @return int
      */
-    public function raiseSerialNumber(int $currentSerial) : int
+    public function raiseSerialNumber(int $currentSerial): int
     {
         // Create a new serial number YYYYMMDD00.
         $nowSerial = Zone::generateSerialNumber();
@@ -229,7 +234,7 @@ class Zone extends Model
      *
      * @return int
      */
-    public static function generateSerialNumber() : int
+    public static function generateSerialNumber(): int
     {
         return intval(Carbon::now()->format('Ymd') . '00');
     }
@@ -241,7 +246,7 @@ class Zone extends Model
      *
      * @return bool
      */
-    public function setPendingChanges(bool $value = true) : bool
+    public function setPendingChanges(bool $value = true): bool
     {
         if ($this->hasPendingChanges() !== $value) {
             $this->has_modifications = $value;
@@ -258,7 +263,7 @@ class Zone extends Model
      *
      * @codeCoverageIgnore
      */
-    public function getDefaultTTL() : int
+    public function getDefaultTTL(): int
     {
         return intval(($this->custom_settings) ? $this->default_ttl : Setting::get('zone_default_default_ttl'));
     }
@@ -270,7 +275,7 @@ class Zone extends Model
      *
      * @codeCoverageIgnore
      */
-    public function getSOARecord() : string
+    public function getSOARecord(): string
     {
         $content = sprintf("%-16s IN\tSOA\t%s. %s. (\n", '@', $this->getPrimaryNameServer(),
             $this->getHostmasterEmail());
@@ -291,7 +296,7 @@ class Zone extends Model
      *
      * @codeCoverageIgnore
      */
-    public function getPrimaryNameServer() : string
+    public function getPrimaryNameServer(): string
     {
         return Setting::get('zone_default_mname');
     }
@@ -303,7 +308,7 @@ class Zone extends Model
      *
      * @codeCoverageIgnore
      */
-    public function getHostmasterEmail() : string
+    public function getHostmasterEmail(): string
     {
         return strtr(Setting::get('zone_default_rname'), '@', '.');
     }
@@ -315,7 +320,7 @@ class Zone extends Model
      *
      * @codeCoverageIgnore
      */
-    public function getRefresh() : int
+    public function getRefresh(): int
     {
         return intval(($this->custom_settings) ? $this->refresh : Setting::get('zone_default_refresh'));
     }
@@ -327,7 +332,7 @@ class Zone extends Model
      *
      * @codeCoverageIgnore
      */
-    public function getRetry() : int
+    public function getRetry(): int
     {
         return intval(($this->custom_settings) ? $this->retry : Setting::get('zone_default_retry'));
     }
@@ -339,7 +344,7 @@ class Zone extends Model
      *
      * @codeCoverageIgnore
      */
-    public function getExpire() : int
+    public function getExpire(): int
     {
         return intval(($this->custom_settings) ? $this->expire : Setting::get('zone_default_expire'));
     }
@@ -351,7 +356,7 @@ class Zone extends Model
      *
      * @codeCoverageIgnore
      */
-    public function getNegativeTTL() : int
+    public function getNegativeTTL(): int
     {
         return intval(($this->custom_settings) ? $this->negative_ttl : Setting::get('zone_default_negative_ttl'));
     }
@@ -389,7 +394,7 @@ class Zone extends Model
      *
      * @return string
      */
-    public function getTypeOfZone() : string
+    public function getTypeOfZone(): string
     {
         return ($this->isMasterZone()) ? 'master' : 'slave';
     }
@@ -402,7 +407,7 @@ class Zone extends Model
      *
      * @return bool
      */
-    public function isMasterZone() : bool
+    public function isMasterZone(): bool
     {
         return is_null($this->master_server);
     }
@@ -414,7 +419,7 @@ class Zone extends Model
      *
      * @return array
      */
-    public function getValidRecordTypesForThisZone() : array
+    public function getValidRecordTypesForThisZone(): array
     {
         return ($this->reverse_zone)
             ? Arr::only(DNSHelper::getValidRecordTypesWithDescription(), ['PTR', 'TXT', 'NS'])

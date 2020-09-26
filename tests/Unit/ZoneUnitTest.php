@@ -35,7 +35,7 @@ class ZoneUnitTest extends TestCase
     {
         $expectedZone = factory(Zone::class)->make();
 
-        $zone = new Zone();
+        $zone         = new Zone();
         $zone->domain = strtoupper($expectedZone->domain);
 
         // Attribute must be lower cased
@@ -48,7 +48,7 @@ class ZoneUnitTest extends TestCase
     public function testGenerateSerialNumber()
     {
         $expectedSerial = intval(Carbon::now()->format('Ymd') . '00');
-        $serial = Zone::generateSerialNumber();
+        $serial         = Zone::generateSerialNumber();
         $this->assertEquals($expectedSerial, $serial);
     }
 
@@ -120,7 +120,7 @@ class ZoneUnitTest extends TestCase
     public function testRaiseSerialNumber()
     {
         // Create a Zone without pending changes
-        $zone = factory(Zone::class)->create();
+        $zone           = factory(Zone::class)->create();
         $expectedSerial = $zone->serial;
         $zone->setPendingChanges(false);
 
@@ -147,7 +147,7 @@ class ZoneUnitTest extends TestCase
         $this->assertGreaterThan($expectedSerial, $zone->serial);
 
         // Create a low Serial Number and raise serial
-        $zone->serial = 2010010100;
+        $zone->serial   = 2010010100;
         $expectedSerial = Zone::generateSerialNumber();
         $zone->getNewSerialNumber(true);
         $this->assertEquals($expectedSerial, $zone->serial);
@@ -160,7 +160,7 @@ class ZoneUnitTest extends TestCase
     {
         // Create a Zone without pending changes
         $zone = factory(Zone::class)->create([
-            'has_modifications' => false
+            'has_modifications' => false,
         ]);
         // Pre-condition.
         $this->assertFalse($zone->hasPendingChanges());
@@ -177,7 +177,7 @@ class ZoneUnitTest extends TestCase
     {
         // Create Zone that are out this scope.
         factory(Zone::class, 5)->create([
-            'has_modifications' => false
+            'has_modifications' => false,
         ]);
         $zonesWithPendingChanges = Zone::withPendingChanges()->get();
 
@@ -186,7 +186,7 @@ class ZoneUnitTest extends TestCase
 
         // Create Zone that are in this scope.
         factory(Zone::class, 5)->create([
-            'has_modifications' => true
+            'has_modifications' => true,
         ]);
         $zonesWithPendingChanges = Zone::withPendingChanges()->get();
 
@@ -200,7 +200,7 @@ class ZoneUnitTest extends TestCase
     {
         // Create Zone that are out this scope
         factory(Zone::class, 5)->create([
-            'master_server' => '192.168.1.3'
+            'master_server' => '192.168.1.3',
         ]);
         $masterZones = Zone::onlyMasterZones()->get();
 
@@ -209,7 +209,7 @@ class ZoneUnitTest extends TestCase
 
         // Create Zone that are in this scope
         factory(Zone::class, 5)->create([
-            'master_server' => null
+            'master_server' => null,
         ]);
         $masterZones = Zone::onlyMasterZones()->get();
 
@@ -217,68 +217,85 @@ class ZoneUnitTest extends TestCase
     }
 
     /**
-     * Test for Normal zone name validation.
+     * Data Set for Zone name validation.
+     *
+     * @return array
      */
-    public function testValidateNormalZoneName()
+    public function zoneNameDataSet(): array
     {
-        $validDomainTestCase = [
-            'domain.com.',
-            'sub.domain.com.',
+        return [
+            // 'name of the test case' => ['input', 'expected']
+            'second level domain' => ['domain.com.', true],
+            'third level domain' => ['sub.domain.com.', true],
+            'short root TLD' => ['invali.d.', true],
+            'domain with punycode' => ['xn--domain.com.', true],
+            'IPv4 reverse domain' => ['10.10.10.in-addr.arpa.', true],
+            'IPv6 reverse domain' => ['1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa.', true],
+
+            'too short' => ['.', false],
+            'without ending dot' => ['domain.com', false],
+            'domain too long' => ['abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ', false],
+            'invalid chars' => ['0123456789 +-.,!@#$%^&*();\\/|<>\"\\', false],
+            'spaces' => ['12345 -98.7 3.141 .6180 9,000 +42', false],
+            'two consecutive dots' => ['domain..com.', false],
+            'two consecutive underscores' => ['domain___.com.', false],
         ];
+    }
 
-        foreach ($validDomainTestCase as $domain) {
-            $this->assertTrue(Zone::validateNormalDomainName($domain),
-                'Failed test, this zone name is valid: ' . $domain);
-        }
+    /**
+     * Test for FQDN zone names.
+     *
+     * @test
+     * @dataProvider zoneNameDataSet
+     *
+     * @param string $input
+     * @param bool   $want
+     */
+    public function validates_zone_name(string $input, bool $want): void
+    {
+        $this->assertEquals($want, Zone::isValidZoneName($input));
+    }
 
-        $invalidDomainTestCase = [
-            'domain.',
-            '.com.',
-            '_domain.com.',
-            'domain._com.',
-            'sub domain.com.',
-            'domain..com.',
-            'domain___.com.',
-            '10.10.10.in-addr.arpa.',
-            '168.192.in-addr.arpa.',
-            'domain.com',
+    /**
+     * Data Set for reverse Zone name validation.
+     *
+     * @return array
+     */
+    public function zoneReverseZoneDataSet(): array
+    {
+        return [
+            // 'name of the test case' => ['input', 'expected']
+            'IPv4 first level' => ['10.in-addr.arpa.', true],
+            'IPv4 second level' => ['11.10.in-addr.arpa.', true],
+            'IPV4 third level' => ['12.11.10.in-addr.arpa.', true],
+            'IPv6 reverse domain' => ['1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa.', true],
+
+            'too short' => ['.', false],
+            'non arpa domain' => ['domain.com.', false],
+            'without ending dot' => ['10.in-addr.arpa', false],
+            'domain too long' => ['abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ.in-addr.arpa.', false],
+            'invalid chars' => ['0123456789 +-.,!@#$%^&*();\\/|<>\"\\.in-addr.arpa.', false],
+            'spaces' => ['12345 -98.7 3.141 .6180 9,000 +42.in-addr.arpa.', false],
+            'two consecutive dots' => ['10..in-addr.arpa..', false],
         ];
-
-        foreach ($invalidDomainTestCase as $domain) {
-            $this->assertFalse(Zone::validateNormalDomainName($domain),
-                'Failed test, this zone name is invalid: ' . $domain);
-        }
     }
 
     /**
      * Test for Reverse zone name validation.
      */
-    public function testValidateReverseZoneName()
+    /**
+     * Test for reverse zone names.
+     *
+     * @test
+     * @dataProvider zoneReverseZoneDataSet
+     *
+     * @param string $input
+     * @param bool   $want
+     */
+    public function validates_reverse_zone_name(string $input, bool $want): void
     {
-        $validDomainTestCase = [
-            '10.in-addr.arpa.',
-            '11.10.in-addr.arpa.',
-            '12.11.10.in-addr.arpa.',
-        ];
+        $this->assertEquals($want, Zone::isReverseZoneName($input));
 
-        foreach ($validDomainTestCase as $domain) {
-            $this->assertTrue(Zone::validateReverseDomainName($domain),
-                'Failed test, this reverse zone name is valid: ' . $domain);
-        }
-
-        $invalidDomainTestCase = [
-            'domain.com.',
-            'sub.domain.com.',
-            '256.in-addr.arpa.',
-            '10.256.in-addr.arpa.',
-            '13.12.11.10.in-addr.arpa.',
-            '10.in-addr.arpa',
-        ];
-
-        foreach ($invalidDomainTestCase as $domain) {
-            $this->assertFalse(Zone::validateReverseDomainName($domain),
-                'Failed test, this reverse zone name is invalid: ' . $domain);
-        }
     }
 
     /**

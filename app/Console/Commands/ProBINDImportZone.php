@@ -69,7 +69,7 @@ class ProBINDImportZone extends Command
         foreach ($zoneData->getResourceRecords() as $record) {
             if ($record->getType() === "SOA") {
                 $zone->update([
-                    'reverse_zone' => Zone::validateReverseDomainName($domain),
+                    'reverse_zone' => Zone::isReverseZoneName($domain),
                     'serial' => $record->getRdata()->getSerial(),
                     'refresh' => $record->getRdata()->getRefresh(),
                     'retry' => $record->getRdata()->getRetry(),
