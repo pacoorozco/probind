@@ -12,7 +12,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Zone::class, function (Faker $faker) {
     return [
-        'domain'            => $faker->unique()->domainName,
+        'domain'            => $faker->unique()->domainName . '.',
         'serial'            => Zone::generateSerialNumber(),
         'master_server'     => $faker->optional()->ipv4,
         'has_modifications' => true,
@@ -29,7 +29,7 @@ $factory->define(Zone::class, function (Faker $faker) {
 $factory->defineAs(Zone::class, 'reverse', function (Faker $faker) {
     $parts = explode('.', $faker->unique()->ipv4, -1);
     $reverse_ip = implode('.', array_reverse($parts));
-    $reverseZoneName = $reverse_ip . '.in-addr.arpa';
+    $reverseZoneName = $reverse_ip . '.in-addr.arpa.';
 
     return [
         'domain'            => $reverseZoneName,

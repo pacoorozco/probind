@@ -35,7 +35,7 @@
         <div class="form-group">
             {!! Form::label('active', __('user/model.active'), array('class' => 'control-label')) !!}
             <div class="controls">
-                {{ ___choice('general.boolean', $user->active) }}
+                {{ trans_choice('general.boolean', $user->active) }}
             </div>
         </div>
         <!-- ./ active -->

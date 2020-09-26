@@ -11,6 +11,10 @@
     </div>
     <div class="box-body">
 
+        <!-- zone_type -->
+        {!! Form::hidden('zone_type', 'primary-zone') !!}
+        <!-- ./zone_type -->
+
         <!-- domain -->
         <div class="form-group {{ $errors->has('domain') ? 'has-error' : '' }}">
             {!! Form::label('domain', __('zone/model.domain'), ['class' => 'control-label required']) !!}

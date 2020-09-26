@@ -16,14 +16,15 @@
  */
 
 return [
-    'zone_management'          => 'Zone Management',
+    'zone_management' => 'Zone Management',
     'zone_management_subtitle' => 'create and edit DNS zones',
-    'zone_show'                => 'Zone details',
-    'create_new'               => 'Create DNS zone',
-    'create_new_subtitle'      => 'create a new DNS zone',
-    'zone_edit'                => 'Edit DNS zone',
-    'zone_delete'              => 'Delete DNS zone',
-    'custom_settings'          => 'Zone specific settings',
+    'zone_show' => 'Zone details',
+    'create_new' => 'Create DNS zone',
+    'create_new_subtitle' => 'create a new DNS zone',
+    'zone_edit' => 'Edit DNS zone',
+    'zone_delete' => 'Delete DNS zone',
+    'custom_settings' => 'Zone specific settings',
+    'resource_records' => 'Resource records',
 
     'primary_dns_zone' => 'Primary DNS zone (master)',
     'secondary_dns_zone' => 'Secondary DNS zone (slave)',

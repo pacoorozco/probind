@@ -8,7 +8,7 @@
 {{-- Content Header --}}
 @section('header')
     {{ __('zone/title.zone_edit') }}
-    <small>{{ $zone->domain }}</small>
+    <small>{{ $zone->present()->domain }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}

@@ -12,7 +12,7 @@
     </div>
 </div>
 
-{!! Form::open(array('route' => array('zones.destroy', $zone), 'method' => 'delete')) !!}
+{!! Form::open(['route' => array('zones.destroy', $zone), 'method' => 'delete']) !!}
 <!-- deleteConfirmation modal -->
 <div class="modal fade" id="deleteConfirmation">
     <div class="modal-dialog">
@@ -27,15 +27,15 @@
                     <p>{{ __('general.unexpected_things_warning') }}</p>
                 </div>
                 <p>{!! __('general.action_cannot_be_undone') !!}</p>
-                <p>{!! __('zone/messages.delete.confirmation', array('domain' => $zone->domain)) !!}</p>
+                <p>{!! __('zone/messages.delete.confirmation', ['domain' => $zone->domain]) !!}</p>
                 <div class="box-body">
                     <div class="form-group">
-                        {!! Form::label('domainInput', __('general.please_confirm_to_delete', array('item'=>'zone')), array('class' => 'control-label')) !!}
-                        {!! Form::text('domainInput', null, array('class' => 'form-control', 'id' => 'domainInput')) !!}
+                        {!! Form::label('domainInput', __('general.please_confirm_to_delete', ['item'=>'zone']), ['class' => 'control-label']) !!}
+                        {!! Form::text('domainInput', null, ['class' => 'form-control', 'id' => 'domainInput']) !!}
                     </div>
                 </div>
                 <div class="modal-footer">
-                    {!! Form::button(__('general.i_understand_consequences', array('item' => 'zone')), ['type' => 'submit', 'id' => 'submitBtn', 'class' => 'btn btn-danger btn-block', 'disabled' => 'disabled']) !!}
+                    {!! Form::button(__('general.i_understand_consequences', ['item' => 'zone']), ['type' => 'submit', 'id' => 'submitBtn', 'class' => 'btn btn-danger btn-block', 'disabled' => 'disabled']) !!}
                 </div>
             </div>
         </div>

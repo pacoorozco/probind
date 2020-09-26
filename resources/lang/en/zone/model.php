@@ -16,7 +16,7 @@
  */
 
 return [
-    'domain'          => 'Domain (FQDN)',
+    'domain'          => 'Zone name (FQDN)',
     'serial'          => 'Serial',
     'master_server'   => 'Primary DNS (server IP)',
     'type'            => 'Type',
@@ -28,17 +28,26 @@ return [
     'copy_values_from_defaults' => 'Copy values from defaults',
 
     'refresh'      => 'Refresh time (seconds)',
-    'refresh_help' => 'Sets how often the zone should be synchronized from master name server to slave name server.',
+    'refresh_help' => 'Sets how often the zone should be synchronized from primary name server to secondary name server.',
 
     'retry'      => 'Retry time (seconds)',
-    'retry_help' => 'Sets how often slave name servers try to synchronize the zone from master name server if synchronization fails.',
+    'retry_help' => 'Sets how often secondary name servers try to synchronize the zone from primary name server if synchronization fails.',
 
     'expire'      => 'Expiration (seconds)',
-    'expire_help' => 'Means the period after which the zone expires on slave name servers and slave name servers and slave server stop answering replies until it is synchronized.',
+    'expire_help' => 'Means the period after which the zone expires on secondary name servers.',
 
     'negative_ttl'      => 'Negative Answers TTL (seconds)',
-    'negative_ttl_help' => 'Specifies the time to live in the zone for caching negative answers on slave servers.',
+    'negative_ttl_help' => 'Specifies the time to live in the zone for caching negative answers on secondary servers.',
 
     'default_ttl'      => 'Default TTL for records (seconds)',
     'default_ttl_help' => 'Specifies the time to live for all records in the zone that do not have an explicit TTL.',
+
+    'created_at' => 'Created at',
+    'updated_at' => 'Last updated at',
+
+    'status' => 'Status',
+    'status_list' => [
+        'synced' => 'Synced',
+        'unsynced' => 'Needs sync',
+    ],
 ];

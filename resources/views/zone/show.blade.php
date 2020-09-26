@@ -8,7 +8,7 @@
 {{-- Content Header --}}
 @section('header')
     {{ __('zone/title.zone_show') }}
-    <small>{{ $zone->domain }}</small>
+    <small>{{ $zone->present()->domain }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
@@ -44,6 +44,7 @@
             @endif
         </div>
         <div class="col-md-4">
+            @includeWhen($zone->isMasterZone(), 'zone/_resource_records')
             @include('zone/_delete')
         </div>
     </div>

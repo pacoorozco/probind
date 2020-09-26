@@ -11,6 +11,10 @@
     </div>
     <div class="box-body">
 
+        <!-- zone_type -->
+        {!! Form::hidden('zone_type', 'secondary-zone') !!}
+        <!-- ./zone_type -->
+
         <!-- domain -->
         <div class="form-group {{ $errors->has('domain') ? 'has-error' : '' }}">
             {!! Form::label('domain', __('zone/model.domain'), ['class' => 'control-label required']) !!}
@@ -39,7 +43,7 @@
     <div class="box-footer">
         <!-- Form Actions -->
         <a href="{{ route('zones.index') }}" class="btn btn-default" role="button">
-                <i class="fa fa-arrow-left"></i> {{ __('general.back') }}
+            <i class="fa fa-arrow-left"></i> {{ __('general.back') }}
         </a>
     {!! Form::button('<i class="fa fa-floppy-o"></i> ' . __('general.save'), ['type' => 'submit', 'class' => 'btn btn-success pull-right', 'id' => 'slave_zone']) !!}
     <!-- ./ form actions -->

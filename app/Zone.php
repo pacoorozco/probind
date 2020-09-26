@@ -15,6 +15,7 @@
 namespace App;
 
 use App\Helpers\DNSHelper;
+use App\Presenters\ZonePresenter;
 use App\Rules\FullyQualifiedDomainName;
 use Carbon\Carbon;
 use Iatstuti\Database\Support\NullableFields;
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
+use Laracodes\Presenter\Traits\Presentable;
 use Setting;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -55,8 +57,11 @@ class Zone extends Model
     use SoftDeletes;
     use LogsActivity;
     use NullableFields;
+    use Presentable;
 
     protected static $logUnguarded = true;
+
+    protected $presenter = ZonePresenter::class;
 
     /**
      * The attributes that should be mutated to dates.
@@ -209,7 +214,7 @@ class Zone extends Model
      */
     public function hasPendingChanges(): bool
     {
-        return $this->has_modifications;
+        return (true === $this->has_modifications);
     }
 
     /**
