@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ceb83492f892658c6d262cf1c7678285",
+    "content-hash": "d2a23c62831fd5b825228b9a5e4e65b3",
     "packages": [
         {
             "name": "ademarre/binary-to-text-php",
@@ -694,31 +694,31 @@
             "time": "2020-06-23T01:36:47+00:00"
         },
         {
-            "name": "laracasts/presenter",
-            "version": "0.2.4",
+            "name": "guilhermegonzaga/presenter",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/laracasts/Presenter.git",
-                "reference": "65fd3a79ef4caafa3db2fb35f2b7c6a4ffa13f6e"
+                "url": "https://github.com/guilhermegonzaga/presenter.git",
+                "reference": "ca1c0d6b9dcbe854493afc0b9b566e940f69b524"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laracasts/Presenter/zipball/65fd3a79ef4caafa3db2fb35f2b7c6a4ffa13f6e",
-                "reference": "65fd3a79ef4caafa3db2fb35f2b7c6a4ffa13f6e",
+                "url": "https://api.github.com/repos/guilhermegonzaga/presenter/zipball/ca1c0d6b9dcbe854493afc0b9b566e940f69b524",
+                "reference": "ca1c0d6b9dcbe854493afc0b9b566e940f69b524",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "~5.0|~6.0|~7.0|~8.0",
+                "illuminate/database": "^5.0|^6.0|^7.0|^8.0",
+                "illuminate/support": "^5.0|^6.0|^7.0|^8.0",
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "mockery/mockery": "~0.9",
-                "phpspec/phpspec": "~2.0"
+                "phpunit/phpunit": "~5.2"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Laracasts\\Presenter": "src/"
+                "psr-4": {
+                    "Laracodes\\Presenter\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -727,17 +727,18 @@
             ],
             "authors": [
                 {
-                    "name": "Jeffrey Way",
-                    "email": "jeffrey@laracasts.com"
+                    "name": "Guilherme de Oliveira Gonzaga",
+                    "email": "guilherme10gonzaga@gmail.com"
                 }
             ],
-            "description": "Simple view presenters",
+            "description": "Implementation for Laravel of the presenter design pattern.",
             "keywords": [
+                "entity",
                 "laravel",
                 "presenter",
                 "view"
             ],
-            "time": "2020-09-07T13:30:46+00:00"
+            "time": "2020-09-18T00:07:58+00:00"
         },
         {
             "name": "larapacks/setting",
