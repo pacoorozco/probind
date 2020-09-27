@@ -190,12 +190,8 @@ class ZoneController extends Controller
      */
     public function data(DataTables $dataTable)
     {
-        $zones = Zone::select([
-            'id',
-            'domain',
-            'master_server',
-            'has_modifications',
-        ])->orderBy('domain', 'ASC');
+        $zones = Zone::withCount('records')
+            ->orderBy('domain', 'ASC');
 
         return $dataTable->eloquent($zones)
             ->addColumn('type', function (Zone $zone) {

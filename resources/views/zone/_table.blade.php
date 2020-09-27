@@ -8,7 +8,8 @@
     <tr>
         <th class="col-md-4">{{ __('zone/table.domain') }}</th>
         <th class="col-md-1">{{ __('zone/table.type') }}</th>
-        <th class="col-md-4">{{ __('zone/table.master_server') }}</th>
+        <th class="col-md-3">{{ __('zone/table.master_server') }}</th>
+        <th class="col-md-1">{{ __('zone/table.records_count') }}</th>
         <th class="col-md-1">{{ __('zone/table.has_modifications') }}</th>
         <th class="col-md-2">{{ __('general.actions') }}</th>
     </tr>
@@ -17,7 +18,8 @@
     <tr>
         <th class="col-md-4">{{ __('zone/table.domain') }}</th>
         <th class="col-md-1">{{ __('zone/table.type') }}</th>
-        <th class="col-md-4">{{ __('zone/table.master_server') }}</th>
+        <th class="col-md-3">{{ __('zone/table.master_server') }}</th>
+        <th class="col-md-1">{{ __('zone/table.records_count') }}</th>
         <th class="col-md-1">{{ __('zone/table.has_modifications') }}</th>
         <th class="col-md-2">{{ __('general.actions') }}</th>
     </tr>
@@ -37,6 +39,7 @@
                     {data: "domain"},
                     {data: "type"},
                     {data: "master_server"},
+                    {data: "records_count", "searchable": false},
                     {data: "has_modifications", "orderable": false, "searchable": false},
                     {data: "actions", "orderable": false, "searchable": false}
                 ],

@@ -208,11 +208,13 @@ class Zone extends Model
     /**
      * Returns the number of related resource records.
      *
+     * @param $value
+     *
      * @return int
      */
-    public function getRecordsCountAttribute(): int
+    public function getRecordsCountAttribute($value): int
     {
-        return $this->records()->count();
+        return $value ?? $this->records_count = $this->records()->count();
     }
 
     /**
