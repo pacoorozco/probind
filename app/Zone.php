@@ -46,6 +46,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int    $negative_ttl          Custom Negative TTL value.
  * @property int    $default_ttl           Custom TTL value.
  * @property bool   $has_modifications     This flag determines if this zone has been modified from last push.
+ * @property bool   $records_count         The number of resource records associated to this zone..
  *
  * @link https://www.ietf.org/rfc/rfc1035.txt
  * @link https://www.ietf.org/rfc/rfc2782.txt
