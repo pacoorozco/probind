@@ -35,7 +35,7 @@ class ZoneUnitTest extends TestCase
     {
         $expectedZone = factory(Zone::class)->make();
 
-        $zone         = new Zone();
+        $zone = new Zone();
         $zone->domain = strtoupper($expectedZone->domain);
 
         // Attribute must be lower cased
@@ -48,7 +48,7 @@ class ZoneUnitTest extends TestCase
     public function testGenerateSerialNumber()
     {
         $expectedSerial = intval(Carbon::now()->format('Ymd') . '00');
-        $serial         = Zone::generateSerialNumber();
+        $serial = Zone::generateSerialNumber();
         $this->assertEquals($expectedSerial, $serial);
     }
 
@@ -115,12 +115,40 @@ class ZoneUnitTest extends TestCase
     }
 
     /**
+     * Provides a data set for record count test.
+     *
+     * @return array
+     */
+    public function recordCountDataSet(): array
+    {
+        return [
+            'zero records' => [0, 0],
+            'one record' => [1, 1],
+            'a hundred records' => [100, 100],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider recordCountDataSet
+     *
+     * @param int $input
+     * @param int $want
+     */
+    public function get_record_count_attribute(int $input, int $want): void
+    {
+        $zone = factory(Zone::class)->create();
+        $zone->records()->saveMany(factory(Record::class, 'A', $input)->make());
+        $this->assertSame($want, $zone->records_count);
+    }
+
+    /**
      * Test Zone raiseSerialNumber() function
      */
     public function testRaiseSerialNumber()
     {
         // Create a Zone without pending changes
-        $zone           = factory(Zone::class)->create();
+        $zone = factory(Zone::class)->create();
         $expectedSerial = $zone->serial;
         $zone->setPendingChanges(false);
 
@@ -147,7 +175,7 @@ class ZoneUnitTest extends TestCase
         $this->assertGreaterThan($expectedSerial, $zone->serial);
 
         // Create a low Serial Number and raise serial
-        $zone->serial   = 2010010100;
+        $zone->serial = 2010010100;
         $expectedSerial = Zone::generateSerialNumber();
         $zone->getNewSerialNumber(true);
         $this->assertEquals($expectedSerial, $zone->serial);

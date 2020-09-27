@@ -33,6 +33,9 @@ class ZonesTableSeeder extends Seeder
         factory(Zone::class, 15)
             ->create()
             ->each(function (Zone $zone) {
+                if (!$zone->isMasterZone()) {
+                    return;
+                }
                 $records = factory(Record::class, 'A', 10)->make();
                 foreach ($records as $record) {
                     $zone->records()->save($record);

@@ -175,9 +175,7 @@ return [
         /*
          * Third Party Service Providers...
          */
-        Collective\Html\HtmlServiceProvider::class, // HTML helpers
-        Spatie\Activitylog\ActivitylogServiceProvider::class, // Activity Log helpers
-        Larapacks\Setting\SettingServiceProvider::class, // Settings
+        //
 
         /*
          * Application Service Providers...

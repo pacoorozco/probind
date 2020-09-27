@@ -206,6 +206,16 @@ class Zone extends Model
     }
 
     /**
+     * Returns the number of related resource records.
+     *
+     * @return int
+     */
+    public function getRecordsCountAttribute(): int
+    {
+        return $this->records()->count();
+    }
+
+    /**
      * Return true if this zone has been modified from last push.
      *
      * This checks whether the Zone has been modified from the last push.
@@ -285,10 +295,10 @@ class Zone extends Model
         $content = sprintf("%-16s IN\tSOA\t%s. %s. (\n", '@', $this->getPrimaryNameServer(),
             $this->getHostmasterEmail());
         $content .= sprintf("%40s %-10d ; Serial (aaaammddvv)\n", ' ', $this->serial);
-        $content .= sprintf("%40s %-10d ; Refresh\n", ' ', $this->getRefresh());
-        $content .= sprintf("%40s %-10d ; Retry\n", ' ', $this->getRetry());
-        $content .= sprintf("%40s %-10d ; Expire\n", ' ', $this->getExpire());
-        $content .= sprintf("%40s %-10d ; Negative TTL\n", ' ', $this->getNegativeTTL());
+        $content .= sprintf("%40s %-10d ; Refresh\n", ' ', $this->present()->refresh);
+        $content .= sprintf("%40s %-10d ; Retry\n", ' ', $this->present()->retry);
+        $content .= sprintf("%40s %-10d ; Expire\n", ' ', $this->present()->expire);
+        $content .= sprintf("%40s %-10d ; Negative TTL\n", ' ', $this->present()->negative_ttl);
         $content .= sprintf(")");
 
         return $content;
@@ -316,54 +326,6 @@ class Zone extends Model
     public function getHostmasterEmail(): string
     {
         return strtr(Setting::get('zone_default_rname'), '@', '.');
-    }
-
-    /**
-     * Returns the Refresh time for this zone.
-     *
-     * @return int
-     *
-     * @codeCoverageIgnore
-     */
-    public function getRefresh(): int
-    {
-        return intval(($this->custom_settings) ? $this->refresh : Setting::get('zone_default_refresh'));
-    }
-
-    /**
-     * Returns the Retry time for this zone.
-     *
-     * @return int
-     *
-     * @codeCoverageIgnore
-     */
-    public function getRetry(): int
-    {
-        return intval(($this->custom_settings) ? $this->retry : Setting::get('zone_default_retry'));
-    }
-
-    /**
-     * Returns the Expire time for this zone.
-     *
-     * @return int
-     *
-     * @codeCoverageIgnore
-     */
-    public function getExpire(): int
-    {
-        return intval(($this->custom_settings) ? $this->expire : Setting::get('zone_default_expire'));
-    }
-
-    /**
-     * Returns the Negative TTL for this zone.
-     *
-     * @return int
-     *
-     * @codeCoverageIgnore
-     */
-    public function getNegativeTTL(): int
-    {
-        return intval(($this->custom_settings) ? $this->negative_ttl : Setting::get('zone_default_negative_ttl'));
     }
 
     /**
