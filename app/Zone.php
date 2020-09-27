@@ -217,6 +217,41 @@ class Zone extends Model
         return $value ?? $this->records_count = $this->records()->count();
     }
 
+    public function getRefreshAttribute($value)
+    {
+        return (true === $this->custom_settings)
+            ? $value
+            : $this->refresh = Setting::get('zone_default_refresh');
+    }
+
+    public function getRetryAttribute($value)
+    {
+        return (true === $this->custom_settings)
+            ? $value
+            : $this->retry = Setting::get('zone_default_retry');
+    }
+
+    public function getExpireAttribute($value)
+    {
+        return (true === $this->custom_settings)
+            ? $value
+            : $this->expire = Setting::get('zone_default_expire');
+    }
+
+    public function getNegativeTtlAttribute($value)
+    {
+        return (true === $this->custom_settings)
+            ? $value
+            : $this->negative_ttl = Setting::get('zone_default_negative_ttl');
+    }
+
+    public function getDefaultTtlAttribute($value)
+    {
+        return (true === $this->custom_settings)
+            ? $value
+            : $this->default_ttl = Setting::get('zone_default_default_ttl');
+    }
+
     /**
      * Return true if this zone has been modified from last push.
      *
@@ -271,18 +306,6 @@ class Zone extends Model
         }
 
         return $this->has_modifications;
-    }
-
-    /**
-     * Returns the Default TTL for this zone.
-     *
-     * @return int
-     *
-     * @codeCoverageIgnore
-     */
-    public function getDefaultTTL(): int
-    {
-        return intval(($this->custom_settings) ? $this->default_ttl : Setting::get('zone_default_default_ttl'));
     }
 
     /**

@@ -9,41 +9,6 @@ use Larapacks\Setting\Facades\Setting;
 
 class ZonePresenter extends Presenter
 {
-    public function refresh()
-    {
-        return (true === $this->model->custom_settings)
-            ? $this->model->refresh
-            : Setting::get('zone_default_refresh');
-    }
-
-    public function retry()
-    {
-        return (true === $this->model->custom_settings)
-            ? $this->model->retry
-            : Setting::get('zone_default_retry');
-    }
-
-    public function expire()
-    {
-        return (true === $this->model->custom_settings)
-            ? $this->model->expire
-            : Setting::get('zone_default_expire');
-    }
-
-    public function negativeTtl()
-    {
-        return (true === $this->model->custom_settings)
-            ? $this->model->negative_ttl
-            : Setting::get('zone_default_negative_ttl');
-    }
-
-    public function defaultTtl()
-    {
-        return (true === $this->model->custom_settings)
-            ? $this->model->default_ttl
-            : Setting::get('zone_default_default_ttl');
-    }
-
     public function statusBadge()
     {
         $badge = (true === $this->model->hasPendingChanges())
