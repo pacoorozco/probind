@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Zone;
 use Badcow\DNS\Parser;
+use Badcow\DNS\Rdata\SOA;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
@@ -44,6 +45,7 @@ class ProBINDImportZone extends Command
         $domain = (string)$this->option('domain');
         $filename = (string)$this->option('file');
 
+        // Adds the ending '.' (dot) to the zone name.
         $domain = (substr($domain, -1) != '.') ? $domain . '.' : $domain;
 
         if (!$this->option('force')) {
@@ -63,13 +65,13 @@ class ProBINDImportZone extends Command
         $zone = Zone::create([
             'custom_settings' => true,
             'domain' => $domain,
+            'reverse_zone' => Zone::isReverseZoneName($domain),
         ]);
 
         $createdRecordsCount = 0;
         foreach ($zoneData->getResourceRecords() as $record) {
-            if ($record->getType() === "SOA") {
+            if ($record instanceof SOA) {
                 $zone->update([
-                    'reverse_zone' => Zone::isReverseZoneName($domain),
                     'serial' => $record->getRdata()->getSerial(),
                     'refresh' => $record->getRdata()->getRefresh(),
                     'retry' => $record->getRdata()->getRetry(),

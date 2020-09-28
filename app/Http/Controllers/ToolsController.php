@@ -124,6 +124,12 @@ class ToolsController extends Controller
     {
         // Move uploaded file to local storage.
         $zonefile = $request->file('zonefile')->store('temp');
+        if (false === $zonefile) {
+            // Handle error
+            redirect()->route('home')
+                ->with('error',
+                    __('tools/messages.import_zone_error', ['zone' => $request->input('domain')]));
+        }
 
         Artisan::call('probind:import', [
             'zone'     => $request->input('domain'),

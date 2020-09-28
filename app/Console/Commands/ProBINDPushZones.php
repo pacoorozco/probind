@@ -109,22 +109,24 @@ class ProBINDPushZones extends Command
      * Returns the content of Deleted Zones File
      *
      * @param array $deletedZones
+     *
      * @return string
      */
-    public function generateDeletedZonesContent(array $deletedZones):string
+    public function generateDeletedZonesContent(array $deletedZones): string
     {
         $content = [];
         foreach ($deletedZones as $zone) {
             $content[] = sprintf("%s\n", $zone->domain);
         }
 
-        return join($content);
+        return join("", $content);
     }
 
     /**
      * Creates a file with the zone definitions
      *
      * @param Zone $zone
+     *
      * @return bool
      */
     public function generateZoneFileForZone(Zone $zone)
@@ -159,7 +161,7 @@ class ProBINDPushZones extends Command
             ->with('servers', $nameServers)
             ->with('records', $records);
 
-        return Storage::append($path, $contents, 'private');
+        return Storage::append($path, $contents);
     }
 
     /**
@@ -172,9 +174,14 @@ class ProBINDPushZones extends Command
         // Get servers with push updates capability
         $servers = Server::withPushCapability()->get();
 
-        $pushedWithoutErrors = !$servers->isEmpty();
+        if (true === $servers->isEmpty()) {
+            // There is no server to be pushed, so everything is fine.
+            return true;
+        }
+
+        $pushedWithoutErrors = true;
         foreach ($servers as $server) {
-            $pushedWithoutErrors &= $this->handleServer($server);
+            $pushedWithoutErrors &= (true === $this->handleServer($server));
         }
 
         return $pushedWithoutErrors;
@@ -184,6 +191,7 @@ class ProBINDPushZones extends Command
      * Handle this command only for one Server
      *
      * @param Server $server
+     *
      * @return bool
      */
     public function handleServer(Server $server)
@@ -193,13 +201,13 @@ class ProBINDPushZones extends Command
         // Create an array with files that need to be pushed to remote server
         $filesToPush = [
             [
-                'local'  => $this->localStoragePath . '/configuration/' . $server->hostname . '.conf',
+                'local' => $this->localStoragePath . '/configuration/' . $server->hostname . '.conf',
                 'remote' => Setting::get('ssh_default_remote_path') . '/configuration/named.conf',
             ],
             [
-                'local'  => $this->localStoragePath . '/configuration/deadlist',
+                'local' => $this->localStoragePath . '/configuration/deadlist',
                 'remote' => Setting::get('ssh_default_remote_path') . '/configuration/deadlist',
-            ]
+            ],
         ];
 
         if ($server->type == 'master') {
@@ -207,8 +215,8 @@ class ProBINDPushZones extends Command
             foreach ($localFiles as $file) {
                 $filename = basename($file);
                 $filesToPush[] = [
-                    'local'  => $file,
-                    'remote' => Setting::get('ssh_default_remote_path') . '/primary/' . $filename
+                    'local' => $file,
+                    'remote' => Setting::get('ssh_default_remote_path') . '/primary/' . $filename,
                 ];
             }
         }
@@ -220,6 +228,7 @@ class ProBINDPushZones extends Command
      * Create a file with DNS server configuration
      *
      * @param Server $server
+     *
      * @return bool
      */
     public function generateConfigFileForServer(Server $server)
@@ -249,6 +258,7 @@ class ProBINDPushZones extends Command
      * Returns the template for rendering configuration file
      *
      * @param Server $server
+     *
      * @return string
      */
     public function getTemplateForConfigFile(Server $server)
@@ -265,7 +275,8 @@ class ProBINDPushZones extends Command
      * Push files to a Master server using SFTP
      *
      * @param Server $server
-     * @param array $filesToPush
+     * @param array  $filesToPush
+     *
      * @return bool
      */
     public function pushFilesToServer(Server $server, $filesToPush)
