@@ -26,8 +26,6 @@
 |
 */
 
-Route::singularResourceParameters();
-
 Route::get('/', ['as' => 'home', 'uses' => 'DashboardController@index']);
 
 /*  ------------------------------------------

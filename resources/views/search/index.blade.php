@@ -2,24 +2,24 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('search/title.search_for_records') }} :: @parent
+    {{ __('search/title.search_for_records') }} @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('search/title.search_for_records') }}
-    <small>{{ trans('search/title.search_for_records_subtitle') }}</small>
+    {{ __('search/title.search_for_records') }}
+    <small>{{ __('search/title.search_for_records_subtitle') }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
 @section('breadcrumbs')
     <li>
         <a href="{{ route('home') }}">
-            <i class="fa fa-dashboard"></i> {{ trans('site.dashboard') }}
+            <i class="fa fa-dashboard"></i> {{ __('site.dashboard') }}
         </a>
     </li>
     <li class="active">
-        {{ trans('site.search') }}
+        {{ __('site.search') }}
     </li>
 @endsection
 
@@ -35,7 +35,7 @@
         <div class="box">
             <!-- box-header -->
             <div class="box-header with-border">
-                <h3 class="box-title">{{ trans('search/title.search_results') }}</h3>
+                <h3 class="box-title">{{ __('search/title.search_results') }}</h3>
             </div>
             <!-- ./ box-header -->
             <div class="box-body">

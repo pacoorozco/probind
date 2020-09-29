@@ -18,6 +18,7 @@
 namespace App\Http\Requests;
 
 use App\Server;
+use Illuminate\Validation\Rule;
 
 class ServerUpdateRequest extends Request
 {
@@ -39,16 +40,14 @@ class ServerUpdateRequest extends Request
      */
     public function rules()
     {
-        $zone = $this->route('server');
-        $validServerTypes = join(',', array_values(Server::$validServerTypes));
 
         return [
-            'hostname'     => 'required|string|unique:servers,hostname,' . $zone->id,
-            'ip_address'   => 'required|ip|unique:servers,ip_address,' . $zone->id,
-            'type'         => 'required|in:' . $validServerTypes,
-            'ns_record'    => 'required|boolean',
-            'active'       => 'required|boolean',
-            'push_updates' => 'required|boolean'
+            'hostname' => ['required', 'string', Rule::unique('servers')->ignore($this->route('server'))],
+            'ip_address' => ['required', 'ip', Rule::unique('servers')->ignore($this->route('server'))],
+            'type' => ['required', Rule::in(Server::$validServerTypes)],
+            'ns_record' => ['required', 'boolean'],
+            'push_updates' => ['required', 'boolean'],
+            'active' => ['required', 'boolean'],
         ];
     }
 }

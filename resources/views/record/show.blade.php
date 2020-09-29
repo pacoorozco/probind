@@ -2,29 +2,29 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('record/title.record_show') }} :: @parent
+    {{ __('record/title.record_show') }} @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('record/title.record_show') }}
-    <small>{{ trans('record/title.record_show_subtitle', ['record' => $record->name]) }}</small>
+    {{ __('record/title.record_show') }}
+    <small>{{ __('record/title.record_show_subtitle', ['record' => $record->name]) }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
 @section('breadcrumbs')
     <li>
         <a href="{{ route('home') }}">
-            <i class="fa fa-dashboard"></i> {{ trans('site.dashboard') }}
+            <i class="fa fa-dashboard"></i> {{ __('site.dashboard') }}
         </a>
     </li>
     <li>
         <a href="{{ route('zones.records.index', $zone) }}">
-            {{ trans('site.records') }}
+            {{ __('site.records') }}
         </a>
     </li>
     <li class="active">
-        {{ trans('record/title.record_show') }}
+        {{ __('record/title.record_show') }}
     </li>
 @endsection
 

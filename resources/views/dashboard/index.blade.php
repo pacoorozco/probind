@@ -2,18 +2,18 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('site.dashboard') }} :: @parent
+    {{ __('site.dashboard') }} @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('site.dashboard') }}
+    {{ __('site.dashboard') }}
 @endsection
 
 {{-- Breadcrumbs --}}
 @section('breadcrumbs')
     <li class="active">
-        <i class="fa fa-dashboard"></i> {{ trans('site.dashboard') }}
+        <i class="fa fa-dashboard"></i> {{ __('site.dashboard') }}
     </li>
 @endsection
 
@@ -31,13 +31,13 @@
                 <div class="inner">
                     <h3>{{ $data['servers'] }}</h3>
 
-                    <p>{{ trans('site.servers') }}</p>
+                    <p>{{ __('site.servers') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-server"></i>
                 </div>
                 <a href="{{ route('servers.index') }}" class="small-box-footer">
-                    More info <i class="fa fa-arrow-circle-right"></i>
+                    Manage servers <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
@@ -48,13 +48,13 @@
                 <div class="inner">
                     <h3>{{ $data['zones'] }}</h3>
 
-                    <p>{{ trans('site.zones') }}</p>
+                    <p>{{ __('site.zones') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-database"></i>
                 </div>
                 <a href="{{ route('zones.index') }}" class="small-box-footer">
-                    More info <i class="fa fa-arrow-circle-right"></i>
+                    Manage zones <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
@@ -70,13 +70,13 @@
                 <div class="inner">
                     <h3>{{ $data['records'] }}</h3>
 
-                    <p>{{ trans('site.records') }}</p>
+                    <p>{{ __('site.records') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-bullseye"></i>
                 </div>
                 <a href="{{  route('search.index') }}" class="small-box-footer">
-                    More info <i class="fa fa-arrow-circle-right"></i>
+                    Search records <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>
@@ -87,13 +87,13 @@
                 <div class="inner">
                     <h3>{{ $data['users'] }}</h3>
 
-                    <p>{{ trans('site.users') }}</p>
+                    <p>{{ __('site.users') }}</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-users"></i>
                 </div>
-                <a href="{{ route('users.index') }}" class="small-box-footer">
-                    More info <i class="fa fa-arrow-circle-right"></i>
+                <a href="{{ __('users.index') }}" class="small-box-footer">
+                    Manage users <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div>

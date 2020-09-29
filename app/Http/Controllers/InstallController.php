@@ -88,7 +88,7 @@ class InstallController extends Controller
             Artisan::call('db:seed');
         } catch (Exception $e) {
             return redirect()->route('Installer::database')
-                ->with('error', trans('installer.database.error-message'));
+                ->with('error', __('installer.database.error-message'));
         }
 
         return redirect()->route('Installer::end');

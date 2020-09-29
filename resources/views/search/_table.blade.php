@@ -1,13 +1,13 @@
 @if(count($records))
-    <p>{{ trans('search/messages.results_summary', ['totalItems' => $records->total(), 'firstItem' => $records->firstItem(), 'lastItem' => $records->lastItem()]) }}</p>
+    <p>{{ __('search/messages.results_summary', ['totalItems' => $records->total(), 'firstItem' => $records->firstItem(), 'lastItem' => $records->lastItem()]) }}</p>
     <table id="search-results" class="table table-striped table-bordered">
         <thead>
         <tr>
-            <th class="col-md-2">{{ trans('zone/table.domain') }}</th>
-            <th class="col-md-3">{{ trans('record/table.name') }}</th>
-            <th class="col-md-1">{{ trans('record/table.type') }}</th>
-            <th class="col-md-4">{{ trans('record/table.data') }}</th>
-            <th class="col-md-2">{{ trans('general.actions') }}</th>
+            <th class="col-md-2">{{ __('zone/table.domain') }}</th>
+            <th class="col-md-3">{{ __('record/table.name') }}</th>
+            <th class="col-md-1">{{ __('record/table.type') }}</th>
+            <th class="col-md-4">{{ __('record/table.data') }}</th>
+            <th class="col-md-2">{{ __('general.actions') }}</th>
         </tr>
         </thead>
 
@@ -29,11 +29,11 @@
 
         <tfoot>
         <tr>
-            <th class="col-md-2">{{ trans('zone/table.domain') }}</th>
-            <th class="col-md-3">{{ trans('record/table.name') }}</th>
-            <th class="col-md-1">{{ trans('record/table.type') }}</th>
-            <th class="col-md-4">{{ trans('record/table.data') }}</th>
-            <th class="col-md-2">{{ trans('general.actions') }}</th>
+            <th class="col-md-2">{{ __('zone/table.domain') }}</th>
+            <th class="col-md-3">{{ __('record/table.name') }}</th>
+            <th class="col-md-1">{{ __('record/table.type') }}</th>
+            <th class="col-md-4">{{ __('record/table.data') }}</th>
+            <th class="col-md-2">{{ __('general.actions') }}</th>
         </tr>
         </tfoot>
     </table>
@@ -45,8 +45,8 @@
 
 @else
     <div class="callout callout-info">
-        <h4>{{ trans('search/messages.no_results') }}</h4>
-        <p>{{ trans('search/messages.no_results_help') }}</p>
+        <h4>{{ __('search/messages.no_results') }}</h4>
+        <p>{{ __('search/messages.no_results_help') }}</p>
     </div>
 @endif
 

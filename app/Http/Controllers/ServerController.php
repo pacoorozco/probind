@@ -56,23 +56,28 @@ class ServerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ServerCreateRequest $request
+     * @param ServerCreateRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ServerCreateRequest $request)
     {
-        $server = new Server();
-        $server->fill($request->all())->save();
+        try {
+            Server::create($request->validated());
+        } catch (\Throwable $exception) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', __('server/messages.create.error'));
+        }
 
         return redirect()->route('servers.index')
-            ->with('success', trans('server/messages.create.success'));
+            ->with('success', __('server/messages.create.success'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Server $server
+     * @param Server $server
      *
      * @return \Illuminate\View\View
      */
@@ -85,7 +90,7 @@ class ServerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Server $server
+     * @param Server $server
      *
      * @return \Illuminate\View\View
      */
@@ -98,17 +103,23 @@ class ServerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  ServerUpdateRequest $request
-     * @param  Server $server
+     * @param ServerUpdateRequest $request
+     * @param Server              $server
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ServerUpdateRequest $request, Server $server)
     {
-        $server->fill($request->all())->save();
+        try {
+            $server->update($request->validated());
+        } catch (\Throwable $exception) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', __('server/messages.update.error'));
+        }
 
         return redirect()->route('servers.index')
-            ->with('success', trans('server/messages.update.success'));
+            ->with('success', __('server/messages.update.success'));
     }
 
     /**
@@ -136,7 +147,7 @@ class ServerController extends Controller
         $server->delete();
 
         return redirect()->route('servers.index')
-            ->with('success', trans('server/messages.delete.success'));
+            ->with('success', __('server/messages.delete.success'));
     }
 
     /**
@@ -155,7 +166,7 @@ class ServerController extends Controller
             'ip_address',
             'push_updates',
             'ns_record',
-            'active'
+            'active',
         ]);
 
         return $dataTable::of($servers)
@@ -171,7 +182,7 @@ class ServerController extends Controller
             ->addColumn('actions', function (Server $server) {
                 return view('partials.actions_dd', [
                     'model' => 'servers',
-                    'id'    => $server->id,
+                    'id' => $server->id,
                 ])->render();
             })
             ->rawColumns(['actions'])

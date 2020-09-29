@@ -2,29 +2,29 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('record/title.record_edit') }} :: @parent
+    {{ __('record/title.record_edit') }} @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('record/title.record_edit') }}
-    <small>{{ trans('record/title.record_edit_subtitle', ['record' => $record->name]) }}</small>
+    {{ __('record/title.record_edit') }}
+    <small>{{ __('record/title.record_edit_subtitle', ['record' => $record->name]) }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
 @section('breadcrumbs')
     <li>
         <a href="{{ route('home') }}">
-            <i class="fa fa-dashboard"></i> {{ trans('site.dashboard') }}
+            <i class="fa fa-dashboard"></i> {{ __('site.dashboard') }}
         </a>
     </li>
     <li>
         <a href="{{ route('zones.records.index', $zone) }}">
-            {{ trans('site.zones') }}
+            {{ __('site.zones') }}
         </a>
     </li>
     <li class="active">
-        {{ trans('record/title.record_edit') }}
+        {{ __('record/title.record_edit') }}
     </li>
 @endsection
 
@@ -34,7 +34,7 @@
     <!-- Notifications -->
     @include('partials.notifications')
     <!-- ./ notifications -->
-    
+
     @include('record/_form')
 
 @endsection

@@ -2,24 +2,24 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('settings/title.settings_management') }} :: @parent
+    {{ __('settings/title.settings_management') }} @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('settings/title.settings_management') }}
-    <small>{{ trans('settings/title.settings_management_subtitle') }}</small>
+    {{ __('settings/title.settings_management') }}
+    <small>{{ __('settings/title.settings_management_subtitle') }}</small>
 @endsection
 
 {{-- Breadcrumbs --}}
 @section('breadcrumbs')
     <li>
         <a href="{{ route('home') }}">
-            <i class="fa fa-dashboard"></i> {{ trans('site.dashboard') }}
+            <i class="fa fa-dashboard"></i> {{ __('site.dashboard') }}
         </a>
     </li>
     <li class="active">
-        {{ trans('site.settings') }}
+        {{ __('site.settings') }}
     </li>
 @endsection
 

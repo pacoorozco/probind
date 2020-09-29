@@ -54,14 +54,22 @@ class EnvironmentRepository
      */
     private function all(): array
     {
-        if (!file_exists($this->envPath)) {
-            if (file_exists($this->envExamplePath)) {
-                copy($this->envExamplePath, $this->envPath);
-            } else {
-                touch($this->envPath);
-            }
+        if (false === file_exists($this->envPath)) {
+            $this->copyEnvExampleToEnv();
         }
-        return file($this->envPath);
+        $content = file($this->envPath);
+        return (false === $content) ? [] : $content;
+    }
+
+    /**
+     * Copy the file '.env.example' (if exists) to '.env'.
+     */
+    private function copyEnvExampleToEnv(): void
+    {
+        touch($this->envPath);
+        if (true === file_exists($this->envExamplePath)) {
+            copy($this->envExamplePath, $this->envPath);
+        }
     }
 
     /**

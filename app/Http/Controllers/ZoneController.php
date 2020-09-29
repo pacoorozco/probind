@@ -17,10 +17,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Request;
 use App\Http\Requests\ZoneCreateRequest;
 use App\Http\Requests\ZoneUpdateRequest;
 use App\Zone;
-use DataTables;
+use Yajra\Datatables\Datatables;
 
 class ZoneController extends Controller
 {
@@ -52,35 +53,61 @@ class ZoneController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ZoneCreateRequest $request
+     * @param ZoneCreateRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ZoneCreateRequest $request)
     {
-        $zone = new Zone();
-        $zone->domain = $request->input('domain');
-        $zone->reverse_zone = Zone::validateReverseDomainName($zone->domain);
+        try {
+            $zone = new Zone();
+            $zone->domain = $request->input('domain');
 
-        // if it's a Master zone, assign new Serial Number and flag pending changes.
-        if (!$request->has('master_server')) {
-            $zone->serial = Zone::generateSerialNumber();
-            $zone->has_modifications = true;
+            $this->fillZoneFromRequest($zone, $request);
+
+            $zone->save();
+        } catch (\Throwable $exception) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', __('zone/messages.create.error'));
         }
 
-        // deal with checkboxes
-        $zone->custom_settings = $request->has('custom_settings');
-
-        $zone->fill($request->all())->save();
-
         return redirect()->route('zones.index')
-            ->with('success', trans('zone/messages.create.success'));
+            ->with('success', __('zone/messages.create.success'));
+    }
+
+    /**
+     * Fill the zone with the correct values from the request.
+     *
+     * @param \App\Zone                  $zone
+     * @param \App\Http\Requests\Request $request
+     */
+    private function fillZoneFromRequest(Zone $zone, Request $request): void
+    {
+        $zone->reverse_zone = Zone::isReverseZoneName($zone->domain);
+        if ($request->input('zone_type') === 'secondary-zone') {
+            $zone->master_server = $request->input('master_server');
+        } else {
+            $zone->serial = Zone::generateSerialNumber();
+            $zone->setPendingChanges();
+
+            // deal with checkboxes
+            $zone->custom_settings = $request->has('custom_settings');
+
+            $zone->fill($request->only([
+                'refresh',
+                'retry',
+                'expire',
+                'negative_ttl',
+                'default_ttl',
+            ]));
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Zone $zone
+     * @param Zone $zone
      *
      * @return \Illuminate\View\View
      */
@@ -93,7 +120,7 @@ class ZoneController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Zone $zone
+     * @param Zone $zone
      *
      * @return \Illuminate\View\View
      */
@@ -106,26 +133,31 @@ class ZoneController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  ZoneUpdateRequest $request
-     * @param  Zone              $zone
+     * @param ZoneUpdateRequest $request
+     * @param Zone              $zone
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ZoneUpdateRequest $request, Zone $zone)
     {
-        // if it's a Master zone, assign new Serial Number and flag pending changes.
-        if ($zone->isMasterZone()) {
-            $zone->getNewSerialNumber();
-            $zone->setPendingChanges(true);
+        try {
+            // if it's a Master zone, assign new Serial Number and flag pending changes.
+            if ($zone->isMasterZone()) {
+                $zone->getNewSerialNumber();
+                $zone->setPendingChanges();
+            }
+
+            $this->fillZoneFromRequest($zone, $request);
+
+            $zone->saveOrFail();
+        } catch (\Throwable $exception) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', __('zone/messages.update.error'));
         }
 
-        // deal with checkboxes
-        $zone->custom_settings = $request->has('custom_settings');
-
-        $zone->fill($request->all())->save();
-
         return redirect()->route('zones.index')
-            ->with('success', trans('zone/messages.update.success'));
+            ->with('success', __('zone/messages.update.success'));
     }
 
     /**
@@ -137,34 +169,36 @@ class ZoneController extends Controller
      */
     public function destroy(Zone $zone)
     {
-        $zone->delete();
+        try {
+            $zone->delete();
+        } catch (\Throwable $exception) {
+            return redirect()->back()
+                ->with('error', __('zone/messages.delete.error'));
+        }
 
         return redirect()->route('zones.index')
-            ->with('success', trans('zone/messages.delete.success'));
+            ->with('success', __('zone/messages.delete.success'));
     }
 
     /**
      * Show a list of all the levels formatted for DataTables.
      *
-     * @param DataTables $dataTable
+     * @param \Yajra\Datatables\Datatables $dataTable
      *
-     * @return DataTables JsonResponse
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function data(DataTables $dataTable)
     {
-        $zones = Zone::select([
-            'id',
-            'domain',
-            'master_server',
-            'has_modifications'
-        ]);
+        $zones = Zone::withCount('records')
+            ->orderBy('domain', 'ASC');
 
-        return $dataTable::of($zones)
+        return $dataTable->eloquent($zones)
             ->addColumn('type', function (Zone $zone) {
-                return trans('zone/model.types.' . $zone->getTypeOfZone());
+                return __('zone/model.types.' . $zone->getTypeOfZone());
             })
             ->editColumn('has_modifications', function (Zone $zone) {
-                return trans_choice('general.boolean', intval($zone->hasPendingChanges()));
+                return $zone->present()->statusIcon;
             })
             ->addColumn('actions', function (Zone $zone) {
                 return view('zone._actions')
@@ -173,6 +207,6 @@ class ZoneController extends Controller
             })
             ->rawColumns(['actions'])
             ->removeColumn('id')
-            ->make(true);
+            ->toJson();
     }
 }

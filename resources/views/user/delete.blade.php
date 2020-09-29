@@ -2,12 +2,12 @@
 
 {{-- Web site Title --}}
 @section('title')
-    {{ trans('user/title.user_delete') }} :: @parent
+    {{ __('user/title.user_delete') }} @parent
 @endsection
 
 {{-- Content Header --}}
 @section('header')
-    {{ trans('user/title.user_delete') }}
+    {{ __('user/title.user_delete') }}
     <small>{{ $user->username }}</small>
 @endsection
 
@@ -15,16 +15,16 @@
 @section('breadcrumbs')
     <li>
         <a href="{{ route('home') }}">
-            <i class="fa fa-dashboard"></i> {{ trans('site.dashboard') }}
+            <i class="fa fa-dashboard"></i> {{ __('site.dashboard') }}
         </a>
     </li>
     <li>
         <a href="{{ route('users.index') }}">
-            {{ trans('site.users') }}
+            {{ __('site.users') }}
         </a>
     </li>
     <li class="active">
-        {{ trans('user/title.user_delete') }}
+        {{ __('user/title.user_delete') }}
     </li>
 @endsection
 

@@ -62,7 +62,7 @@ class UserController extends Controller
         }
 
         return redirect()->route('users.index')
-            ->with('success', trans('user/messages.create.success'));
+            ->with('success', __('user/messages.create.success'));
     }
 
     /**
@@ -119,7 +119,7 @@ class UserController extends Controller
         }
 
         return redirect()->route('users.index')
-            ->with('success', trans('user/messages.update.success'));
+            ->with('success', __('user/messages.update.success'));
     }
 
     /**
@@ -148,12 +148,12 @@ class UserController extends Controller
             $user->delete();
 
             return redirect()->route('users.index')
-                ->with('success', trans('user/messages.delete.success'));
+                ->with('success', __('user/messages.delete.success'));
         }
 
         // Trying to delete myself.
         return redirect()->route('users.index')
-            ->with('error', trans('user/messages.delete.invalid'));
+            ->with('error', __('user/messages.delete.invalid'));
     }
 
     /**

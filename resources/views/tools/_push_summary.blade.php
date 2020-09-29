@@ -1,8 +1,8 @@
 <div class="box-body">
     <div class="callout callout-warning">
-        <h4>{{ trans('general.warning') }}</h4>
+        <h4>{{ __('general.warning') }}</h4>
 
-        <p>{{ trans('tools/messages.push_updates_warning') }}</p>
+        <p>{{ __('tools/messages.push_updates_warning') }}</p>
     </div>
     <div class="row">
         <div class="col-md-4">
@@ -37,7 +37,7 @@
 </div>
 <div class="box-footer">
     <a href="{{ route('home') }}" class="btn btn-primary" role="button">
-            <i class="fa fa-arrow-left"></i> {{ trans('general.back') }}
+            <i class="fa fa-arrow-left"></i> {{ __('general.back') }}
     </a>
     {!! Form::open(['route' => 'tools.push_updates']) !!}
     {!! Form::button('<i class="fa fa-download"></i> Push updates', array('type' => 'submit', 'class' => 'btn btn-warning pull-right')) !!}

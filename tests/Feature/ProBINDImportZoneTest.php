@@ -29,7 +29,7 @@ class ProBINDImportZoneTest extends BrowserKitTestCase
         $this->assertNotNull($zone);
         $this->assertInstanceOf(Zone::class, $zone);
         $this->assertFalse($zone->reverse_zone);
-        $this->assertCount(9, $zone->records);
+        $this->assertEquals(10, $zone->records_count);
     }
 
     public function testCommandWithReverseZoneSuccess()
@@ -48,7 +48,7 @@ class ProBINDImportZoneTest extends BrowserKitTestCase
         $this->assertNotNull($zone);
         $this->assertInstanceOf(Zone::class, $zone);
         $this->assertTrue($zone->reverse_zone);
-        $this->assertCount(6, $zone->records);
+        $this->assertEquals(7, $zone->records_count);
     }
 
     public function testCommandWithExistingZoneSuccess()
@@ -68,7 +68,7 @@ class ProBINDImportZoneTest extends BrowserKitTestCase
 
         $this->assertNotNull($zone);
         $this->assertInstanceOf(Zone::class, $zone);
-        $this->assertCount(9, $zone->records);
+        $this->assertEquals(10, $zone->records_count);
     }
 
     public function testCommandWithExistingZoneFailure()
@@ -86,7 +86,7 @@ class ProBINDImportZoneTest extends BrowserKitTestCase
 
         $this->assertNotNull($zone);
         $this->assertInstanceOf(Zone::class, $zone);
-        $this->assertNotCount(9, $zone->records);
+        $this->assertNotEquals(10, $zone->records_count);
     }
 
     public function testCommandFileNotFound()

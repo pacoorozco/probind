@@ -35,43 +35,129 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful new Master Zone creation
+     * Data Set for Primary Zone Creation
+     *
+     * @return array
      */
-    public function testNewMasterZoneCreationSuccess()
+    public function primaryZoneCreationWithCustomSettingsDataSet(): array
+    {
+        return [
+            // 'name of the test case' => ['domain', 'refresh', 'retry', 'expire', 'negative_ttl', 'default_ttl', 'expected']
+            'valid data' => ['domain.com.', '10', '11', '12', '13', '14', true],
+            'with invalid refresh' => ['domain.com.', 'foo', '11', '12', '13', '14', false],
+            'with invalid retry' => ['domain.com.', '10', 'foo', '12', '13', '14', false],
+            'with invalid expire' => ['domain.com.', '10', '11', 'foo', '13', '14', false],
+            'with invalid negative ttl' => ['domain.com.', '10', '11', '12', 'foo', '14', false],
+            'with invalid default ttl' => ['domain.com.', '10', '11', '12', '13', 'foo', false],
+        ];
+    }
+
+    /**
+     * Test a successful new Master Zone creation
+     *
+     * @test
+     * @dataProvider primaryZoneCreationWithCustomSettingsDataSet
+     *
+     * @param string $domain
+     * @param string $refresh
+     * @param string $retry
+     * @param string $expire
+     * @param string $negative_ttl
+     * @param string $default_ttl
+     * @param bool $expected
+     */
+    public function new_master_zone_creation_with_custom_settings(
+        string $domain,
+        string $refresh,
+        string $retry,
+        string $expire,
+        string $negative_ttl,
+        string $default_ttl,
+        bool $expected
+    ): void
     {
         $this->visit('zones/create')
-            ->type('master.com', 'domain')
+            ->type($domain, 'domain')
             ->check('custom_settings')
-            ->type('10', 'refresh')
-            ->type('10', 'retry')
-            ->type('10', 'expire')
-            ->type('10', 'negative_ttl')
-            ->type('10', 'default_ttl')
+            ->type($refresh, 'refresh')
+            ->type($retry, 'retry')
+            ->type($expire, 'expire')
+            ->type($negative_ttl, 'negative_ttl')
+            ->type($default_ttl, 'default_ttl')
             ->press('master_zone');
 
         // Get from DB if Zone has been created.
-        $zone = Zone::where('domain', 'master.com')
-            ->where('refresh', 10)
-            ->where('retry', 10)
-            ->where('negative_ttl', 10)
-            ->where('default_ttl', 10)
+        $got = Zone::where('domain', $domain)
+            ->where('refresh', $refresh)
+            ->where('retry', $retry)
+            ->where('expire', $expire)
+            ->where('negative_ttl', $negative_ttl)
+            ->where('default_ttl', $default_ttl)
             ->first();
 
-        $this->assertNotNull($zone);
+        if (true === $expected) {
+            $this->assertNotNull($got);
+        } else {
+            $this->assertNull($got);
+        }
+    }
+
+    /**
+     * Data Set for Primary Zone Creation
+     *
+     * @return array
+     */
+    public function primaryZoneCreationWithoutCustomSettingsDataSet(): array
+    {
+        return [
+            // 'name of the test case' => ['domain', 'expected']
+            'valid data' => ['domain.com.', false, '', '', '', '', '', true],
+            'with invalid zone name' => ['domain.com', false, '', '', '', '', '', false],
+        ];
+    }
+
+    /**
+     * Test a successful new Master Zone creation
+     *
+     * @test
+     * @dataProvider primaryZoneCreationWithoutCustomSettingsDataSet
+     *
+     * @param string $domain
+     * @param bool $expected
+     */
+    public function new_master_zone_creation_without_custom_settings(
+        string $domain,
+        bool $expected
+    ): void
+    {
+        $this->visit('zones/create')
+            ->type($domain, 'domain')
+            ->press('master_zone');
+
+        // Get from DB if Zone has been created.
+        $got = Zone::where('domain', $domain)
+            ->first();
+
+        if (true === $expected) {
+            $this->assertNotNull($got);
+        } else {
+            $this->assertNull($got);
+        }
     }
 
     /**
      * Test a successful new Slave Zone creation
      */
-    public function testNewSlaveZoneCreationSuccess()
+    public
+    function testNewSlaveZoneCreationSuccess()
     {
         $this->visit('zones/create')
-            ->type('slave.com', 'domain')
+            ->type('slave.com.', 'domain')
             ->type('192.168.1.3', 'master_server')
             ->press('slave_zone');
 
         // Get from DB if Zone has been created.
-        $zone = Zone::where('domain', 'slave.com')
+        $zone = Zone::where('domain', 'slave.com.')
             ->where('master_server', '192.168.1.3')
             ->first();
 
@@ -81,7 +167,8 @@ class ZoneHttpTest extends BrowserKitTestCase
     /**
      * Test a failed new Master Zone creation
      */
-    public function testNewMasterZoneCreationFailure()
+    public
+    function testNewMasterZoneCreationFailure()
     {
         $zone = factory(Zone::class)->create();
 
@@ -95,7 +182,8 @@ class ZoneHttpTest extends BrowserKitTestCase
     /**
      * Test a failed new Slave Zone creation
      */
-    public function testNewSlaveZoneCreationFailure()
+    public
+    function testNewSlaveZoneCreationFailure()
     {
         $this->visit('zones/create')
             ->type('slave.com', 'domain')
@@ -112,7 +200,8 @@ class ZoneHttpTest extends BrowserKitTestCase
     /**
      * Test a Zone view
      */
-    public function testViewZone()
+    public
+    function testViewZone()
     {
         $zone = factory(Zone::class)->create();
 
@@ -123,11 +212,12 @@ class ZoneHttpTest extends BrowserKitTestCase
     /**
      * Test a successful Master Zone edition
      */
-    public function testMasterZoneEditionSuccess()
+    public
+    function testMasterZoneEditionSuccess()
     {
         $originalZone = factory(Zone::class)->create([
             'domain' => 'domain.com',
-            'master_server' => null
+            'master_server' => null,
         ]);
 
         $this->visit('zones/' . $originalZone->id . '/edit')
@@ -154,11 +244,12 @@ class ZoneHttpTest extends BrowserKitTestCase
     /**
      * Test a successful Slave Zone edition
      */
-    public function testSlaveZoneEditionSuccess()
+    public
+    function testSlaveZoneEditionSuccess()
     {
         $originalZone = factory(Zone::class)->create([
             'domain' => 'domain.com',
-            'master_server' => '192.168.1.3'
+            'master_server' => '192.168.1.3',
         ]);
 
         $this->visit('zones/' . $originalZone->id . '/edit')
@@ -180,10 +271,11 @@ class ZoneHttpTest extends BrowserKitTestCase
      *
      * Why? Use of an invalid master
      */
-    public function testSlaveServerEditionFailure()
+    public
+    function testSlaveServerEditionFailure()
     {
         $originalZone = factory(Zone::class)->create([
-            'master_server' => '192.168.1.3'
+            'master_server' => '192.168.1.3',
         ]);
 
         // Use an Invalid IP Address to fail validation
@@ -202,7 +294,8 @@ class ZoneHttpTest extends BrowserKitTestCase
     /**
      * Test a successful Zone deletion
      */
-    public function testDeleteZoneSuccess()
+    public
+    function testDeleteZoneSuccess()
     {
         $originalZone = factory(Zone::class)->create();
 
@@ -214,10 +307,11 @@ class ZoneHttpTest extends BrowserKitTestCase
     /**
      * Test JSON call listing all Zones
      */
-    public function testJSONGetZoneData()
+    public
+    function testJSONGetZoneData()
     {
         $originalZone = factory(Zone::class)->create([
-            'master_server' => '192.168.1.3'
+            'master_server' => '192.168.1.3',
         ]);
 
         $this->json('GET', '/zones/data')

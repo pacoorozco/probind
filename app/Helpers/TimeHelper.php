@@ -9,10 +9,10 @@
  *  Licensed under GNU General Public License 3.0.
  *  Some rights reserved. See LICENSE, AUTHORS.
  *
- *  @author      Paco Orozco <paco@pacoorozco.info>
- *  @copyright  2017 Paco Orozco
- *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
- *  @link        https://github.com/pacoorozco/probind
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2017 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
  */
 
 
@@ -33,16 +33,20 @@ class TimeHelper
     {
         if (is_numeric($time)) {
             // Already a number. Return.
-            return $time;
+            return intval($time);
         }
 
         $pattern = '/([0-9]+)([a-zA-Z]+)/';
         $split = preg_split($pattern, $time, null,
             PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        if (false === $split) {
+            // Handle error on preg_split.
+            return 0;
+        }
 
         $seconds = 0;
         while (count($split)) {
-            list($value, $key) = array_splice($split, 0, 2);
+            [$value, $key] = array_splice($split, 0, 2);
             $seconds += TimeHelper::translateCharToSeconds($key, $value);
         }
 

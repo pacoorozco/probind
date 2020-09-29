@@ -86,7 +86,7 @@ class RecordController extends Controller
         }
 
         return redirect()->route('zones.records.index', ['zone' => $zone])
-            ->with('success', trans('record/messages.create.success'));
+            ->with('success', __('record/messages.create.success'));
     }
 
     /**
@@ -146,7 +146,7 @@ class RecordController extends Controller
         }
 
         return redirect()->route('zones.records.index', ['zone' => $zone])
-            ->with('success', trans('record/messages.update.success'));
+            ->with('success', __('record/messages.update.success'));
     }
 
     /**
@@ -177,7 +177,7 @@ class RecordController extends Controller
         $record->delete();
 
         return redirect()->route('zones.records.index', ['zone' => $zone])
-            ->with('success', trans('record/messages.delete.success'));
+            ->with('success', __('record/messages.delete.success'));
     }
 
     /**

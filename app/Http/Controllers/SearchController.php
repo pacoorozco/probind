@@ -49,7 +49,7 @@ class SearchController extends Controller
     protected static function getSearchSelectValues()
     {
         return array_merge(
-            ['ANY_TYPE' => trans('record/model.any_type')],
+            ['ANY_TYPE' => __('record/model.any_type')],
             DNSHelper::getValidRecordTypesWithDescription()
         );
     }
