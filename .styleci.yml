@@ -1,0 +1,16 @@
+preset: laravel
+
+enabled:
+  - concat_with_spaces
+
+disabled:
+  - concat_without_spaces
+
+finder:
+  exclude:
+    - storage
+    - vendor
+  not-name:
+    - index.php
+    - server.php
+    - "*.blade.php"
