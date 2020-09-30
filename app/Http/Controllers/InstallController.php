@@ -22,7 +22,6 @@ use Artisan;
 use Exception;
 use Illuminate\Http\Request;
 
-
 class InstallController extends Controller
 {
     /**
@@ -33,11 +32,10 @@ class InstallController extends Controller
     public function index()
     {
         return view('install.welcome');
-
     }
 
     /**
-     * Show Connection Settings Form
+     * Show Connection Settings Form.
      *
      * @return \Illuminate\View\View
      */
@@ -79,7 +77,7 @@ class InstallController extends Controller
             'database' => $request->input('dbname'),
             'username' => $request->input('username'),
             'password' => $request->input('password'),
-            'host'     => $request->input('host')
+            'host'     => $request->input('host'),
         ]);
 
         // Migrations and seeds

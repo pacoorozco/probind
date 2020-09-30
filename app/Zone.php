@@ -50,11 +50,9 @@ use Spatie\Activitylog\Traits\LogsActivity;
  *
  * @link https://www.ietf.org/rfc/rfc1035.txt
  * @link https://www.ietf.org/rfc/rfc2782.txt
- *
  */
 class Zone extends Model
 {
-
     use SoftDeletes;
     use LogsActivity;
     use NullableFields;
@@ -76,7 +74,7 @@ class Zone extends Model
     /**
      * The database table used by the model.
      */
-    protected $table   = 'zones';
+    protected $table = 'zones';
     protected $guarded = [];
     /**
      * The attributes that should be casted to native types.
@@ -122,9 +120,9 @@ class Zone extends Model
     public static function isValidZoneName(string $domain): bool
     {
         $rule = new FullyQualifiedDomainName();
+
         return $rule->passes(null, $domain);
     }
-
 
     /**
      * Returns true if the provided string is a valid reverse zone name.
@@ -135,7 +133,7 @@ class Zone extends Model
      */
     public static function isReverseZoneName(string $domain): bool
     {
-        return (\Badcow\DNS\Validator::reverseIpv4($domain) || \Badcow\DNS\Validator::reverseIpv6($domain));
+        return \Badcow\DNS\Validator::reverseIpv4($domain) || \Badcow\DNS\Validator::reverseIpv6($domain);
     }
 
     /**
@@ -147,7 +145,7 @@ class Zone extends Model
      */
     public function getDescriptionForEvent(string $eventName): string
     {
-        return (string)trans('zone/messages.activity.' . $eventName, [
+        return (string) trans('zone/messages.activity.' . $eventName, [
             'domain' => $this->domain,
         ]);
     }
@@ -192,7 +190,7 @@ class Zone extends Model
         $currentSerial = $this->serial;
 
         // We need a new one ONLY if there isn't pending changes.
-        if ($this->hasPendingChanges() && !$force) {
+        if ($this->hasPendingChanges() && ! $force) {
             return $currentSerial;
         }
 
@@ -262,7 +260,7 @@ class Zone extends Model
      */
     public function hasPendingChanges(): bool
     {
-        return (true === $this->has_modifications);
+        return true === $this->has_modifications;
     }
 
     /**
@@ -325,7 +323,7 @@ class Zone extends Model
         $content .= sprintf("%40s %-10d ; Retry\n", ' ', $this->present()->retry);
         $content .= sprintf("%40s %-10d ; Expire\n", ' ', $this->present()->expire);
         $content .= sprintf("%40s %-10d ; Negative TTL\n", ' ', $this->present()->negative_ttl);
-        $content .= sprintf(")");
+        $content .= sprintf(')');
 
         return $content;
     }

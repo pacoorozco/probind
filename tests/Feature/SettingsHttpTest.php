@@ -19,9 +19,9 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
-use Tests\BrowserKitTestCase;
-use TestingDatabaseSeeder;
 use Setting;
+use TestingDatabaseSeeder;
+use Tests\BrowserKitTestCase;
 
 class SettingsHttpTest extends BrowserKitTestCase
 {

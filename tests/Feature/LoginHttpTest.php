@@ -26,7 +26,7 @@ class LoginHttpTest extends BrowserKitTestCase
     use RefreshDatabase;
 
     /**
-     * Test a redirect to Login page
+     * Test a redirect to Login page.
      */
     public function testUnAuthenticatedRedirection()
     {
@@ -35,7 +35,7 @@ class LoginHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test successful Login
+     * Test successful Login.
      */
     public function testLoginSuccess()
     {
@@ -51,7 +51,7 @@ class LoginHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test failed Login
+     * Test failed Login.
      */
     public function testLoginFailure()
     {

@@ -13,7 +13,6 @@
  *  @copyright   2016 Paco Orozco
  *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
  *  @link        https://github.com/pacoorozco/probind
- *
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -28,7 +27,7 @@ class CreateZonesTable extends Migration
      */
     public function up()
     {
-        Schema::create('zones', function(Blueprint $table) {
+        Schema::create('zones', function (Blueprint $table) {
             $table->increments('id');
             $table->string('domain', 253)->unique();
             $table->integer('serial')->unsigned()->default(0);

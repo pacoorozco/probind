@@ -21,7 +21,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RecordCreateRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -47,7 +46,7 @@ class RecordCreateRequest extends FormRequest
             'ttl'      => 'nullable|integer|min:0|max:2147483647',
             'type'     => 'required|string|in:' . $validInputTypes,
             'priority' => 'required_if:type,MX,SRV|integer|min:0|max:65535',
-            'data'     => 'required|string'
+            'data'     => 'required|string',
         ];
     }
 }

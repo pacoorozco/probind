@@ -38,6 +38,6 @@ return [
     'activity' => [
         'created' => 'New User <strong>:username</strong> was created with admin role.',
         'updated' => 'User <strong>:username</strong> was modified.',
-        'deleted' => 'User <strong>:username</strong> was deleted.'
-    ]
+        'deleted' => 'User <strong>:username</strong> was deleted.',
+    ],
 ];

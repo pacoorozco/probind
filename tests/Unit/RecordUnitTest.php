@@ -24,21 +24,20 @@ use Tests\TestCase;
 
 class RecordUnitTest extends TestCase
 {
-
     use DatabaseMigrations;
 
     /**
-     * Test Record type is upper cased
+     * Test Record type is upper cased.
      */
     public function testTypeAttributeIsUpperCased()
     {
         $expectedType = 'CNAME';
 
         $record = new Record([
-                'name' => 'testRR',
-                'type' => strtolower($expectedType),
-                'data' => 'testData',
-            ]
+            'name' => 'testRR',
+            'type' => strtolower($expectedType),
+            'data' => 'testData',
+        ]
         );
 
         // Attribute must be lower cased
@@ -46,17 +45,17 @@ class RecordUnitTest extends TestCase
     }
 
     /**
-     * Test Record name is lower cased
+     * Test Record name is lower cased.
      */
     public function testNameAttributeIsLowerCased()
     {
         $expectedName = 'testrr';
 
         $record = new Record([
-                'name' => strtoupper($expectedName),
-                'type' => 'CNAME',
-                'data' => 'testData',
-            ]
+            'name' => strtoupper($expectedName),
+            'type' => 'CNAME',
+            'data' => 'testData',
+        ]
         );
 
         // Attribute must be lower cased
@@ -64,17 +63,17 @@ class RecordUnitTest extends TestCase
     }
 
     /**
-     * Test Record data is not touched
+     * Test Record data is not touched.
      */
     public function testDataAttributeIsNotTouched()
     {
         $expectedData = 'This is a log TXT message.';
 
         $record = new Record([
-                'data' => 'testRR',
-                'type' => 'TXT',
-                'data' => $expectedData,
-            ]
+            'data' => 'testRR',
+            'type' => 'TXT',
+            'data' => $expectedData,
+        ]
         );
 
         // Attribute must be lower cased
@@ -82,7 +81,7 @@ class RecordUnitTest extends TestCase
     }
 
     /**
-     * Test Zone relationship
+     * Test Zone relationship.
      */
     public function testZoneRelationship()
     {

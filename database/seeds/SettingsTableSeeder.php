@@ -13,15 +13,12 @@
  *  @copyright   2016 Paco Orozco
  *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
  *  @link        https://github.com/pacoorozco/probind
- *
  */
 
 use Illuminate\Database\Seeder;
 
-
 class SettingsTableSeeder extends Seeder
 {
-
     /**
      * Run the database seeds.
      *

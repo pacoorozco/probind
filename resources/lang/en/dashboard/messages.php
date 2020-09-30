@@ -24,5 +24,5 @@ return [
     'causer' => 'User',
     'created_at' => 'When',
 
-    'more_activity' => 'More activity'
+    'more_activity' => 'More activity',
 ];

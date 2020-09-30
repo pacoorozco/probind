@@ -26,5 +26,4 @@ return [
     'import_zone' => 'Import Zone',
     'import_zone_subtitle' => 'import a zone data from a RFC 1033 file',
 
-
 ];

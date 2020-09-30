@@ -19,7 +19,6 @@ namespace App\Http\Requests;
 
 class ZoneUpdateRequest extends ZoneRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *

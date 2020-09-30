@@ -21,17 +21,17 @@ use Iatstuti\Database\Support\NullableFields;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Record model
+ * Record model.
  *
  * Represents a DNS entry on a specified zone.
  *
  * Valid records types are defined on DNSHelper Class.
  *
- * @property integer $id        The object unique id.
+ * @property int $id        The object unique id.
  * @property string  $name      The name of the record.
- * @property integer $ttl       The custom TTL value for this record.
+ * @property int $ttl       The custom TTL value for this record.
  * @property string  $type      The type of record, must be one of Record::$validRecordTypes
- * @property integer $priority  The preference value for MX records.
+ * @property int $priority  The preference value for MX records.
  * @property string  $data      The data value for this record.
  * @property object  $zone      The zone object where this record belongs to.
  *

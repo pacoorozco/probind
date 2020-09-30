@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use App\FileDNSParser;
-use Tests\TestCase;
 use File;
+use Tests\TestCase;
 
 class FileDNSParserUnitTest extends TestCase
 {
@@ -101,7 +101,7 @@ text                                    7200    IN      TXT     "Somewhere over 
             'class' => 'IN',
             'type' => 'TXT',
             'data' => '"Somewhere over the rainbow"',
-        ]
+        ],
     ];
 
     /**

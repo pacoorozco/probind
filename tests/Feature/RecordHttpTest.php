@@ -24,7 +24,6 @@ use Tests\BrowserKitTestCase;
 
 class RecordHttpTest extends BrowserKitTestCase
 {
-
     use RefreshDatabase;
 
     public function setUp(): void
@@ -36,7 +35,7 @@ class RecordHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful new Record creation
+     * Test a successful new Record creation.
      */
     public function testNewRecordCreationSuccess()
     {
@@ -61,7 +60,7 @@ class RecordHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful new Record creation
+     * Test a successful new Record creation.
      */
     public function testNewRecordCreationWithBlankTTLSuccess()
     {
@@ -84,7 +83,7 @@ class RecordHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful new Record creation
+     * Test a successful new Record creation.
      */
     /*
      * TODO: It depends on Javascript
@@ -115,7 +114,7 @@ class RecordHttpTest extends BrowserKitTestCase
     */
 
     /**
-     * Test a Record view
+     * Test a Record view.
      */
     public function testViewRecord()
     {
@@ -129,13 +128,13 @@ class RecordHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful Record edition
+     * Test a successful Record edition.
      */
     public function testRecordEditionSuccess()
     {
         $zone = factory(Zone::class)->create();
         $originalRecord = factory(Record::class, 'CNAME')->make([
-            'name' => 'test-rr'
+            'name' => 'test-rr',
         ]);
         $zone->records()->save($originalRecord);
 
@@ -154,7 +153,7 @@ class RecordHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful Record deletion
+     * Test a successful Record deletion.
      */
     public function testDeleteRecordSuccess()
     {
@@ -169,7 +168,7 @@ class RecordHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test JSON call listing all Records for a Zone
+     * Test JSON call listing all Records for a Zone.
      */
     public function testJSONGetRecordData()
     {

@@ -15,7 +15,6 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;

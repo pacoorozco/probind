@@ -23,7 +23,6 @@ use Tests\BrowserKitTestCase;
 
 class ServerHttpTest extends BrowserKitTestCase
 {
-
     use RefreshDatabase;
 
     public function setUp(): void
@@ -35,7 +34,7 @@ class ServerHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful new Server creation
+     * Test a successful new Server creation.
      */
     public function testNewServerCreationSuccess()
     {
@@ -60,7 +59,7 @@ class ServerHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a failed new Server creation
+     * Test a failed new Server creation.
      *
      * Why? Use of an invalid ip_address
      */
@@ -81,7 +80,7 @@ class ServerHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a Server view
+     * Test a Server view.
      */
     public function testViewServer()
     {
@@ -94,13 +93,13 @@ class ServerHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful Server edition
+     * Test a successful Server edition.
      */
     public function testServerEditionSuccess()
     {
         $originalServer = factory(Server::class)->create([
             'hostname' => 'server01.local',
-            'ns_record' => false
+            'ns_record' => false,
         ]);
 
         // Modify hostname and ns_record
@@ -121,7 +120,7 @@ class ServerHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a failed Server edition
+     * Test a failed Server edition.
      *
      * Why? Use of an invalid ip_address
      */
@@ -129,7 +128,7 @@ class ServerHttpTest extends BrowserKitTestCase
     {
         $originalServer = factory(Server::class)->create([
             'hostname' => 'server01.local',
-            'ns_record' => false
+            'ns_record' => false,
         ]);
 
         // Use an Invalid IP Address to fail validation
@@ -147,7 +146,7 @@ class ServerHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful Server deletion
+     * Test a successful Server deletion.
      */
     public function testDeleteServerSuccess()
     {
@@ -160,7 +159,7 @@ class ServerHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test JSON call listing all Servers
+     * Test JSON call listing all Servers.
      */
     public function testJSONGetServerData()
     {

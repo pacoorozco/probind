@@ -58,6 +58,7 @@ class EnvironmentRepository
             $this->copyEnvExampleToEnv();
         }
         $content = file($this->envPath);
+
         return (false === $content) ? [] : $content;
     }
 
@@ -88,7 +89,7 @@ class EnvironmentRepository
      */
     public function setDatabaseSetting(array $connectionSettings): bool
     {
-        if (!Arr::has($connectionSettings, ['database', 'username', 'password', 'host'])) {
+        if (! Arr::has($connectionSettings, ['database', 'username', 'password', 'host'])) {
             return false;
         }
 
@@ -112,7 +113,8 @@ class EnvironmentRepository
             if (strpos($item, $key) !== false) {
                 $start = strpos($item, '=') + 1;
                 $item = substr_replace($item, $value . "\n", $start);
-            };
+            }
+
             return $item;
         }, $this->env);
     }
@@ -125,6 +127,6 @@ class EnvironmentRepository
      */
     private function saveFile(): bool
     {
-        return (file_put_contents($this->envPath, implode($this->env)) !== false);
+        return file_put_contents($this->envPath, implode($this->env)) !== false;
     }
 }

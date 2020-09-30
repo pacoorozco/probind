@@ -30,5 +30,4 @@ class DNSHelperTest extends TestCase
         // An INVALID record type
         $this->assertFalse(DNSHelper::validateRecordType('SPF'));
     }
-
 }

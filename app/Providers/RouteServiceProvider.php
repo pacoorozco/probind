@@ -22,7 +22,6 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-
     /**
      * This namespace is applied to your controller routes.
      *

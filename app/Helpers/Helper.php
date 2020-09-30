@@ -15,13 +15,10 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-
 namespace App\Helpers;
-
 
 class Helper
 {
-
     /**
      * Helper to transform a bool to a label active / inactive.
      *
@@ -35,12 +32,12 @@ class Helper
     {
         if (is_null($mapStatusToLabel)) {
             $mapStatusToLabel = [
-                '0' => '<span class="label label-default">' . (string)__('general.inactive') . '</span>',
+                '0' => '<span class="label label-default">' . (string) __('general.inactive') . '</span>',
                 '1' => '',
             ];
         }
         $concatenationSpace = empty($text) ? '' : ' ';
+
         return trim($text . $concatenationSpace . $mapStatusToLabel[$condition], ' ');
     }
-
 }

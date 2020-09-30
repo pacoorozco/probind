@@ -20,13 +20,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RecordCreateRequest;
 use App\Http\Requests\RecordUpdateRequest;
 use App\Record;
-use App\User;
 use App\Zone;
 use DataTables;
 
 class RecordController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');

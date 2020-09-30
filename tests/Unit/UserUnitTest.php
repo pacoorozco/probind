@@ -23,7 +23,7 @@ use Tests\TestCase;
 class UserUnitTest extends TestCase
 {
     /**
-     * Test User username is lower cased
+     * Test User username is lower cased.
      */
     public function testUsernameAttributeIsLowerCased()
     {

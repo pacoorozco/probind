@@ -23,13 +23,13 @@ use Tests\TestCase;
 class HelpersTest extends TestCase
 {
     /**
-     * Test Helper::addStatusLabel()
+     * Test Helper::addStatusLabel().
      */
     public function testAddStatusLabel()
     {
         $mapStatusToLabel = [
             '0' => 'false',
-            '1' => 'true'
+            '1' => 'true',
         ];
 
         // True / False execution.

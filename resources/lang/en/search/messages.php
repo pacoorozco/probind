@@ -19,5 +19,5 @@ return [
     'results_summary' => ':totalItems results found, displaying :firstItem to :lastItem',
     'no_results'      => 'No results have been found!',
     'no_results_help' => 'Sorry, no records matches your search criteria. Please try again.',
-    'wildcard_help'   => '<strong>Note:</strong> The search for patterns can be made using <kbd>%</kbd> as a wildcard. You can use it at the beginning, end or middle of any search field.'
+    'wildcard_help'   => '<strong>Note:</strong> The search for patterns can be made using <kbd>%</kbd> as a wildcard. You can use it at the beginning, end or middle of any search field.',
 ];

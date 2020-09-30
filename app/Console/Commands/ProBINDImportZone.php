@@ -6,7 +6,6 @@ use App\Zone;
 use Badcow\DNS\Parser;
 use Badcow\DNS\Rdata\SOA;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class ProBINDImportZone extends Command
 {
@@ -37,23 +36,23 @@ class ProBINDImportZone extends Command
 
     /**
      * Execute the console command.
-     *
      */
     public function handle(): void
     {
         // Cast supplied arguments and options.
-        $domain = (string)$this->option('domain');
-        $filename = (string)$this->option('file');
+        $domain = (string) $this->option('domain');
+        $filename = (string) $this->option('file');
 
         // Adds the ending '.' (dot) to the zone name.
         $domain = (substr($domain, -1) != '.') ? $domain . '.' : $domain;
 
-        if (!$this->option('force')) {
+        if (! $this->option('force')) {
             // Check if Zone exists on database.
             $existingZone = Zone::where('domain', $domain)->first();
 
             if ($existingZone) {
                 $this->error('Zone \'' . $existingZone->domain . '\' exists on ProBIND. Use \'--force\' option if you want to import this zone.');
+
                 return;
             }
         }
@@ -76,7 +75,7 @@ class ProBINDImportZone extends Command
                     'refresh' => $record->getRdata()->getRefresh(),
                     'retry' => $record->getRdata()->getRetry(),
                     'expire' => $record->getRdata()->getExpire(),
-                    'negative_ttl' => $record->getRdata()->getMinimum()
+                    'negative_ttl' => $record->getRdata()->getMinimum(),
                 ]);
                 continue;
             }
@@ -91,7 +90,6 @@ class ProBINDImportZone extends Command
 
         $this->info('Import zone \'' . $domain . '\' has created with ' . $createdRecordsCount . ' imported records.');
         activity()->log('Import zone <strong>' . $zone->domain . '</strong> has created <strong>' . $createdRecordsCount . '</strong> records.');
-        return;
     }
 
     /**
@@ -119,16 +117,14 @@ class ProBINDImportZone extends Command
      * @return \Badcow\DNS\Zone
      * @throws \ErrorException
      */
-    private function parseFile(string $domain, string $filename): \Badcow\DNS\Zone {
+    private function parseFile(string $domain, string $filename): \Badcow\DNS\Zone
+    {
         try {
             $file = file_get_contents($filename);
+
             return Parser\Parser::parse($domain, $file);
         } catch (\Exception $exception) {
             throw new \ErrorException();
         }
     }
 }
-
-
-
-
