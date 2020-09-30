@@ -8,14 +8,12 @@ use File;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Arr;
 
-
 /**
- * An RFC1033 style zone file editor
+ * An RFC1033 style zone file editor.
  *
  * The File::DNS class provides an Object Oriented interface to read, edit and create DNS Zone files.
  *
  * @category   File
- * @package    FileDNS
  * @author     Paco Orozco <paco@pacoorozco.info>
  * @author     Cipriano Groenendal <cipri@php.net>
  * @copyright  2016 Paco Orozco <paco@pacoorozco.info>
@@ -28,7 +26,6 @@ use Illuminate\Support\Arr;
  */
 class FileDNSParser
 {
-
     /**
      * Contains all supported Resource Records.
      *
@@ -47,7 +44,7 @@ class FileDNSParser
      *
      * @var array
      */
-    private $types = array('SOA', 'A', 'AAAA', 'NS', 'MX', 'CNAME', 'PTR', 'SRV', 'TXT');
+    private $types = ['SOA', 'A', 'AAAA', 'NS', 'MX', 'CNAME', 'PTR', 'SRV', 'TXT'];
     /**
      * Contains all the records in this zone.
      *
@@ -68,7 +65,7 @@ class FileDNSParser
      *
      * @var array
      */
-    private $records = array();
+    private $records = [];
     /**
      * Zone data of the loaded zone.
      *
@@ -156,6 +153,7 @@ class FileDNSParser
             $record['name'] = preg_replace('/' . $this->zoneData['domain'] . '\.$/', '@', $record['name']);
             $another[] = $record;
         }
+
         return $another;
     }
 
@@ -180,14 +178,14 @@ class FileDNSParser
     }
 
     /**
-     * Parses a zone file to object
+     * Parses a zone file to object.
      *
      * This function parses the zone file and saves the data collected from it to the _domain, _SOA and _records
      * variables.
      *
      * @param string $fileContents The zone file contents to parse.
      *
-     * @return boolean
+     * @return bool
      */
     private function parseZone(string $fileContents): bool
     {
@@ -221,7 +219,7 @@ class FileDNSParser
             $line = rtrim($line);
             $line = preg_replace('/\s+/', ' ', $line);
 
-            if (!$line) {
+            if (! $line) {
                 // Empty lines are stripped.
                 continue;
             } elseif (preg_match('/^\$TTL([^0-9]*)([0-9]+)/i',
@@ -272,6 +270,7 @@ class FileDNSParser
             $fileContents
         );
         $fileContents = str_replace('(', '', $fileContents);
+
         return str_replace(')', '', $fileContents);
     }
 
@@ -292,17 +291,17 @@ class FileDNSParser
         string $value,
         string $validPattern = null,
         bool $force = false
-    ): bool
-    {
+    ): bool {
         if (empty($this->zoneData[$attribute]) || $force) {
             // Check if $value is a correct one.
-            if (!is_null($validPattern) && !preg_match($validPattern, $value)) {
+            if (! is_null($validPattern) && ! preg_match($validPattern, $value)) {
                 throw new Exception('Invalid value \'' . $value . '\'. Does not match with \'' . $validPattern . '\' pattern.');
             }
 
             // Set the attribute.
             $this->zoneData[$attribute] = $value;
         }
+
         return true;
     }
 
@@ -324,7 +323,7 @@ class FileDNSParser
          *
          * A second SOA is added by programs such as dig, to indicate the end of a zone.
          */
-        if (!empty($this->zoneData['serial'])) {
+        if (! empty($this->zoneData['serial'])) {
             return true;
         }
 
@@ -380,11 +379,12 @@ class FileDNSParser
         } catch (Exception $e) {
             throw new Exception('Unable to set SOA value.' . $e);
         }
+
         return true;
     }
 
     /**
-     * Parses a (Resource Record) into an array
+     * Parses a (Resource Record) into an array.
      *
      * @param string $line           the RR line to be parsed.
      * @param string $origin         the current origin of this record.
@@ -394,14 +394,12 @@ class FileDNSParser
      * @return array  array of RR info.
      * @throws Exception
      */
-    private
-    function parseRR(
+    private function parseRR(
         string $line,
         string $origin,
         int $ttl,
         string $lastRecordName
-    ): array
-    {
+    ): array {
         $items = explode(' ', $line);
 
         $record = [];
@@ -419,7 +417,7 @@ class FileDNSParser
             $record['name'] = $lastRecordName;
         }
         // If it's a FQDN, add the current origin.
-        if (!preg_match('/(.*\.)/', $record['name'])) {
+        if (! preg_match('/(.*\.)/', $record['name'])) {
             $record['name'] .= '.' . $origin;
         }
         unset($items[0]);
@@ -449,7 +447,7 @@ class FileDNSParser
                 }
                 $record['class'] = 'IN';
                 $record['type'] = $item;
-            } elseif (!is_null($record['type'])) {
+            } elseif (! is_null($record['type'])) {
                 // We found out what type we are. This must be the data field.
                 switch (strtoupper($record['type'])) {
                     case 'A':
@@ -484,8 +482,7 @@ class FileDNSParser
                 throw new Exception('Unable to parse RR. ' . $item . ' not recognized.');
             }
         }
+
         return $record;
     }
-
-
 }

@@ -24,7 +24,6 @@ use Tests\BrowserKitTestCase;
 
 class SearchHttpTest extends BrowserKitTestCase
 {
-
     use RefreshDatabase;
 
     public function setUp(): void

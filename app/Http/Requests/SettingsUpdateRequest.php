@@ -19,7 +19,6 @@ namespace App\Http\Requests;
 
 class SettingsUpdateRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *

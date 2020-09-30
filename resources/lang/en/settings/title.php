@@ -23,5 +23,5 @@ return [
 
     'ssh_settings'               => 'SSH Global Settings',
     'ssh_settings_credentials'   => 'SSH Credentials',
-    'ssh_settings_configuration' => 'Remote configuration'
+    'ssh_settings_configuration' => 'Remote configuration',
 ];

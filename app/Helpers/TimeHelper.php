@@ -15,19 +15,16 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-
 namespace App\Helpers;
-
 
 class TimeHelper
 {
-
     /**
      * Converts a BIND-style timeout(1D, 2H, 15M) to seconds.
      *
      * @param string $time Time to convert.
      *
-     * @return integer
+     * @return int
      */
     public static function parseToSeconds(string $time): int
     {
@@ -74,5 +71,4 @@ class TimeHelper
 
         return intval($value * $translateToSeconds[strtoupper($modifier)]);
     }
-
 }

@@ -13,7 +13,6 @@
  *  @copyright   2016 Paco Orozco
  *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
  *  @link        https://github.com/pacoorozco/probind
- *
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -28,7 +27,7 @@ class CreateRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('records', function(Blueprint $table) {
+        Schema::create('records', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 253);
             $table->integer('zone_id')->unsigned();

@@ -75,5 +75,5 @@ SRV
 	Data field include weight, port and target information (see RFC 2782).
 
 TXT
-	 Associate some arbirary and unformatted text with a host or other name.'
+	 Associate some arbirary and unformatted text with a host or other name.',
 ];

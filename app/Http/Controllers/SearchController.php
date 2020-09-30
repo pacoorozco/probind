@@ -24,7 +24,6 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -42,7 +41,7 @@ class SearchController extends Controller
     }
 
     /**
-     * Returns an array for search select's options of Record types
+     * Returns an array for search select's options of Record types.
      *
      * @return array
      */
@@ -58,7 +57,7 @@ class SearchController extends Controller
      * Display the records search results.
      *
      * @param  Request $request
-     * @param  integer $perPage
+     * @param  int $perPage
      *
      * @return \Illuminate\View\View
      */
@@ -85,7 +84,7 @@ class SearchController extends Controller
      * Create a query based on provided search terms and return paginated results.
      *
      * @param  array   $searchTerms
-     * @param  integer $perPage
+     * @param  int $perPage
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */

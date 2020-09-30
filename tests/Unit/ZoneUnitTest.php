@@ -25,11 +25,10 @@ use Tests\TestCase;
 
 class ZoneUnitTest extends TestCase
 {
-
     use DatabaseMigrations;
 
     /**
-     * Test Zone domain is lower cased
+     * Test Zone domain is lower cased.
      */
     public function testDomainAttributeIsLowerCased()
     {
@@ -43,7 +42,7 @@ class ZoneUnitTest extends TestCase
     }
 
     /**
-     * Test Zone serial creation
+     * Test Zone serial creation.
      */
     public function testGenerateSerialNumber()
     {
@@ -53,7 +52,7 @@ class ZoneUnitTest extends TestCase
     }
 
     /**
-     * Test isMasterZone() function
+     * Test isMasterZone() function.
      */
     public function testIsMasterZone()
     {
@@ -69,7 +68,7 @@ class ZoneUnitTest extends TestCase
     }
 
     /**
-     * Test getTypeOfZone() function
+     * Test getTypeOfZone() function.
      */
     public function testGetTypeOfZone()
     {
@@ -85,7 +84,7 @@ class ZoneUnitTest extends TestCase
     }
 
     /**
-     * Test hasPendingChanges() function
+     * Test hasPendingChanges() function.
      */
     public function testHasPendingChanges()
     {
@@ -101,7 +100,7 @@ class ZoneUnitTest extends TestCase
     }
 
     /**
-     * Test Record relationship
+     * Test Record relationship.
      */
     public function testRecordRelationship()
     {
@@ -143,7 +142,7 @@ class ZoneUnitTest extends TestCase
     }
 
     /**
-     * Test Zone raiseSerialNumber() function
+     * Test Zone raiseSerialNumber() function.
      */
     public function testRaiseSerialNumber()
     {
@@ -182,7 +181,7 @@ class ZoneUnitTest extends TestCase
     }
 
     /**
-     * Test setPendingChanges() method
+     * Test setPendingChanges() method.
      */
     public function testSetPendingChanges()
     {
@@ -199,7 +198,7 @@ class ZoneUnitTest extends TestCase
     }
 
     /**
-     * Test Scope withPendingChanges()
+     * Test Scope withPendingChanges().
      */
     public function testScopeWithPendingChanges()
     {
@@ -222,7 +221,7 @@ class ZoneUnitTest extends TestCase
     }
 
     /**
-     * Test scope onlyMasterZones()
+     * Test scope onlyMasterZones().
      */
     public function testScopeOnlyMasterZones()
     {
@@ -311,6 +310,7 @@ class ZoneUnitTest extends TestCase
     /**
      * Test for Reverse zone name validation.
      */
+
     /**
      * Test for reverse zone names.
      *
@@ -323,11 +323,10 @@ class ZoneUnitTest extends TestCase
     public function validates_reverse_zone_name(string $input, bool $want): void
     {
         $this->assertEquals($want, Zone::isReverseZoneName($input));
-
     }
 
     /**
-     * Test getValidRecordTypesForThisZone()
+     * Test getValidRecordTypesForThisZone().
      */
     public function testGetValidRecordTypesForThisZone()
     {

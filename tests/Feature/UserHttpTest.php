@@ -35,7 +35,7 @@ class UserHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful new User creation
+     * Test a successful new User creation.
      */
     public function testNewUserCreationSuccess()
     {
@@ -59,7 +59,7 @@ class UserHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a User view
+     * Test a User view.
      */
     public function testViewUser()
     {
@@ -70,7 +70,7 @@ class UserHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful User edition
+     * Test a successful User edition.
      */
     public function testUserEditionSuccess()
     {
@@ -100,7 +100,7 @@ class UserHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a Delete view
+     * Test a Delete view.
      */
     public function testDeleteUser()
     {
@@ -111,7 +111,7 @@ class UserHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful User deletion
+     * Test a successful User deletion.
      */
     public function testDeleteUserSuccess()
     {
@@ -123,7 +123,7 @@ class UserHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a failed User deletion
+     * Test a failed User deletion.
      */
     public function testDeleteUserFailure()
     {
@@ -135,13 +135,13 @@ class UserHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test JSON call listing all Users
+     * Test JSON call listing all Users.
      */
     public function testJSONGetZoneData()
     {
         $originalUser = factory(User::class)->create([
             'username' => 'user.test',
-            'email' => 'user.test@domain.local'
+            'email' => 'user.test@domain.local',
         ]);
 
         $this->json('GET', '/users/data')

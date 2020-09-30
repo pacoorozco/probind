@@ -30,11 +30,9 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property string $email                   The email address of this user.
  * @property string $password                Encrypted password of this user.
  * @property bool   $active                  The status of this user.
- *
  */
 class User extends Authenticatable
 {
-
     use Notifiable;
     use LogsActivity;
 
@@ -81,8 +79,8 @@ class User extends Authenticatable
      */
     public function getDescriptionForEvent(string $eventName): string
     {
-        return (string)trans('user/messages.activity.' . $eventName, [
-            'username' => $this->username
+        return (string) trans('user/messages.activity.' . $eventName, [
+            'username' => $this->username,
         ]);
     }
 

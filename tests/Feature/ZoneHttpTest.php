@@ -23,7 +23,6 @@ use Tests\BrowserKitTestCase;
 
 class ZoneHttpTest extends BrowserKitTestCase
 {
-
     use RefreshDatabase;
 
     public function setUp(): void
@@ -35,7 +34,7 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Data Set for Primary Zone Creation
+     * Data Set for Primary Zone Creation.
      *
      * @return array
      */
@@ -53,7 +52,7 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful new Master Zone creation
+     * Test a successful new Master Zone creation.
      *
      * @test
      * @dataProvider primaryZoneCreationWithCustomSettingsDataSet
@@ -74,8 +73,7 @@ class ZoneHttpTest extends BrowserKitTestCase
         string $negative_ttl,
         string $default_ttl,
         bool $expected
-    ): void
-    {
+    ): void {
         $this->visit('zones/create')
             ->type($domain, 'domain')
             ->check('custom_settings')
@@ -103,7 +101,7 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Data Set for Primary Zone Creation
+     * Data Set for Primary Zone Creation.
      *
      * @return array
      */
@@ -117,7 +115,7 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful new Master Zone creation
+     * Test a successful new Master Zone creation.
      *
      * @test
      * @dataProvider primaryZoneCreationWithoutCustomSettingsDataSet
@@ -128,8 +126,7 @@ class ZoneHttpTest extends BrowserKitTestCase
     public function new_master_zone_creation_without_custom_settings(
         string $domain,
         bool $expected
-    ): void
-    {
+    ): void {
         $this->visit('zones/create')
             ->type($domain, 'domain')
             ->press('master_zone');
@@ -146,10 +143,9 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful new Slave Zone creation
+     * Test a successful new Slave Zone creation.
      */
-    public
-    function testNewSlaveZoneCreationSuccess()
+    public function testNewSlaveZoneCreationSuccess()
     {
         $this->visit('zones/create')
             ->type('slave.com.', 'domain')
@@ -165,10 +161,9 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a failed new Master Zone creation
+     * Test a failed new Master Zone creation.
      */
-    public
-    function testNewMasterZoneCreationFailure()
+    public function testNewMasterZoneCreationFailure()
     {
         $zone = factory(Zone::class)->create();
 
@@ -180,10 +175,9 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a failed new Slave Zone creation
+     * Test a failed new Slave Zone creation.
      */
-    public
-    function testNewSlaveZoneCreationFailure()
+    public function testNewSlaveZoneCreationFailure()
     {
         $this->visit('zones/create')
             ->type('slave.com', 'domain')
@@ -198,10 +192,9 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a Zone view
+     * Test a Zone view.
      */
-    public
-    function testViewZone()
+    public function testViewZone()
     {
         $zone = factory(Zone::class)->create();
 
@@ -210,10 +203,9 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful Master Zone edition
+     * Test a successful Master Zone edition.
      */
-    public
-    function testMasterZoneEditionSuccess()
+    public function testMasterZoneEditionSuccess()
     {
         $originalZone = factory(Zone::class)->create([
             'domain' => 'domain.com',
@@ -242,10 +234,9 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful Slave Zone edition
+     * Test a successful Slave Zone edition.
      */
-    public
-    function testSlaveZoneEditionSuccess()
+    public function testSlaveZoneEditionSuccess()
     {
         $originalZone = factory(Zone::class)->create([
             'domain' => 'domain.com',
@@ -267,12 +258,11 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a failed Slave Zone edition
+     * Test a failed Slave Zone edition.
      *
      * Why? Use of an invalid master
      */
-    public
-    function testSlaveServerEditionFailure()
+    public function testSlaveServerEditionFailure()
     {
         $originalZone = factory(Zone::class)->create([
             'master_server' => '192.168.1.3',
@@ -292,10 +282,9 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test a successful Zone deletion
+     * Test a successful Zone deletion.
      */
-    public
-    function testDeleteZoneSuccess()
+    public function testDeleteZoneSuccess()
     {
         $originalZone = factory(Zone::class)->create();
 
@@ -305,10 +294,9 @@ class ZoneHttpTest extends BrowserKitTestCase
     }
 
     /**
-     * Test JSON call listing all Zones
+     * Test JSON call listing all Zones.
      */
-    public
-    function testJSONGetZoneData()
+    public function testJSONGetZoneData()
     {
         $originalZone = factory(Zone::class)->create([
             'master_server' => '192.168.1.3',
@@ -320,5 +308,4 @@ class ZoneHttpTest extends BrowserKitTestCase
                 'master_server' => $originalZone->master_server,
             ]);
     }
-
 }

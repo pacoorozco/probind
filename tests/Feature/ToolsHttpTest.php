@@ -40,7 +40,7 @@ class ToolsHttpTest extends BrowserKitTestCase
     {
         // Create some zones to test
         factory(Zone::class, 5)->create([
-            'has_modifications' => false
+            'has_modifications' => false,
         ]);
 
         // Visit URL to do bulk update

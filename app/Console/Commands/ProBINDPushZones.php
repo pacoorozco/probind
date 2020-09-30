@@ -28,14 +28,12 @@ use phpseclib\Net\SFTP;
 use Setting;
 
 /**
- * Class ProBINDPushZones
+ * Class ProBINDPushZones.
  *
- * @package App\Console\Commands
  * @codeCoverageIgnore
  */
 class ProBINDPushZones extends Command
 {
-
     /**
      * The name and signature of the console command.
      *
@@ -51,7 +49,7 @@ class ProBINDPushZones extends Command
     protected $description = 'Generate and push zone files to DNS servers';
 
     /**
-     * The local Storage path to be used
+     * The local Storage path to be used.
      *
      * @var string
      */
@@ -91,7 +89,7 @@ class ProBINDPushZones extends Command
         // Now push files to servers using SFTP
         $error = $this->handleAllServers();
 
-        if (!$error) {
+        if (! $error) {
             // Clear pending changes on zones and clear deleted ones
             foreach ($zonesToUpdate as $zone) {
                 $zone->setPendingChanges(false);
@@ -106,7 +104,7 @@ class ProBINDPushZones extends Command
     }
 
     /**
-     * Returns the content of Deleted Zones File
+     * Returns the content of Deleted Zones File.
      *
      * @param array $deletedZones
      *
@@ -119,11 +117,11 @@ class ProBINDPushZones extends Command
             $content[] = sprintf("%s\n", $zone->domain);
         }
 
-        return join("", $content);
+        return join('', $content);
     }
 
     /**
-     * Creates a file with the zone definitions
+     * Creates a file with the zone definitions.
      *
      * @param Zone $zone
      *
@@ -165,7 +163,7 @@ class ProBINDPushZones extends Command
     }
 
     /**
-     * Push files to all Servers
+     * Push files to all Servers.
      *
      * @return bool
      */
@@ -188,7 +186,7 @@ class ProBINDPushZones extends Command
     }
 
     /**
-     * Handle this command only for one Server
+     * Handle this command only for one Server.
      *
      * @param Server $server
      *
@@ -225,7 +223,7 @@ class ProBINDPushZones extends Command
     }
 
     /**
-     * Create a file with DNS server configuration
+     * Create a file with DNS server configuration.
      *
      * @param Server $server
      *
@@ -255,7 +253,7 @@ class ProBINDPushZones extends Command
     }
 
     /**
-     * Returns the template for rendering configuration file
+     * Returns the template for rendering configuration file.
      *
      * @param Server $server
      *
@@ -272,7 +270,7 @@ class ProBINDPushZones extends Command
     }
 
     /**
-     * Push files to a Master server using SFTP
+     * Push files to a Master server using SFTP.
      *
      * @param Server $server
      * @param array  $filesToPush
@@ -293,7 +291,7 @@ class ProBINDPushZones extends Command
             return false;
         }
 
-        if (!$sftp->login(Setting::get('ssh_default_user'), $privateSSHKey)) {
+        if (! $sftp->login(Setting::get('ssh_default_user'), $privateSSHKey)) {
             $this->error('Invalid SSH credentials for ' . $server->hostname);
 
             return false;
@@ -310,7 +308,7 @@ class ProBINDPushZones extends Command
         foreach ($filesToPush as $file) {
             $contents = Storage::get($file['local']);
 
-            if (!$sftp->put($file['remote'], $contents)) {
+            if (! $sftp->put($file['remote'], $contents)) {
                 $this->error('File ' . $file['local'] . ' can\'t be uploaded to ' . $server->hostname);
                 continue;
             }
@@ -321,6 +319,6 @@ class ProBINDPushZones extends Command
         $sftp->disconnect();
 
         // Return true if all files has been pushed
-        return ($totalFiles == $pushedFiles);
+        return $totalFiles == $pushedFiles;
     }
 }

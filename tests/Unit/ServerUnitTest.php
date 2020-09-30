@@ -26,17 +26,17 @@ class ServerUnitTest extends TestCase
     use DatabaseMigrations;
 
     /**
-     * Test Server hostname is lower cased
+     * Test Server hostname is lower cased.
      */
     public function testHostnameAttributeIsLowerCased()
     {
         $expectedHostname = 'server01.local';
 
         $server = new Server([
-                'hostname' => strtoupper($expectedHostname),
-                'ip_address' => '192.168.1.2',
-                'type' => 'master',
-            ]
+            'hostname' => strtoupper($expectedHostname),
+            'ip_address' => '192.168.1.2',
+            'type' => 'master',
+        ]
         );
 
         // Attribute must be lower cased
@@ -44,17 +44,17 @@ class ServerUnitTest extends TestCase
     }
 
     /**
-     * Test Server type is lower cased
+     * Test Server type is lower cased.
      */
     public function testTypeAttributeIsLowerCased()
     {
         $expectedType = 'master';
 
         $server = new Server([
-                'hostname' => 'server01.local',
-                'ip_address' => '192.168.1.2',
-                'type' => strtoupper($expectedType),
-            ]
+            'hostname' => 'server01.local',
+            'ip_address' => '192.168.1.2',
+            'type' => strtoupper($expectedType),
+        ]
         );
 
         // Attribute must be lower cased
@@ -62,7 +62,7 @@ class ServerUnitTest extends TestCase
     }
 
     /**
-     * Test Server type is a valid one with invalid value
+     * Test Server type is a valid one with invalid value.
      */
     public function testTypeAttributeIsValidWithInvalidValue()
     {
@@ -79,7 +79,7 @@ class ServerUnitTest extends TestCase
     }
 
     /**
-     * Test Server NS record formatting
+     * Test Server NS record formatting.
      */
     public function testGetNSRecord()
     {
@@ -87,10 +87,10 @@ class ServerUnitTest extends TestCase
         $expectedNSRecord = sprintf("%-32s IN\tNS\t%s.", ' ', $hostname);
 
         $server = new Server([
-                'hostname' => $hostname,
-                'ip_address' => '192.168.1.2',
-                'type' => 'master',
-            ]
+            'hostname' => $hostname,
+            'ip_address' => '192.168.1.2',
+            'type' => 'master',
+        ]
         );
 
         // Function must return a specified format
@@ -98,13 +98,13 @@ class ServerUnitTest extends TestCase
     }
 
     /**
-     * Test scope withPushCapability()
+     * Test scope withPushCapability().
      */
     public function testScopeWithPushCapability()
     {
         // Create Server items that are out this scope
         factory(Server::class, 5)->create([
-            'push_updates' => false
+            'push_updates' => false,
         ]);
         $servers = Server::withPushCapability()->get();
 
@@ -113,11 +113,10 @@ class ServerUnitTest extends TestCase
 
         // Create Server items that are in this scope
         factory(Server::class, 5)->create([
-            'push_updates' => true
+            'push_updates' => true,
         ]);
         $servers = Server::withPushCapability()->get();
 
         $this->assertCount(5, $servers);
     }
-
 }

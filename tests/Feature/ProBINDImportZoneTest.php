@@ -3,11 +3,9 @@
 namespace Tests\Feature;
 
 use App\Zone;
-use Illuminate\Filesystem\Filesystem;
+use Artisan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\BrowserKitTestCase;
-use Artisan;
-
 
 class ProBINDImportZoneTest extends BrowserKitTestCase
 {

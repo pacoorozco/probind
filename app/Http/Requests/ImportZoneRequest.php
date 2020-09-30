@@ -26,7 +26,7 @@ class ImportZoneRequest extends FormRequest
         return [
             'domain'    => 'required|string',
             'zonefile'  => 'required|file|max:2048',
-            'overwrite' => 'sometimes|boolean'
+            'overwrite' => 'sometimes|boolean',
         ];
     }
 }

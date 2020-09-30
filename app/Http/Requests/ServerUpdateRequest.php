@@ -22,7 +22,6 @@ use Illuminate\Validation\Rule;
 
 class ServerUpdateRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -40,7 +39,6 @@ class ServerUpdateRequest extends Request
      */
     public function rules()
     {
-
         return [
             'hostname' => ['required', 'string', Rule::unique('servers')->ignore($this->route('server'))],
             'ip_address' => ['required', 'ip', Rule::unique('servers')->ignore($this->route('server'))],

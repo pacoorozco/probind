@@ -13,7 +13,6 @@
  * @copyright   2017 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
  * @link        https://github.com/pacoorozco/probind
- *
  */
 
 namespace Tests\Feature;
@@ -23,7 +22,7 @@ use Tests\TestCase;
 class InstallHttpTest extends TestCase
 {
     /**
-     * Test install URI with a previous installation
+     * Test install URI with a previous installation.
      */
     public function testInstallURIFailure()
     {
@@ -31,11 +30,10 @@ class InstallHttpTest extends TestCase
 
         $this->get('/install')
             ->assertStatus(404);
-
     }
 
     /**
-     * Test install URI without a previous installation
+     * Test install URI without a previous installation.
      */
     public function testInstallURISuccess()
     {

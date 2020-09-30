@@ -38,7 +38,7 @@ class EnvironmentRepositoryTest extends TestCase
 
         if (file_exists($this->filename)) {
             unlink($this->filename);
-        };
+        }
 
         $this->environmentRepository = new EnvironmentRepository($this->filename);
     }
@@ -49,7 +49,7 @@ class EnvironmentRepositoryTest extends TestCase
 
         if (file_exists($this->filename)) {
             unlink($this->filename);
-        };
+        }
     }
 
     public function testEnvironmentRepositoryFileIsCreated()
@@ -62,7 +62,7 @@ class EnvironmentRepositoryTest extends TestCase
         // Missing two connection settings.
         $this->assertFalse($this->environmentRepository->SetDatabaseSetting([
             'database' => 'database_value_test',
-            'username' => 'username_value_test'
+            'username' => 'username_value_test',
         ]));
     }
 
@@ -72,7 +72,7 @@ class EnvironmentRepositoryTest extends TestCase
             'database' => 'database_value_test',
             'username' => 'username_value_test',
             'password' => 'password_value_test',
-            'host' => 'host_value_test'
+            'host' => 'host_value_test',
         ];
 
         // Success set connection settings.
