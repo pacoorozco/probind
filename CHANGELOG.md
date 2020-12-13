@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Zone name validation on creation form.
 ### Changed
 - Zone views to improve readability.
+### Fixed
+- Composer docker was unable to install dependencies due to missing PHP extension. ([#80][i80])
+
+[i80]: https://github.com/pacoorozco/probind/issues/80
 
 ## 0.10.0 - 2020-09-24
 ### Added

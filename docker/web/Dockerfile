@@ -1,21 +1,19 @@
 FROM nginx:alpine
 
-MAINTAINER Paco Orozco <paco@pacoorozco.info>
+LABEL maintainer="paco@pacoorozco.info"
 
+# Arguments defined in docker-compose.yml
+ARG DOCKER_UID
+
+RUN adduser --disabled-password --no-create-home --ingroup www-data --uid $DOCKER_UID www-data
+
+# Remove the default conf
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Set default user to www-data and configure site to use PHP-FPM
 COPY ./docker/web/nginx.conf /etc/nginx/
-
-RUN apk update \
-    && apk upgrade \
-    && apk add --no-cache bash \
-    && adduser -D -H -u 1000 -s /bin/bash www-data -G www-data
-
-ARG PHP_UPSTREAM_CONTAINER=app
-ARG PHP_UPSTREAM_PORT=9000
-
-# Set upstream conf and remove the default conf
-RUN echo "upstream php-upstream { server ${PHP_UPSTREAM_CONTAINER}:${PHP_UPSTREAM_PORT}; }" > /etc/nginx/conf.d/upstream.conf \
-    && rm /etc/nginx/conf.d/default.conf
+COPY ./docker/web/sites/default.conf /etc/nginx/sites-available/default.conf
 
 CMD ["nginx"]
 
-EXPOSE 80 443
+EXPOSE 80
