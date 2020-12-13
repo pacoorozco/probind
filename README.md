@@ -50,16 +50,6 @@ Prior this installation, you **need to have installed** this software:
     $ git clone https://github.com/pacoorozco/probind.git probind
     $ cd probind
     ```
-1. Install PHP dependencies with:
-
-    > **NOTE**: You don't need to install neither _PHP_ nor _Composer_, we are going to use a [Composer image](https://hub.docker.com/_/composer/) instead.
-
-    ```bash
-    $ docker run --rm --interactive --tty \
-          --volume $PWD:/app \
-          --user $(id -u):$(id -g) \
-          composer install
-    ```
 
 1. Copy [`.env.example`](https://github.com/pacoorozco/probind/blob/master/.env.example) to `.env`.
 
@@ -67,9 +57,18 @@ Prior this installation, you **need to have installed** this software:
 
 1. Start all containers with [Docker Compose](https://docs.docker.com/compose/)
 
+    > **NOTE**: You **must** export the `UID` variable if your user ID is different from `1000`. 
+
     ```bash
+    $ export UID="$(id -u)"
     $ docker-compose build
     $ docker-compose up -d
+    ```
+   
+1. Install dependencies with:
+
+    ```bash
+    $ docker-compose exec app composer install
     ```
     
 1. Go to `http://localhost/install` and finish **ProBIND** installation. Enjoy!

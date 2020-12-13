@@ -11,6 +11,8 @@ services:
       build:
         context: ./
         dockerfile: docker/app/Dockerfile
+        args:
+          - DOCKER_UID=${UID:-1000}
       working_dir: /var/www
       volumes:
         - ./:/var/www
@@ -31,14 +33,11 @@ services:
         context: ./
         dockerfile: docker/web/Dockerfile
         args:
-          - PHP_UPSTREAM_CONTAINER=app
-          - PHP_UPSTREAM_PORT=9000
+          - DOCKER_UID=${UID:-1000}
       volumes:
-        - ./docker/web/sites:/etc/nginx/sites-available:ro
         - ./:/var/www:ro
       ports:
         - "80:80"
-        - "443:443"
       depends_on:
         - app
 
