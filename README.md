@@ -6,6 +6,8 @@
 [![License](https://img.shields.io/github/license/pacoorozco/probind.svg)](https://github.com/pacoorozco/probind/blob/master/LICENSE)
 [![Laravel Version](https://img.shields.io/badge/Laravel-6.x-purple.svg)](https://laravel.com/docs)
 [![GitHub release](https://img.shields.io/github/release/pacoorozco/probind.svg?style=flat-square)](https://github.com/pacoorozco/probind/releases)
+
+[![probind: short presentation](https://img.youtube.com/vi/_iaZ3UG3zug/0.jpg)](http://www.youtube.com/watch?v=_iaZ3UG3zug)
  	
 ## Presentation
 
@@ -70,6 +72,15 @@ Prior this installation, you **need to have installed** this software:
     ```bash
     $ docker-compose exec app composer install
     ```
+
+1. Seed database in order to play with some data
+
+    > **NOTE**: Remove `--seed` if you don't want to seed sample data.
+
+    ```bash
+    $ docker-compose exec app php artisan key:generate 
+    $ docker-compose exec app php artisan migrate:fresh --seed
+   ```
     
 1. Go to `http://localhost/install` and finish **ProBIND** installation. Enjoy!
 
