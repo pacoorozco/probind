@@ -12,7 +12,7 @@ services:
         context: ./
         dockerfile: docker/app/Dockerfile
         args:
-          - DOCKER_UID=${UID:-1000}
+          - DOCKER_PROBIND_UID=${DOCKER_PROBIND_UID:-1000}
       working_dir: /var/www
       volumes:
         - ./:/var/www
@@ -33,7 +33,7 @@ services:
         context: ./
         dockerfile: docker/web/Dockerfile
         args:
-          - DOCKER_UID=${UID:-1000}
+          - DOCKER_PROBIND_UID=${DOCKER_PROBIND_UID:-1000}
       volumes:
         - ./:/var/www:ro
       ports:
