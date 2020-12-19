@@ -10,8 +10,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Zone views to improve readability.
 ### Fixed
 - Composer docker was unable to install dependencies due to missing PHP extension. ([#80][i80])
+- `bash` users couldn't export the `UID` variable. It has been changed to `DOCKER_PROBIND_UID`. ([#82][i82]) 
 
 [i80]: https://github.com/pacoorozco/probind/issues/80
+[i82]: https://github.com/pacoorozco/probind/issues/82
 
 ## 0.10.0 - 2020-09-24
 ### Added

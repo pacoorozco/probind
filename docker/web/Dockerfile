@@ -3,9 +3,9 @@ FROM nginx:alpine
 LABEL maintainer="paco@pacoorozco.info"
 
 # Arguments defined in docker-compose.yml
-ARG DOCKER_UID
+ARG DOCKER_PROBIND_UID
 
-RUN adduser --disabled-password --no-create-home --ingroup www-data --uid $DOCKER_UID www-data
+RUN adduser --disabled-password --no-create-home --ingroup www-data --uid $DOCKER_PROBIND_UID www-data
 
 # Remove the default conf
 RUN rm /etc/nginx/conf.d/default.conf

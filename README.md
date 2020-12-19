@@ -57,10 +57,10 @@ Prior this installation, you **need to have installed** this software:
 
 1. Start all containers with [Docker Compose](https://docs.docker.com/compose/)
 
-    > **NOTE**: You **must** export the `UID` variable if your user ID is different from `1000`. 
+    > **NOTE**: You **must** export the `DOCKER_PROBIND_UID` variable if your user ID is different from `1000`. This will allow the docker to get permissions over your files.
 
     ```bash
-    $ export UID="$(id -u)"
+    $ export DOCKER_PROBIND_UID="$(id -u)"
     $ docker-compose build
     $ docker-compose up -d
     ```
