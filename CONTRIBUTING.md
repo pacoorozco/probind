@@ -1,6 +1,6 @@
 # Code contibution to this app
 
-Contributions are **welcomed** and will be fully **credited** (see [AUTHORS](https://github.com/pacoorozco/probind/blob/master/AUTHORS)).
+Contributions are **welcomed** and will be fully **credited** (see [AUTHORS](AUTHORS)).
 
 We accept contributions via Pull Requests on [GitHub Repository][github].
 
@@ -34,15 +34,18 @@ Help us to maximize the effort we can spend fixing issues and adding new feature
 ### Submitting a Pull Request
 Before you submit your pull request consider the following guidelines:
 
-* Search [GitHub](https://github.com/pacoorozco/AMPAgest/pulls) for an open or closed Pull Request that relates to your submission. You don't want to duplicate effort.
-* Make your changes in a new git branch.  Don't ask us to pull from your master branch:
+* Search [GitHub][github] for an open or closed Pull Request that relates to your submission. You don't want to duplicate effort.
+* Make your changes in a new git branch.  Don't ask us to pull from your main branch:
 
     ```shell
-    git checkout -b my-fix-branch master
+    git checkout -b my-fix-branch main
     ```
-* **[PSR-2 Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)** - The easiest way to apply the conventions is to install [PHP Code Sniffer](http://pear.php.net/package/PHP_CodeSniffer).
-* Consider our release cycle. We try to follow [SemVer v2.0.0](http://semver.org/). Randomly breaking public APIs is not an option.
-* Create your patch, **including appropriate test cases**.
+* **[PSR-12 Coding Standard](https://www.php-fig.org/psr/psr-12/)**.
+* Consider our release cycle. We try to follow [SemVer v2.0.0](https://semver.org/). Randomly breaking public APIs is not an option.
+* Create your patch, **including appropriate test cases**. You can run our test easily with:
+   ```shell
+   composer test
+   ```
 * Commit your changes using a descriptive commit message that follows our [commit message conventions](#commit-message-format). Adherence to the [commit message conventions](#commit-message-format) is required because release notes are automatically generated from these messages.
 
     ```shell
@@ -56,45 +59,9 @@ Before you submit your pull request consider the following guidelines:
     git push origin my-fix-branch
     ```
 
-* In GitHub, send a pull request to `develop`.
-* If we suggest changes then:
-  * Make the required updates.
-  * Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
-
-    ```shell
-    git rebase master -i
-    git push origin my-fix-branch -f
-    ```
+* In GitHub, send a pull request to `main`.
 
 That's it! Thank you for your contribution!
-
-#### After your pull request is merged
-
-After your pull request is merged, you can safely delete your branch and pull the changes from the main (upstream) repository:
-
-* Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
-
-    ```shell
-    git push origin --delete my-fix-branch
-    ```
-
-* Check out the master branch:
-
-    ```shell
-    git checkout master -f
-    ```
-
-* Delete the local branch:
-
-    ```shell
-    git branch -D my-fix-branch
-    ```
-
-* Update your master with the latest upstream version:
-
-    ```shell
-    git pull --ff upstream master
-    ```
 
 ## <a name="commit"></a> Git Commit Guidelines
 
@@ -145,10 +112,6 @@ The footer should contain any information about GitHub issues that this commit *
 Closed bugs should be listed on a separate line in the footer prefixed with "Closes" keyword like this:
 
 ```Closes #234```
-
-or in case of multiple issues:
-
-```Closes #123, #245, #992```
 
 
 [github]: https://github.com/pacoorozco/probind
