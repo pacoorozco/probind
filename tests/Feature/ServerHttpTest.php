@@ -89,7 +89,7 @@ class ServerHttpTest extends BrowserKitTestCase
         $this->visit('servers/' . $server->id)
             ->see($server->hostname)
             ->see($server->ip_address)
-            ->see($server->type);
+            ->see(__('server/model.types.' . $server->type));
     }
 
     /**

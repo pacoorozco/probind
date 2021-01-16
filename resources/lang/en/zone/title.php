@@ -26,6 +26,6 @@ return [
     'custom_settings' => 'Zone specific settings',
     'resource_records' => 'Resource records',
 
-    'primary_dns_zone' => 'Primary DNS zone (master)',
-    'secondary_dns_zone' => 'Secondary DNS zone (slave)',
+    'primary_dns_zone' => 'Primary DNS zone (aka. master)',
+    'secondary_dns_zone' => 'Secondary DNS zone (aka. slave)',
 ];

@@ -67,7 +67,7 @@ options {
     allow-query {
         // Acceptem les peticions del ACL "trusted"
         // Permetre les peticions de tothom a les
-        // master zones.
+        // primary zones.
         trusted;
     };
 };
