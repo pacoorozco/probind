@@ -1,17 +1,22 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
+
+## 0.11.0 - 2021-01-16
+
 ### Added
-- Zone name validation on creation form.
+- Zone name validation on creation form. ([#16][i16])
 ### Changed
+- **Primary/Secondary** terminology has adopted instead of `master/slave`.
 - Zone views to improve readability.
 ### Fixed
 - Composer docker was unable to install dependencies due to missing PHP extension. ([#80][i80])
 - `bash` users couldn't export the `UID` variable. It has been changed to `DOCKER_PROBIND_UID`. ([#82][i82]) 
 
+[i16]: https://github.com/pacoorozco/probind/issues/16
 [i80]: https://github.com/pacoorozco/probind/issues/80
 [i82]: https://github.com/pacoorozco/probind/issues/82
 

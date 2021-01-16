@@ -21,8 +21,8 @@ return [
     'ip_address'   => 'IP Address',
     'type'         => 'Role',
     'types'        => [
-        'master' => 'Master',
-        'slave'  => 'Slave',
+        'master' => 'Primary',
+        'slave'  => 'Secondary',
     ],
     'push_updates' => 'Push DNS changes to this server',
     'ns_record'    => 'Include this server in NS record',
