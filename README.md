@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/pacoorozco/probind.svg)](https://travis-ci.com/pacoorozco/probind)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/pacoorozco/probind.svg?style=flat-square)](https://scrutinizer-ci.com/g/pacoorozco/probind)
 [![Code Coverage](https://scrutinizer-ci.com/g/pacoorozco/probind/badges/coverage.png)](https://scrutinizer-ci.com/g/pacoorozco/probind)
-[![License](https://img.shields.io/github/license/pacoorozco/probind.svg)](https://github.com/pacoorozco/probind/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/pacoorozco/probind.svg)](LICENSE)
 [![Laravel Version](https://img.shields.io/badge/Laravel-6.x-purple.svg)](https://laravel.com/docs)
 [![GitHub release](https://img.shields.io/github/release/pacoorozco/probind.svg?style=flat-square)](https://github.com/pacoorozco/probind/releases)
 
@@ -31,7 +31,7 @@ ProBIND is not the ultimate solution to DNS management. It fits the needs of tho
 
 ## Changelog
 
-See our [CHANGELOG](https://github.com/pacoorozco/probind/blob/master/CHANGELOG.md) file in order to know what changes are implemented in every version.
+See our [CHANGELOG](CHANGELOG.md) file in order to know what changes are implemented in every version.
 
 ## Requirements
 
@@ -53,7 +53,7 @@ Prior this installation, you **need to have installed** this software:
     $ cd probind
     ```
 
-1. Copy [`.env.example`](https://github.com/pacoorozco/probind/blob/master/.env.example) to `.env`.
+1. Copy [`.env.example`](.env.example) to `.env`.
 
     > **NOTE**: You don't need to touch anything from this file. It works with default settings.
 
@@ -92,7 +92,7 @@ If you have issues with **ProBIND**, you can report them with the [GitHub issues
 
 ## Contibuting
 
-Please see [CONTRIBUTING](https://github.com/pacoorozco/probind/blob/master/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## License
 
@@ -106,4 +106,4 @@ With both projects lying dormant for a number of years, Michael Johnson, Systems
 
 Later, in 2016, [Paco Orozco](http://pacoorozco.info) recoded all this application using [Laravel Framework](https://laravel.com/) to bring a new version of this software. It was named **ProBIND v3**.
 
-See [AUTHORS](https://github.com/pacoorozco/probind/blob/master/AUTHORS) for a complete list of contributors.
+See [AUTHORS](AUTHORS) for a complete list of contributors.
