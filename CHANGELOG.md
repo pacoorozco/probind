@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
+
+## 0.11.0 - 2021-01-16
+
 ### Added
 - Zone name validation on creation form. ([#16][i16])
 ### Changed
