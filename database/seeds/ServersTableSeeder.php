@@ -15,6 +15,7 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
+use App\Server;
 use Illuminate\Database\Seeder;
 
 class ServersTableSeeder extends Seeder
@@ -26,6 +27,13 @@ class ServersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Server::class, 3)->create();
+        // Create a test server (docker)
+        Server::create([
+            'hostname' => 'dns-server',
+            'ip_address' => '127.0.0.1',
+            'type' => 'master',
+            'ns_record' => true,
+            'push_updates' => true,
+        ]);
     }
 }
