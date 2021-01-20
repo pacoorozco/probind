@@ -54,4 +54,12 @@ services:
       ports:
         - "3306:3306"
 
+### DNS: DNS server ######################################################
+    dns-server:
+      build:
+        context: ./
+        dockerfile: docker/dns/Dockerfile
+      ports:
+        - "5301:53"
+        - "2201:22"
 
