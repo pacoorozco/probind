@@ -89,7 +89,7 @@ class ProBINDPushZones extends Command
         // Now push files to servers using SFTP
         $error = $this->handleAllServers();
 
-        if (!$error) {
+        if (! $error) {
             // Clear pending changes on zones and clear deleted ones
             foreach ($zonesToUpdate as $zone) {
                 $zone->setPendingChanges(false);
@@ -284,13 +284,13 @@ class ProBINDPushZones extends Command
         try {
             $sftp = new SFTP($server->hostname, Setting::get('ssh_default_port'));
         } catch (\Exception $e) {
-            echo "Hola";
+            echo 'Hola';
             $this->error('Can\'t connect to ' . $server->hostname . ': ' . $e->getMessage());
 
             return false;
         }
 
-        if (!$sftp->login(Setting::get('ssh_default_user'), $privateSSHKey)) {
+        if (! $sftp->login(Setting::get('ssh_default_user'), $privateSSHKey)) {
             $this->error('Invalid SSH credentials for ' . $server->hostname);
 
             return false;
@@ -307,7 +307,7 @@ class ProBINDPushZones extends Command
         foreach ($filesToPush as $file) {
             $contents = Storage::get($file['local']);
 
-            if (!$sftp->put($file['remote'], $contents)) {
+            if (! $sftp->put($file['remote'], $contents)) {
                 $this->error('File ' . $file['local'] . ' can\'t be uploaded to ' . $server->hostname);
                 continue;
             }
