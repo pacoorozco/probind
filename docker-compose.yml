@@ -62,4 +62,6 @@ services:
       ports:
         - "5301:53"
         - "2201:22"
+      depends_on:
+        - app
 
