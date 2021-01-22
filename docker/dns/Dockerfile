@@ -10,13 +10,12 @@ ARG PASSWORD=docker
 RUN apt-get update && apt-get install -y openssh-server
 
 # Creates the user that ProBIND will use to access to the DNS server.
-RUN useradd --home-dir /home/${USER} --create-home --shell /sbin/nologin ${USER}
+RUN useradd --home-dir /home/${USER} --create-home ${USER} && \
+    echo "${USER}:${PASSWORD}" | chpasswd
 COPY --chown=${USER}:${USER} ./docker/dns/authorized_keys /home/${USER}/.ssh/authorized_keys
-#RUN chown --recursive ${USER}:${USER} /home/${USER}/.ssh
 
 # Configures SSH to enable SFTP service.
 COPY ./docker/dns/sshd/*.conf /etc/ssh/sshd_config.d/
-#COPY ./docker/dns/sshd-sftp.conf /etc/ssh/sshd_config.d/sftp.conf
 RUN sed -i "s/__DOCKER_USER__/${USER}/" /etc/ssh/sshd_config.d/sftp.conf
 
 # Copies the entrypoint to start the docker.
