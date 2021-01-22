@@ -18,7 +18,6 @@
 namespace App\Console\Commands;
 
 use App\Helpers\SFTP\SFTP;
-use App\Helpers\SFTP\SSH;
 use App\Server;
 use App\Zone;
 use Carbon\Carbon;
@@ -285,6 +284,7 @@ class ProBINDPushZones extends Command
             $privateSSHKey = new RSA();
             if (false === $privateSSHKey->loadKey(Setting::get('ssh_default_key'))) {
                 $this->error('Invalid RSA private key, configure it on the Settings page.');
+
                 return false;
             }
 
@@ -292,6 +292,7 @@ class ProBINDPushZones extends Command
             $sftp->authWithPublicKey(Setting::get('ssh_default_user'), $privateSSHKey);
         } catch (\Throwable $e) {
             $this->error('Connection to ' . $server->hostname . ' failed: ' . $e->getMessage());
+
             return false;
         }
 
@@ -315,7 +316,4 @@ class ProBINDPushZones extends Command
         // Return true if all files has been pushed
         return $totalFiles === $pushedFiles;
     }
-
 }
-
-

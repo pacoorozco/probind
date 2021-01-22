@@ -23,7 +23,7 @@ use phpseclib\Net\SFTP as PHPSecLibSFTP;
 class SFTP
 {
     /**
-     * SFTP connection
+     * SFTP connection.
      *
      * @var \phpseclib\Net\SFTP
      */
@@ -45,7 +45,6 @@ class SFTP
         }
         $this->connection = $connection;
     }
-
 
     /**
      * Authenticate a user using a public key.
@@ -76,6 +75,7 @@ class SFTP
         if (false === $this->createFolderAndParents($path, 0755)) {
             return false;
         }
+
         return $this->connection->put($remotePath, $localPath, PHPSecLibSFTP::SOURCE_LOCAL_FILE);
     }
 
@@ -90,9 +90,10 @@ class SFTP
     private function createFolderAndParents(string $path, int $mode = 0755): bool
     {
         if (true === $this->connection->chdir($path)) {
-            # The path already exist on the remote host.
+            // The path already exist on the remote host.
             return true;
         }
+
         return $this->connection->mkdir($path, $mode, true);
     }
 
@@ -115,5 +116,4 @@ class SFTP
     {
         $this->connection->disconnect();
     }
-
 }
