@@ -1,5 +1,5 @@
 $ORIGIN {{ $zone->domain }}
-$TTL {{ $zone->getDefaultTTL() }}
+$TTL {{ $zone->getDefaultTTL }}
 
 {{ $zone->getSOARecord() }}
 

@@ -17,6 +17,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\SFTP\SFTP;
 use App\Server;
 use App\Zone;
 use Carbon\Carbon;
@@ -24,7 +25,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use phpseclib\Crypt\RSA;
-use phpseclib\Net\SFTP;
 use Setting;
 
 /**
@@ -60,7 +60,7 @@ class ProBINDPushZones extends Command
      */
     public function __construct()
     {
-        $this->localStoragePath = storage_path('probind');
+        $this->localStoragePath = 'probind';
 
         parent::__construct();
     }
@@ -106,11 +106,9 @@ class ProBINDPushZones extends Command
     /**
      * Returns the content of Deleted Zones File.
      *
-     * @param array $deletedZones
-     *
      * @return string
      */
-    public function generateDeletedZonesContent(array $deletedZones): string
+    public function generateDeletedZonesContent($deletedZones): string
     {
         $content = [];
         foreach ($deletedZones as $zone) {
@@ -123,7 +121,7 @@ class ProBINDPushZones extends Command
     /**
      * Creates a file with the zone definitions.
      *
-     * @param Zone $zone
+     * @param  Zone  $zone
      *
      * @return bool
      */
@@ -188,7 +186,7 @@ class ProBINDPushZones extends Command
     /**
      * Handle this command only for one Server.
      *
-     * @param Server $server
+     * @param  Server  $server
      *
      * @return bool
      */
@@ -225,7 +223,7 @@ class ProBINDPushZones extends Command
     /**
      * Create a file with DNS server configuration.
      *
-     * @param Server $server
+     * @param  Server  $server
      *
      * @return bool
      */
@@ -255,7 +253,7 @@ class ProBINDPushZones extends Command
     /**
      * Returns the template for rendering configuration file.
      *
-     * @param Server $server
+     * @param  Server  $server
      *
      * @return string
      */
@@ -272,53 +270,50 @@ class ProBINDPushZones extends Command
     /**
      * Push files to a Master server using SFTP.
      *
-     * @param Server $server
-     * @param array  $filesToPush
+     * @param  Server  $server
+     * @param  array  $filesToPush
      *
      * @return bool
      */
-    public function pushFilesToServer(Server $server, $filesToPush)
+    public function pushFilesToServer(Server $server, $filesToPush): bool
     {
-        // Get RSA private key in order to connect to servers
-        $privateSSHKey = new RSA();
-        $privateSSHKey->loadKey(Setting::get('ssh_default_key'));
-
         try {
+            $this->info('Connecting to ' . Setting::get('ssh_default_user') . '@' . $server->hostname . ' (' . Setting::get('ssh_default_port') . ')...');
+
+            // Get RSA private key in order to connect to servers
+            $privateSSHKey = new RSA();
+            if (false === $privateSSHKey->loadKey(Setting::get('ssh_default_key'))) {
+                $this->error('Invalid RSA private key, configure it on the Settings page.');
+
+                return false;
+            }
+
             $sftp = new SFTP($server->hostname, Setting::get('ssh_default_port'));
-        } catch (\Exception $e) {
-            $this->error('Can\'t connect to ' . $server->hostname . ': ' . $e->getMessage());
+            $sftp->authWithPublicKey(Setting::get('ssh_default_user'), $privateSSHKey);
+        } catch (\Throwable $e) {
+            $this->error('Connection to ' . $server->hostname . ' failed: ' . $e->getMessage());
 
             return false;
         }
 
-        if (! $sftp->login(Setting::get('ssh_default_user'), $privateSSHKey)) {
-            $this->error('Invalid SSH credentials for ' . $server->hostname);
-
-            return false;
-        }
-
-        $this->info('Connected successfully to ' . $server->hostname);
-
-        // Create Remote Folders, last argument is to be recursive
-        $sftp->mkdir(Setting::get('ssh_default_remote_path') . '/configuration', -1, true);
-        $sftp->mkdir(Setting::get('ssh_default_remote_path') . '/primary', -1, true);
+        $this->info('Connected successfully to ' . $server->hostname . '.');
 
         $totalFiles = count($filesToPush);
         $pushedFiles = 0;
         foreach ($filesToPush as $file) {
-            $contents = Storage::get($file['local']);
+            $this->info('Uploading file [' . $file['local'] . ' -> ' . $file['remote'] . '].');
 
-            if (! $sftp->put($file['remote'], $contents)) {
+            if (false === $sftp->put(Storage::path($file['local']), $file['remote'])) {
                 $this->error('File ' . $file['local'] . ' can\'t be uploaded to ' . $server->hostname);
                 continue;
             }
             $pushedFiles++;
         }
 
-        $this->info('Has been pushed ' . $pushedFiles . ' of ' . $totalFiles . ' files to ' . $server->hostname);
+        $this->info('It has been pushed ' . $pushedFiles . ' of ' . $totalFiles . ' files to ' . $server->hostname . '.');
         $sftp->disconnect();
 
         // Return true if all files has been pushed
-        return $totalFiles == $pushedFiles;
+        return $totalFiles === $pushedFiles;
     }
 }
