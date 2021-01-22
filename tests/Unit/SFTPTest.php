@@ -19,6 +19,7 @@ namespace Tests\Unit;
 
 use App\Helpers\SFTP\AuthenticationException;
 use App\Helpers\SFTP\SFTP;
+use phpseclib\Crypt\RSA;
 use PHPUnit\Framework\TestCase;
 
 class SFTPTest extends TestCase
@@ -31,7 +32,7 @@ class SFTPTest extends TestCase
     public function testAuthWithPublicKeyWithValidCredentials()
     {
         $username = 'testUser';
-        $publicKey = 'testPublicKey';
+        $publicKey = new RSA();
 
         $mockedSFTP = \Mockery::mock('overload:phpseclib\Net\SFTP');
         $mockedSFTP->shouldReceive('login')
@@ -47,7 +48,7 @@ class SFTPTest extends TestCase
     public function testAuthWithPublicKeyWithInvalidCredentials()
     {
         $username = 'testUser';
-        $publicKey = 'testPublicKey';
+        $publicKey = new RSA();
 
         $mockedSFTP = \Mockery::mock('overload:phpseclib\Net\SFTP');
         $mockedSFTP->shouldReceive('login')
