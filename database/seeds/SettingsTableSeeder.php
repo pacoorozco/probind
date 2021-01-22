@@ -9,10 +9,10 @@
  * Licensed under GNU General Public License 3.0.
  * Some rights reserved. See LICENSE, AUTHORS.
  *
- *  @author      Paco Orozco <paco@pacoorozco.info>
- *  @copyright   2016 Paco Orozco
- *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
- *  @link        https://github.com/pacoorozco/probind
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2016 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
  */
 
 use Illuminate\Database\Seeder;
@@ -28,17 +28,21 @@ class SettingsTableSeeder extends Seeder
     {
         $settings = [
             /*
-             * Default values for Zone's definition
+             * Default values for Zone definition.
              */
-            'zone_default_mname'        => 'dns1.domain.local', // Default MNAME, hostname of master DNS
-            'zone_default_rname'        => 'hostmaster@domain.local', // Default RNAME, email of hostmaster
-            'zone_default_refresh'      => '86400', // 24 hours
-            'zone_default_retry'        => '7200', // 2 hours
-            'zone_default_expire'       => '3628800', // 6 weeks
+            'zone_default_mname' => 'dns1.domain.local', // Default MNAME, hostname of master DNS
+            'zone_default_rname' => 'hostmaster@domain.local', // Default RNAME, email of hostmaster
+            'zone_default_refresh' => '86400', // 24 hours
+            'zone_default_retry' => '7200', // 2 hours
+            'zone_default_expire' => '3628800', // 6 weeks
             'zone_default_negative_ttl' => '7200', // 2 hours
-            'zone_default_default_ttl'  => '172800', // 48 hours
+            'zone_default_default_ttl' => '172800', // 48 hours
 
-            'ssh_default_user'        => 'probinder',
+            /*
+             * This is the username that ProBIND will use to connect remote hosts.
+             */
+            'ssh_default_user' => 'probinder',
+
             /*
              * ProBIND Host Private Key, used to access to DNS hosts.
              */
@@ -80,8 +84,16 @@ SsThJtYOHnjX+O942xixrDv9kkE2VHUPLh220Ivvm0/MB+r+jhSXKTbyntNwUAA057DvOa
 DjO1j1SLnIG3Acj87X19UrLhk5ZZfR1aYegQ3kuz6B+yxEb9/hwYUn6m7glNVcLgvzNadJ
 ePBOdQDy/CSPJNAAAACnBhY29AY2lncm8=
 -----END OPENSSH PRIVATE KEY-----',
-            'ssh_default_port'        => '2201',
-            'ssh_default_remote_path' => '/etc/named/probinder',
+
+            /*
+            * Port to use as SSH
+            */
+            'ssh_default_port' => '22',
+
+            /*
+             * This is the folder whre ProBIND will generate files on remote hosts.
+             */
+            'ssh_default_remote_path' => '/home/probinder/data',
         ];
 
         Setting::set($settings);
