@@ -17,7 +17,6 @@
 
 namespace App\Helpers\SFTP;
 
-
 class AuthenticationException extends \Exception
 {
 }
