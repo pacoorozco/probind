@@ -90,7 +90,7 @@ class ProBINDPushZones extends Command
         // Now push files to servers using SFTP
         $error = $this->handleAllServers();
 
-        if (!$error) {
+        if (! $error) {
             // Clear pending changes on zones and clear deleted ones
             foreach ($zonesToUpdate as $zone) {
                 $zone->setPendingChanges(false);
