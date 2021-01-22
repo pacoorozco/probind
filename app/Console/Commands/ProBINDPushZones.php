@@ -17,6 +17,8 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\SFTP\SFTP;
+use App\Helpers\SFTP\SSH;
 use App\Server;
 use App\Zone;
 use Carbon\Carbon;
@@ -24,7 +26,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use phpseclib\Crypt\RSA;
-use phpseclib\Net\SFTP;
 use Setting;
 
 /**
@@ -60,7 +61,7 @@ class ProBINDPushZones extends Command
      */
     public function __construct()
     {
-        $this->localStoragePath = storage_path('probind');
+        $this->localStoragePath = 'probind';
 
         parent::__construct();
     }
@@ -275,49 +276,46 @@ class ProBINDPushZones extends Command
      *
      * @return bool
      */
-    public function pushFilesToServer(Server $server, $filesToPush)
+    public function pushFilesToServer(Server $server, $filesToPush): bool
     {
-        // Get RSA private key in order to connect to servers
-        $privateSSHKey = new RSA();
-        $privateSSHKey->loadKey(Setting::get('ssh_default_key'));
-
         try {
+            $this->info('Connecting to ' . Setting::get('ssh_default_user') . '@' . $server->hostname . ' (' . Setting::get('ssh_default_port') . ')...');
+
+            // Get RSA private key in order to connect to servers
+            $privateSSHKey = new RSA();
+            if (false === $privateSSHKey->loadKey(Setting::get('ssh_default_key'))) {
+                $this->error('Invalid RSA private key, configure it on the Settings page.');
+                return false;
+            }
+
             $sftp = new SFTP($server->hostname, Setting::get('ssh_default_port'));
-        } catch (\Exception $e) {
-            echo "Hola";
-            $this->error('Can\'t connect to ' . $server->hostname . ': ' . $e->getMessage());
-
+            $sftp->authWithPublicKey(Setting::get('ssh_default_user'), $privateSSHKey);
+        } catch (\Throwable $e) {
+            $this->error('Connection to ' . $server->hostname . ' failed: ' . $e->getMessage());
             return false;
         }
 
-        if (!$sftp->login(Setting::get('ssh_default_user'), $privateSSHKey)) {
-            $this->error('Invalid SSH credentials for ' . $server->hostname);
-
-            return false;
-        }
-
-        $this->info('Connected successfully to ' . $server->hostname);
-
-        // Create Remote Folders, last argument is to be recursive
-        $sftp->mkdir(Setting::get('ssh_default_remote_path') . '/configuration', -1, true);
-        $sftp->mkdir(Setting::get('ssh_default_remote_path') . '/primary', -1, true);
+        $this->info('Connected successfully to ' . $server->hostname . '.');
 
         $totalFiles = count($filesToPush);
         $pushedFiles = 0;
         foreach ($filesToPush as $file) {
-            $contents = Storage::get($file['local']);
+            $this->info('Uploading file [' . $file['local'] . ' -> ' . $file['remote'] . '].');
 
-            if (!$sftp->put($file['remote'], $contents)) {
+            if (false === $sftp->put(Storage::path($file['local']), $file['remote'])) {
                 $this->error('File ' . $file['local'] . ' can\'t be uploaded to ' . $server->hostname);
                 continue;
             }
             $pushedFiles++;
         }
 
-        $this->info('Has been pushed ' . $pushedFiles . ' of ' . $totalFiles . ' files to ' . $server->hostname);
+        $this->info('It has been pushed ' . $pushedFiles . ' of ' . $totalFiles . ' files to ' . $server->hostname . '.');
         $sftp->disconnect();
 
         // Return true if all files has been pushed
-        return $totalFiles == $pushedFiles;
+        return $totalFiles === $pushedFiles;
     }
+
 }
+
+
