@@ -47,9 +47,9 @@ class ProBINDPushZones extends Command
      */
     protected $description = 'Generate and push zone files to DNS servers';
 
-    const BASEDIR        = 'probind';
+    const BASEDIR = 'probind';
     const CONFIG_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'configuration';
-    const ZONE_BASEDIR   = self::BASEDIR . DIRECTORY_SEPARATOR . 'primary';
+    const ZONE_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'primary';
 
     /**
      * Execute the console command.
@@ -82,6 +82,7 @@ class ProBINDPushZones extends Command
         // Now push files to servers using SFTP
         if (false === $this->handleAllServers()) {
             $this->error('Push updates completed with errors');
+
             return false;
         }
 
@@ -94,10 +95,9 @@ class ProBINDPushZones extends Command
             $zone->forceDelete();
         }
 
-        $this->info("Push updates completed successfully.");
+        $this->info('Push updates completed successfully.');
 
         return true;
-
     }
 
     /**
@@ -149,6 +149,7 @@ class ProBINDPushZones extends Command
             ->with('records', $records);
 
         $path = self::ZONE_BASEDIR . DIRECTORY_SEPARATOR . $zone->domain;
+
         return Storage::append($path, $contents);
     }
 
@@ -174,7 +175,7 @@ class ProBINDPushZones extends Command
             }
         }
 
-        return !$pushedWithErrors;
+        return ! $pushedWithErrors;
     }
 
     /**
@@ -308,6 +309,6 @@ class ProBINDPushZones extends Command
         $sftp->disconnect();
 
         // Return true if all files has been pushed
-        return ($totalFiles === $pushedFiles);
+        return $totalFiles === $pushedFiles;
     }
 }

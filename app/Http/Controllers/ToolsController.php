@@ -62,6 +62,7 @@ class ToolsController extends Controller
     public function pushUpdates()
     {
         Artisan::call('probind:push');
+
         return view('tools.push_result')
             ->with('output', Artisan::output());
     }
