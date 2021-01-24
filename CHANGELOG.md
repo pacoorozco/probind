@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
+
+## 0.12.0 - 2021-01-24
+
 ### Added
 - DNS server (w/ SFTP enabled) docker to test push updates. ([#89][i89])
 ### Fixed
