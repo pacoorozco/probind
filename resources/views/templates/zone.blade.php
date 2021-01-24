@@ -1,3 +1,6 @@
+;
+; This file has been automatically generated using ProBIND v3 on {{ $date }}.
+
 $ORIGIN {{ $zone->domain }}
 $TTL {{ $zone->getDefaultTTL }}
 
