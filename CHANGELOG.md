@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 ## Unreleased
 
+## 0.12.0 - 2021-01-24
+
+### Added
+- DNS server (w/ SFTP enabled) docker to test push updates. ([#89][i89])
+### Fixed
+- Bug when pushing changes to remote hosts using SFTP. ([#89][i89])
+- Bug when building `app` container. ([#93][i93])
+- Pushing updates where not removing pending changes. ([#96][i96])
+
+[i89]: https://github.com/pacoorozco/probind/issues/89
+[i93]: https://github.com/pacoorozco/probind/issues/93
+[i96]: https://github.com/pacoorozco/probind/issues/96
+
 ## 0.11.0 - 2021-01-16
 
 ### Added
