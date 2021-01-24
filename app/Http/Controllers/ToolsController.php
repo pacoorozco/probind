@@ -20,7 +20,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ImportZoneRequest;
 use App\Server;
 use App\Zone;
-use Artisan;
+use Illuminate\Support\Facades\Artisan;
 
 class ToolsController extends Controller
 {
@@ -57,20 +57,13 @@ class ToolsController extends Controller
     /**
      * Push updates to servers.
      *
-     * @return \Illuminate\Http\RedirectResponse
      * @codeCoverageIgnore
      */
     public function pushUpdates()
     {
-        // create config files
-
-        // create zone files and push to servers
         Artisan::call('probind:push');
-
-        // mark zones delete
-
-        return redirect()->route('home')
-            ->with('success', __('tools/messages.push_updates_success'));
+        return view('tools.push_result')
+            ->with('output', Artisan::output());
     }
 
     /**

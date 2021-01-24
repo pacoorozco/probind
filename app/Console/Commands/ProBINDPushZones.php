@@ -47,9 +47,9 @@ class ProBINDPushZones extends Command
      */
     protected $description = 'Generate and push zone files to DNS servers';
 
-    const BASEDIR = 'probind';
+    const BASEDIR        = 'probind';
     const CONFIG_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'configuration';
-    const ZONE_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'primary';
+    const ZONE_BASEDIR   = self::BASEDIR . DIRECTORY_SEPARATOR . 'primary';
 
     /**
      * Execute the console command.
@@ -80,20 +80,24 @@ class ProBINDPushZones extends Command
         }
 
         // Now push files to servers using SFTP
-        $error = $this->handleAllServers();
-
-        if (!$error) {
-            // Clear pending changes on zones and clear deleted ones
-            foreach ($zonesToUpdate as $zone) {
-                $zone->setPendingChanges(false);
-            }
-
-            foreach ($deletedZones as $zone) {
-                $zone->forceDelete();
-            }
+        if (false === $this->handleAllServers()) {
+            $this->error('Push updates completed with errors');
+            return false;
         }
 
-        return $error;
+        // Clear pending changes on zones and clear deleted ones
+        foreach ($zonesToUpdate as $zone) {
+            $zone->setPendingChanges(false);
+        }
+
+        foreach ($deletedZones as $zone) {
+            $zone->forceDelete();
+        }
+
+        $this->info("Push updates completed successfully.");
+
+        return true;
+
     }
 
     /**
@@ -153,7 +157,7 @@ class ProBINDPushZones extends Command
      *
      * @return bool
      */
-    public function handleAllServers()
+    public function handleAllServers(): bool
     {
         // Get servers with push updates capability
         $servers = Server::withPushCapability()->get();
@@ -163,12 +167,14 @@ class ProBINDPushZones extends Command
             return true;
         }
 
-        $pushedWithoutErrors = true;
+        $pushedWithErrors = false;
         foreach ($servers as $server) {
-            $pushedWithoutErrors &= (true === $this->handleServer($server));
+            if (false === $this->handleServer($server) && (false === $pushedWithErrors)) {
+                $pushedWithErrors = true;
+            }
         }
 
-        return $pushedWithoutErrors;
+        return !$pushedWithErrors;
     }
 
     /**
@@ -195,7 +201,7 @@ class ProBINDPushZones extends Command
         ];
 
         if ($server->type == 'master') {
-            $localFiles = Storage::files($this->localStoragePath . '/primary/');
+            $localFiles = Storage::files(self::ZONE_BASEDIR);
             foreach ($localFiles as $file) {
                 $filename = basename($file);
                 $filesToPush[] = [
@@ -302,6 +308,6 @@ class ProBINDPushZones extends Command
         $sftp->disconnect();
 
         // Return true if all files has been pushed
-        return $totalFiles === $pushedFiles;
+        return ($totalFiles === $pushedFiles);
     }
 }

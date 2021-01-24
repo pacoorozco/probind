@@ -36,6 +36,7 @@ return [
     'info'     => 'Info!',
     'warning'  => 'Warning!',
     'next'     => 'Next',
+    'done'     => 'Done',
 
     'absolutely_sure_question'  => 'Are you ABSOLUTELY sure?',
     'unexpected_things_warning' => 'Unexpected bad things will happen if you don\'t read this!',
