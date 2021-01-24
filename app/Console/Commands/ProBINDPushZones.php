@@ -25,7 +25,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use phpseclib\Crypt\RSA;
-use Setting;
 
 /**
  * Class ProBINDPushZones.
@@ -48,22 +47,9 @@ class ProBINDPushZones extends Command
      */
     protected $description = 'Generate and push zone files to DNS servers';
 
-    /**
-     * The local Storage path to be used.
-     *
-     * @var string
-     */
-    protected $localStoragePath;
-
-    /**
-     * Create a new command instance.
-     */
-    public function __construct()
-    {
-        $this->localStoragePath = 'probind';
-
-        parent::__construct();
-    }
+    const BASEDIR = 'probind';
+    const CONFIG_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'configuration';
+    const ZONE_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'primary';
 
     /**
      * Execute the console command.
@@ -73,15 +59,22 @@ class ProBINDPushZones extends Command
     public function handle()
     {
         // Prepare local storage for file's creation
-        Storage::deleteDirectory($this->localStoragePath);
+        Storage::deleteDirectory(self::BASEDIR);
 
         // Generate a file containing zone's name that has been deleted
-        $deletedZones = Zone::onlyTrashed()->get();
-        $content = $this->generateDeletedZonesContent($deletedZones);
-        Storage::put($this->localStoragePath . '/configuration/deadlist', $content, 'private');
+        $deletedZones = Zone::onlyTrashed()
+            ->get();
+        $content = join("\n",
+            $deletedZones
+                ->pluck('domain')
+                ->all()
+        );
+        $path = self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . 'deadlist';
+        Storage::put($path, $content, 'private');
 
         // Generate one file for zone with its zone definition
-        $zonesToUpdate = Zone::withPendingChanges()->get();
+        $zonesToUpdate = Zone::withPendingChanges()
+            ->get();
         foreach ($zonesToUpdate as $zone) {
             $this->generateZoneFileForZone($zone);
         }
@@ -89,7 +82,7 @@ class ProBINDPushZones extends Command
         // Now push files to servers using SFTP
         $error = $this->handleAllServers();
 
-        if (! $error) {
+        if (!$error) {
             // Clear pending changes on zones and clear deleted ones
             foreach ($zonesToUpdate as $zone) {
                 $zone->setPendingChanges(false);
@@ -127,10 +120,8 @@ class ProBINDPushZones extends Command
      */
     public function generateZoneFileForZone(Zone $zone)
     {
-        $path = $this->localStoragePath . '/primary/' . $zone->domain;
-
         // Get default settings, we will use to render view
-        $defaults = Setting::all();
+        $defaults = setting()->all();
 
         // Get all Name Servers that had to be on NS records
         $nameServers = Server::where('ns_record', true)
@@ -145,18 +136,15 @@ class ProBINDPushZones extends Command
             ->orderBy('type')
             ->get();
 
-        // Put a header on generated file
-        $header = sprintf(";\n; This file has been automatically generated using ProBIND v3 on %s.\n;",
-            Carbon::now());
-        Storage::put($path, $header, 'private');
-
         // Create file content with a blade view
         $contents = view('templates.zone')
+            ->with('date', Carbon::now())
             ->with('defaults', $defaults)
             ->with('zone', $zone)
             ->with('servers', $nameServers)
             ->with('records', $records);
 
+        $path = self::ZONE_BASEDIR . DIRECTORY_SEPARATOR . $zone->domain;
         return Storage::append($path, $contents);
     }
 
@@ -197,12 +185,12 @@ class ProBINDPushZones extends Command
         // Create an array with files that need to be pushed to remote server
         $filesToPush = [
             [
-                'local' => $this->localStoragePath . '/configuration/' . $server->hostname . '.conf',
-                'remote' => Setting::get('ssh_default_remote_path') . '/configuration/named.conf',
+                'local' => self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . $server->hostname . '.conf',
+                'remote' => setting()->get('ssh_default_remote_path') . '/configuration/named.conf',
             ],
             [
-                'local' => $this->localStoragePath . '/configuration/deadlist',
-                'remote' => Setting::get('ssh_default_remote_path') . '/configuration/deadlist',
+                'local' => self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . 'deadlist',
+                'remote' => setting()->get('ssh_default_remote_path') . '/configuration/deadlist',
             ],
         ];
 
@@ -212,7 +200,7 @@ class ProBINDPushZones extends Command
                 $filename = basename($file);
                 $filesToPush[] = [
                     'local' => $file,
-                    'remote' => Setting::get('ssh_default_remote_path') . '/primary/' . $filename,
+                    'remote' => setting()->get('ssh_default_remote_path') . '/primary/' . $filename,
                 ];
             }
         }
@@ -229,7 +217,7 @@ class ProBINDPushZones extends Command
      */
     public function generateConfigFileForServer(Server $server)
     {
-        $path = $this->localStoragePath . '/configuration/' . $server->hostname . '.conf';
+        $path = self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . $server->hostname . '.conf';
 
         // We allow specific templates for each server
         $templateFile = $this->getTemplateForConfigFile($server);
@@ -278,18 +266,18 @@ class ProBINDPushZones extends Command
     public function pushFilesToServer(Server $server, $filesToPush): bool
     {
         try {
-            $this->info('Connecting to ' . Setting::get('ssh_default_user') . '@' . $server->hostname . ' (' . Setting::get('ssh_default_port') . ')...');
+            $this->info('Connecting to ' . setting()->get('ssh_default_user') . '@' . $server->hostname . ' (' . setting()->get('ssh_default_port') . ')...');
 
             // Get RSA private key in order to connect to servers
             $privateSSHKey = new RSA();
-            if (false === $privateSSHKey->loadKey(Setting::get('ssh_default_key'))) {
+            if (false === $privateSSHKey->loadKey(setting()->get('ssh_default_key'))) {
                 $this->error('Invalid RSA private key, configure it on the Settings page.');
 
                 return false;
             }
 
-            $sftp = new SFTP($server->hostname, Setting::get('ssh_default_port'));
-            $sftp->authWithPublicKey(Setting::get('ssh_default_user'), $privateSSHKey);
+            $sftp = new SFTP($server->hostname, setting()->get('ssh_default_port'));
+            $sftp->authWithPublicKey(setting()->get('ssh_default_user'), $privateSSHKey);
         } catch (\Throwable $e) {
             $this->error('Connection to ' . $server->hostname . ' failed: ' . $e->getMessage());
 
