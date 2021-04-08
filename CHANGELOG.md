@@ -14,9 +14,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 - Bump `spatie/laravel-activitylog` from `v3.8` to `v3.17`.
 - Bump `yajra/laravel-datatables-oracle` from `v9.0` to `v9.17.1`.
 
-
-
-
 ## 0.12.0 - 2021-01-24
 
 ### Added
