@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
+
+## 0.12.1 - 2021-04-08
+
 ### Changed
 - Bump `doctrine/dbal` from `v2.11` to `v2.13`.
 - Bump `fideloper/proxy` from `v4.0` to `v4.4`.
