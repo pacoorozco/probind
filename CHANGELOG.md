@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
+### Changed
+- Bump `doctrine/dbal` from `v2.11` to `v2.13`.
+- Bump `fideloper/proxy` from `v4.0` to `v4.4`.
+- Bump `larapacks/setting` from `v2.0` to `v2.1`.
+- Bump `laravel/framework` from `v6.0` to `v6.20.22`.
+- Bump `laravelcollective/html` from `v6.0` to `v6.2.1`.
+- Bump `phpseclib/phpseclib` from `v2.0` to `v2.0.31`.
+- Bump `spatie/laravel-activitylog` from `v3.8` to `v3.17`.
+- Bump `yajra/laravel-datatables-oracle` from `v9.0` to `v9.17.1`.
 
 ## 0.12.0 - 2021-01-24
 
