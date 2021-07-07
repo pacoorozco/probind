@@ -1,0 +1,77 @@
+name: Testing with MySQL
+on: [push, pull_request]
+jobs:
+  ssham:
+    name: PHP ${{ matrix.php-versions }}
+    runs-on: ubuntu-latest
+    env:
+      DB_DATABASE: testing
+      DB_USERNAME: root
+      DB_PASSWORD: password
+      BROADCAST_DRIVER: log
+      CACHE_DRIVER: redis
+      QUEUE_CONNECTION: redis
+      SESSION_DRIVER: redis
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: testing
+        ports:
+          - 3306/tcp
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      redis:
+        image: redis
+        ports:
+          - 6379/tcp
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.4', '8.0']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, dom, fileinfo, mysql
+          coverage: xdebug
+      - name: Start mysql service
+        run: sudo /etc/init.d/mysql start
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: Install Composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+      - name: Prepare the application
+        run: |
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+          php artisan key:generate
+      - name: Clear Config
+        run: php artisan config:clear
+      - name: Run Migration
+        run: php artisan migrate --verbose
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
+      - name: Test with phpunit
+        run: |
+          vendor/bin/phpunit --coverage-text --coverage-clover=clover.xml
+          echo "Upload results to Scrutinizer-ci"
+          composer require scrutinizer/ocular --dev
+          vendor/bin/ocular code-coverage:upload --format=php-clover clover.xml
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
