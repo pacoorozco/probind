@@ -68,6 +68,9 @@ jobs:
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
       - name: Test with phpunit
         run: |
+          mysql --version
+          sudo apt-get install -y mysql-client
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uuser -psecret -e "SHOW DATABASES"
           vendor/bin/phpunit --coverage-text --coverage-clover=clover.xml
           echo "Upload results to Scrutinizer-ci"
           composer require scrutinizer/ocular --dev
