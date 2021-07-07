@@ -5,6 +5,7 @@ jobs:
     name: PHP ${{ matrix.php-versions }}
     runs-on: ubuntu-latest
     env:
+      DB_CONNECTION: mysql
       DB_DATABASE: testing
       DB_USERNAME: root
       DB_PASSWORD: password
@@ -12,7 +13,6 @@ jobs:
       CACHE_DRIVER: redis
       QUEUE_CONNECTION: redis
       SESSION_DRIVER: redis
-      DB_CONNECTION: mysql
     services:
       mysql:
         image: mysql:5.7
@@ -69,9 +69,6 @@ jobs:
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
       - name: Test with phpunit
         run: |
-          mysql --version
-          sudo apt-get install -y mysql-client
-          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword -e "SHOW DATABASES"
           vendor/bin/phpunit --coverage-text --coverage-clover=clover.xml
           echo "Upload results to Scrutinizer-ci"
           composer require scrutinizer/ocular --dev
