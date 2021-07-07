@@ -12,6 +12,7 @@ jobs:
       CACHE_DRIVER: redis
       QUEUE_CONNECTION: redis
       SESSION_DRIVER: redis
+      DB_CONNECTION: mysql
     services:
       mysql:
         image: mysql:5.7
