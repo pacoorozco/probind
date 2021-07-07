@@ -1,7 +1,7 @@
 name: Testing with MySQL
 on: [push, pull_request]
 jobs:
-  ssham:
+  app:
     name: PHP ${{ matrix.php-versions }}
     runs-on: ubuntu-latest
     env:
