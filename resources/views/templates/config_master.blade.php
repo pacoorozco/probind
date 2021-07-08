@@ -1,25 +1,20 @@
-// Fitxer de configuracio BIND
-// Configuracio primari - {{ $server->hostname }}
+// Primary DNS server - {{ $server->hostname }}
 
-// Fixem les llistes de control acces (ACL)
+// List of servers that can make transfer requests.
 acl "xfer" {
     192.168.194.4;
     192.168.2.203;
 };
 
+// List of trusted clients that can make revolve requests.
 acl "trusted" {
-// Cal posar aqui la llista de clients en els
-// que confiem. Seran aquells que puguin enviar
-// peticions DNS.
     localhost;
     10/8;
     192.168/16;
 };
 
+// List of bogus clients that are used to do "spoofing attacks". See RFC5735.
 acl bogusnets {
-// Es bloqueja tot l'espais d'adreces definit
-// al RFC5735 com a xarxes IP falses, normalment
-// usades pe a "spoofing attacks"
     0.0.0.0/8;
     127.0.0.0/8;
     169.254.0.0/16;
@@ -31,7 +26,6 @@ acl bogusnets {
     240.0.0.0/4;
 };
 
-// Configuracio de les opcions de seguretat
 options {
     directory "/etc/mapes";
     pid-file  "/etc/mapes/configuration/named.pid";
@@ -39,40 +33,22 @@ options {
     // In order to increase performance we disable these statistics
     zone-statistics no;
 
-    // Genera una __ferencia de zones mes eficient
-    // Coloca mes d'un registre DNS en el mateix
-    // missatge, en comptes de nomes un.
-    __fer-format many-answers;
+    // Increase zone transfer performance.
+    transfer-format many-answers;
 
-    // Fixa el maxim temps per a la __ferencia
-    // d'una zona. En cas de que trigui mes la
-    // considera no completada.
-    max-__fer-time-in 60;
+    // Maximum time to complete a successful zone transfer.
+    max-transfer-time-in 60;
 
-    // Seguim en aquest cas la RFC1035
+    // See RFC1035
     auth-nxdomain no;
-
-    // No tenim interfaces dinamics, per tant
-    // evitem que BIND vagi mirant si estan UP|DOWN
-    interface-interval 0;
 
     blackhole { bogusnets; };
 
-    allow-__fer {
-        // Per defecte limitem la __ferencia
-        // de zones a ACL "xfer"
-        xfer;
-    };
+    allow-transfer { xfer; };
 
-    allow-query {
-        // Acceptem les peticions del ACL "trusted"
-        // Permetre les peticions de tothom a les
-        // primary zones.
-        trusted;
-    };
+    allow-query { trusted; };
 };
 
-// Comenca la definicio de zones
 zone "." {
     type hint;
     file "cache/cache";
@@ -87,13 +63,12 @@ zone "0.0.127.IN-ADDR.ARPA" {
     };
 };
 
-// Entrades estatiques, no gestionades per PROBIND
-// Cal modificar-les al fitxer seguent, tots els mapes
-// estaran sota /etc/mapes/static-zones
+// Zones not managed by proBIND. Edit the file directly.
 
 include "/etc/mapes/configuration/static-zones.conf";
 
-// Entrades generades per PROBIND
+// Zone managed by proBIND. Do not edit any of these files directly.
+
 @foreach($zones as $zone)
 zone "{{ $zone->domain }}" {
     @if ($zone->isMasterZone())
@@ -111,9 +86,5 @@ zone "{{ $zone->domain }}" {
         {{ $zone->master }};
     };
     @endif
-
-    allow-query {
-        any;
-    };
 };
 @endforeach
