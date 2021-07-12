@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 ## Unreleased
 
+## 0.12.2 - 2021-07-12
+### Fixed
+- Resource record with `priority` field format. Resolves ([#112][i112])
+
+[i112]: https://github.com/pacoorozco/probind/issues/112
+
 ## 0.12.1 - 2021-04-08
 
 ### Changed
