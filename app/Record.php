@@ -44,7 +44,7 @@ class Record extends Model
     /**
      * The database table used by the model.
      */
-    protected $table    = 'records';
+    protected $table = 'records';
     protected $fillable = [
         'name',
         'type',
@@ -124,6 +124,7 @@ class Record extends Model
             default:
                 // continue
         }
+
         return sprintf(
             "%-40s %s\tIN\t%s\t%s",
             $this->name,
