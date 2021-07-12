@@ -312,4 +312,33 @@ class RecordUnitTest extends TestCase
 
         $this->assertEquals($want, $record->formatResourceRecord());
     }
+
+    /** @test */
+    public function it_formats_NAPTR_record_properly(): void
+    {
+        $record = new Record([
+            'name' => '',
+            'type' => 'NAPTR',
+            'priority' => 100,
+            'data' => '10 "S" "SIP+D2U" "!^.*$!sip:customer-service@example.com!" _sip._udp.example.com.',
+        ]);
+        $want = '                                         	IN	NAPTR	100 10 "S" "SIP+D2U" "!^.*$!sip:customer-service@example.com!" _sip._udp.example.com.';
+
+        $this->assertEquals($want, $record->formatResourceRecord());
+    }
+
+    /** @test */
+    public function it_formats_NAPTR_record_with_custom_TTL_properly(): void
+    {
+        $record = new Record([
+            'name' => '',
+            'ttl' => 3600,
+            'type' => 'NAPTR',
+            'priority' => 100,
+            'data' => '10 "S" "SIP+D2U" "!^.*$!sip:customer-service@example.com!" _sip._udp.example.com.',
+        ]);
+        $want = '                                         3600	IN	NAPTR	100 10 "S" "SIP+D2U" "!^.*$!sip:customer-service@example.com!" _sip._udp.example.com.';
+
+        $this->assertEquals($want, $record->formatResourceRecord());
+    }
 }

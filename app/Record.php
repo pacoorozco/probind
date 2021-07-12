@@ -119,6 +119,8 @@ class Record extends Model
                 return $this->formatMXResourceRecord();
             case 'SRV':
                 return $this->formatSRVResourceRecord();
+            case 'NAPTR':
+                return $this->formatNAPTRResourceRecord();
             default:
                 // continue
         }
@@ -156,6 +158,17 @@ class Record extends Model
     {
         return sprintf(
             "%-40s %s\tIN\tSRV\t%s %s",
+            $this->name,
+            $this->ttl ?: '',
+            $this->priority,
+            $this->data
+        );
+    }
+
+    private function formatNAPTRResourceRecord(): string
+    {
+        return sprintf(
+            "%-40s %s\tIN\tNAPTR\t%s %s",
             $this->name,
             $this->ttl ?: '',
             $this->priority,
