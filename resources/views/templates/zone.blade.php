@@ -13,5 +13,5 @@ $TTL {{ $zone->getDefaultTTL }}
 
 ; Resource Records.
 @foreach($records as $record)
-{{ $record->formatResourceRecord() }}
+{!! $record->formatResourceRecord() !!}
 @endforeach
