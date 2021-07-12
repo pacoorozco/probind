@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 ## Unreleased
 
 ## 0.12.2 - 2021-07-12
+### Changed
+- Bump `doctrine/dbal` from `v2.13` to `v2.13.2`.
+- Bump `fideloper/proxy` from `v4.4` to `v4.4.1`. 
+- Bump `guilhermegonzaga/presenter` from `v1.0` to `v1.0.5`.
+- Bump `larapacks/setting` from `v2.1` to `v2.1.1`.
+- Bump `laravel/framework` from `v6.20.22` to `v6.20.30`.
+- Bump `phpseclib/phpseclib` from `v2.0.31` to `v2.0.32`.
+- Bump `yajra/laravel-datatables-oracle` from `v9.17.1` to `v9.19.1`.
+
 ### Fixed
 - Resource record with `priority` field format. Resolves ([#112][i112])
 
