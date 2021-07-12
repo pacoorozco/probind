@@ -19,7 +19,6 @@ namespace Tests\Unit;
 
 use App\Record;
 use App\Zone;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -35,10 +34,10 @@ class RecordUnitTest extends TestCase
         $expectedType = 'CNAME';
 
         $record = new Record([
-                'name' => 'testRR',
-                'type' => strtolower($expectedType),
-                'data' => 'testData',
-            ]
+            'name' => 'testRR',
+            'type' => strtolower($expectedType),
+            'data' => 'testData',
+        ]
         );
 
         // Attribute must be lower cased
@@ -53,10 +52,10 @@ class RecordUnitTest extends TestCase
         $expectedName = 'testrr';
 
         $record = new Record([
-                'name' => strtoupper($expectedName),
-                'type' => 'CNAME',
-                'data' => 'testData',
-            ]
+            'name' => strtoupper($expectedName),
+            'type' => 'CNAME',
+            'data' => 'testData',
+        ]
         );
 
         // Attribute must be lower cased
@@ -71,10 +70,10 @@ class RecordUnitTest extends TestCase
         $expectedData = 'This is a log TXT message.';
 
         $record = new Record([
-                'data' => 'testRR',
-                'type' => 'TXT',
-                'data' => $expectedData,
-            ]
+            'data' => 'testRR',
+            'type' => 'TXT',
+            'data' => $expectedData,
+        ]
         );
 
         // Attribute must be lower cased
