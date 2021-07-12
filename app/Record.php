@@ -28,12 +28,12 @@ use Illuminate\Database\Eloquent\Model;
  * Valid records types are defined on DNSHelper Class.
  *
  * @property int $id        The object unique id.
- * @property string  $name      The name of the record.
+ * @property string $name      The name of the record.
  * @property int $ttl       The custom TTL value for this record.
- * @property string  $type      The type of record, must be one of Record::$validRecordTypes
+ * @property string $type      The type of record, must be one of Record::$validRecordTypes
  * @property int $priority  The preference value for MX records.
- * @property string  $data      The data value for this record.
- * @property object  $zone      The zone object where this record belongs to.
+ * @property string $data      The data value for this record.
+ * @property object $zone      The zone object where this record belongs to.
  *
  * @link https://www.ietf.org/rfc/rfc1035.txt
  */
@@ -44,11 +44,12 @@ class Record extends Model
     /**
      * The database table used by the model.
      */
-    protected $table = 'records';
+    protected $table    = 'records';
     protected $fillable = [
         'name',
         'type',
         'ttl',
+        'priority',
         'data',
     ];
     /**
@@ -57,11 +58,11 @@ class Record extends Model
      * @var array
      */
     protected $casts = [
-        'name'     => 'string',
-        'ttl'      => 'integer',
-        'type'     => 'string',
+        'name' => 'string',
+        'ttl' => 'integer',
+        'type' => 'string',
         'priority' => 'integer',
-        'data'     => 'string',
+        'data' => 'string',
     ];
     /**
      * The attributes that should be casted to null if is empty.
@@ -82,7 +83,7 @@ class Record extends Model
     /**
      * Set the Record's type uppercase.
      *
-     * @param  string $value
+     * @param  string  $value
      */
     public function setTypeAttribute(string $value)
     {
@@ -92,7 +93,7 @@ class Record extends Model
     /**
      * Set the Record's name lowercase.
      *
-     * @param  string $value
+     * @param  string  $value
      */
     public function setNameAttribute(string $value)
     {
@@ -109,18 +110,56 @@ class Record extends Model
         return $this->belongsTo('App\Zone');
     }
 
-    /**
-     * Returns a formatted Resource Record for a record.
-     *
-     * @return string
-     * @codeCoverageIgnore
-     */
-    public function getResourceRecord(): string
+    public function formatResourceRecord(): string
     {
-        if ($this->ttl) {
-            return sprintf("%-40s %d\tIN\t%s\t%s", $this->name, $this->ttl, $this->type, $this->data);
+        switch ($this->type) {
+            case 'NS':
+                return $this->formatNSResourceRecord();
+            case 'MX':
+                return $this->formatMXResourceRecord();
+            case 'SRV':
+                return $this->formatSRVResourceRecord();
+            default:
+                // continue
         }
+        return sprintf(
+            "%-40s %s\tIN\t%s\t%s",
+            $this->name,
+            $this->ttl ?: '',
+            $this->type,
+            $this->data
+        );
+    }
 
-        return sprintf("%-40s \tIN\t%s\t%s", $this->name, $this->type, $this->data);
+    private function formatNSResourceRecord(): string
+    {
+        return sprintf(
+            "%-40s %s\tIN\tNS\t%s",
+            $this->name,
+            $this->ttl ?: '',
+            $this->data
+        );
+    }
+
+    private function formatMXResourceRecord(): string
+    {
+        return sprintf(
+            "%-40s %s\tIN\tMX\t%s %s",
+            $this->name,
+            $this->ttl ?: '',
+            $this->priority,
+            $this->data
+        );
+    }
+
+    private function formatSRVResourceRecord(): string
+    {
+        return sprintf(
+            "%-40s %s\tIN\tSRV\t%s %s",
+            $this->name,
+            $this->ttl ?: '',
+            $this->priority,
+            $this->data
+        );
     }
 }
