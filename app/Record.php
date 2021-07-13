@@ -17,7 +17,6 @@
 
 namespace App;
 
-use Iatstuti\Database\Support\NullableFields;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -39,7 +38,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Record extends Model
 {
-    use NullableFields;
 
     /**
      * The database table used by the model.
@@ -63,15 +61,6 @@ class Record extends Model
         'type' => 'string',
         'priority' => 'integer',
         'data' => 'string',
-    ];
-    /**
-     * The attributes that should be casted to null if is empty.
-     *
-     * @var array
-     */
-    protected $nullable = [
-        'ttl',
-        'priority',
     ];
     /**
      * All of the relationships to be touched.

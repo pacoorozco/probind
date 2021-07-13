@@ -18,7 +18,6 @@ use App\Helpers\DNSHelper;
 use App\Presenters\ZonePresenter;
 use App\Rules\FullyQualifiedDomainName;
 use Carbon\Carbon;
-use Iatstuti\Database\Support\NullableFields;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -55,7 +54,6 @@ class Zone extends Model
 {
     use SoftDeletes;
     use LogsActivity;
-    use NullableFields;
     use Presentable;
 
     protected static $logUnguarded = true;
@@ -93,19 +91,6 @@ class Zone extends Model
         'expire' => 'integer',
         'negative_ttl' => 'integer',
         'default_ttl' => 'integer',
-    ];
-    /**
-     * The attributes that should be casted to null if is empty.
-     *
-     * @var array
-     */
-    protected $nullable = [
-        'master_server',
-        'refresh',
-        'retry',
-        'expire',
-        'negative_ttl',
-        'default_ttl',
     ];
 
     /**

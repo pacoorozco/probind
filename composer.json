@@ -22,25 +22,25 @@
         "issues": "https://github.com/pacoorozco/probind/issues"
     },
     "require": {
-        "php": "^7.4",
-        "badcow/dns": "^3.5",
-        "dyrynda/laravel-nullable-fields": "^2.0",
+        "php": "^8.0",
+        "badcow/dns": "^4.1.1",
         "fideloper/proxy": "^4.4.1",
         "guilhermegonzaga/presenter": "^1.0.5",
-        "larapacks/setting": "^2.1.1",
-        "laravel/framework": "^6.20.30",
+        "larapacks/setting": "^3.0",
+        "laravel/framework": "^8.50",
         "laravelcollective/html": "^6.2.1",
-        "phpseclib/phpseclib": "^2.0.32",
-        "spatie/laravel-activitylog": "^3.17",
+        "pacoorozco/openssh": "^0.2.0",
+        "phpseclib/phpseclib": "^3.0.9",
+        "spatie/laravel-activitylog": "^4.0",
         "yajra/laravel-datatables-oracle": "^9.18.1"
     },
     "require-dev": {
-        "fzaninotto/faker": "^1.9.2",
-        "doctrine/dbal": "^2.13.2",
-        "laravel/browser-kit-testing": "^5.2",
+        "facade/ignition": "^2.10.2",
+        "fakerphp/faker": "^1.15",
+        "doctrine/dbal": "^3.1.1",
         "mockery/mockery": "^1.4.3",
-        "phpunit/phpunit": "^8.5.15",
-        "nunomaduro/collision": "^3.2.0"
+        "phpunit/phpunit": "^9.5.6",
+        "nunomaduro/collision": "^5.5"
     },
     "autoload": {
         "classmap": [
@@ -58,23 +58,19 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover"
-        ],
-        "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate"
+            "@php artisan package:discover --ansi"
         ],
         "test": [
-            "vendor/bin/phpunit"
+            "@php artisan test"
         ],
         "test-coverage": [
-            "vendor/bin/phpunit --coverage-html .tmp/test-coverage"
+            "@php artisan test --coverage-html .tmp/test-coverage"
         ],
         "build": [
             "@composer archive --format=zip --dir=.tmp/dist"

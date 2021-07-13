@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8.0-fpm
 
 LABEL maintainer="paco@pacoorozco.info"
 
