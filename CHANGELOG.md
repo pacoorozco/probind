@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 ## Unreleased
 
+## 0.12.3 - 2021-07-13
+### Fixed
+- Fix missing TTL in zone creation. ([#117][i117])
+
+[i117]: https://github.com/pacoorozco/probind/issues/117
+
 ## 0.12.2 - 2021-07-12
 ### Changed
 - Bump `doctrine/dbal` from `v2.13` to `v2.13.2`.
