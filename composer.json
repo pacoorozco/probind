@@ -24,7 +24,6 @@
     "require": {
         "php": "^7.4",
         "badcow/dns": "^3.5",
-        "doctrine/dbal": "^2.13.2",
         "dyrynda/laravel-nullable-fields": "^2.0",
         "fideloper/proxy": "^4.4.1",
         "guilhermegonzaga/presenter": "^1.0.5",
@@ -37,6 +36,7 @@
     },
     "require-dev": {
         "fzaninotto/faker": "^1.9.2",
+        "doctrine/dbal": "^2.13.2",
         "laravel/browser-kit-testing": "^5.2",
         "mockery/mockery": "^1.4.3",
         "phpunit/phpunit": "^8.5.15",
