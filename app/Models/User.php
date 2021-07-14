@@ -15,32 +15,32 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-namespace App;
+namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * User model, represents a ProBIND user.
  *
- * @property int    $id                      The object unique id.
+ * @property int $id                      The object unique id.
  * @property string $username                The username that represents this user.
  * @property string $name                    The name of this user.
  * @property string $email                   The email address of this user.
  * @property string $password                Encrypted password of this user.
- * @property bool   $active                  The status of this user.
+ * @property bool $active                  The status of this user.
  */
 class User extends Authenticatable
 {
     use Notifiable;
     use LogsActivity;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    protected $table = 'users';
+
     protected $fillable = [
         'username',
         'name',
@@ -48,49 +48,26 @@ class User extends Authenticatable
         'password',
         'active',
     ];
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
+
     protected $casts = [
-        'username' => 'string',
-        'name' => 'string',
-        'email' => 'string',
-        'password' => 'string',
         'active' => 'boolean',
     ];
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Returns a customized message for Activity Log.
-     *
-     * @param string $eventName The event could be saved, updated or deleted.
-     *
-     * @return string
-     */
-    public function getDescriptionForEvent(string $eventName): string
-    {
-        return (string) trans('user/messages.activity.' . $eventName, [
-            'username' => $this->username,
-        ]);
-    }
-
-    /**
-     * Set the username User attribute to lowercase.
-     *
-     * @param string $value
-     */
-    public function setUsernameAttribute(string $value)
+    public function setUsernameAttribute(string $value): void
     {
         $this->attributes['username'] = strtolower($value);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->setDescriptionForEvent(fn(string $eventName) => trans('user/messages.activity.'.$eventName, [
+                'username' => $this->username,
+            ]));
     }
 }
