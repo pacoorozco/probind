@@ -1,21 +1,24 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Server;
-use Faker\Generator as Faker;
+use App\Models\Server;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/*
- * Server Model Factory
- */
+class ServerFactory extends Factory {
 
-$factory->define(Server::class, function (Faker $faker) {
-    return [
-        'hostname' => $faker->unique()->domainWord . '.local',
-        'ip_address' => $faker->ipv4,
-        'type' => $faker->randomElement(['master', 'slave']),
-        'push_updates' => false,
-        'ns_record' => false,
-        'active' => true,
-    ];
-});
+    protected $model = Server::class;
+
+    public function definition(): array
+    {
+        return [
+            'hostname' => $this->faker->unique()->domainWord . '.local',
+            'ip_address' => $this->faker->ipv4,
+            'type' => $this->faker->randomElement(['master', 'slave']),
+            'push_updates' => false,
+            'ns_record' => false,
+            'active' => true,
+        ];
+    }
+}
+
