@@ -15,18 +15,15 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
 class SettingsTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
-        $settings = [
+        setting()->set([
             /*
              * Default values for Zone definition.
              */
@@ -94,8 +91,6 @@ ePBOdQDy/CSPJNAAAACnBhY29AY2lncm8=
              * This is the folder whre ProBIND will generate files on remote hosts.
              */
             'ssh_default_remote_path' => '/home/probinder/data',
-        ];
-
-        Setting::set($settings);
+        ]);
     }
 }

@@ -15,28 +15,24 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-use App\User;
+namespace Database\Seeders;
+
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
-        // Create an admin user.
-        User::create([
+        // Create then admin user.
+        User::factory()->create([
             'username'       => 'admin',
             'name'           => 'Administrator',
             'email'          => 'admin@domain.local',
             'password'       => bcrypt('secret'),
-            'remember_token' => Str::random(10),
         ]);
 
-        // Create more users.
-        factory(App\User::class, 2)->create();
+        // Create other users.
+        User::factory()->count(2)->create();
     }
 }

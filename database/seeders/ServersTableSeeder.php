@@ -15,20 +15,17 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-use App\Server;
+namespace Database\Seeders;
+
+use App\Models\Server;
 use Illuminate\Database\Seeder;
 
 class ServersTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
-        // Create a test server (docker)
-        Server::create([
+        // Create a test server (see docker-composer.yml)
+        Server::factory()->create([
             'hostname' => 'dns-server',
             'ip_address' => '127.0.0.1',
             'type' => 'master',

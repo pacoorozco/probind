@@ -15,6 +15,8 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
 class TestingDatabaseSeeder extends Seeder
