@@ -1,43 +1,52 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Record;
-use Faker\Generator as Faker;
+use App\Models\ResourceRecord;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/*
- * Record Model Factories
- */
+class ResourceRecordFactory extends Factory
+{
 
-$factory->defineAs(Record::class, 'A', function (Faker $faker) {
-    // Return an A record
-    return [
-        'name' => $faker->domainWord,
-        'ttl' => null,
-        'type' => 'A',
-        'priority' => null,
-        'data' => $faker->ipv4,
-    ];
-});
+    protected $model = ResourceRecord::class;
 
-$factory->defineAs(Record::class, 'CNAME', function (Faker $faker) {
-    // Return a CNAME record
-    return [
-        'name' => $faker->domainWord,
-        'ttl' => null,
-        'type' => 'CNAME',
-        'priority' => null,
-        'data' => $faker->domainWord . '.' . $faker->domainName . '.',
-    ];
-});
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->domainWord,
+            'ttl' => null,
+            'type' => 'A',
+            'priority' => null,
+            'data' => $this->faker->ipv4,
+        ];
+    }
 
-$factory->defineAs(Record::class, 'MX', function (Faker $faker) {
-    // Return a MX record
-    return [
-        'name' => $faker->domainWord,
-        'ttl' => null,
-        'type' => 'MX',
-        'priority' => $faker->randomElement([10, 20, 30]),
-        'data' => $faker->domainWord . '.' . $faker->domainName . '.',
-    ];
-});
+    public function asARecord(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return $attributes;
+        });
+    }
+
+    public function asCNAMERecord(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => 'CNAME',
+                'data' => $this->faker->domainWord.'.'.$this->faker->domainName.'.',
+            ];
+        });
+    }
+
+    public function asMXRecord(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => 'MX',
+                'priority' => $this->faker->randomElement([10, 20, 30]),
+                'data' => $this->faker->domainWord.'.'.$this->faker->domainName.'.',
+            ];
+        });
+    }
+}
+

@@ -15,12 +15,16 @@
  * @link        https://github.com/pacoorozco/probind
  */
 
-namespace App;
+namespace App\Models;
 
+use App\Presenters\ResourceRecordPresenter;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laracodes\Presenter\Traits\Presentable;
 
 /**
- * Record model.
+ * ResourceRecord model.
  *
  * Represents a DNS entry on a specified zone.
  *
@@ -29,20 +33,23 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id        The object unique id.
  * @property string $name      The name of the record.
  * @property int $ttl       The custom TTL value for this record.
- * @property string $type      The type of record, must be one of Record::$validRecordTypes
+ * @property string $type      The type of record, must be one of ResourceRecord::$validRecordTypes
  * @property int $priority  The preference value for MX records.
  * @property string $data      The data value for this record.
- * @property object $zone      The zone object where this record belongs to.
+ * @property \App\Models\Zone $zone      The zone object where this record belongs to.
  *
  * @link https://www.ietf.org/rfc/rfc1035.txt
  */
-class Record extends Model
+class ResourceRecord extends Model
 {
+    use HasFactory;
+    use Presentable;
+    use HasFactory;
 
-    /**
-     * The database table used by the model.
-     */
+    protected string $presenter = ResourceRecordPresenter::class;
+
     protected $table = 'records';
+
     protected $fillable = [
         'name',
         'type',
@@ -50,119 +57,25 @@ class Record extends Model
         'priority',
         'data',
     ];
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
+
     protected $casts = [
-        'name' => 'string',
-        'ttl' => 'integer',
-        'type' => 'string',
-        'priority' => 'integer',
-        'data' => 'string',
+        'type' => 'string', // ResourceRecordTYpe
     ];
-    /**
-     * All of the relationships to be touched.
-     *
-     * @var array
-     */
+
     protected $touches = ['zone'];
 
-    /**
-     * Set the Record's type uppercase.
-     *
-     * @param  string  $value
-     */
-    public function setTypeAttribute(string $value)
+    public function setTypeAttribute(string $value): void
     {
         $this->attributes['type'] = strtoupper($value);
     }
 
-    /**
-     * Set the Record's name lowercase.
-     *
-     * @param  string  $value
-     */
-    public function setNameAttribute(string $value)
+    public function setNameAttribute(string $value): void
     {
         $this->attributes['name'] = strtolower($value);
     }
 
-    /**
-     * A record belongs to a zone.
-     *
-     * This is a one-to-one relationship.
-     */
-    public function zone()
+    public function zone(): BelongsTo
     {
-        return $this->belongsTo('App\Zone');
-    }
-
-    public function formatResourceRecord(): string
-    {
-        switch ($this->type) {
-            case 'NS':
-                return $this->formatNSResourceRecord();
-            case 'MX':
-                return $this->formatMXResourceRecord();
-            case 'SRV':
-                return $this->formatSRVResourceRecord();
-            case 'NAPTR':
-                return $this->formatNAPTRResourceRecord();
-            default:
-                // continue
-        }
-
-        return sprintf(
-            "%-40s %s\tIN\t%s\t%s",
-            $this->name,
-            $this->ttl ?: '',
-            $this->type,
-            $this->data
-        );
-    }
-
-    private function formatNSResourceRecord(): string
-    {
-        return sprintf(
-            "%-40s %s\tIN\tNS\t%s",
-            $this->name,
-            $this->ttl ?: '',
-            $this->data
-        );
-    }
-
-    private function formatMXResourceRecord(): string
-    {
-        return sprintf(
-            "%-40s %s\tIN\tMX\t%s %s",
-            $this->name,
-            $this->ttl ?: '',
-            $this->priority,
-            $this->data
-        );
-    }
-
-    private function formatSRVResourceRecord(): string
-    {
-        return sprintf(
-            "%-40s %s\tIN\tSRV\t%s %s",
-            $this->name,
-            $this->ttl ?: '',
-            $this->priority,
-            $this->data
-        );
-    }
-
-    private function formatNAPTRResourceRecord(): string
-    {
-        return sprintf(
-            "%-40s %s\tIN\tNAPTR\t%s %s",
-            $this->name,
-            $this->ttl ?: '',
-            $this->priority,
-            $this->data
-        );
+        return $this->belongsTo(Zone::class);
     }
 }
