@@ -12,34 +12,14 @@ use Illuminate\Contracts\Validation\Rule;
  */
 class FullyQualifiedDomainName implements Rule
 {
-    /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    const VALID_FQDN_REGEXP = '/^(?=.{1,253}\.$)(?:(?!-|[^.]+_)[A-Za-z0-9-_]{1,63}(?<!-)(?:\.|$)){2,}$/';
+
+    public function passes($attribute, $value): bool
     {
-        //
+        return 1 === preg_match(self::VALID_FQDN_REGEXP, $value);
     }
 
-    /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function passes($attribute, $value)
-    {
-        return 1 === preg_match('/^(?=.{1,253}\.$)(?:(?!-|[^.]+_)[A-Za-z0-9-_]{1,63}(?<!-)(?:\.|$)){2,}$/', $value);
-    }
-
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message()
+    public function message(): string
     {
         return 'The :attribute must be a Fully Qualified Domain Name (FQDN).';
     }
