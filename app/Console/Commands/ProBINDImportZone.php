@@ -2,42 +2,21 @@
 
 namespace App\Console\Commands;
 
-use App\Zone;
+use App\Models\Zone;
 use Badcow\DNS\Parser;
 use Badcow\DNS\Rdata\SOA;
 use Illuminate\Console\Command;
 
 class ProBINDImportZone extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'probind:import
                 {--domain= : The zone domain name to create}
                 {--file= : The file name to import}
                 {--force : Delete existing zone before import}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Import a BIND zone file to ProBIND';
 
-    /**
-     * Create a new command instance.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-     */
-    public function handle(): void
+    public function handle(): int
     {
         // Cast supplied arguments and options.
         $domain = (string) $this->option('domain');
@@ -53,7 +32,7 @@ class ProBINDImportZone extends Command
             if ($existingZone) {
                 $this->error('Zone \'' . $existingZone->domain . '\' exists on ProBIND. Use \'--force\' option if you want to import this zone.');
 
-                return;
+                return 1;
             }
         }
 
@@ -90,6 +69,8 @@ class ProBINDImportZone extends Command
 
         $this->info('Import zone \'' . $domain . '\' has created with ' . $createdRecordsCount . ' imported records.');
         activity()->log('Import zone <strong>' . $zone->domain . '</strong> has created <strong>' . $createdRecordsCount . '</strong> records.');
+
+        return 0;
     }
 
     /**
