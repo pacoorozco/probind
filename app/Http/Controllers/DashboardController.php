@@ -17,7 +17,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Record;
+use App\ResourceRecord;
 use App\Server;
 use App\User;
 use App\Zone;
@@ -40,7 +40,7 @@ class DashboardController extends Controller
         $data = [];
         $data['servers'] = Server::all()->count();
         $data['zones'] = Zone::all()->count();
-        $data['records'] = Record::all()->count();
+        $data['records'] = ResourceRecord::all()->count();
         $data['users'] = User::all()->count();
 
         $activityLog = Activity::orderBy('created_at', 'desc')->orderBy('id', 'desc')->simplePaginate(10);

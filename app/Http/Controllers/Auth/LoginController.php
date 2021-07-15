@@ -37,26 +37,30 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
+     * Maximum number of attempts to allow.
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    public int $maxAttempts = 5;
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Number of minutes to throttle for.
      */
+    protected int $decayMinutes = 1;
+
+    /**
+     * Where to redirect users after login.
+     */
+    protected string $redirectTo = RouteServiceProvider::HOME;
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->maxAttempts = config('auth.login.max_attempts', 5);
+        $this->decayMinutes = config('auth.login.decay_minutes', 1);
     }
 
     /**
-     * Which field will be used as a username. (Default is email).
-     *
-     * @return string
+     * By default, Laravel uses the email field for authentication. If you would like to customize this, you may define
+     * a username method.
      */
     public function username(): string
     {

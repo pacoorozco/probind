@@ -20,120 +20,189 @@
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| This file is where you may define all of the routes that are handled
-| by your application. Just tell Laravel the URIs it should respond
-| to using a Closure or controller method. Build something great!
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
 |
 */
 
-Route::get('/', ['as' => 'home', 'uses' => 'DashboardController@index']);
+use App\Http\Controllers\BulkUpdateController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ImportZoneController;
+use App\Http\Controllers\InstallController;
+use App\Http\Controllers\ResourceRecordController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ServerController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\SyncServersController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ZoneController;
+use App\Http\Middleware\EnsureNotPreviouslyInstalled;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
-/*  ------------------------------------------
- *  User management
+/* ------------------------------------------
+ * Authentication routes
+ *
+ * Routes to be authenticated
  *  ------------------------------------------
  */
-// Datatables Ajax route.
-// NOTE: We must define this route first as it is more specific than
-// the default show resource route for /users/{user}
-Route::get('users/data',
-    ['as' => 'users.data', 'uses' => 'UserController@data']);
-// Our special delete confirmation route - uses the show/details view.
-Route::get('users/{user}/delete',
-    ['as' => 'users.delete', 'uses' => 'UserController@delete']);
-Route::resource('users', 'UserController');
+Auth::routes([
+    'register' => false,  // User registration
+    'verify' => false, // E-mail verification
+]);
 
-/*  ------------------------------------------
- *  Server management
- *  ------------------------------------------
- */
-// Datatables Ajax route.
-// NOTE: We must define this route first as it is more specific than
-// the default show resource route for /servers/{server}
-Route::get('servers/data',
-    ['as' => 'servers.data', 'uses' => 'ServerController@data']);
-// Our special delete confirmation route - uses the show/details view.
-Route::get('servers/{server}/delete',
-    ['as' => 'servers.delete', 'uses' => 'ServerController@delete']);
-Route::resource('servers', 'ServerController');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/',
+        [DashboardController::class, 'index'])
+        ->name('home');
 
-/*  ------------------------------------------
- *  Zone management
- *  ------------------------------------------
- */
-// Datatables Ajax route.
-// NOTE: We must define this route first as it is more specific than
-// the default show resource route for /zones/{zone}
-Route::get('zones/data',
-    ['as' => 'zones.data', 'uses' => 'ZoneController@data']);
-Route::resource('zones', 'ZoneController');
+    Route::get('search',
+        [SearchController::class, 'index'])
+        ->name('search');
+    Route::get('search/results',
+        [SearchController::class, 'search'])
+        ->name('search.results');
 
-/*  ------------------------------------------
- *  Record management
- *  ------------------------------------------
- */
-// Datatables Ajax route.
-// NOTE: We must define this route first as it is more specific than
-// the default show resource route for /zones/{zone}
-Route::get('zones/{zone}/records/data',
-    ['as' => 'zones.records.data', 'uses' => 'RecordController@data']);
-// Our special delete confirmation route - uses the show/details view.
-Route::get('zones/{zone}/records/{record}/delete',
-    ['as' => 'zones.records.delete', 'uses' => 'RecordController@delete']);
-Route::resource('zones.records', 'RecordController');
+    /**
+     * ------------------------------------------
+     * Users
+     * ------------------------------------------.
+     */
+    // DataTables Ajax route.
+    Route::middleware(['ajax'])
+        ->get('users/data',
+            [UserController::class, 'data'])
+        ->name('users.data');
 
-/*  ------------------------------------------
- *  Search
- *  ------------------------------------------
- */
-Route::get('search',
-    ['as' => 'search.index', 'uses' => 'SearchController@index']);
-Route::get('search/results',
-    ['as' => 'search.results', 'uses' => 'SearchController@search']);
+    // Our special delete confirmation route - uses the show/details view.
+    Route::get('users/{user}/delete',
+        [UserController::class, 'delete'])
+        ->name('users.delete');
 
-/*  ------------------------------------------
- *  Tools
- *  ------------------------------------------
- */
-Route::get('tools/push',
-    ['as' => 'tools.view_updates', 'uses' => 'ToolsController@viewUpdates']);
-Route::post('tools/push',
-    ['as' => 'tools.push_updates', 'uses' => 'ToolsController@pushUpdates']);
-Route::get('tools/update',
-    ['as' => 'tools.bulk_update', 'uses' => 'ToolsController@showBulkUpdate']);
-Route::post('tools/update',
-    ['as' => 'tools.do_bulk_update', 'uses' => 'ToolsController@doBulkUpdate']);
-Route::get('tools/import',
-    ['as' => 'tools.import_zone', 'uses' => 'ToolsController@importZone']);
-Route::post('tools/import',
-    ['as' => 'tools.import_zone_post', 'uses' => 'ToolsController@importZonePost']);
-/*  ------------------------------------------
- *  Settings
- *  ------------------------------------------
- */
-Route::get('settings', ['as' => 'settings.index', 'uses' => 'SettingsController@index']);
-Route::put('settings', ['as' => 'settings.update', 'uses' => 'SettingsController@update']);
-/*  ------------------------------------------
- *  Authentication
- *  ------------------------------------------
- */
-// Authentication Routes...
-Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
-Route::post('login', 'Auth\LoginController@login');
-Route::post('logout', 'Auth\LoginController@logout');
+    // Pre-baked resource controller actions for index, create, store,
+    // show, edit, update, destroy
+    Route::resource('users', UserController::class);
 
-// Password Reset Routes...
-Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
-Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
-Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
-Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+    /**
+     * ------------------------------------------
+     * Servers
+     * ------------------------------------------.
+     */
+    // DataTables Ajax route.
+    Route::middleware(['ajax'])
+        ->get('servers/data',
+            [ServerController::class, 'data'])
+        ->name('servers.data');
+
+    // Our special delete confirmation route - uses the show/details view.
+    Route::get('servers/{Server}/delete',
+        [ServerController::class, 'delete'])
+        ->name('servers.delete');
+
+    // Pre-baked resource controller actions for index, create, store,
+    // show, edit, update, destroy
+    Route::resource('servers', ServerController::class);
+
+    /**
+     * ------------------------------------------
+     * Zones
+     * ------------------------------------------.
+     */
+    // DataTables Ajax route.
+    Route::middleware(['ajax'])
+        ->get('zones/data',
+            [ZoneController::class, 'data'])
+        ->name('zones.data');
+
+    // Pre-baked resource controller actions for index, create, store,
+    // show, edit, update, destroy
+    Route::resource('zones', ZoneController::class);
+
+    /**
+     * ------------------------------------------
+     * ResourceRecords
+     * ------------------------------------------.
+     */
+    // DataTables Ajax route.
+    Route::middleware(['ajax'])
+        ->get('zones/{zone}/records/data',
+            [ResourceRecordController::class, 'data'])
+        ->name('zones.records.data');
+
+    // Our special delete confirmation route - uses the show/details view.
+    Route::get('zones/{zone}/records/{record}/delete',
+        [ResourceRecordController::class, 'delete'])
+        ->name('zones.records.delete');
+
+    // Pre-baked resource controller actions for index, create, store,
+    // show, edit, update, destroy
+    Route::resource('zones.records', ResourceRecordController::class);
+
+    /**
+     * ------------------------------------------
+     * Settings
+     * ------------------------------------------.
+     */
+    Route::get('settings',
+        [SettingsController::class, 'index'])
+        ->name('settings.index');
+
+    Route::put('settings',
+        [SettingsController::class, 'update'])
+        ->name('settings.update');
+
+    /**
+     * ------------------------------------------
+     * Tools
+     * ------------------------------------------
+     */
+
+    // Push DNS servers tool
+    Route::get('tools/push',
+        [SyncServersController::class, 'index'])
+        ->name('tools.view_updates');
+
+    Route::post('tools/push',
+        [SyncServersController::class, 'sync'])
+        ->name('tools.push_updates');
+
+    // Bulk update tool
+    Route::get('tools/update',
+        [BulkUpdateController::class, 'index'])
+        ->name('tools.bulk_update');
+    Route::post('tools/update',
+        [BulkUpdateController::class, 'update'])
+        ->name('tools.do_bulk_update');
+
+    // Zone import tool
+    Route::get('tools/import',
+        [ImportZoneController::class, 'index'])
+        ->name('tools.import_zone');
+    Route::post('tools/import',
+        [ImportZoneController::class, 'store'])
+        ->name('tools.import_zone_post');
+});
+
 
 /*  ------------------------------------------
  *  Installer
  *  ------------------------------------------
  */
-Route::group(['prefix' => 'install', 'as' => 'Installer::', 'middleware' => ['web', 'install']], function () {
-    Route::get('/', ['as' => 'begin', 'uses' => 'InstallController@index']);
-    Route::get('database', ['as' => 'database', 'uses' => 'InstallController@showDatabaseForm']);
-    Route::post('database', ['as' => 'databaseSave', 'uses' => 'InstallController@createDatabase']);
-    Route::get('end', ['as' => 'end', 'uses' => 'InstallController@end']);
+Route::middleware(EnsureNotPreviouslyInstalled::class)->group(function () {
+    Route::get('install',
+        [InstallController::class, 'index'])
+        ->name('install.begin');
+
+    Route::get('install/database',
+        [InstallController::class, 'showDatabaseForm'])
+        ->name('install.database');
+
+    Route::post('install/database',
+        [InstallController::class, 'createDatabase'])
+        ->name('install.databaseSave');
+
+    Route::get('install/end',
+        [InstallController::class, 'end'])
+        ->name('install.end');
 });

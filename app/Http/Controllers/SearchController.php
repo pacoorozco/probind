@@ -18,7 +18,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DNSHelper;
-use App\Record;
+use App\Models\ResourceRecord;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -41,7 +41,7 @@ class SearchController extends Controller
     }
 
     /**
-     * Returns an array for search select's options of Record types.
+     * Returns an array for search select's options of ResourceRecord types.
      *
      * @return array
      */
@@ -90,8 +90,8 @@ class SearchController extends Controller
      */
     private function doSearchPaginatedQuery($searchTerms, $perPage = 15)
     {
-        // Create a Record query, this will be constructed depending search input fields.
-        $query = Record::query();
+        // Create a ResourceRecord query, this will be constructed depending search input fields.
+        $query = ResourceRecord::query();
 
         if ($searchTerms['name']) {
             $query->where('name', 'like', $searchTerms['name']);

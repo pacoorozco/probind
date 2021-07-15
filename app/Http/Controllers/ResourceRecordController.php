@@ -19,11 +19,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RecordCreateRequest;
 use App\Http\Requests\RecordUpdateRequest;
-use App\Record;
+use App\ResourceRecord;
 use App\Zone;
 use DataTables;
 
-class RecordController extends Controller
+class ResourceRecordController extends Controller
 {
     public function __construct()
     {
@@ -67,7 +67,7 @@ class RecordController extends Controller
     public function store(RecordCreateRequest $request, Zone $zone)
     {
         try {
-            $record = Record::make([
+            $record = ResourceRecord::make([
                 'name' => $request->name,
                 'ttl' => $request->ttl,
                 'type' => $request->type,
@@ -91,11 +91,11 @@ class RecordController extends Controller
      * Display the specified resource.
      *
      * @param  Zone $zone
-     * @param  Record $record
+     * @param  ResourceRecord $record
      *
      * @return \Illuminate\View\View
      */
-    public function show(Zone $zone, Record $record)
+    public function show(Zone $zone, ResourceRecord $record)
     {
         return view('record.show')
             ->with('zone', $zone)
@@ -106,11 +106,11 @@ class RecordController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  Zone $zone
-     * @param  Record $record
+     * @param  ResourceRecord $record
      *
      * @return \Illuminate\View\View
      */
-    public function edit(Zone $zone, Record $record)
+    public function edit(Zone $zone, ResourceRecord $record)
     {
         return view('record.edit')
             ->with('zone', $zone)
@@ -122,11 +122,11 @@ class RecordController extends Controller
      *
      * @param  RecordUpdateRequest $request
      * @param  Zone $zone
-     * @param  Record $record
+     * @param  ResourceRecord $record
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(RecordUpdateRequest $request, Zone $zone, Record $record)
+    public function update(RecordUpdateRequest $request, Zone $zone, ResourceRecord $record)
     {
         try {
             $record->update([
@@ -151,11 +151,11 @@ class RecordController extends Controller
      * Remove record page.
      *
      * @param Zone $zone
-     * @param Record $record
+     * @param ResourceRecord $record
      *
      * @return \Illuminate\View\View
      */
-    public function delete(Zone $zone, Record $record)
+    public function delete(Zone $zone, ResourceRecord $record)
     {
         return view('record.delete')
             ->with('zone', $zone)
@@ -166,11 +166,11 @@ class RecordController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  Zone $zone
-     * @param Record $record
+     * @param ResourceRecord $record
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Zone $zone, Record $record)
+    public function destroy(Zone $zone, ResourceRecord $record)
     {
         $record->delete();
 
@@ -191,7 +191,7 @@ class RecordController extends Controller
         $records = $zone->records();
 
         return $dataTable::of($records)
-            ->addColumn('actions', function (Record $record) {
+            ->addColumn('actions', function (ResourceRecord $record) {
                 return view('record._actions')
                     ->with('zone', $record->zone)
                     ->with('record', $record)
