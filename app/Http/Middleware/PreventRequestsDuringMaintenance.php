@@ -17,12 +17,12 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance as Middleware;
 
-class VerifyCsrfToken extends Middleware
+class PreventRequestsDuringMaintenance extends Middleware
 {
     /**
-     * The URIs that should be excluded from CSRF verification.
+     * The URIs that should be reachable while maintenance mode is enabled.
      *
      * @var array
      */

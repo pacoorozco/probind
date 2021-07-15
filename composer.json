@@ -25,6 +25,7 @@
         "php": "^8.0",
         "badcow/dns": "^4.1.1",
         "fideloper/proxy": "^4.4.1",
+        "fruitcake/laravel-cors": "^2.0.4",
         "guilhermegonzaga/presenter": "^1.0.5",
         "larapacks/setting": "^3.0",
         "laravel/framework": "^8.50",

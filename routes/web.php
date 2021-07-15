@@ -38,6 +38,7 @@ use App\Http\Controllers\SyncServersController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Middleware\EnsureNotPreviouslyInstalled;
+use App\Http\Middleware\OnlyAjax;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -70,7 +71,7 @@ Route::middleware(['auth'])->group(function () {
      * ------------------------------------------.
      */
     // DataTables Ajax route.
-    Route::middleware(['ajax'])
+    Route::middleware(OnlyAjax::class)
         ->get('users/data',
             [UserController::class, 'data'])
         ->name('users.data');
@@ -90,7 +91,7 @@ Route::middleware(['auth'])->group(function () {
      * ------------------------------------------.
      */
     // DataTables Ajax route.
-    Route::middleware(['ajax'])
+    Route::middleware(OnlyAjax::class)
         ->get('servers/data',
             [ServerController::class, 'data'])
         ->name('servers.data');
@@ -110,7 +111,7 @@ Route::middleware(['auth'])->group(function () {
      * ------------------------------------------.
      */
     // DataTables Ajax route.
-    Route::middleware(['ajax'])
+    Route::middleware(OnlyAjax::class)
         ->get('zones/data',
             [ZoneController::class, 'data'])
         ->name('zones.data');
@@ -125,7 +126,7 @@ Route::middleware(['auth'])->group(function () {
      * ------------------------------------------.
      */
     // DataTables Ajax route.
-    Route::middleware(['ajax'])
+    Route::middleware(OnlyAjax::class)
         ->get('zones/{zone}/records/data',
             [ResourceRecordController::class, 'data'])
         ->name('zones.records.data');

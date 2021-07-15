@@ -17,16 +17,18 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+use App\Http\Requests\Request;
+use Closure;
+use Symfony\Component\HttpFoundation\Response as ResponseCode;
 
-class VerifyCsrfToken extends Middleware
+class OnlyAjax
 {
-    /**
-     * The URIs that should be excluded from CSRF verification.
-     *
-     * @var array
-     */
-    protected $except = [
-        //
-    ];
+    public function handle(Request $request, Closure $next)
+    {
+        if (! $request->ajax()) {
+            return response(view('errors.403'), ResponseCode::HTTP_FORBIDDEN);
+        }
+
+        return $next($request);
+    }
 }
