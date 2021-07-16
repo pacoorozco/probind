@@ -29,3 +29,4 @@
         <server name="TELESCOPE_ENABLED" value="false"/>
         <server name="APP_KEY" value="base64:9MMVNXKz1TlnX74s0jAFLc/MD5Cb+aVbLaWGpG91AKw="/>
     </php>
+</phpunit>
