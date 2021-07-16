@@ -29,6 +29,7 @@
         "guilhermegonzaga/presenter": "^1.0.5",
         "larapacks/setting": "^3.0",
         "laravel/framework": "^8.50",
+        "laravel/ui": "^3.3",
         "laravelcollective/html": "^6.2.1",
         "pacoorozco/openssh": "^0.2.0",
         "phpseclib/phpseclib": "^3.0.9",

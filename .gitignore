@@ -22,8 +22,8 @@ Homestead.json
 .vagrant/
 
 # Development & editor stuff
-.idea/
-.vscode/
+/.idea
+/.vscode
 _ide_helper.php
 _ide_helper_models.php
 .phpstorm.meta.php
