@@ -17,24 +17,32 @@
 
 namespace Tests\Unit\Models;
 
-use App\Enums\ServerType;
 use App\Models\Server;
 use Tests\TestCase;
 
 class ServerTest extends TestCase
 {
-    /** @test */
-    public function hostname_is_lowercase()
+    /**
+     * @test
+     * @dataProvider hostnames()
+     */
+    public function hostname_is_lowercase(string $testHostname, string $want)
     {
-        $want = 'server01.local';
-        $server = new Server([
-                'hostname' => 'SERVER01.local',
-                'ip_address' => '192.168.1.2',
-                'type' => ServerType::Primary,
-            ]
-        );
+        /** @var Server $server */
+        $server = Server::factory()->make([
+            'hostname' => $testHostname,
+        ]);
 
         $this->assertEquals($want, $server->hostname);
+    }
+
+    public function hostnames(): array
+    {
+        return [
+            'lowercase hostname' => ['server01.local', 'server01.local'],
+            'uppercase hostname' => ['SERVER01.LOCAL', 'server01.local'],
+            'mixed-case hostname' => ['dns1.DOMAIN.com', 'dns1.domain.com'],
+        ];
     }
 
 }
