@@ -12,9 +12,9 @@ class ZoneFactory extends Factory
     public function definition(): array
     {
         return [
-            'domain' => $this->faker->unique()->domainName.'.',
+            'domain' => $this->faker->unique()->domainName().'.',
             'serial' => Zone::generateSerialNumber(),
-            'master_server' => $this->faker->optional()->ipv4,
+            'master_server' => $this->faker->optional()->ipv4(),
             'has_modifications' => true,
             'reverse_zone' => false,
             'custom_settings' => false,
@@ -28,7 +28,7 @@ class ZoneFactory extends Factory
 
     public function reverse(): Factory
     {
-        $parts = explode('.', $this->faker->unique()->ipv4, -1);
+        $parts = explode('.', $this->faker->ipv4(), -1);
         $reverse_ip = implode('.', array_reverse($parts));
         $reverseZoneName = $reverse_ip.'.in-addr.arpa.';
 

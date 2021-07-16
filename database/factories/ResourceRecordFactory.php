@@ -13,11 +13,11 @@ class ResourceRecordFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->domainWord,
+            'name' => $this->faker->domainWord(),
             'ttl' => null,
             'type' => 'A',
             'priority' => null,
-            'data' => $this->faker->ipv4,
+            'data' => $this->faker->ipv4(),
         ];
     }
 
@@ -33,7 +33,7 @@ class ResourceRecordFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'type' => 'CNAME',
-                'data' => $this->faker->domainWord.'.'.$this->faker->domainName.'.',
+                'data' => $this->faker->domainWord().'.'.$this->faker->domainName().'.',
             ];
         });
     }
@@ -44,7 +44,7 @@ class ResourceRecordFactory extends Factory
             return [
                 'type' => 'MX',
                 'priority' => $this->faker->randomElement([10, 20, 30]),
-                'data' => $this->faker->domainWord.'.'.$this->faker->domainName.'.',
+                'data' => $this->faker->domainWord().'.'.$this->faker->domainName().'.',
             ];
         });
     }

@@ -12,8 +12,8 @@ class ServerFactory extends Factory {
     public function definition(): array
     {
         return [
-            'hostname' => $this->faker->unique()->domainWord . '.local',
-            'ip_address' => $this->faker->ipv4,
+            'hostname' => $this->faker->unique()->domainWord() . '.local',
+            'ip_address' => $this->faker->ipv4(),
             'type' => $this->faker->randomElement(['master', 'slave']),
             'push_updates' => false,
             'ns_record' => false,
