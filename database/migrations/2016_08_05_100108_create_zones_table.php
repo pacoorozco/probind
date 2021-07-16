@@ -17,21 +17,17 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateZonesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('zones', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('domain', 253)->unique();
+            $table->id();
+            $table->string('domain')->unique();
             $table->integer('serial')->unsigned()->default(0);
-            $table->string('master_server', 45)->nullable();
+            $table->string('master_server')->nullable();
             $table->boolean('has_modifications')->default(true);
             $table->boolean('reverse_zone')->default(false);
 
@@ -47,11 +43,6 @@ class CreateZonesTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('zones');

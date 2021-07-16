@@ -17,6 +17,7 @@
 
 namespace App\Models;
 
+use App\Enums\ServerType;
 use App\Presenters\ServerPresenter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,7 +32,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int $id            The object unique id.
  * @property string $hostname      The hostname of this server. Will be used on NS records.
  * @property string $ip_address    The IP address of this server. Will be used for glue records.
- * @property string $type          The type of this server. Could be 'master' or 'slave'.
+ * @property ServerType $type          The type of this server. Could be 'master' or 'slave'.
  * @property bool $push_updates  This flag determines if this server must be pushed with zone files.
  * @property bool $ns_record     This flag determines if this server will be included as NS on zone files.
  * @property bool active         This flags determines if this server is active or inactive.
@@ -44,17 +45,8 @@ class Server extends Model
 
     protected string $presenter = ServerPresenter::class;
 
-    /**
-     * Valid Server Types. These will be used to validation.
-     *
-     * @var array
-     */
-    public static array $validServerTypes = [
-        'master',
-        'slave',
-    ];
-
     protected $table    = 'servers';
+
     protected $fillable = [
         'hostname',
         'ip_address',
@@ -62,6 +54,13 @@ class Server extends Model
         'ns_record',
         'active',
         'push_updates',
+    ];
+
+    protected $casts = [
+        'type' => ServerType::class,
+        'ns_record' => 'boolean',
+        'active' => 'boolean',
+        'push_updates' => 'boolean',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -76,21 +75,6 @@ class Server extends Model
     public function setHostnameAttribute(string $value): void
     {
         $this->attributes['hostname'] = strtolower($value);
-    }
-
-    public function setIpAddressAttribute(string $value): void
-    {
-        $this->attributes['ip_address'] = strtolower($value);
-    }
-
-    public function setTypeAttribute(string $value): void
-    {
-        $lowerCaseValue = strtolower($value);
-
-        // If $value does not exists on Server::$validServerTypes, we return de first one.
-        $this->attributes['type'] = in_array($lowerCaseValue, self::$validServerTypes)
-            ? $lowerCaseValue
-            : head(self::$validServerTypes);
     }
 
     public function scopeWithPushCapability(Builder $query): Builder

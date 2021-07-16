@@ -14,7 +14,8 @@
 
 namespace App\Models;
 
-use App\Helpers\DNSHelper;
+use App\Enums\ResourceRecordType;
+use App\Enums\ZoneType;
 use App\Presenters\ZonePresenter;
 use App\Rules\FullyQualifiedDomainName;
 use Badcow\DNS\Validator;
@@ -24,8 +25,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Arr;
-use Illuminate\Testing\Fluent\Concerns\Has;
 use Laracodes\Presenter\Traits\Presentable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -63,37 +62,25 @@ class Zone extends Model
     use HasFactory;
 
     protected string $presenter = ZonePresenter::class;
-    protected $table   = 'zones';
-    protected $guarded = [];
+
+    protected $table = 'zones';
+
+    protected $fillable = [
+        'domain',
+        'master_server',
+        'reverse_zone',
+        'custom_settings',
+        'refresh',
+        'expire',
+        'negative_ttl',
+        'default_ttl',
+    ];
 
     protected $casts = [
         'has_modifications' => 'boolean',
         'custom_settings' => 'boolean',
         'reverse_zone' => 'boolean',
     ];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->setDescriptionForEvent(fn(string $eventName) => trans('zone/messages.activity.'.$eventName, [
-                'domain' => $this->domain,
-            ]));
-    }
-
-    public function records(): HasMany
-    {
-        return $this->hasMany(ResourceRecord::class);
-    }
-
-    public function setDomainAttribute(string $value): void
-    {
-        $this->attributes['domain'] = strtolower($value);
-    }
-
-    public function isMasterZone(): bool
-    {
-        return is_null($this->master_server);
-    }
 
     public static function isValidZoneName(string $domain): bool
     {
@@ -105,6 +92,19 @@ class Zone extends Model
     public static function isReverseZoneName(string $domain): bool
     {
         return Validator::reverseIpv4($domain) || Validator::reverseIpv6($domain);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->setDescriptionForEvent(fn(string $eventName) => trans('zone/messages.activity.'.$eventName, [
+                'domain' => $this->domain,
+            ]));
+    }
+
+    public function setDomainAttribute(string $value): void
+    {
+        $this->attributes['domain'] = strtolower($value);
     }
 
     /**
@@ -180,6 +180,11 @@ class Zone extends Model
         return $this->records()->count();
     }
 
+    public function records(): HasMany
+    {
+        return $this->hasMany(ResourceRecord::class);
+    }
+
     public function getRefreshAttribute($value)
     {
         return (true === $this->custom_settings)
@@ -235,18 +240,16 @@ class Zone extends Model
         return $query->where('master_server', null);
     }
 
-    /**
-     * Returns a normalized string indicating what type of zone is.
-     *
-     * It's useful to get a translated Zone type:
-     *
-     * echo trans('zone/model.types.' . $zone->getTypeOfZone());
-     *
-     * @return string
-     */
     public function getTypeOfZone(): string
     {
-        return ($this->isMasterZone()) ? 'master' : 'slave';
+        return ($this->isMasterZone())
+            ? ZoneType::Primary
+            : ZoneType::Secondary;
+    }
+
+    public function isMasterZone(): bool
+    {
+        return is_null($this->master_server);
     }
 
     /**
@@ -259,7 +262,7 @@ class Zone extends Model
     public function getValidRecordTypesForThisZone(): array
     {
         return ($this->reverse_zone)
-            ? Arr::only(DNSHelper::getValidRecordTypesWithDescription(), ['PTR', 'TXT', 'NS'])
-            : Arr::except(DNSHelper::getValidRecordTypesWithDescription(), ['PTR']);
+            ? ResourceRecordType::asArrayForReverseZone()
+            : ResourceRecordType::asArrayForForwardZone();
     }
 }

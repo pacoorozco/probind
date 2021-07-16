@@ -17,6 +17,7 @@
 
 namespace App\Models;
 
+use App\Enums\ResourceRecordType;
 use App\Presenters\ResourceRecordPresenter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,10 +34,10 @@ use Laracodes\Presenter\Traits\Presentable;
  * @property int $id        The object unique id.
  * @property string $name      The name of the record.
  * @property int $ttl       The custom TTL value for this record.
- * @property string $type      The type of record, must be one of ResourceRecord::$validRecordTypes
+ * @property ResourceRecordType $type      The type of record, must be one of ResourceRecord::$validRecordTypes
  * @property int $priority  The preference value for MX records.
  * @property string $data      The data value for this record.
- * @property \App\Models\Zone $zone      The zone object where this record belongs to.
+ * @property Zone $zone      The zone object where this record belongs to.
  *
  * @link https://www.ietf.org/rfc/rfc1035.txt
  */
@@ -59,7 +60,7 @@ class ResourceRecord extends Model
     ];
 
     protected $casts = [
-        'type' => 'string', // ResourceRecordTYpe
+        'type' => ResourceRecordType::class,
     ];
 
     protected $touches = ['zone'];

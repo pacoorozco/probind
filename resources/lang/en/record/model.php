@@ -25,15 +25,4 @@ return [
     'priority'      => 'Priority',
     'priority_help' => 'Priority of the target host, lower value means more preferred.',
     'any_type'      => 'Any type',
-    'types_mapper'  => [
-        'A'     => 'A (IPv4 address)',
-        'AAAA'  => 'AAAA (IPv6 address)',
-        'CNAME' => 'CNAME (canonical name)',
-        'MX'    => 'MX (mail exchange)',
-        'NAPTR' => 'NAPTR (name authority pointer)',
-        'NS'    => 'NS (name server)',
-        'PTR'   => 'PTR (pointer)',
-        'SRV'   => 'SRV (service locator)',
-        'TXT'   => 'TXT (text)',
-    ],
 ];

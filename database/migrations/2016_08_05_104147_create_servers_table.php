@@ -15,23 +15,20 @@
  *  @link        https://github.com/pacoorozco/probind
  */
 
+use App\Enums\ServerType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateServersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('servers', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('hostname')->unique();
-            $table->string('ip_address', 45);
-            $table->enum('type', ['master', 'slave']);
+            $table->ipAddress('ip_address');
+            $table->string('type', ServerType::Primary);
             $table->boolean('push_updates')->default(false);
             $table->boolean('ns_record')->default(false);
             $table->boolean('active')->default(true);
@@ -39,11 +36,6 @@ class CreateServersTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('servers');
