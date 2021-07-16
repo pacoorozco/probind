@@ -65,11 +65,6 @@ class ResourceRecord extends Model
 
     protected $touches = ['zone'];
 
-    public function setTypeAttribute(string $value): void
-    {
-        $this->attributes['type'] = strtoupper($value);
-    }
-
     public function setNameAttribute(string $value): void
     {
         $this->attributes['name'] = strtolower($value);
