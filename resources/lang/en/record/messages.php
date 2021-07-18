@@ -16,17 +16,17 @@
  */
 
 return [
-    'already_exists' => 'Record already exists!',
-    'does_not_exist' => 'Record does not exist.',
+    'already_exists' => 'ResourceRecord already exists!',
+    'does_not_exist' => 'ResourceRecord does not exist.',
 
     'create' => [
-        'error'   => 'Record was not created, please try again.',
-        'success' => 'Record created successfully.',
+        'error'   => 'ResourceRecord was not created, please try again.',
+        'success' => 'ResourceRecord created successfully.',
     ],
 
     'update' => [
-        'error'   => 'Record was not updated, please try again',
-        'success' => 'Record updated successfully.',
+        'error'   => 'ResourceRecord was not updated, please try again',
+        'success' => 'ResourceRecord updated successfully.',
     ],
 
     'delete'       => [
@@ -38,36 +38,36 @@ A
 	Maps a host name to IPv4 address.
 	Data is a IPv4 address in dotted decimal format.
 	Multiple addresses are defined with the same name.
-	
+
 AAAA
 	Maps a host name to IPv6 address.
 	Data is a IPv6 address.
 	Multiple addresses are defined with the same name.
-	
+
 CNAME
 	Maps an alias to the real or canonical name.
-	Data is a host name. 
+	Data is a host name.
 	Ends Data with a \'.\' if you supply Fully Qualified Domain Name (FQDN).
 	CNAME records must be unique on a domain.
-	
+
 MX
 	Specifies the name and relative preference of mail exchangers.
 	Priority field is relative to other MX record for the same name.
 	Data is a host name.
 	Ends Data with a \'.\' if you supply FQDN.
 	Any number of MX records may be defined.
-	
+
 NS
 	Can\'t use \'@\' as a Name.
 	Delegates a subdomain to a DNS server.
 	Data is a host name.
 	Ends Data with a \'.\' if you supply FQDN.
-	
+
 PTR
 	Only used on IN-ADDR.ARPA. zones.
 	Maps an IP address (IPv4 or IPv6) to a host name.
 	Data is a host name. Must use an FQDN format (they end with a dot).
-	
+
 SRV
 	Identifies the host(s) that will support a particular service.
 	Name is defined as \'_service._proto\' FQDN format (see RFC 2782).

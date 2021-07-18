@@ -18,7 +18,7 @@
 return [
     'domain'          => 'Zone name (FQDN)',
     'serial'          => 'Serial',
-    'master_server'   => 'Primary DNS (server IP)',
+    'server'   => 'Primary DNS (server IP)',
     'type'            => 'Type',
     'types'           => [
         'master' => 'Primary',

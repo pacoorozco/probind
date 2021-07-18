@@ -29,15 +29,15 @@
         </div>
         <!-- ./ domain -->
 
-        <!-- master_server -->
-        <div class="form-group {{ $errors->has('master_server') ? 'has-error' : '' }}">
-            {!! Form::label('master_server', __('zone/model.master_server'), ['class' => 'control-label required']) !!}
+        <!-- server -->
+        <div class="form-group {{ $errors->has('server') ? 'has-error' : '' }}">
+            {!! Form::label('server', __('zone/model.server'), ['class' => 'control-label required']) !!}
             <div class="controls">
-                {!! Form::text('master_server', null, ['class' => 'form-control',  'required' => 'required']) !!}
-                <span class="help-block">{{ $errors->first('master_server', ':message') }}</span>
+                {!! Form::text('server', null, ['class' => 'form-control',  'required' => 'required']) !!}
+                <span class="help-block">{{ $errors->first('server', ':message') }}</span>
             </div>
         </div>
-        <!-- ./ master_server -->
+        <!-- ./ server -->
     </div>
 
     <div class="box-footer">

@@ -86,7 +86,7 @@ class ZoneController extends Controller
     {
         $zone->reverse_zone = Zone::isReverseZoneName($zone->domain);
         if ($request->input('zone_type') === 'secondary-zone') {
-            $zone->master_server = $request->input('master_server');
+            $zone->server = $request->input('server');
         } else {
             $zone->serial = Zone::generateSerialNumber();
             $zone->setPendingChanges();

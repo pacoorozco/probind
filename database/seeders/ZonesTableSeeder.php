@@ -25,10 +25,12 @@ class ZonesTableSeeder extends Seeder
 {
     public function run(): void
     {
-        Zone::factory()->count(5)
+        Zone::factory()->count(3)->primary()
             ->has(ResourceRecord::factory()->asARecord()->count(10), 'records')
             ->has(ResourceRecord::factory()->asCNAMERecord()->count(2), 'records')
             ->create();
+
+        Zone::factory()->count(2)->secondary()->create();
 
         Zone::factory()->reverse()->count(2)->create();
     }

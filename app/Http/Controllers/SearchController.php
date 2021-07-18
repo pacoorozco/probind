@@ -17,6 +17,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ResourceRecordType;
 use App\Helpers\DNSHelper;
 use App\Models\ResourceRecord;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,11 +46,11 @@ class SearchController extends Controller
      *
      * @return array
      */
-    protected static function getSearchSelectValues()
+    protected static function getSearchSelectValues(): array
     {
         return array_merge(
             ['ANY_TYPE' => __('record/model.any_type')],
-            DNSHelper::getValidRecordTypesWithDescription()
+            ResourceRecordType::asSelectArray()
         );
     }
 

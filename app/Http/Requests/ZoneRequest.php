@@ -30,7 +30,7 @@ abstract class ZoneRequest extends Request
     {
         return [
             'zone_type' => ['required', Rule::in(['primary-zone', 'secondary-zone'])],
-            'master_server' => ['sometimes', 'required', 'ip'],
+            'server' => ['sometimes', 'required', 'ip'],
             'custom_settings' => ['sometimes', 'boolean'],
             'refresh' => ['required_if:custom_settings,1', 'integer', 'min:0', 'max:2147483647'],
             'retry' => ['required_if:custom_settings,1', 'integer', 'min:0', 'max:2147483647'],

@@ -13,7 +13,7 @@ class ZonePresenter extends Presenter
 
     public function statusBadge(): HtmlString
     {
-        $badge = (true === $this->model->hasPendingChanges())
+        $badge = (true === $this->model->has_modifications)
             ? '<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> '.(string) __('zone/model.status_list.unsynced').'</p>'
             : '<p class="text-success"><i class="fa fa-check-circle"></i> '.(string) __('zone/model.status_list.synced').'</p>';
 
@@ -22,7 +22,7 @@ class ZonePresenter extends Presenter
 
     public function statusIcon(): HtmlString
     {
-        $badge = (true === $this->model->hasPendingChanges())
+        $badge = (true === $this->model->has_modifications)
             ? '<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> '.(string) __('general.yes').'</p>'
             : '<p class="text-success"><i class="fa fa-check-circle"></i> '.(string) __('general.no').'</p>';
 

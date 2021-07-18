@@ -17,7 +17,7 @@
 
 return [
     'domain' => 'Zone name (FQDN)',
-    'master_server' => 'Primary DNS (server)',
+    'server' => 'Primary DNS (server)',
     'has_modifications' => 'Modified',
     'type' => 'Type',
     'records_count' => 'RRs count',

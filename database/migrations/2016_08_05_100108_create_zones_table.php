@@ -27,7 +27,7 @@ class CreateZonesTable extends Migration
             $table->id();
             $table->string('domain')->unique();
             $table->integer('serial')->unsigned()->default(0);
-            $table->string('master_server')->nullable();
+            $table->string('server')->nullable();
             $table->boolean('has_modifications')->default(true);
             $table->boolean('reverse_zone')->default(false);
 

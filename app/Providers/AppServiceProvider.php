@@ -18,6 +18,7 @@
 namespace App\Providers;
 
 use App\Models\ResourceRecord;
+use App\Models\Zone;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -31,12 +32,14 @@ class AppServiceProvider extends ServiceProvider
     {
         // Touch Zone when save/delete a ResourceRecord
         ResourceRecord::saving(function (ResourceRecord $record) {
+            /** @var Zone $zone */
             $zone = $record->zone()->first();
-            $zone->setPendingChanges(true);
+            $zone->has_modifications = true;
         });
         ResourceRecord::deleting(function (ResourceRecord $record) {
+            /** @var Zone $zone */
             $zone = $record->zone()->first();
-            $zone->setPendingChanges(true);
+            $zone->has_modifications = true;
         });
     }
 

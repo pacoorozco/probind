@@ -17,6 +17,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\UpdateZoneSerialName;
 use App\Models\Server;
 use App\Models\Zone;
 use App\Services\SFTP\SFTPPusher;
@@ -95,8 +96,7 @@ class ProBINDPushZones extends Command
             ->orderBy('type')
             ->get();
 
-        // Create new Serial for this zone
-        $zone->getNewSerialNumber();
+        UpdateZoneSerialName::dispatchSync();
 
         // Get all records
         $records = $zone->records()

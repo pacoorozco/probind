@@ -21,9 +21,9 @@
 
         <!-- master -->
         <div class="form-group">
-            {!! Form::label('master', __('zone/model.master_server'), ['class' => 'control-label']) !!}
+            {!! Form::label('master', __('zone/model.server'), ['class' => 'control-label']) !!}
             <div class="controls">
-                {{ $zone->present()->master_server }}
+                {{ $zone->present()->server }}
             </div>
         </div>
         <!-- ./ master -->

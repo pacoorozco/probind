@@ -14,7 +14,6 @@
 
 namespace App\Models;
 
-use App\Enums\ResourceRecordType;
 use App\Enums\ZoneType;
 use App\Presenters\ZonePresenter;
 use App\Rules\FullyQualifiedDomainName;
@@ -38,8 +37,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int $id                    The object unique id.
  * @property string $domain                The domain name that represents this zone.
  * @property int $serial                The serial number of this zone.
- * @property string $master_server         The IP address of the master server.
- *                                          If it's set to null, this zone is a master zone.
+ * @property string $server     The IP address of the master server. If it's set to null, this zone is a primary zone.
  * @property bool $reverse_zone          This flag determines if this zone is a .IN-ADDR.ARPA. zone.
  * @property bool $custom_settings       This flag determines if this zone has custom timers.
  * @property int $refresh               Custom Refresh time value.
@@ -49,7 +47,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int $default_ttl           Custom TTL value.
  * @property string $primaryNameServer
  * @property string $hostmasterEmail
- * @property bool $has_modifications     This flag determines if this zone has been modified from last push.
+ * @property bool $has_modifications     This flag determines if this zone has been pending changes to sync.
  *
  * @link https://www.ietf.org/rfc/rfc1035.txt
  * @link https://www.ietf.org/rfc/rfc2782.txt
@@ -67,7 +65,7 @@ class Zone extends Model
 
     protected $fillable = [
         'domain',
-        'master_server',
+        'server',
         'reverse_zone',
         'custom_settings',
         'refresh',
@@ -105,79 +103,6 @@ class Zone extends Model
     public function setDomainAttribute(string $value): void
     {
         $this->attributes['domain'] = strtolower($value);
-    }
-
-    /**
-     * Get New Serial Number for this zone.
-     *
-     * This generates a new serial, based on the often used format YYYYMMDDXX where XX is an ascending serial, allowing
-     * up to 100 edits per day. After that the serial wraps into the next day and it still works.
-     * We don't need to raise Serial Number in every change, only when last change was pushed.
-     *
-     * @param  bool  $force  This flag force to raise the Serial Number.
-     *
-     * @return int
-     */
-    public function getNewSerialNumber(bool $force = false): int
-    {
-        // Get current Zone serial number.
-        $currentSerial = $this->serial;
-
-        // We need a new one ONLY if there isn't pending changes.
-        if ($this->hasPendingChanges() && !$force) {
-            return $currentSerial;
-        }
-
-        // Raise serial number
-        $this->serial = $this->raiseSerialNumber($currentSerial);
-
-        // Once Serial Number has changed, we have changes to push to servers.
-        $this->setPendingChanges();
-        $this->save();
-
-        return $this->serial;
-    }
-
-    public function hasPendingChanges(): bool
-    {
-        return true === $this->has_modifications;
-    }
-
-    /**
-     * Raise a supplied Serial Number maintaining format YYYYMMDDXX.
-     *
-     * @param  int  $currentSerial  The serial number to be increased.
-     *
-     * @return int
-     */
-    public function raiseSerialNumber(int $currentSerial): int
-    {
-        // Create a new serial number YYYYMMDD00.
-        $nowSerial = Zone::generateSerialNumber();
-
-        return ($currentSerial >= $nowSerial)
-            ? $currentSerial + 1
-            : $nowSerial;
-    }
-
-    public static function generateSerialNumber(): int
-    {
-        return intval(Carbon::now()->format('Ymd').'00');
-    }
-
-    public function setPendingChanges(bool $value = true): bool
-    {
-        if ($this->hasPendingChanges() !== $value) {
-            $this->has_modifications = $value;
-            $this->save();
-        }
-
-        return $this->has_modifications;
-    }
-
-    public function getRecordsCountAttribute(): int
-    {
-        return $this->records()->count();
     }
 
     public function records(): HasMany
@@ -235,34 +160,38 @@ class Zone extends Model
         return $query->where('has_modifications', true);
     }
 
-    public function scopeOnlyMasterZones(Builder $query): Builder
+    public function scopePrimaryZones(Builder $query): Builder
     {
-        return $query->where('master_server', null);
+        return $query->whereNull('server');
     }
 
     public function getTypeOfZone(): string
     {
-        return ($this->isMasterZone())
+        return ($this->isPrimary())
             ? ZoneType::Primary
             : ZoneType::Secondary;
     }
 
-    public function isMasterZone(): bool
+    public function isPrimary(): bool
     {
-        return is_null($this->master_server);
+        return is_null($this->server);
     }
 
     /**
-     * Returns an array of valid ResourceRecord types for this zone.
+     * Calculates a new Serial Number for this zone.
      *
-     * Reverse zone only has 'PTR' and 'NS' types.
+     * This generates a new serial, based on the often used format YYYYMMDDXX where XX is an ascending serial, allowing
+     * up to 100 edits per day. After that the serial wraps into the next day and it still works.
      *
-     * @return array
+     * @param int $currentSerialNumber
+     *
+     * @return int
      */
-    public function getValidRecordTypesForThisZone(): array
+    public static function calculateNewSerialNumber(int $currentSerialNumber = 0): int
     {
-        return ($this->reverse_zone)
-            ? ResourceRecordType::asArrayForReverseZone()
-            : ResourceRecordType::asArrayForForwardZone();
+        $newSerialNumber = intval(Carbon::now()->format('Ymd').'00');
+        return ($currentSerialNumber >= $newSerialNumber)
+            ? $currentSerialNumber + 1
+            : $newSerialNumber;
     }
 }
