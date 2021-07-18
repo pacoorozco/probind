@@ -32,6 +32,6 @@ class ZonesTableSeeder extends Seeder
 
         Zone::factory()->count(2)->secondary()->create();
 
-        Zone::factory()->reverse()->count(2)->create();
+        Zone::factory()->count(2)->reverse()->create();
     }
 }

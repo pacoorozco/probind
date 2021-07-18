@@ -44,16 +44,13 @@ class ZoneFactory extends Factory
             ];
         });
     }
-
+    
     public function reverse(): Factory
     {
-        $parts = explode('.', $this->faker->ipv4(), -1);
-        $reverse_ip = implode('.', array_reverse($parts));
-        $reverseZoneName = $reverse_ip.'.in-addr.arpa.';
-
-        return $this->state(function (array $attributes) use ($reverseZoneName) {
+        return $this->state(function (array $attributes) {
+            $ipAddressParts = explode('.', $this->faker->unique()->ipv4());
             return [
-                'domain' => $reverseZoneName,
+                'domain' => "{$ipAddressParts[2]}.{$ipAddressParts[1]}.{$ipAddressParts[0]}.in-addr.arpa.",
                 'reverse_zone' => true,
             ];
         });
