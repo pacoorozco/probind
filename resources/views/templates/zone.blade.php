@@ -1,10 +1,10 @@
 ;
 ; This file has been automatically generated using ProBIND v3 on {{ $date }}.
 
-$ORIGIN {{ $zone->domain }}
-$TTL {{ $zone->default_ttl }}
+$ORIGIN {{ $zone->present()->domain }}
+$TTL {{ $zone->present()->default_ttl }}
 
-{{ $zone->getSOARecord() }}
+{{ $zone->present()->SOA() }}
 
 ; Name Servers of this zone.
 @foreach($servers as $server)
@@ -13,5 +13,5 @@ $TTL {{ $zone->default_ttl }}
 
 ; Resource Records.
 @foreach($records as $record)
-{!! $record->formatResourceRecord() !!}
+{!! $record->present()->asString() !!}
 @endforeach
