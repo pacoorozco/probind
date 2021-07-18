@@ -44,7 +44,7 @@ class ZoneFactory extends Factory
             ];
         });
     }
-    
+
     public function reverse(): Factory
     {
         return $this->state(function (array $attributes) {

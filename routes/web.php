@@ -27,7 +27,7 @@
 */
 
 use App\Http\Controllers\BulkUpdateController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImportZoneController;
 use App\Http\Controllers\InstallController;
 use App\Http\Controllers\ResourceRecordController;
@@ -54,13 +54,12 @@ Auth::routes([
 ]);
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/',
-        [DashboardController::class, 'index'])
+    Route::get('/',HomeController::class)
         ->name('home');
 
     Route::get('search',
         [SearchController::class, 'index'])
-        ->name('search');
+        ->name('search.index');
     Route::get('search/results',
         [SearchController::class, 'search'])
         ->name('search.results');

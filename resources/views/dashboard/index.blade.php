@@ -1,9 +1,7 @@
 @extends('layouts.admin')
 
 {{-- Web site Title --}}
-@section('title')
-    {{ __('site.dashboard') }} @parent
-@endsection
+@section('title', __('site.dashboard'))
 
 {{-- Content Header --}}
 @section('header')
@@ -29,8 +27,7 @@
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="small-box bg-aqua">
                 <div class="inner">
-                    <h3>{{ $data['servers'] }}</h3>
-
+                    <h3>{{ $serversCount }}</h3>
                     <p>{{ __('site.servers') }}</p>
                 </div>
                 <div class="icon">
@@ -46,8 +43,7 @@
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="small-box bg-green">
                 <div class="inner">
-                    <h3>{{ $data['zones'] }}</h3>
-
+                    <h3>{{ $zonesCount }}</h3>
                     <p>{{ __('site.zones') }}</p>
                 </div>
                 <div class="icon">
@@ -68,8 +64,7 @@
 
             <div class="small-box bg-yellow">
                 <div class="inner">
-                    <h3>{{ $data['records'] }}</h3>
-
+                    <h3>{{ $resourceRecordsCount }}</h3>
                     <p>{{ __('site.records') }}</p>
                 </div>
                 <div class="icon">
@@ -85,8 +80,7 @@
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="small-box bg-red">
                 <div class="inner">
-                    <h3>{{ $data['users'] }}</h3>
-
+                    <h3>{{ $usersCount }}</h3>
                     <p>{{ __('site.users') }}</p>
                 </div>
                 <div class="icon">
@@ -100,20 +94,6 @@
         <!-- ./ users-box -->
     </div>
     <!-- ./ info boxes -->
-
-    <!-- statistics -->
-    <div class="row">
-        <!-- monthly records statistics -->
-        <div class="col-md-8 col-sm-12 col-xs-12" id="monthly-stats-widget">
-            {{-- @include('dashboard._monthly_records_stats') --}}
-        </div>
-
-        <!-- record types statistics -->
-        <div class="col-md-4 col-sm-12 col-xs-12" id="record-stats-widget">
-            {{-- @include('dashboard._record_types_stats') --}}
-        </div>
-    </div>
-    <!-- ./ statistics -->
 
     <!-- log activity -->
     <div class="row">

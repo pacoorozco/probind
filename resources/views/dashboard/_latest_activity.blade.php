@@ -24,7 +24,7 @@
             </thead>
 
             <tbody>
-            @foreach($activityLog as $activity)
+            @foreach($activities as $activity)
                 <tr>
                     <td>{{ $activity->id }}</td>
                     <td>{{ $activity->created_at }}</td>
