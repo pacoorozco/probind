@@ -17,6 +17,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ServerType;
 use App\Models\Server;
 use Illuminate\Database\Seeder;
 
@@ -28,7 +29,7 @@ class ServersTableSeeder extends Seeder
         Server::factory()->create([
             'hostname' => 'dns-server',
             'ip_address' => '127.0.0.1',
-            'type' => 'master',
+            'type' => ServerType::Primary,
             'ns_record' => true,
             'push_updates' => true,
         ]);

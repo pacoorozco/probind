@@ -28,7 +28,7 @@ class CreateServersTable extends Migration
             $table->id();
             $table->string('hostname')->unique();
             $table->ipAddress('ip_address');
-            $table->string('type', ServerType::Primary);
+            $table->string('type')->default(ServerType::Primary);
             $table->boolean('push_updates')->default(false);
             $table->boolean('ns_record')->default(false);
             $table->boolean('active')->default(true);
