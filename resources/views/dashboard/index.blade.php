@@ -92,7 +92,7 @@
                 <div class="icon">
                     <i class="fa fa-users"></i>
                 </div>
-                <a href="{{ __('users.index') }}" class="small-box-footer">
+                <a href="{{ route('users.index') }}" class="small-box-footer">
                     Manage users <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
