@@ -416,4 +416,11 @@ class Zone extends Model
             ? Arr::only(DNSHelper::getValidRecordTypesWithDescription(), ['PTR', 'TXT', 'NS'])
             : Arr::except(DNSHelper::getValidRecordTypesWithDescription(), ['PTR']);
     }
+
+    public function getDefaultRecordType(): string
+    {
+        return ($this->reverse_zone)
+            ? 'PTR'
+            : 'A';
+    }
 }

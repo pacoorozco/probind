@@ -51,7 +51,7 @@
                     {!! Form::hidden('type', $record->type) !!}
                     {!! Form::select('type_disabled', $zone->getValidRecordTypesForThisZone(), $record->type, ['class' => 'form-control', 'disabled' => 'disabled']) !!}
                 @else
-                    {!! Form::select('type', $zone->getValidRecordTypesForThisZone(), null, ['class' => 'form-control', 'required' => 'required']) !!}
+                    {!! Form::select('type', $zone->getValidRecordTypesForThisZone(), $zone->getDefaultRecordType(), ['class' => 'form-control', 'required' => 'required']) !!}
                 @endif
                 <span class="help-block">{{ $errors->first('type', ':message') }}</span>
             </div>
