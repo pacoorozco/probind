@@ -21,6 +21,8 @@ use App\Http\Requests\ImportZoneRequest;
 use App\Server;
 use App\Zone;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 
 class ToolsController extends Controller
 {
@@ -103,36 +105,18 @@ class ToolsController extends Controller
         return view('tools.import_zone');
     }
 
-    /**
-     * Call Artisan 'probind:import' command with supplied data.
-     *
-     * @param ImportZoneRequest $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     *
-     * FIXME
-     * Use queues for doing long tasks on background. This will require some notification system.
-     * Errors processing import Zone.
-     */
-    public function importZonePost(ImportZoneRequest $request)
+    public function importZoneFromFile(ImportZoneRequest $request): View
     {
-        // Move uploaded file to local storage.
-        $zonefile = $request->file('zonefile')->store('temp');
-        if (false === $zonefile) {
-            // Handle error
-            redirect()->route('home')
-                ->with('error',
-                    __('tools/messages.import_zone_error', ['zone' => $request->input('domain')]));
-        }
+        $filename = $request->zoneFile()->store('temp');
 
         Artisan::call('probind:import', [
-            'zone'     => $request->input('domain'),
-            'zonefile' => storage_path('app/' . $zonefile),
-            '--force'  => $request->has('overwrite'),
+            '--domain' => $request->domain(),
+            '--file' => Storage::path($filename),
         ]);
 
-        return redirect()->route('home')
-            ->with('success',
-                __('tools/messages.import_zone_success', ['zone' => $request->input('domain')]));
+        Storage::delete($filename);
+
+        return view('tools.import_zone_result')
+            ->with('output', Artisan::output());
     }
 }
