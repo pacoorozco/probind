@@ -105,7 +105,7 @@ Route::post('tools/update',
 Route::get('tools/import',
     ['as' => 'tools.import_zone', 'uses' => 'ToolsController@importZone']);
 Route::post('tools/import',
-    ['as' => 'tools.import_zone_post', 'uses' => 'ToolsController@importZonePost']);
+    ['as' => 'tools.import_zone_post', 'uses' => 'ToolsController@importZoneFromFile']);
 /*  ------------------------------------------
  *  Settings
  *  ------------------------------------------

@@ -57,6 +57,7 @@
                         <span class="help-block">{{ $errors->first('domain', ':message') }}</span>
                     </div>
                 </div>
+
             </div>
 
             <div class="box-footer">
