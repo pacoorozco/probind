@@ -37,7 +37,6 @@ class ProBINDImportZoneTest extends TestCase
             '--file' => 'tests/testData/reverse_zone.txt',
         ])->assertExitCode(ProBINDImportZone::SUCCESS_CODE);
 
-
         $zone = Zone::where(['domain' => $expectedDomain])->first();
 
         $this->assertNotNull($zone);
