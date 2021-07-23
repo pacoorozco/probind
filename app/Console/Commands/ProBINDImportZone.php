@@ -9,8 +9,8 @@ use Illuminate\Console\Command;
 
 class ProBINDImportZone extends Command
 {
-    const SUCCESS_CODE             = 0;
-    const ERROR_PARSING_FILE_CODE  = 1;
+    const SUCCESS_CODE = 0;
+    const ERROR_PARSING_FILE_CODE = 1;
     const ERROR_EXISTING_ZONE_CODE = 2;
 
     protected $signature = 'probind:import
@@ -25,6 +25,7 @@ class ProBINDImportZone extends Command
 
         if (Zone::where('domain', $domain)->exists()) {
             $this->error('Zone can not be imported. A zone for the provided domain already exists.');
+
             return self::ERROR_EXISTING_ZONE_CODE;
         }
 
@@ -32,6 +33,7 @@ class ProBINDImportZone extends Command
             $zoneData = $this->parseFile($domain, $this->option('file'));
         } catch (\Throwable $exception) {
             $this->error('The provided file could not be parsed.');
+
             return self::ERROR_PARSING_FILE_CODE;
         }
 
@@ -63,15 +65,15 @@ class ProBINDImportZone extends Command
             $createdRecordsCount++;
         }
 
-        $this->info('A zone for ' . $domain.' domain has been created. '.$createdRecordsCount.' records has been imported.');
-        activity()->log('Created zone <strong>'.$zone->domain.'</strong> by importing <strong>'.$createdRecordsCount.'</strong> records.');
+        $this->info('A zone for ' . $domain . ' domain has been created. ' . $createdRecordsCount . ' records has been imported.');
+        activity()->log('Created zone <strong>' . $zone->domain . '</strong> by importing <strong>' . $createdRecordsCount . '</strong> records.');
 
         return self::SUCCESS_CODE;
     }
 
     private function ensureFQDN(string $domain): string
     {
-        return (substr($domain, -1) != '.') ? $domain.'.' : $domain;
+        return (substr($domain, -1) != '.') ? $domain . '.' : $domain;
     }
 
     /**
