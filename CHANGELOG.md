@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 ## Unreleased
 
+## 0.13.0 - 2021-07-23
+### Changed
+- Default records for reverse DNS to PTR. ([#125][i125])
+### Fixed
+- Fix bug in Zone import. ([#122][i122])
+- Users link from dashboard doesn't work. ([#123][i123])
+- "Actions" buttons disappear when window is narrowed. ([#124][i124])
+
+[i122]: https://github.com/pacoorozco/probind/issues/122
+[i123]: https://github.com/pacoorozco/probind/issues/123
+[i124]: https://github.com/pacoorozco/probind/issues/124
+[i125]: https://github.com/pacoorozco/probind/issues/125
+
 ## 0.12.3 - 2021-07-13
 ### Fixed
 - Fix missing TTL in zone creation. ([#117][i117])
