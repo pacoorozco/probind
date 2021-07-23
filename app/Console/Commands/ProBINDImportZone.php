@@ -23,7 +23,7 @@ class ProBINDImportZone extends Command
     {
         $domain = $this->ensureFQDN($this->option('domain'));
 
-        if (Zone::where('domain', $domain)->exists()) {
+        if (Zone::where('domain', $domain)->first()) {
             $this->error('Zone can not be imported. A zone for the provided domain already exists.');
             return self::ERROR_EXISTING_ZONE_CODE;
         }

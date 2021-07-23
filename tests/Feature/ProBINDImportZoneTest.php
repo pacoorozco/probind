@@ -2,99 +2,72 @@
 
 namespace Tests\Feature;
 
+use App\Console\Commands\ProBINDImportZone;
 use App\Zone;
-use Artisan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\BrowserKitTestCase;
+use Illuminate\Support\Facades\Artisan;
+use Tests\TestCase;
 
-class ProBINDImportZoneTest extends BrowserKitTestCase
+class ProBINDImportZoneTest extends TestCase
 {
     use RefreshDatabase;
 
     public function testCommandWithForwardZoneSuccess()
     {
-        $expectedZone = 'domain.com.';
+        $expectedDomain = 'domain.com.';
 
-        // Call the command with the created file.
-        Artisan::call('probind:import', [
-            '--domain' => $expectedZone,
+        $this->artisan('probind:import', [
+            '--domain' => $expectedDomain,
             '--file' => 'tests/testData/forward_zone.txt',
-            '--force' => true,
-        ]);
+        ])->assertExitCode(ProBINDImportZone::SUCCESS_CODE);
 
-        $zone = Zone::where(['domain' => $expectedZone])->first();
+        $zone = Zone::where(['domain' => $expectedDomain])->first();
 
         $this->assertNotNull($zone);
-        $this->assertInstanceOf(Zone::class, $zone);
         $this->assertFalse($zone->reverse_zone);
         $this->assertEquals(10, $zone->records_count);
     }
 
     public function testCommandWithReverseZoneSuccess()
     {
-        $expectedZone = '10.10.in-addr.arpa.';
+        $expectedDomain = '10.10.in-addr.arpa.';
 
-        // Call the command with the created file.
-        Artisan::call('probind:import', [
-            '--domain' => $expectedZone,
+        $this->artisan('probind:import', [
+            '--domain' => $expectedDomain,
             '--file' => 'tests/testData/reverse_zone.txt',
-            '--force' => true,
-        ]);
+        ])->assertExitCode(ProBINDImportZone::SUCCESS_CODE);
 
-        $zone = Zone::where(['domain' => $expectedZone])->first();
+
+        $zone = Zone::where(['domain' => $expectedDomain])->first();
 
         $this->assertNotNull($zone);
-        $this->assertInstanceOf(Zone::class, $zone);
         $this->assertTrue($zone->reverse_zone);
         $this->assertEquals(7, $zone->records_count);
     }
 
-    public function testCommandWithExistingZoneSuccess()
-    {
-        $expectedZone = factory(Zone::class)->create([
-            'domain' => 'domain.com.',
-        ]);
-
-        // Call the command with the created file.
-        Artisan::call('probind:import', [
-            '--domain' => $expectedZone->domain,
-            '--file' => 'tests/testData/forward_zone.txt',
-            '--force' => true,
-        ]);
-
-        $zone = Zone::where(['domain' => $expectedZone->domain])->first();
-
-        $this->assertNotNull($zone);
-        $this->assertInstanceOf(Zone::class, $zone);
-        $this->assertEquals(10, $zone->records_count);
-    }
-
     public function testCommandWithExistingZoneFailure()
     {
-        $expectedZone = factory(Zone::class)->create();
+        $expectedDomain = 'domain.com.';
 
-        // Call the command with the created file.
-        Artisan::call('probind:import', [
-            '--domain' => $expectedZone->domain,
-            '--file' => 'tests/testData/forward_zone.txt',
-            '--force' => false,
+        /** @var Zone $expectedZone */
+        $expectedZone = factory(Zone::class)->create([
+            'domain' => $expectedDomain,
         ]);
 
-        $zone = Zone::where(['domain' => $expectedZone->domain])->first();
-
-        $this->assertNotNull($zone);
-        $this->assertInstanceOf(Zone::class, $zone);
-        $this->assertNotEquals(10, $zone->records_count);
+        $this->artisan('probind:import', [
+            '--domain' => $expectedDomain,
+            '--file' => 'tests/testData/forward_zone.txt',
+        ])->assertExitCode(ProBINDImportZone::ERROR_EXISTING_ZONE_CODE);
     }
 
     public function testCommandFileNotFound()
     {
-        $this->expectException(\ErrorException::class);
         // Call the command with the created file.
-        Artisan::call('probind:import', [
+        $errorCode = Artisan::call('probind:import', [
             '--domain' => 'domain.com',
             '--file' => 'tests/testData/not-existent.txt',
-            '--force' => true,
         ]);
+
+        $this->assertEquals(ProBINDImportZone::ERROR_PARSING_FILE_CODE, $errorCode);
     }
 }
