@@ -3,30 +3,39 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Validation\Rule;
 
 class ImportZoneRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'domain'    => 'required|string',
-            'zonefile'  => 'required|file|max:2048',
-            'overwrite' => 'sometimes|boolean',
+            'domain' => [
+                'required',
+                'string',
+                Rule::unique('zones'),
+            ],
+            'zonefile' => [
+                'required',
+                'mimetypes:text/plain',
+                'max:2048',
+            ],
         ];
+    }
+
+    public function domain(): string
+    {
+        return $this->input('domain');
+    }
+
+    public function zoneFile(): ?UploadedFile
+    {
+        return $this->file('zonefile');
     }
 }

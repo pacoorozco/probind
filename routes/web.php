@@ -184,7 +184,6 @@ Route::middleware(['auth'])->group(function () {
         ->name('tools.import_zone_post');
 });
 
-
 /*  ------------------------------------------
  *  Installer
  *  ------------------------------------------

@@ -194,4 +194,11 @@ class Zone extends Model
             ? $currentSerialNumber + 1
             : $newSerialNumber;
     }
+
+    public function getDefaultRecordType(): string
+    {
+        return ($this->reverse_zone)
+            ? 'PTR'
+            : 'A';
+    }
 }

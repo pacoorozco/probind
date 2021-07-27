@@ -9,39 +9,37 @@ use Illuminate\Console\Command;
 
 class ProBINDImportZone extends Command
 {
+
+    const SUCCESS_CODE = 0;
+    const ERROR_PARSING_FILE_CODE = 1;
+    const ERROR_EXISTING_ZONE_CODE = 2;
+
     protected $signature = 'probind:import
                 {--domain= : The zone domain name to create}
-                {--file= : The file name to import}
-                {--force : Delete existing zone before import}';
+                {--file= : The file name to import}';
 
-    protected $description = 'Import a BIND zone file to ProBIND';
+    protected $description = 'Imports a BIND zone file to ProBIND';
 
     public function handle(): int
     {
-        // Cast supplied arguments and options.
-        $domain = (string) $this->option('domain');
-        $filename = (string) $this->option('file');
+        $domain = $this->ensureFQDN($this->option('domain'));
 
-        // Adds the ending '.' (dot) to the zone name.
-        $domain = (substr($domain, -1) != '.') ? $domain . '.' : $domain;
+        if (Zone::where('domain', $domain)->first()) {
+            $this->error('Zone can not be imported. A zone for the provided domain already exists.');
 
-        if (! $this->option('force')) {
-            // Check if Zone exists on database.
-            $existingZone = Zone::where('domain', $domain)->first();
-
-            if ($existingZone) {
-                $this->error('Zone \'' . $existingZone->domain . '\' exists on ProBIND. Use \'--force\' option if you want to import this zone.');
-
-                return 1;
-            }
+            return self::ERROR_EXISTING_ZONE_CODE;
         }
 
-        // Delete zone, if exists on database.
-        $this->deleteZoneIfExists($domain);
+        try {
+            $zoneData = $this->parseFile($domain, $this->option('file'));
+        } catch (\Throwable $exception) {
+            $this->error('The provided file could not be parsed.');
 
-        $zoneData = $this->parseFile($domain, $filename);
+            return self::ERROR_PARSING_FILE_CODE;
+        }
+
+        /** @var Zone $zone */
         $zone = Zone::create([
-            'custom_settings' => true,
             'domain' => $domain,
             'reverse_zone' => Zone::isReverseZoneName($domain),
         ]);
@@ -58,6 +56,7 @@ class ProBINDImportZone extends Command
                 ]);
                 continue;
             }
+
             $zone->records()->create([
                 'name' => $record->getName(),
                 'ttl' => $record->getTtl(),
@@ -67,45 +66,28 @@ class ProBINDImportZone extends Command
             $createdRecordsCount++;
         }
 
-        $this->info('Import zone \'' . $domain . '\' has created with ' . $createdRecordsCount . ' imported records.');
-        activity()->log('Import zone <strong>' . $zone->domain . '</strong> has created <strong>' . $createdRecordsCount . '</strong> records.');
+        $this->info('A zone for ' . $domain . ' domain has been created. ' . $createdRecordsCount . ' records has been imported.');
+        activity()->log('Created zone <strong>' . $zone->domain . '</strong> by importing <strong>' . $createdRecordsCount . '</strong> records.');
 
-        return 0;
+        return self::SUCCESS_CODE;
     }
 
-    /**
-     * Delete the specified zone by domain search if exists.
-     *
-     * @param string $domain
-     */
-    private function deleteZoneIfExists(string $domain): void
+    private function ensureFQDN(string $domain): string
     {
-        // Check if Zone exists on database, including trashed zones.
-        $existingZone = Zone::withTrashed()
-            ->where('domain', $domain)->first();
-
-        if ($existingZone) {
-            $existingZone->forceDelete();
-        }
+        return (substr($domain, -1) != '.') ? $domain . '.' : $domain;
     }
 
     /**
      * Parses a DNS zone file and returns its content.
      *
-     * @param string $domain
-     * @param string $filename
+     * @param  string  $domain
+     * @param  string  $filename
      *
      * @return \Badcow\DNS\Zone
-     * @throws \ErrorException
+     * @throws \Badcow\DNS\Parser\ParseException
      */
     private function parseFile(string $domain, string $filename): \Badcow\DNS\Zone
     {
-        try {
-            $file = file_get_contents($filename);
-
-            return Parser\Parser::parse($domain, $file);
-        } catch (\Exception $exception) {
-            throw new \ErrorException();
-        }
+        return Parser\Parser::parse($domain, file_get_contents($filename));
     }
 }

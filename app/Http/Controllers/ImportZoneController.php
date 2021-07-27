@@ -20,6 +20,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ImportZoneRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ImportZoneController extends Controller
@@ -34,25 +35,18 @@ class ImportZoneController extends Controller
         return view('tools.import_zone');
     }
 
-    public function store(ImportZoneRequest $request): RedirectResponse
+    public function store(ImportZoneRequest $request): View
     {
-        // Move uploaded file to local storage.
-        $zonefile = $request->file('zonefile')->store('temp');
-        if (false === $zonefile) {
-            // Handle error
-            redirect()->route('home')
-                ->with('error',
-                    __('tools/messages.import_zone_error', ['zone' => $request->input('domain')]));
-        }
+        $filename = $request->zoneFile()->store('temp');
 
         Artisan::call('probind:import', [
-            'zone' => $request->input('domain'),
-            'zonefile' => storage_path('app/'.$zonefile),
-            '--force' => $request->has('overwrite'),
+            '--domain' => $request->domain(),
+            '--file' => Storage::path($filename),
         ]);
 
-        return redirect()->route('home')
-            ->with('success',
-                __('tools/messages.import_zone_success', ['zone' => $request->input('domain')]));
+        Storage::delete($filename);
+
+        return view('tools.import_zone_result')
+            ->with('output', Artisan::output());
     }
 }
