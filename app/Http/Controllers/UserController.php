@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
-use App\User;
-use DataTables;
-use Gate;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Gate;
+use function MongoDB\BSON\toJSON;
 
 class UserController extends Controller
 {
@@ -159,13 +161,13 @@ class UserController extends Controller
     /**
      * Show a list of all the users formatted for DataTables.
      *
-     * @param DataTables $dataTable
+     * @param  DataTables  $datatable
      *
-     * @return DataTables JsonResponse
+     * @return \Illuminate\Http\JsonResponse JsonResponse
      */
-    public function data(DataTables $dataTable)
+    public function data(DataTables $datatable): JsonResponse
     {
-        $users = User::get([
+        $users = User::select([
             'id',
             'username',
             'name',
@@ -173,7 +175,7 @@ class UserController extends Controller
             'active',
         ]);
 
-        return $dataTable::of($users)
+        return $datatable->eloquent($users)
             ->editColumn('username', function (User $user) {
                 return Helper::addStatusLabel($user->active, $user->username);
             })
@@ -184,8 +186,7 @@ class UserController extends Controller
                     ->render();
             })
             ->rawColumns(['actions'])
-            ->removeColumn('id')
-            ->removeColumn('active')
-            ->make(true);
+            ->removeColumn(['id', 'active'])
+            ->toJSON();
     }
 }

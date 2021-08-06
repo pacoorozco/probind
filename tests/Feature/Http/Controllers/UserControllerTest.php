@@ -70,6 +70,7 @@ class UserControllerTest extends TestCase
             ->actingAs($this->user)
             ->post(route('users.store'), [
                 'username' => $testUser->username,
+                'name' => $testUser->name,
                 'email' => $testUser->email,
                 'password' => 'secret123',
                 'password_confirmation' => 'secret123',
@@ -114,10 +115,11 @@ class UserControllerTest extends TestCase
         $response = $this
             ->actingAs($this->user)
             ->put(route('users.update', $testUser), [
+                'name' => $want->name,
                 'email' => $want->email,
-                'enabled' => $want->active,
-                'password' => 'new-password-123',
-                'password_confirmation' => 'new-password-123',
+                'active' => $want->active,
+                'password' => 'newPassword123',
+                'password_confirmation' => 'newPassword123',
             ]);
 
         $response->assertRedirect(route('users.index'));
@@ -125,8 +127,9 @@ class UserControllerTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $testUser->id,
             'username' => $testUser->username,
+            'name' => $want->name,
             'email' => $want->email,
-            'enabled' => $want->active,
+            'active' => $want->active,
         ]);
     }
 
