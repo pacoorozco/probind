@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * ProBIND v3 - Professional DNS management made easy.
  *
  * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
@@ -20,7 +20,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Request;
 use App\Http\Requests\ZoneCreateRequest;
 use App\Http\Requests\ZoneUpdateRequest;
-use App\Zone;
+use App\Models\Zone;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Yajra\Datatables\Datatables;
 
 class ZoneController extends Controller
@@ -30,58 +33,27 @@ class ZoneController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index()
+    public function index(): View
     {
         return view('zone.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create()
+    public function create(): View
     {
         return view('zone.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param ZoneCreateRequest $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(ZoneCreateRequest $request)
+    public function store(ZoneCreateRequest $request): RedirectResponse
     {
-        try {
-            $zone = new Zone();
-            $zone->domain = $request->input('domain');
-
-            $this->fillZoneFromRequest($zone, $request);
-
-            $zone->save();
-        } catch (\Throwable $exception) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', __('zone/messages.create.error'));
-        }
+        $zone = new Zone();
+        $zone->domain = $request->input('domain');
+        $this->fillZoneFromRequest($zone, $request);
+        $zone->save();
 
         return redirect()->route('zones.index')
             ->with('success', __('zone/messages.create.success'));
     }
 
-    /**
-     * Fill the zone with the correct values from the request.
-     *
-     * @param \App\Zone                  $zone
-     * @param \App\Http\Requests\Request $request
-     */
     private function fillZoneFromRequest(Zone $zone, Request $request): void
     {
         $zone->reverse_zone = Zone::isReverseZoneName($zone->domain);
@@ -104,98 +76,50 @@ class ZoneController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Zone $zone
-     *
-     * @return \Illuminate\View\View
-     */
-    public function show(Zone $zone)
+    public function show(Zone $zone): View
     {
         return view('zone.show')
             ->with('zone', $zone);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Zone $zone
-     *
-     * @return \Illuminate\View\View
-     */
-    public function edit(Zone $zone)
+    public function edit(Zone $zone): View
     {
         return view('zone.edit')
             ->with('zone', $zone);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param ZoneUpdateRequest $request
-     * @param Zone              $zone
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(ZoneUpdateRequest $request, Zone $zone)
+    public function update(ZoneUpdateRequest $request, Zone $zone): RedirectResponse
     {
-        try {
-            // if it's a Master zone, assign new Serial Number and flag pending changes.
-            if ($zone->isMasterZone()) {
-                $zone->getNewSerialNumber();
-                $zone->setPendingChanges();
-            }
-
-            $this->fillZoneFromRequest($zone, $request);
-
-            $zone->saveOrFail();
-        } catch (\Throwable $exception) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', __('zone/messages.update.error'));
+        // if it's a Master zone, assign new Serial Number and flag pending changes.
+        if ($zone->isPrimary()) {
+            $zone->getNewSerialNumber();
+            $zone->setPendingChanges();
         }
+
+        $this->fillZoneFromRequest($zone, $request);
+
+        $zone->saveOrFail();
 
         return redirect()->route('zones.index')
             ->with('success', __('zone/messages.update.success'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Zone $zone
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function destroy(Zone $zone)
+    public function destroy(Zone $zone): RedirectResponse
     {
-        try {
-            $zone->delete();
-        } catch (\Throwable $exception) {
-            return redirect()->back()
-                ->with('error', __('zone/messages.delete.error'));
-        }
+        $zone->delete();
 
         return redirect()->route('zones.index')
             ->with('success', __('zone/messages.delete.success'));
     }
 
-    /**
-     * Show a list of all the levels formatted for DataTables.
-     *
-     * @param \Yajra\Datatables\Datatables $dataTable
-     *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
-     */
-    public function data(DataTables $dataTable)
+    public function data(DataTables $datatable): JsonResponse
     {
         $zones = Zone::withCount('records')
             ->orderBy('domain', 'ASC');
 
-        return $dataTable->eloquent($zones)
+        return $datatable->eloquent($zones)
             ->addColumn('type', function (Zone $zone) {
-                return __('zone/model.types.' . $zone->getTypeOfZone());
+                return __('zone/model.types.'.$zone->getTypeOfZone());
             })
             ->editColumn('has_modifications', function (Zone $zone) {
                 return $zone->present()->statusIcon;

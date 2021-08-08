@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * ProBIND v3 - Professional DNS management made easy.
  *
  * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
@@ -18,7 +18,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ImportZoneRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;

@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * ProBIND v3 - Professional DNS management made easy.
  *
  * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
@@ -19,9 +19,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RecordCreateRequest;
 use App\Http\Requests\RecordUpdateRequest;
-use App\ResourceRecord;
-use App\Zone;
-use DataTables;
+use App\Models\ResourceRecord;
+use App\Models\Zone;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
+use Yajra\DataTables\DataTables;
 
 class ResourceRecordController extends Controller
 {
@@ -30,167 +34,86 @@ class ResourceRecordController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @param  Zone $zone
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index(Zone $zone)
+    public function index(Zone $zone): View
     {
         return view('record.index')
             ->with('zone', $zone);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param  Zone $zone
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create(Zone $zone)
+    public function create(Zone $zone): View
     {
         return view('record.create')
             ->with('zone', $zone);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  RecordCreateRequest $request
-     * @param  Zone $zone
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(RecordCreateRequest $request, Zone $zone)
+    public function store(Zone $zone, RecordCreateRequest $request): RedirectResponse
     {
-        try {
-            $record = ResourceRecord::make([
-                'name' => $request->name,
-                'ttl' => $request->ttl,
-                'type' => $request->type,
-                'priority' => ($request->type == 'MX' || $request->type == 'SRV')
-                    ? $request->priority
-                    : null,
-                'data' => $request->data,
-            ]);
-            $zone->records()->save($record);
-        } catch (\Exception $exception) {
-            return redirect()->back()
-                ->withInput()
-                ->withErrors(__('record/messages.create.error'));
-        }
+        $record = ResourceRecord::make([
+            'name' => $request->name(),
+            'ttl' => $request->ttl(),
+            'type' => $request->type(),
+            'data' => $request->data(),
+        ]);
+        $zone->records()->save($record);
+        $zone->has_modifications = true;
+        $zone->save();
 
         return redirect()->route('zones.records.index', ['zone' => $zone])
             ->with('success', __('record/messages.create.success'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  Zone $zone
-     * @param  ResourceRecord $record
-     *
-     * @return \Illuminate\View\View
-     */
-    public function show(Zone $zone, ResourceRecord $record)
+    public function show(Zone $zone, ResourceRecord $record): View
     {
         return view('record.show')
             ->with('zone', $zone)
             ->with('record', $record);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  Zone $zone
-     * @param  ResourceRecord $record
-     *
-     * @return \Illuminate\View\View
-     */
-    public function edit(Zone $zone, ResourceRecord $record)
+    public function edit(Zone $zone, ResourceRecord $record): View
     {
         return view('record.edit')
             ->with('zone', $zone)
             ->with('record', $record);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  RecordUpdateRequest $request
-     * @param  Zone $zone
-     * @param  ResourceRecord $record
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(RecordUpdateRequest $request, Zone $zone, ResourceRecord $record)
+    public function update(RecordUpdateRequest $request, Zone $zone, ResourceRecord $record): RedirectResponse
     {
-        try {
-            $record->update([
-                'name' => $request->name,
-                'ttl' => $request->ttl,
-                'priority' => ($record->type == 'MX' || $record->type == 'SRV')
-                    ? $record->priority
-                    : null,
-                'data' => $request->data,
-            ]);
-        } catch (\Exception $exception) {
-            return redirect()->back()
-                ->withInput()
-                ->withErrors(__('record/messages.update.error'));
-        }
+        $zone->has_modifications = true;
+        $zone->save();
+
+        $record->update([
+            'ttl' => $request->ttl(),
+            'data' => $request->data(),
+        ]);
 
         return redirect()->route('zones.records.index', ['zone' => $zone])
             ->with('success', __('record/messages.update.success'));
     }
 
-    /**
-     * Remove record page.
-     *
-     * @param Zone $zone
-     * @param ResourceRecord $record
-     *
-     * @return \Illuminate\View\View
-     */
-    public function delete(Zone $zone, ResourceRecord $record)
+    public function delete(Zone $zone, ResourceRecord $record): View
     {
         return view('record.delete')
             ->with('zone', $zone)
             ->with('record', $record);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  Zone $zone
-     * @param ResourceRecord $record
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function destroy(Zone $zone, ResourceRecord $record)
+    public function destroy(Zone $zone, ResourceRecord $record): RedirectResponse
     {
+        $zone = $record->zone()->first();
+        $zone->has_modifications = true;
+        $zone->save();
+
         $record->delete();
 
         return redirect()->route('zones.records.index', ['zone' => $zone])
             ->with('success', __('record/messages.delete.success'));
     }
 
-    /**
-     * Show a list of all the levels formatted for DataTables.
-     *
-     * @param DataTables $dataTable
-     * @param Zone $zone
-     *
-     * @return DataTables JsonResponse
-     */
-    public function data(DataTables $dataTable, Zone $zone)
+    public function data(DataTables $datatable, Zone $zone): JsonResponse
     {
         $records = $zone->records();
 
-        return $dataTable::of($records)
+        return $datatable->eloquent($records)
             ->addColumn('actions', function (ResourceRecord $record) {
                 return view('record._actions')
                     ->with('zone', $record->zone)
@@ -199,6 +122,6 @@ class ResourceRecordController extends Controller
             })
             ->rawColumns(['actions'])
             ->removeColumn('id')
-            ->make(true);
+            ->toJson();
     }
 }

@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * ProBIND v3 - Professional DNS management made easy.
  *
  * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
@@ -20,8 +20,11 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use App\Http\Requests\ServerCreateRequest;
 use App\Http\Requests\ServerUpdateRequest;
-use App\Server;
-use DataTables;
+use App\Models\Server;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Yajra\DataTables\DataTables;
 
 class ServerController extends Controller
 {
@@ -30,12 +33,7 @@ class ServerController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index()
+    public function index(): View
     {
         $servers = Server::all();
 
@@ -43,106 +41,46 @@ class ServerController extends Controller
             ->with('servers', $servers);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create()
+    public function create(): View
     {
         return view('server.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param ServerCreateRequest $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(ServerCreateRequest $request)
+    public function store(ServerCreateRequest $request): RedirectResponse
     {
-        try {
-            Server::create($request->validated());
-        } catch (\Throwable $exception) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', __('server/messages.create.error'));
-        }
+        Server::create($request->validated());
 
         return redirect()->route('servers.index')
             ->with('success', __('server/messages.create.success'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Server $server
-     *
-     * @return \Illuminate\View\View
-     */
-    public function show(Server $server)
+    public function show(Server $server): View
     {
         return view('server.show')
             ->with('server', $server);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Server $server
-     *
-     * @return \Illuminate\View\View
-     */
-    public function edit(Server $server)
+    public function edit(Server $server): View
     {
         return view('server.edit')
             ->with('server', $server);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param ServerUpdateRequest $request
-     * @param Server              $server
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(ServerUpdateRequest $request, Server $server)
+    public function update(ServerUpdateRequest $request, Server $server): RedirectResponse
     {
-        try {
-            $server->update($request->validated());
-        } catch (\Throwable $exception) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', __('server/messages.update.error'));
-        }
+        $server->update($request->validated());
 
         return redirect()->route('servers.index')
             ->with('success', __('server/messages.update.success'));
     }
 
-    /**
-     * Remove level page.
-     *
-     * @param Server $server
-     *
-     * @return \Illuminate\View\View
-     */
-    public function delete(Server $server)
+    public function delete(Server $server): View
     {
         return view('server/delete')
             ->with('server', $server);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Server $server
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function destroy(Server $server)
+    public function destroy(Server $server): RedirectResponse
     {
         $server->delete();
 
@@ -150,16 +88,9 @@ class ServerController extends Controller
             ->with('success', __('server/messages.delete.success'));
     }
 
-    /**
-     * Show a list of all the Servers formatted for DataTables.
-     *
-     * @param DataTables $dataTable
-     *
-     * @return DataTables JsonResponse
-     */
-    public function data(DataTables $dataTable)
+    public function data(DataTables $datatable): JsonResponse
     {
-        $servers = Server::get([
+        $servers = Server::select([
             'id',
             'hostname',
             'type',
@@ -169,7 +100,7 @@ class ServerController extends Controller
             'active',
         ]);
 
-        return $dataTable::of($servers)
+        return $datatable->eloquent($servers)
             ->editColumn('hostname', function (Server $server) {
                 return Helper::addStatusLabel($server->active, $server->hostname);
             })
@@ -187,6 +118,6 @@ class ServerController extends Controller
             })
             ->rawColumns(['actions'])
             ->removeColumn('id')
-            ->make(true);
+            ->toJson();
     }
 }

@@ -1,4 +1,19 @@
 <?php
+/*
+ * ProBIND v3 - Professional DNS management made easy.
+ *
+ * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
+ *
+ * This file is part of some open source application.
+ *
+ * Licensed under GNU General Public License 3.0.
+ * Some rights reserved. See LICENSE, AUTHORS.
+ *
+ * @author      Paco Orozco <paco@pacoorozco.info>
+ * @copyright   2016 Paco Orozco
+ * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * @link        https://github.com/pacoorozco/probind
+ */
 
 namespace App\Http\Controllers;
 
@@ -7,9 +22,10 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Yajra\DataTables\DataTables;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
-use function MongoDB\BSON\toJSON;
+use Illuminate\View\View;
+use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
@@ -18,12 +34,7 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index()
+    public function index(): View
     {
         $users = User::all();
 
@@ -31,120 +42,60 @@ class UserController extends Controller
             ->with('users', $users);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create()
+    public function create(): View
     {
         return view('user.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  UserCreateRequest $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(UserCreateRequest $request)
+    public function store(UserCreateRequest $request): RedirectResponse
     {
-        try {
-            User::create([
-                'username' => $request->username,
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-            ]);
-        } catch (\Exception $exception) {
-            return redirect()->back()
-                ->withInput()
-                ->withErrors(__('user/messages.create.error'));
-        }
+        User::create([
+            'username' => $request->username,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
 
         return redirect()->route('users.index')
             ->with('success', __('user/messages.create.success'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  User $user
-     *
-     * @return \Illuminate\View\View
-     */
-    public function show(User $user)
+    public function show(User $user): View
     {
         return view('user.show')
             ->with('user', $user);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  User $user
-     *
-     * @return \Illuminate\View\View
-     */
-    public function edit(User $user)
+    public function edit(User $user): View
     {
         return view('user.edit')
             ->with('user', $user);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  UserUpdateRequest $request
-     * @param  User $user
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(UserUpdateRequest $request, User $user)
+    public function update(UserUpdateRequest $request, User $user): RedirectResponse
     {
-        try {
-            $user->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'active' => $request->active,
-            ]);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'active' => $request->active,
+        ]);
 
-            if ($request->filled('password')) {
-                $user->password = bcrypt($request->password);
-                $user->save();
-            }
-        } catch (\Exception $exception) {
-            return redirect()->back()
-                ->withInput()
-                ->withErrors(__('user/messages.update.error'));
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->password);
+            $user->save();
         }
 
         return redirect()->route('users.index')
             ->with('success', __('user/messages.update.success'));
     }
 
-    /**
-     * Remove level page.
-     *
-     * @param User $user
-     *
-     * @return \Illuminate\View\View
-     */
-    public function delete(User $user)
+    public function delete(User $user): View
     {
         return view('user/delete')
             ->with('user', $user);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param User $user
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
         if (Gate::allows('delete-user', $user)) {
             $user->delete();
@@ -158,13 +109,6 @@ class UserController extends Controller
             ->with('error', __('user/messages.delete.invalid'));
     }
 
-    /**
-     * Show a list of all the users formatted for DataTables.
-     *
-     * @param  DataTables  $datatable
-     *
-     * @return \Illuminate\Http\JsonResponse JsonResponse
-     */
     public function data(DataTables $datatable): JsonResponse
     {
         $users = User::select([

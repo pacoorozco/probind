@@ -21,28 +21,29 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RecordUpdateRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'name'     => 'required|string',
-            'ttl'      => 'nullable|integer|min:0|max:2147483647',
-            'priority' => 'required_if:type,MX,SRV|integer|min:0|max:65535',
-            'data'     => 'required|string',
+            'data' => [
+                'required',
+                'string',
+            ],
+            'ttl' => 'nullable|integer|min:0|max:2147483647',
         ];
+    }
+
+    public function data(): string
+    {
+        return $this->input('data');
+    }
+
+    public function ttl(): ?int
+    {
+        return $this->input('ttl');
     }
 }

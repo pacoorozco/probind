@@ -4,7 +4,7 @@
         <i class="fa fa-eye"></i>
     </a>
 
-    @if($zone->isMasterZone())
+    @if($zone->isPrimary())
         <a href="{{ route('zones.records.index', $zone) }}" class="btn btn-xs btn-primary" role="button"
            data-toggle="tooltip" data-placement="top" title="{{ __('record/title.view_records') }}">
             <i class="fa fa-database"></i>

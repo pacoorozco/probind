@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * ProBIND v3 - Professional DNS management made easy.
  *
  * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>

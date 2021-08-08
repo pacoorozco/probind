@@ -1,9 +1,7 @@
 @extends('layouts.admin')
 
 {{-- Web site Title --}}
-@section('title')
-    {{ __('record/title.record_delete') }} @parent
-@endsection
+@section('title', __('record/title.record_delete'))
 
 {{-- Content Header --}}
 @section('header')

@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * ProBIND v3 - Professional DNS management made easy.
  *
  * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
@@ -17,11 +17,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ImportZoneRequest;
-use App\Server;
-use App\Zone;
+use App\Models\Zone;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\View\View;
 
 class BulkUpdateController extends Controller

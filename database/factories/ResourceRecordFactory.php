@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ResourceRecordType;
 use App\Models\ResourceRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -14,10 +15,9 @@ class ResourceRecordFactory extends Factory
     {
         return [
             'name' => $this->faker->domainWord(),
-            'ttl' => null,
-            'type' => 'A',
-            'priority' => null,
+            'type' => ResourceRecordType::A,
             'data' => $this->faker->ipv4(),
+            'ttl' => null,
         ];
     }
 
@@ -32,7 +32,7 @@ class ResourceRecordFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'type' => 'CNAME',
+                'type' => ResourceRecordType::CNAME,
                 'data' => $this->faker->domainWord().'.'.$this->faker->domainName().'.',
             ];
         });
@@ -42,9 +42,11 @@ class ResourceRecordFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'type' => 'MX',
+                'type' => ResourceRecordType::MX,
                 'priority' => $this->faker->randomElement([10, 20, 30]),
-                'data' => $this->faker->domainWord().'.'.$this->faker->domainName().'.',
+                'data' => sprintf('%d %s',
+                    $this->faker->randomElement([10, 20, 30]),
+                    $this->faker->domainWord().'.'.$this->faker->domainName().'.'),
             ];
         });
     }

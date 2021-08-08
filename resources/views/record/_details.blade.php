@@ -19,15 +19,6 @@
         </div>
         <!-- ./ name -->
 
-        <!-- ttl -->
-        <div class="form-group">
-            {!! Form::label('ttl', __('record/model.ttl'), array('class' => 'control-label')) !!}
-            <div class="controls">
-                {{ $record->ttl }}
-            </div>
-        </div>
-        <!-- ./ ttl -->
-
         <!-- type -->
         <div class="form-group">
             {!! Form::label('type', __('record/model.type'), array('class' => 'control-label')) !!}
@@ -37,17 +28,6 @@
         </div>
         <!-- ./ type -->
 
-        @if($record->type == 'MX' || $record->type =='SRV')
-        <!-- priority -->
-        <div class="form-group">
-            {!! Form::label('priority', __('record/model.priority'), array('class' => 'control-label')) !!}
-            <div class="controls">
-                {{ $record->priority }}
-            </div>
-        </div>
-        <!-- ./ priority -->
-        @endif
-
         <!-- data -->
         <div class="form-group">
             {!! Form::label('data', __('record/model.data'), array('class' => 'control-label')) !!}
@@ -56,6 +36,15 @@
             </div>
         </div>
         <!-- ./ data -->
+
+        <!-- ttl -->
+        <div class="form-group">
+            {!! Form::label('ttl', __('record/model.ttl'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                {{ $record->ttl }}
+            </div>
+        </div>
+        <!-- ./ ttl -->
 
     </div>
     <div class="box-footer">

@@ -9,18 +9,18 @@
             <thead>
             <tr>
                 <th>{{ __('record/table.name') }}</th>
-                <th>{{ __('record/table.ttl') }}</th>
                 <th>{{ __('record/table.type') }}</th>
                 <th>{{ __('record/table.data') }}</th>
+                <th>{{ __('record/table.ttl') }}</th>
                 <th>{{ __('general.actions') }}</th>
             </tr>
             </thead>
             <tfoot>
             <tr>
                 <th>{{ __('record/table.name') }}</th>
-                <th>{{ __('record/table.ttl') }}</th>
                 <th>{{ __('record/table.type') }}</th>
                 <th>{{ __('record/table.data') }}</th>
+                <th>{{ __('record/table.ttl') }}</th>
                 <th>{{ __('general.actions') }}</th>
             </tr>
             </tfoot>
@@ -41,9 +41,9 @@
                 "ajax": "{{ route('zones.records.data', $zone->id) }}",
                 "columns": [
                     {data: "name"},
-                    {data: "ttl", "orderable": false, "searchable": false},
                     {data: "type"},
                     {data: "data"},
+                    {data: "ttl", "orderable": false, "searchable": false},
                     {data: "actions", "orderable": false, "searchable": false}
                 ],
                 "aLengthMenu": [

@@ -1,9 +1,7 @@
 @extends('layouts.admin')
 
 {{-- Web site Title --}}
-@section('title')
-    {{ __('record/title.record_show') }} @parent
-@endsection
+@section('title', __('record/title.record_show'))
 
 {{-- Content Header --}}
 @section('header')

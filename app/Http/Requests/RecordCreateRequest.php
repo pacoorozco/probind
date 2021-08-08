@@ -17,36 +17,56 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ResourceRecordName;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RecordCreateRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
+        /** @var \App\Models\Zone $zone */
         $zone = $this->route('zone');
-        $validInputTypes = join(',', array_keys($zone->getValidRecordTypesForThisZone()));
 
         return [
-            'name'     => 'required|string',
-            'ttl'      => 'nullable|integer|min:0|max:2147483647',
-            'type'     => 'required|string|in:' . $validInputTypes,
-            'priority' => 'required_if:type,MX,SRV|integer|min:0|max:65535',
-            'data'     => 'required|string',
+            'name' => [
+                'required',
+                new ResourceRecordName(),
+            ],
+            'type' => [
+                'required',
+                Rule::in($zone->getValidRecordTypesForThisZone()),
+            ],
+            'data' => [
+                'required',
+                'string',
+            ],
+            'ttl' => 'nullable|integer|min:0|max:2147483647',
         ];
+    }
+
+    public function name(): string
+    {
+        return $this->input('name');
+    }
+
+    public function type(): string
+    {
+        return $this->input('type');
+    }
+
+    public function data(): string
+    {
+        return $this->input('data');
+    }
+
+    public function ttl(): ?int
+    {
+        return $this->input('ttl');
     }
 }

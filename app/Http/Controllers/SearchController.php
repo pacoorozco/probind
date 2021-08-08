@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * ProBIND v3 - Professional DNS management made easy.
  *
  * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
@@ -18,10 +18,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ResourceRecordType;
-use App\Helpers\DNSHelper;
 use App\Models\ResourceRecord;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\View\View;
 
 class SearchController extends Controller
 {
@@ -30,22 +31,12 @@ class SearchController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display the records search form.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index()
+    public function index(): View
     {
         return view('search.index')
             ->with('searchValidInputTypes', self::getSearchSelectValues());
     }
 
-    /**
-     * Returns an array for search select's options of ResourceRecord types.
-     *
-     * @return array
-     */
     protected static function getSearchSelectValues(): array
     {
         return array_merge(
@@ -54,15 +45,7 @@ class SearchController extends Controller
         );
     }
 
-    /**
-     * Display the records search results.
-     *
-     * @param  Request $request
-     * @param  int $perPage
-     *
-     * @return \Illuminate\View\View
-     */
-    public function search(Request $request, $perPage = 15)
+    public function search(Request $request, int $perPage = 15): View
     {
         // Get search criteria terms
         $searchTerms = [
@@ -81,15 +64,7 @@ class SearchController extends Controller
             ->with('searchTerms', $searchTerms);
     }
 
-    /**
-     * Create a query based on provided search terms and return paginated results.
-     *
-     * @param  array   $searchTerms
-     * @param  int $perPage
-     *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
-    private function doSearchPaginatedQuery($searchTerms, $perPage = 15)
+    private function doSearchPaginatedQuery(array $searchTerms, int $perPage = 15): LengthAwarePaginator
     {
         // Create a ResourceRecord query, this will be constructed depending search input fields.
         $query = ResourceRecord::query();

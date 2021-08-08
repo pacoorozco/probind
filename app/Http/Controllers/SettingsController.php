@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * ProBIND v3 - Professional DNS management made easy.
  *
  * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
@@ -18,7 +18,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SettingsUpdateRequest;
-use Setting;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Larapacks\Setting\Setting;
 
 class SettingsController extends Controller
 {
@@ -27,24 +29,12 @@ class SettingsController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index()
+    public function index(): View
     {
         return view('settings.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  SettingsUpdateRequest $request
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(SettingsUpdateRequest $request)
+    public function update(SettingsUpdateRequest $request): RedirectResponse
     {
         Setting::set($request->except('_token', '_method'));
 

@@ -14,6 +14,7 @@
 
 namespace App\Models;
 
+use App\Enums\ResourceRecordType;
 use App\Enums\ZoneType;
 use App\Presenters\ZonePresenter;
 use App\Rules\FullyQualifiedDomainName;
@@ -200,5 +201,12 @@ class Zone extends Model
         return ($this->reverse_zone)
             ? 'PTR'
             : 'A';
+    }
+
+    public function getValidRecordTypesForThisZone(): array
+    {
+        return $this->reverse_zone
+            ? ResourceRecordType::asArrayForReverseZone()
+            : ResourceRecordType::asArrayForForwardZone();
     }
 }

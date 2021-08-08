@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * ProBIND v3 - Professional DNS management made easy.
  *
  * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
@@ -18,28 +18,20 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\EnvironmentRepository;
-use Artisan;
-use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 
 class InstallController extends Controller
 {
-    /**
-     * Display the installer welcome page.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index()
+    public function index(): View
     {
         return view('install.welcome');
     }
 
-    /**
-     * Show Connection Settings Form.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function showDatabaseForm()
+    public function showDatabaseForm(): View
     {
         $host = env('DB_HOST');
         $dbname = env('DB_DATABASE');
@@ -53,23 +45,15 @@ class InstallController extends Controller
             ->with('host', $host);
     }
 
-    /**
-     * Manage Database form submission.
-     *
-     * @param Request               $request
-     * @param EnvironmentRepository $environmentRepository
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function createDatabase(Request $request, EnvironmentRepository $environmentRepository)
+    public function createDatabase(Request $request, EnvironmentRepository $environmentRepository): RedirectResponse
     {
         // Set config for migrations and seeds
         $connection = config('database.default');
         config([
-            'database.connections.' . $connection . '.host'     => $request->input('host'),
-            'database.connections.' . $connection . '.database' => $request->input('dbname'),
-            'database.connections.' . $connection . '.password' => $request->input('password'),
-            'database.connections.' . $connection . '.username' => $request->input('username'),
+            'database.connections.'.$connection.'.host' => $request->input('host'),
+            'database.connections.'.$connection.'.database' => $request->input('dbname'),
+            'database.connections.'.$connection.'.password' => $request->input('password'),
+            'database.connections.'.$connection.'.username' => $request->input('username'),
         ]);
 
         // Update .env file
@@ -77,14 +61,14 @@ class InstallController extends Controller
             'database' => $request->input('dbname'),
             'username' => $request->input('username'),
             'password' => $request->input('password'),
-            'host'     => $request->input('host'),
+            'host' => $request->input('host'),
         ]);
 
         // Migrations and seeds
         try {
             Artisan::call('migrate:refresh');
             Artisan::call('db:seed');
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return redirect()->route('Installer::database')
                 ->with('error', __('installer.database.error-message'));
         }
@@ -92,9 +76,9 @@ class InstallController extends Controller
         return redirect()->route('Installer::end');
     }
 
-    public function end()
+    public function end(): View
     {
-        \Storage::disk('local')->put('installed', config('app.version'));
+        Storage::disk('local')->put('installed', config('app.version'));
 
         return view('install.end');
     }
