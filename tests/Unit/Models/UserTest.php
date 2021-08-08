@@ -17,8 +17,6 @@
 
 namespace Tests\Unit\Models;
 
-use App\Enums\ServerType;
-use App\Models\Server;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -46,5 +44,4 @@ class UserTest extends TestCase
             'mixed-case username' => ['username.IS.mixed-case', 'username.is.mixed-case'],
         ];
     }
-
 }

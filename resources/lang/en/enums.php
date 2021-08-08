@@ -15,8 +15,6 @@
  * @link        https://github.com/pacoorozco/ssham
  */
 
-use App\Enums\ActivityStatus;
-use App\Enums\ControlRuleAction;
 use App\Enums\ResourceRecordType;
 use App\Enums\ServerType;
 

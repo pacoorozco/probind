@@ -9,7 +9,6 @@ use Illuminate\Console\Command;
 
 class ProBINDImportZone extends Command
 {
-
     const SUCCESS_CODE = 0;
     const ERROR_PARSING_FILE_CODE = 1;
     const ERROR_EXISTING_ZONE_CODE = 2;

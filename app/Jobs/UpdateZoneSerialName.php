@@ -17,13 +17,12 @@ class UpdateZoneSerialName
     {
         $this->zone = $zone;
         $this->force = $force;
-
     }
 
     public function handle(): Zone
     {
         // If there's not pending changes, we should not increment the serial number.
-        if ($this->zone->has_modifications && !$this->force) {
+        if ($this->zone->has_modifications && ! $this->force) {
             return $this->zone;
         }
 
