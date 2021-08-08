@@ -45,7 +45,7 @@ class Server extends Model
 
     protected string $presenter = ServerPresenter::class;
 
-    protected $table    = 'servers';
+    protected $table = 'servers';
 
     protected $fillable = [
         'hostname',
@@ -66,7 +66,7 @@ class Server extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->setDescriptionForEvent(fn(string $eventName) => trans('server/messages.activity.'.$eventName, [
+            ->setDescriptionForEvent(fn (string $eventName) => trans('server/messages.activity.' . $eventName, [
                 'hostname' => $this->hostname,
                 'type' => $this->type,
             ]));

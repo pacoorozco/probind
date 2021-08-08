@@ -44,5 +44,4 @@ class ResourceRecordTest extends TestCase
             'mixed-case name' => ['name-IS-mixed-CASE', 'name-is-mixed-case'],
         ];
     }
-
 }

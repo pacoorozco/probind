@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ResourceRecordFactory extends Factory
 {
-
     protected $model = ResourceRecord::class;
 
     public function definition(): array
@@ -33,7 +32,7 @@ class ResourceRecordFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'type' => ResourceRecordType::CNAME,
-                'data' => $this->faker->domainWord().'.'.$this->faker->domainName().'.',
+                'data' => $this->faker->domainWord() . '.' . $this->faker->domainName() . '.',
             ];
         });
     }
@@ -46,9 +45,8 @@ class ResourceRecordFactory extends Factory
                 'priority' => $this->faker->randomElement([10, 20, 30]),
                 'data' => sprintf('%d %s',
                     $this->faker->randomElement([10, 20, 30]),
-                    $this->faker->domainWord().'.'.$this->faker->domainName().'.'),
+                    $this->faker->domainWord() . '.' . $this->faker->domainName() . '.'),
             ];
         });
     }
 }
-

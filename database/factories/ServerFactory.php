@@ -6,8 +6,8 @@ use App\Enums\ServerType;
 use App\Models\Server;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ServerFactory extends Factory {
-
+class ServerFactory extends Factory
+{
     protected $model = Server::class;
 
     public function definition(): array
@@ -22,4 +22,3 @@ class ServerFactory extends Factory {
         ];
     }
 }
-

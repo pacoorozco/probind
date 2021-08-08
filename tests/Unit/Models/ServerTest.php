@@ -44,5 +44,4 @@ class ServerTest extends TestCase
             'mixed-case hostname' => ['dns1.DOMAIN.com', 'dns1.domain.com'],
         ];
     }
-
 }

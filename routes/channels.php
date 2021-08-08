@@ -9,4 +9,3 @@
 | used to check if an authenticated user can listen to the channel.
 |
 */
-

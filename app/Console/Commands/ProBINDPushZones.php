@@ -29,10 +29,10 @@ use PacoOrozco\OpenSSH\PrivateKey;
 
 class ProBINDPushZones extends Command
 {
-    const BASEDIR        = 'probind';
-    const CONFIG_BASEDIR = self::BASEDIR.DIRECTORY_SEPARATOR.'configuration';
-    const ZONE_BASEDIR   = self::BASEDIR.DIRECTORY_SEPARATOR.'primary';
-    protected $signature   = 'probind:push';
+    const BASEDIR = 'probind';
+    const CONFIG_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'configuration';
+    const ZONE_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'primary';
+    protected $signature = 'probind:push';
     protected $description = 'Generate and push zone files to DNS servers';
 
     public function handle(): int
@@ -48,7 +48,7 @@ class ProBINDPushZones extends Command
                 ->pluck('domain')
                 ->all()
         );
-        $path = self::CONFIG_BASEDIR.DIRECTORY_SEPARATOR.'deadlist';
+        $path = self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . 'deadlist';
         Storage::put($path, $content, 'private');
 
         // Generate one file for zone with its zone definition
@@ -111,7 +111,7 @@ class ProBINDPushZones extends Command
             ->with('servers', $nameServers)
             ->with('records', $records);
 
-        $path = self::ZONE_BASEDIR.DIRECTORY_SEPARATOR.$zone->domain;
+        $path = self::ZONE_BASEDIR . DIRECTORY_SEPARATOR . $zone->domain;
 
         return Storage::append($path, $contents);
     }
@@ -133,7 +133,7 @@ class ProBINDPushZones extends Command
             }
         }
 
-        return !$pushedWithErrors;
+        return ! $pushedWithErrors;
     }
 
     public function handleServer(Server $server): bool
@@ -143,12 +143,12 @@ class ProBINDPushZones extends Command
         // Create an array with files that need to be pushed to remote server
         $filesToPush = [
             [
-                'local' => self::CONFIG_BASEDIR.DIRECTORY_SEPARATOR.$server->hostname.'.conf',
-                'remote' => setting()->get('ssh_default_remote_path').'/configuration/named.conf',
+                'local' => self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . $server->hostname . '.conf',
+                'remote' => setting()->get('ssh_default_remote_path') . '/configuration/named.conf',
             ],
             [
-                'local' => self::CONFIG_BASEDIR.DIRECTORY_SEPARATOR.'deadlist',
-                'remote' => setting()->get('ssh_default_remote_path').'/configuration/deadlist',
+                'local' => self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . 'deadlist',
+                'remote' => setting()->get('ssh_default_remote_path') . '/configuration/deadlist',
             ],
         ];
 
@@ -158,7 +158,7 @@ class ProBINDPushZones extends Command
                 $filename = basename($file);
                 $filesToPush[] = [
                     'local' => $file,
-                    'remote' => setting()->get('ssh_default_remote_path').'/primary/'.$filename,
+                    'remote' => setting()->get('ssh_default_remote_path') . '/primary/' . $filename,
                 ];
             }
         }
@@ -175,7 +175,7 @@ class ProBINDPushZones extends Command
      */
     public function generateConfigFileForServer(Server $server): bool
     {
-        $path = self::CONFIG_BASEDIR.DIRECTORY_SEPARATOR.$server->hostname.'.conf';
+        $path = self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . $server->hostname . '.conf';
 
         // We allow specific templates for each server
         $templateFile = $this->getTemplateForConfigFile($server);
@@ -205,16 +205,17 @@ class ProBINDPushZones extends Command
      */
     public function getTemplateForConfigFile(Server $server): string
     {
-        $serverTemplateFileName = 'templates.config_'.$server->hostname;
+        $serverTemplateFileName = 'templates.config_' . $server->hostname;
+
         return View::exists($serverTemplateFileName)
             ? $serverTemplateFileName
-            : 'templates.config_'.$server->type;
+            : 'templates.config_' . $server->type;
     }
 
     public function pushFilesToServer(Server $server, array $filesToPush): bool
     {
         try {
-            $this->info('Connecting to '.setting()->get('ssh_default_user').'@'.$server->hostname.' ('.setting()->get('ssh_default_port').')...');
+            $this->info('Connecting to ' . setting()->get('ssh_default_user') . '@' . $server->hostname . ' (' . setting()->get('ssh_default_port') . ')...');
 
             // Get RSA private key in order to connect to servers
             $privateKey = PrivateKey::fromString(setting()->get('ssh_default_key'));
@@ -225,28 +226,29 @@ class ProBINDPushZones extends Command
             );
             $pusher->login(setting()->get('ssh_default_user'), $privateKey);
         } catch (\Throwable $e) {
-            $this->error('Connection to '.$server->hostname.' failed: '.$e->getMessage());
+            $this->error('Connection to ' . $server->hostname . ' failed: ' . $e->getMessage());
 
             return false;
         }
 
-        $this->info('Connected successfully to '.$server->hostname.'.');
+        $this->info('Connected successfully to ' . $server->hostname . '.');
 
         $totalFiles = count($filesToPush);
         $pushedFiles = 0;
 
         try {
             foreach ($filesToPush as $file) {
-                $this->info('Uploading file ['.$file['local'].' -> '.$file['remote'].'].');
+                $this->info('Uploading file [' . $file['local'] . ' -> ' . $file['remote'] . '].');
                 $pusher->pushFileTo($file['local'], $file['remote']);
                 $pushedFiles++;
             }
         } catch (\Throwable $e) {
-            $this->error('Error uploading files to '.$server->hostname.' - '.$e->getMessage());
+            $this->error('Error uploading files to ' . $server->hostname . ' - ' . $e->getMessage());
+
             return 1;
         }
 
-        $this->info('It has been pushed '.$pushedFiles.' of '.$totalFiles.' files to '.$server->hostname.'.');
+        $this->info('It has been pushed ' . $pushedFiles . ' of ' . $totalFiles . ' files to ' . $server->hostname . '.');
         $pusher->disconnect();
         // Return true if all files has been pushed
         return $totalFiles === $pushedFiles;

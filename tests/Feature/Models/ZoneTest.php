@@ -17,7 +17,6 @@
 
 namespace Tests\Feature\Models;
 
-
 use App\Models\Zone;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

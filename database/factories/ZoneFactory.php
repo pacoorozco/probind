@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Zone;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ZoneFactory extends Factory
@@ -13,7 +12,7 @@ class ZoneFactory extends Factory
     public function definition(): array
     {
         return [
-            'domain' => $this->faker->unique()->domainName().'.',
+            'domain' => $this->faker->unique()->domainName() . '.',
             'serial' => Zone::calculateNewSerialNumber(),
             'server' => $this->faker->optional()->ipv4(),
             'has_modifications' => true,
@@ -49,6 +48,7 @@ class ZoneFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             $ipAddressParts = explode('.', $this->faker->unique()->ipv4());
+
             return [
                 'domain' => "{$ipAddressParts[2]}.{$ipAddressParts[1]}.{$ipAddressParts[0]}.in-addr.arpa.",
                 'reverse_zone' => true,
