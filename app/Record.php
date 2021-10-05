@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -27,13 +28,13 @@ use Illuminate\Database\Eloquent\Model;
  *
  * Valid records types are defined on DNSHelper Class.
  *
- * @property int $id        The object unique id.
- * @property string $name      The name of the record.
- * @property int $ttl       The custom TTL value for this record.
- * @property string $type      The type of record, must be one of Record::$validRecordTypes
- * @property int $priority  The preference value for MX records.
- * @property string $data      The data value for this record.
- * @property object $zone      The zone object where this record belongs to.
+ * @property int $id The object unique id.
+ * @property string $name The name of the record.
+ * @property int $ttl The custom TTL value for this record.
+ * @property string $type The type of record, must be one of Record::$validRecordTypes
+ * @property int $priority The preference value for MX records.
+ * @property string $data The data value for this record.
+ * @property object $zone The zone object where this record belongs to.
  *
  * @link https://www.ietf.org/rfc/rfc1035.txt
  */

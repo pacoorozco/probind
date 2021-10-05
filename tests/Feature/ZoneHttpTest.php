@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -57,13 +58,13 @@ class ZoneHttpTest extends BrowserKitTestCase
      * @test
      * @dataProvider primaryZoneCreationWithCustomSettingsDataSet
      *
-     * @param string $domain
-     * @param string $refresh
-     * @param string $retry
-     * @param string $expire
-     * @param string $negative_ttl
-     * @param string $default_ttl
-     * @param bool $expected
+     * @param  string  $domain
+     * @param  string  $refresh
+     * @param  string  $retry
+     * @param  string  $expire
+     * @param  string  $negative_ttl
+     * @param  string  $default_ttl
+     * @param  bool  $expected
      */
     public function new_master_zone_creation_with_custom_settings(
         string $domain,
@@ -120,8 +121,8 @@ class ZoneHttpTest extends BrowserKitTestCase
      * @test
      * @dataProvider primaryZoneCreationWithoutCustomSettingsDataSet
      *
-     * @param string $domain
-     * @param bool $expected
+     * @param  string  $domain
+     * @param  bool  $expected
      */
     public function new_master_zone_creation_without_custom_settings(
         string $domain,
