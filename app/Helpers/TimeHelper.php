@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2017 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -22,8 +23,7 @@ class TimeHelper
     /**
      * Converts a BIND-style timeout(1D, 2H, 15M) to seconds.
      *
-     * @param string $time Time to convert.
-     *
+     * @param  string  $time  Time to convert.
      * @return int
      */
     public static function parseToSeconds(string $time): int
@@ -53,9 +53,8 @@ class TimeHelper
     /**
      * This function calculates and translate a character to seconds.
      *
-     * @param string $modifier The modifier char: Week, Day, Minute, Month, Second
-     * @param int    $value    The amount of modifier.
-     *
+     * @param  string  $modifier  The modifier char: Week, Day, Minute, Month, Second
+     * @param  int  $value  The amount of modifier.
      * @return int
      */
     private static function translateCharToSeconds(string $modifier, int $value = 1): int

@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -56,8 +57,7 @@ class ServerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param ServerCreateRequest $request
-     *
+     * @param  ServerCreateRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ServerCreateRequest $request)
@@ -77,8 +77,7 @@ class ServerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Server $server
-     *
+     * @param  Server  $server
      * @return \Illuminate\View\View
      */
     public function show(Server $server)
@@ -90,8 +89,7 @@ class ServerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Server $server
-     *
+     * @param  Server  $server
      * @return \Illuminate\View\View
      */
     public function edit(Server $server)
@@ -103,9 +101,8 @@ class ServerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param ServerUpdateRequest $request
-     * @param Server              $server
-     *
+     * @param  ServerUpdateRequest  $request
+     * @param  Server  $server
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ServerUpdateRequest $request, Server $server)
@@ -125,8 +122,7 @@ class ServerController extends Controller
     /**
      * Remove level page.
      *
-     * @param Server $server
-     *
+     * @param  Server  $server
      * @return \Illuminate\View\View
      */
     public function delete(Server $server)
@@ -138,8 +134,7 @@ class ServerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Server $server
-     *
+     * @param  Server  $server
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Server $server)
@@ -153,8 +148,7 @@ class ServerController extends Controller
     /**
      * Show a list of all the Servers formatted for DataTables.
      *
-     * @param DataTables $dataTable
-     *
+     * @param  DataTables  $dataTable
      * @return DataTables JsonResponse
      */
     public function data(DataTables $dataTable)
