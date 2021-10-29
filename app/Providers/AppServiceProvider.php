@@ -32,11 +32,11 @@ class AppServiceProvider extends ServiceProvider
         // Touch Zone when save/delete a Record
         Record::saving(function (Record $record) {
             $zone = $record->zone()->first();
-            $zone->setPendingChanges(true);
+            $zone->getNewSerialNumber();
         });
         Record::deleting(function (Record $record) {
             $zone = $record->zone()->first();
-            $zone->setPendingChanges(true);
+            $zone->getNewSerialNumber();
         });
     }
 

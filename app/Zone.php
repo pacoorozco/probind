@@ -186,16 +186,20 @@ class Zone extends Model
      */
     public function getNewSerialNumber(bool $force = false): int
     {
-        // Get current Zone serial number.
-        $currentSerial = $this->serial;
+        if (isset($this->serial)) {
+            // Get current Zone serial number.
+            $currentSerial = $this->serial;
 
-        // We need a new one ONLY if there isn't pending changes.
-        if ($this->hasPendingChanges() && ! $force) {
-            return $currentSerial;
+            // We need a new one ONLY if there isn't pending changes.
+            if ($this->hasPendingChanges() && ! $force) {
+                return $currentSerial;
+            }
+
+            // Raise serial number
+            $this->serial = $this->raiseSerialNumber($currentSerial);
+        } else {
+            $this->serial = Zone::generateSerialNumber();
         }
-
-        // Raise serial number
-        $this->serial = $this->raiseSerialNumber($currentSerial);
 
         // Once Serial Number has changed, we have changes to push to servers.
         $this->setPendingChanges(true);
@@ -275,8 +279,9 @@ class Zone extends Model
         // Create a new serial number YYYYMMDD00.
         $nowSerial = Zone::generateSerialNumber();
 
-        return ($currentSerial >= $nowSerial)
-            ? $currentSerial + 1
+        return Zone::compareSerialNumbers($currentSerial, $nowSerial) >= 0
+            // cap to 32 bits
+            ? $currentSerial + 1 & 0xFFFFFFFF
             : $nowSerial;
     }
 
@@ -288,6 +293,44 @@ class Zone extends Model
     public static function generateSerialNumber(): int
     {
         return intval(Carbon::now()->format('Ymd') . '00');
+    }
+
+    /**
+     * Do serial number arithmetic.
+     *
+     * This function correctly compares two serial numbers across an
+     * overflow. That is, after reaching the maximum unsigned 32-bit value
+     * of 4294967295, the serial increments to 0. Thus, 0 > 4294967295.
+     *
+     * In C, this would be simply:
+     *
+     * int32_t compareSerialNumbers(uint32_t s1, uint32_t s2)
+     * {
+     *     return (int32_t)(s1 - s2);
+     * }
+     *
+     * The aim is to do an unsigned substraction of two 32-bit integers,
+     * and then cast the result as a signed 32-bit integer.
+     *
+     * See RFC 1982
+     *
+     * Instead of ($s1 > $s2), use (compareSerialNumbers($s1, $s2) > 0)
+     *
+     * $param  int  $s1  The first serial number
+     * $param  int  $s2  The second serial number
+     *
+     */
+    public static function compareSerialNumbers(int $s1, int $s2): int
+    {
+        // cap to 32 bits
+        $s1 &= 0xFFFFFFFF;
+        $s2 &= 0xFFFFFFFF;
+        $interval = $s1 - $s2;
+        if ($interval > 0x7FFFFFFF || $interval < -0x80000000) {
+            $interval = -(($interval ^ 0xFFFFFFFF) + 1);
+        }
+
+        return $interval;
     }
 
     /**

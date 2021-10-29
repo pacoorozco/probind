@@ -88,7 +88,7 @@ class ZoneController extends Controller
         if ($request->input('zone_type') === 'secondary-zone') {
             $zone->master_server = $request->input('master_server');
         } else {
-            $zone->serial = Zone::generateSerialNumber();
+            $zone->getNewSerialNumber();
             $zone->setPendingChanges();
 
             // deal with checkboxes
