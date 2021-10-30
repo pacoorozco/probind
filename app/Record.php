@@ -121,6 +121,8 @@ class Record extends Model
                 return $this->formatSRVResourceRecord();
             case 'NAPTR':
                 return $this->formatNAPTRResourceRecord();
+            case 'TXT':
+                return $this->formatTXTResourceRecord();
             default:
                 // continue
         }
@@ -170,6 +172,19 @@ class Record extends Model
     {
         return sprintf(
             "%-40s %s\tIN\tNAPTR\t%s %s",
+            $this->name,
+            $this->ttl ?: '',
+            $this->priority,
+            $this->data
+        );
+    }
+
+    private function formatTXTResourceRecord(): string
+    {
+        return sprintf(
+            preg_match('/^\s*"/', $this->data)
+                ? "%-40s %s\tIN\tTXT\t%s %s"
+                : "%-40s %s\tIN\tTXT\t%s \"%s\"",
             $this->name,
             $this->ttl ?: '',
             $this->priority,
