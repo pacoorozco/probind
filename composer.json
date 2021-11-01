@@ -36,11 +36,11 @@
         "yajra/laravel-datatables-oracle": "^9.18.1"
     },
     "require-dev": {
-        "fzaninotto/faker": "^1.9.2",
+        "fakerphp/faker": "^1.16",
         "laravel/browser-kit-testing": "^5.2",
         "mockery/mockery": "^1.4.3",
-        "phpunit/phpunit": "^8.5.15",
-        "nunomaduro/collision": "^3.2.0"
+        "nunomaduro/collision": "^3.2.0",
+        "phpunit/phpunit": "^8.5.15"
     },
     "autoload": {
         "classmap": [
