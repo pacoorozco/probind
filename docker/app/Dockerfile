@@ -16,7 +16,7 @@ RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions gd gmp pdo_mysql zip
 
 # Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 # Clean up
 RUN apt-get clean \
