@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -56,9 +57,8 @@ class InstallController extends Controller
     /**
      * Manage Database form submission.
      *
-     * @param Request               $request
-     * @param EnvironmentRepository $environmentRepository
-     *
+     * @param  Request  $request
+     * @param  EnvironmentRepository  $environmentRepository
      * @return \Illuminate\Http\RedirectResponse
      */
     public function createDatabase(Request $request, EnvironmentRepository $environmentRepository)

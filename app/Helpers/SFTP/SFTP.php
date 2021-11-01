@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2021 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -50,7 +51,7 @@ class SFTP
      * Authenticate a user using a public key.
      *
      * @param  string  $username
-     * @param  RSA $publicKey
+     * @param  RSA  $publicKey
      *
      * @throws \App\Helpers\SFTP\AuthenticationException
      */
@@ -66,7 +67,6 @@ class SFTP
      *
      * @param  string  $localPath
      * @param  string  $remotePath
-     *
      * @return bool
      */
     public function put(string $localPath, string $remotePath): bool
@@ -84,7 +84,6 @@ class SFTP
      *
      * @param  string  $path
      * @param  int  $mode
-     *
      * @return bool
      */
     private function createFolderAndParents(string $path, int $mode = 0755): bool
@@ -101,7 +100,6 @@ class SFTP
      * Returns the folder path of a file. This is done by removing the last part of the path.
      *
      * @param  string  $filePath
-     *
      * @return string
      */
     private function getFolderFromFile(string $filePath): string

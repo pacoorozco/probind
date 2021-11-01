@@ -8,6 +8,7 @@ use Illuminate\Contracts\Validation\Rule;
  * Class FullyQualifiedDomainName.
  *
  * Validates a Fully Qualified Domain Name (FQDN).
+ *
  * @see https://en.m.wikipedia.org/wiki/Fully_qualified_domain_name
  */
 class FullyQualifiedDomainName implements Rule

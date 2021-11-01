@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -24,12 +25,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
 /**
  * Server model.
  *
- * @property int $id            The object unique id.
- * @property string  $hostname      The hostname of this server. Will be used on NS records.
- * @property string  $ip_address    The IP address of this server. Will be used for glue records.
- * @property string  $type          The type of this server. Could be 'master' or 'slave'.
- * @property bool $push_updates  This flag determines if this server must be pushed with zone files.
- * @property bool $ns_record     This flag determines if this server will be included as NS on zone files.
+ * @property int $id The object unique id.
+ * @property string $hostname The hostname of this server. Will be used on NS records.
+ * @property string $ip_address The IP address of this server. Will be used for glue records.
+ * @property string $type The type of this server. Could be 'master' or 'slave'.
+ * @property bool $push_updates This flag determines if this server must be pushed with zone files.
+ * @property bool $ns_record This flag determines if this server will be included as NS on zone files.
  * @property bool active         This flags determines if this server is active or inactive.
  */
 class Server extends Model
@@ -71,8 +72,7 @@ class Server extends Model
     /**
      * Returns a customized message for Activity Log.
      *
-     * @param string $eventName The event could be: saved, updated or deleted.
-     *
+     * @param  string  $eventName  The event could be: saved, updated or deleted.
      * @return string
      */
     public function getDescriptionForEvent(string $eventName): string
@@ -86,7 +86,7 @@ class Server extends Model
     /**
      * Set the Server's hostname lowercase.
      *
-     * @param  string $value
+     * @param  string  $value
      */
     public function setHostnameAttribute(string $value)
     {
@@ -96,7 +96,7 @@ class Server extends Model
     /**
      * Set the Server's ip_address lowercase.
      *
-     * @param  string $value
+     * @param  string  $value
      */
     public function setIpAddressAttribute(string $value)
     {
@@ -108,7 +108,7 @@ class Server extends Model
      *
      * If $value does not exists on Server::$validServerTypes, we return de first one.
      *
-     * @param  string $value
+     * @param  string  $value
      */
     public function setTypeAttribute(string $value)
     {
@@ -133,8 +133,7 @@ class Server extends Model
     /**
      * Scope a query to include servers thant can be pushed.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWithPushCapability(Builder $query): Builder

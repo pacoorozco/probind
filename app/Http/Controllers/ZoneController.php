@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -53,8 +54,7 @@ class ZoneController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param ZoneCreateRequest $request
-     *
+     * @param  ZoneCreateRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ZoneCreateRequest $request)
@@ -79,8 +79,8 @@ class ZoneController extends Controller
     /**
      * Fill the zone with the correct values from the request.
      *
-     * @param \App\Zone                  $zone
-     * @param \App\Http\Requests\Request $request
+     * @param  \App\Zone  $zone
+     * @param  \App\Http\Requests\Request  $request
      */
     private function fillZoneFromRequest(Zone $zone, Request $request): void
     {
@@ -107,8 +107,7 @@ class ZoneController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Zone $zone
-     *
+     * @param  Zone  $zone
      * @return \Illuminate\View\View
      */
     public function show(Zone $zone)
@@ -120,8 +119,7 @@ class ZoneController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Zone $zone
-     *
+     * @param  Zone  $zone
      * @return \Illuminate\View\View
      */
     public function edit(Zone $zone)
@@ -133,9 +131,8 @@ class ZoneController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param ZoneUpdateRequest $request
-     * @param Zone              $zone
-     *
+     * @param  ZoneUpdateRequest  $request
+     * @param  Zone  $zone
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ZoneUpdateRequest $request, Zone $zone)
@@ -163,8 +160,7 @@ class ZoneController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Zone $zone
-     *
+     * @param  Zone  $zone
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Zone $zone)
@@ -183,9 +179,9 @@ class ZoneController extends Controller
     /**
      * Show a list of all the levels formatted for DataTables.
      *
-     * @param \Yajra\Datatables\Datatables $dataTable
-     *
+     * @param  \Yajra\Datatables\Datatables  $dataTable
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Exception
      */
     public function data(DataTables $dataTable)
