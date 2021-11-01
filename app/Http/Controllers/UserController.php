@@ -42,8 +42,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  UserCreateRequest $request
-     *
+     * @param  UserCreateRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(UserCreateRequest $request)
@@ -68,8 +67,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  User $user
-     *
+     * @param  User  $user
      * @return \Illuminate\View\View
      */
     public function show(User $user)
@@ -81,8 +79,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  User $user
-     *
+     * @param  User  $user
      * @return \Illuminate\View\View
      */
     public function edit(User $user)
@@ -94,9 +91,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UserUpdateRequest $request
-     * @param  User $user
-     *
+     * @param  UserUpdateRequest  $request
+     * @param  User  $user
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UserUpdateRequest $request, User $user)
@@ -125,8 +121,7 @@ class UserController extends Controller
     /**
      * Remove level page.
      *
-     * @param User $user
-     *
+     * @param  User  $user
      * @return \Illuminate\View\View
      */
     public function delete(User $user)
@@ -138,8 +133,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param User $user
-     *
+     * @param  User  $user
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(User $user)
@@ -159,8 +153,7 @@ class UserController extends Controller
     /**
      * Show a list of all the users formatted for DataTables.
      *
-     * @param DataTables $dataTable
-     *
+     * @param  DataTables  $dataTable
      * @return DataTables JsonResponse
      */
     public function data(DataTables $dataTable)

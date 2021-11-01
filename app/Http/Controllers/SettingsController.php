@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -40,8 +41,7 @@ class SettingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  SettingsUpdateRequest $request
-     *
+     * @param  SettingsUpdateRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(SettingsUpdateRequest $request)

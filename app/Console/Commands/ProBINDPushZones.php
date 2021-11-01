@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -119,7 +120,6 @@ class ProBINDPushZones extends Command
      * Creates a file with the zone definitions.
      *
      * @param  Zone  $zone
-     *
      * @return bool
      */
     public function generateZoneFileForZone(Zone $zone)
@@ -182,7 +182,6 @@ class ProBINDPushZones extends Command
      * Handle this command only for one Server.
      *
      * @param  Server  $server
-     *
      * @return bool
      */
     public function handleServer(Server $server)
@@ -219,7 +218,6 @@ class ProBINDPushZones extends Command
      * Create a file with DNS server configuration.
      *
      * @param  Server  $server
-     *
      * @return bool
      */
     public function generateConfigFileForServer(Server $server)
@@ -249,7 +247,6 @@ class ProBINDPushZones extends Command
      * Returns the template for rendering configuration file.
      *
      * @param  Server  $server
-     *
      * @return string
      */
     public function getTemplateForConfigFile(Server $server)
@@ -267,7 +264,6 @@ class ProBINDPushZones extends Command
      *
      * @param  Server  $server
      * @param  array  $filesToPush
-     *
      * @return bool
      */
     public function pushFilesToServer(Server $server, $filesToPush): bool
