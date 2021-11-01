@@ -127,7 +127,8 @@ class Server extends Model
      */
     public function getNSRecord(): string
     {
-        return sprintf("%-32s IN\tNS\t%s.", ' ', $this->hostname);
+        return sprintf("%-32s IN\tNS\t%s", ' ', $this->hostname
+            . (substr($this->hostname, -1) === '.' ? '' : '.'));
     }
 
     /**

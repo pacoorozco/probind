@@ -316,8 +316,13 @@ class Zone extends Model
      */
     public function getSOARecord(): string
     {
-        $content = sprintf("%-16s IN\tSOA\t%s. %s. (\n", '@', $this->getPrimaryNameServer(),
-            $this->getHostmasterEmail());
+        $primaryNS = $this->getPrimaryNameServer();
+        $email = $this->getHostmasterEmail();
+        $content = sprintf("%-16s IN\tSOA\t%s %s (\n", '@',
+            $primaryNS
+            . (substr($primaryNS, -1) === '.' ? '' : '.'),
+            $email
+            . (substr($email, -1) === '.' ? '' : '.'));
         $content .= sprintf("%40s %-10d ; Serial (aaaammddvv)\n", ' ', $this->serial);
         $content .= sprintf("%40s %-10d ; Refresh\n", ' ', $this->present()->refresh);
         $content .= sprintf("%40s %-10d ; Retry\n", ' ', $this->present()->retry);
