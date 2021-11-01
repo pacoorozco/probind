@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -131,8 +132,8 @@ class ZoneUnitTest extends TestCase
      * @test
      * @dataProvider recordCountDataSet
      *
-     * @param int $input
-     * @param int $want
+     * @param  int  $input
+     * @param  int  $want
      */
     public function get_record_count_attribute(int $input, int $want): void
     {
@@ -275,8 +276,8 @@ class ZoneUnitTest extends TestCase
      * @test
      * @dataProvider zoneNameDataSet
      *
-     * @param string $input
-     * @param bool   $want
+     * @param  string  $input
+     * @param  bool  $want
      */
     public function validates_zone_name(string $input, bool $want): void
     {
@@ -317,8 +318,8 @@ class ZoneUnitTest extends TestCase
      * @test
      * @dataProvider zoneReverseZoneDataSet
      *
-     * @param string $input
-     * @param bool   $want
+     * @param  string  $input
+     * @param  bool  $want
      */
     public function validates_reverse_zone_name(string $input, bool $want): void
     {

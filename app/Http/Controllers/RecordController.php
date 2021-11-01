@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -33,8 +34,7 @@ class RecordController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Zone $zone
-     *
+     * @param  Zone  $zone
      * @return \Illuminate\View\View
      */
     public function index(Zone $zone)
@@ -46,8 +46,7 @@ class RecordController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param  Zone $zone
-     *
+     * @param  Zone  $zone
      * @return \Illuminate\View\View
      */
     public function create(Zone $zone)
@@ -59,9 +58,8 @@ class RecordController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  RecordCreateRequest $request
-     * @param  Zone $zone
-     *
+     * @param  RecordCreateRequest  $request
+     * @param  Zone  $zone
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(RecordCreateRequest $request, Zone $zone)
@@ -90,9 +88,8 @@ class RecordController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Zone $zone
-     * @param  Record $record
-     *
+     * @param  Zone  $zone
+     * @param  Record  $record
      * @return \Illuminate\View\View
      */
     public function show(Zone $zone, Record $record)
@@ -105,9 +102,8 @@ class RecordController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Zone $zone
-     * @param  Record $record
-     *
+     * @param  Zone  $zone
+     * @param  Record  $record
      * @return \Illuminate\View\View
      */
     public function edit(Zone $zone, Record $record)
@@ -120,10 +116,9 @@ class RecordController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  RecordUpdateRequest $request
-     * @param  Zone $zone
-     * @param  Record $record
-     *
+     * @param  RecordUpdateRequest  $request
+     * @param  Zone  $zone
+     * @param  Record  $record
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(RecordUpdateRequest $request, Zone $zone, Record $record)
@@ -150,9 +145,8 @@ class RecordController extends Controller
     /**
      * Remove record page.
      *
-     * @param Zone $zone
-     * @param Record $record
-     *
+     * @param  Zone  $zone
+     * @param  Record  $record
      * @return \Illuminate\View\View
      */
     public function delete(Zone $zone, Record $record)
@@ -165,9 +159,8 @@ class RecordController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Zone $zone
-     * @param Record $record
-     *
+     * @param  Zone  $zone
+     * @param  Record  $record
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Zone $zone, Record $record)
@@ -181,9 +174,8 @@ class RecordController extends Controller
     /**
      * Show a list of all the levels formatted for DataTables.
      *
-     * @param DataTables $dataTable
-     * @param Zone $zone
-     *
+     * @param  DataTables  $dataTable
+     * @param  Zone  $zone
      * @return DataTables JsonResponse
      */
     public function data(DataTables $dataTable, Zone $zone)
