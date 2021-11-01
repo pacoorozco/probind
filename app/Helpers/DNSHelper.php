@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2017 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -54,8 +55,7 @@ class DNSHelper
     /**
      * Check if a record type is valid.
      *
-     * @param string $type
-     *
+     * @param  string  $type
      * @return bool
      */
     public static function validateRecordType(string $type): bool

@@ -23,26 +23,24 @@
     },
     "require": {
         "php": "^7.4",
-        "badcow/dns": "^3.5",
-        "doctrine/dbal": "^2.13.2",
-        "dyrynda/laravel-nullable-fields": "^2.0",
+        "badcow/dns": "^3.5.0",
+        "doctrine/dbal": "^2.13.4",
+        "dyrynda/laravel-nullable-fields": "^2.0.0",
         "fideloper/proxy": "^4.4.1",
         "guilhermegonzaga/presenter": "^1.0.5",
         "larapacks/setting": "^2.1.1",
-        "laravel/framework": "^6.20.30",
+        "laravel/framework": "^6.20.36",
         "laravelcollective/html": "^6.2.1",
-        "phpseclib/phpseclib": "^2.0.32",
-        "spatie/laravel-activitylog": "^3.17",
-        "yajra/laravel-datatables-oracle": "^9.18.1"
+        "phpseclib/phpseclib": "^2.0.34",
+        "spatie/laravel-activitylog": "^3.17.0",
+        "yajra/laravel-datatables-oracle": "^9.18.2"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.5.5",
-        "barryvdh/laravel-ide-helper": "^2.8.2",
-        "fzaninotto/faker": "^1.9.2",
-        "laravel/browser-kit-testing": "^5.2",
-        "mockery/mockery": "^1.4.3",
-        "phpunit/phpunit": "^8.5.15",
-        "nunomaduro/collision": "^3.2.0"
+        "fakerphp/faker": "^1.16.0",
+        "laravel/browser-kit-testing": "^5.2.0",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^3.2.0",
+        "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
         "classmap": [
@@ -67,12 +65,10 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover"
+            "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "@php artisan ide-helper:generate",
-            "@php artisan ide-helper:meta"
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate"
         ],
         "test": [
             "vendor/bin/phpunit"

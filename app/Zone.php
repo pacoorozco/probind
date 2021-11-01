@@ -9,6 +9,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -33,20 +34,20 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * The Zone model contains all DNS information of a zone / domain name.
  * Has one-to-many relationship in order to associate Record models for Master Zones.
  *
- * @property int    $id                    The object unique id.
- * @property string $domain                The domain name that represents this zone.
- * @property int    $serial                The serial number of this zone.
- * @property string $master_server         The IP address of the master server.
- *                                          If it's set to null, this zone is a master zone.
- * @property bool   $reverse_zone          This flag determines if this zone is a .IN-ADDR.ARPA. zone.
- * @property bool   $custom_settings       This flag determines if this zone has custom timers.
- * @property int    $refresh               Custom Refresh time value.
- * @property int    $retry                 Custom Retry time value.
- * @property int    $expire                Custom Expire time value.
- * @property int    $negative_ttl          Custom Negative TTL value.
- * @property int    $default_ttl           Custom TTL value.
- * @property bool   $has_modifications     This flag determines if this zone has been modified from last push.
- * @property bool   $records_count         The number of resource records associated to this zone..
+ * @property int $id The object unique id.
+ * @property string $domain The domain name that represents this zone.
+ * @property int $serial The serial number of this zone.
+ * @property string $master_server The IP address of the master server.
+ *                                 If it's set to null, this zone is a master zone.
+ * @property bool $reverse_zone This flag determines if this zone is a .IN-ADDR.ARPA. zone.
+ * @property bool $custom_settings This flag determines if this zone has custom timers.
+ * @property int $refresh Custom Refresh time value.
+ * @property int $retry Custom Retry time value.
+ * @property int $expire Custom Expire time value.
+ * @property int $negative_ttl Custom Negative TTL value.
+ * @property int $default_ttl Custom TTL value.
+ * @property bool $has_modifications This flag determines if this zone has been modified from last push.
+ * @property bool $records_count The number of resource records associated to this zone..
  *
  * @link https://www.ietf.org/rfc/rfc1035.txt
  * @link https://www.ietf.org/rfc/rfc2782.txt
@@ -113,8 +114,7 @@ class Zone extends Model
      *
      * @see https://en.m.wikipedia.org/wiki/Fully_qualified_domain_name
      *
-     * @param string $domain
-     *
+     * @param  string  $domain
      * @return bool
      */
     public static function isValidZoneName(string $domain): bool
@@ -127,8 +127,7 @@ class Zone extends Model
     /**
      * Returns true if the provided string is a valid reverse zone name.
      *
-     * @param string $domain The domain to be validated.
-     *
+     * @param  string  $domain  The domain to be validated.
      * @return bool
      */
     public static function isReverseZoneName(string $domain): bool
@@ -139,8 +138,7 @@ class Zone extends Model
     /**
      * Returns a customized message for Activity Log.
      *
-     * @param string $eventName The event could be saved, updated or deleted.
-     *
+     * @param  string  $eventName  The event could be saved, updated or deleted.
      * @return string
      */
     public function getDescriptionForEvent(string $eventName): string
@@ -153,7 +151,7 @@ class Zone extends Model
     /**
      * Set the domain Zone attribute to lowercase.
      *
-     * @param string $value
+     * @param  string  $value
      */
     public function setDomainAttribute(string $value)
     {
@@ -180,8 +178,7 @@ class Zone extends Model
      * up to 100 edits per day. After that the serial wraps into the next day and it still works.
      * We don't need to raise Serial Number in every change, only when last change was pushed.
      *
-     * @param bool $force This flag force to raise the Serial Number.
-     *
+     * @param  bool  $force  This flag force to raise the Serial Number.
      * @return int
      */
     public function getNewSerialNumber(bool $force = false): int
@@ -208,7 +205,6 @@ class Zone extends Model
      * Returns the number of related resource records.
      *
      * @param $value
-     *
      * @return int
      */
     public function getRecordsCountAttribute($value): int
@@ -266,8 +262,7 @@ class Zone extends Model
     /**
      * Raise a supplied Serial Number maintaining format YYYYMMDDXX.
      *
-     * @param int $currentSerial The serial number to be increased.
-     *
+     * @param  int  $currentSerial  The serial number to be increased.
      * @return int
      */
     public function raiseSerialNumber(int $currentSerial): int
@@ -293,8 +288,7 @@ class Zone extends Model
     /**
      * Marks / unmark pending changes on this zone.
      *
-     * @param bool $value The value to set pending changes on this zone.
-     *
+     * @param  bool  $value  The value to set pending changes on this zone.
      * @return bool
      */
     public function setPendingChanges(bool $value = true): bool
@@ -355,8 +349,7 @@ class Zone extends Model
     /**
      * Scope a query to include zones with modifications.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWithPendingChanges(Builder $query)
@@ -367,8 +360,7 @@ class Zone extends Model
     /**
      * Scope a query to include only Master zones.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeOnlyMasterZones(Builder $query)

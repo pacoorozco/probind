@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -56,9 +57,8 @@ class SearchController extends Controller
     /**
      * Display the records search results.
      *
-     * @param  Request $request
-     * @param  int $perPage
-     *
+     * @param  Request  $request
+     * @param  int  $perPage
      * @return \Illuminate\View\View
      */
     public function search(Request $request, $perPage = 15)
@@ -83,9 +83,8 @@ class SearchController extends Controller
     /**
      * Create a query based on provided search terms and return paginated results.
      *
-     * @param  array   $searchTerms
-     * @param  int $perPage
-     *
+     * @param  array  $searchTerms
+     * @param  int  $perPage
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     private function doSearchPaginatedQuery($searchTerms, $perPage = 15)
