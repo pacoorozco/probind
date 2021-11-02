@@ -81,8 +81,8 @@ class ProBINDImportZone extends Command
      *
      * @param  string  $domain
      * @param  string  $filename
-     *
      * @return \Badcow\DNS\Zone
+     *
      * @throws \Badcow\DNS\Parser\ParseException
      */
     private function parseFile(string $domain, string $filename): \Badcow\DNS\Zone

@@ -9,6 +9,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -35,20 +36,20 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * The Zone model contains all DNS information of a zone / domain name.
  * Has one-to-many relationship in order to associate ResourceRecord models for Master Zones.
  *
- * @property int $id                    The object unique id.
- * @property string $domain                The domain name that represents this zone.
- * @property int $serial                The serial number of this zone.
- * @property string $server     The IP address of the master server. If it's set to null, this zone is a primary zone.
- * @property bool $reverse_zone          This flag determines if this zone is a .IN-ADDR.ARPA. zone.
- * @property bool $custom_settings       This flag determines if this zone has custom timers.
- * @property int $refresh               Custom Refresh time value.
- * @property int $retry                 Custom Retry time value.
- * @property int $expire                Custom Expire time value.
- * @property int $negative_ttl          Custom Negative TTL value.
- * @property int $default_ttl           Custom TTL value.
+ * @property int $id The object unique id.
+ * @property string $domain The domain name that represents this zone.
+ * @property int $serial The serial number of this zone.
+ * @property string $server The IP address of the master server. If it's set to null, this zone is a primary zone.
+ * @property bool $reverse_zone This flag determines if this zone is a .IN-ADDR.ARPA. zone.
+ * @property bool $custom_settings This flag determines if this zone has custom timers.
+ * @property int $refresh Custom Refresh time value.
+ * @property int $retry Custom Retry time value.
+ * @property int $expire Custom Expire time value.
+ * @property int $negative_ttl Custom Negative TTL value.
+ * @property int $default_ttl Custom TTL value.
  * @property string $primaryNameServer
  * @property string $hostmasterEmail
- * @property bool $has_modifications     This flag determines if this zone has been pending changes to sync.
+ * @property bool $has_modifications This flag determines if this zone has been pending changes to sync.
  *
  * @link https://www.ietf.org/rfc/rfc1035.txt
  * @link https://www.ietf.org/rfc/rfc2782.txt
@@ -184,8 +185,7 @@ class Zone extends Model
      * This generates a new serial, based on the often used format YYYYMMDDXX where XX is an ascending serial, allowing
      * up to 100 edits per day. After that the serial wraps into the next day and it still works.
      *
-     * @param int $currentSerialNumber
-     *
+     * @param  int  $currentSerialNumber
      * @return int
      */
     public static function calculateNewSerialNumber(int $currentSerialNumber = 0): int
