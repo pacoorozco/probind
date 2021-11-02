@@ -4,7 +4,7 @@
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/pacoorozco/probind.svg?style=flat-square)](https://scrutinizer-ci.com/g/pacoorozco/probind)
 [![Code Coverage](https://scrutinizer-ci.com/g/pacoorozco/probind/badges/coverage.png)](https://scrutinizer-ci.com/g/pacoorozco/probind)
 [![License](https://img.shields.io/github/license/pacoorozco/probind.svg)](LICENSE)
-[![Laravel Version](https://img.shields.io/badge/Laravel-6.x-purple.svg)](https://laravel.com/docs)
+[![Laravel Version](https://img.shields.io/badge/Laravel-8.x-purple.svg)](https://laravel.com/docs)
 [![GitHub release](https://img.shields.io/github/release/pacoorozco/probind.svg?style=flat-square)](https://github.com/pacoorozco/probind/releases)
 
 [![probind: short presentation](https://img.youtube.com/vi/_iaZ3UG3zug/0.jpg)](http://www.youtube.com/watch?v=_iaZ3UG3zug)
@@ -33,16 +33,29 @@ ProBIND is not the ultimate solution to DNS management. It fits the needs of tho
 
 See our [CHANGELOG](CHANGELOG.md) file in order to know what changes are implemented in every version.
 
+## Current release
+
+We are working on the 1.x version release which has the following features:
+
+- Based on Laravel 8.x
+- Updated all dependencies to support PHP 8
+- Improved performance (and maintenance)
+- Fixed a lot of bugs
+
+The 1.x version is almost ready, but we want to test it thoroughly.
+
+We encourage you to use the 1.x version and help us to test it.
+
 ## Requirements
 
-* PHP 7.4+ with `gmp` extension.
-* A [supported relational database](http://laravel.com/docs) and corresponding PHP extension.
+* PHP 8+ with `gmp` extension.
+* A [supported relational database](https://laravel.com/docs) and corresponding PHP extension.
 * [Composer](https://getcomposer.org/download/).
 
 ## How to test ProBIND
 This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND needs. An application server, a web server, a database server.
 
-Prior this installation, you **need to have installed** this software:
+Prior to this installation, you **need to have installed** this software:
 
 * [Docker](https://www.docker.com/)
 
@@ -90,7 +103,7 @@ Prior this installation, you **need to have installed** this software:
 
 If you have issues with **ProBIND**, you can report them with the [GitHub issues module](https://github.com/pacoorozco/probind/issues).
 
-## Contibuting
+## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
