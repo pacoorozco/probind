@@ -5,6 +5,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 ## Unreleased
 
+## 1.0.0-alpha
+We're bringing you a **major release**. The focus is on one much-desired feature: the [Laravel 8.x](https://laravel.com/docs/8.x) and [PHP 8](https://www.php.net/ChangeLog-8.php) adoption. This release comes with several breaking changes.
+
+### Added
+- Support for Laravel 8.x and PHP 8.x ([#121][i121])
+### Changed
+- Moved `doctrine/dbal` to dev dependency
+- Configuration file `.env.example`
+- Use of the Presenter pattern more and more
+- Rename `Record` model to `ResourceRecord`
+- Some tables have changed: 
+  - `server` instead of `master_server`
+  - `primary` and `secondary` instead of `master` and `slave` [Github is replacing the word master to avoid slavery references](https://dev.to/rockykev/github-is-replacing-the-word-master-to-avoid-slavery-references-deal-with-it-86b)
+### Removed
+- Dev packages `barryvdh/laravel-debugbar` and `barryvdh/laravel-ide-helper`
+- Browser tests. This has reduced temporarily the test coverage.
+
+[i121]: https://github.com/pacoorozco/probind/issues/121
+
 ## 0.13.0 - 2021-07-23
 ### Changed
 - Default records for reverse DNS to PTR. ([#125][i125])
