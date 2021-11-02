@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -37,8 +38,8 @@ class EnvironmentRepository
     /**
      * Create a new EnvironmentRepository instance.
      *
-     * @param string $envPath
-     * @param string $envExamplePath
+     * @param  string  $envPath
+     * @param  string  $envExamplePath
      */
     public function __construct($envPath = '.env', $envExamplePath = '.env.example')
     {
@@ -83,8 +84,7 @@ class EnvironmentRepository
      *  'host'      => 'localhost',
      * ];
      *
-     * @param array $connectionSettings
-     *
+     * @param  array  $connectionSettings
      * @return bool
      */
     public function setDatabaseSetting(array $connectionSettings): bool
@@ -104,8 +104,8 @@ class EnvironmentRepository
     /**
      * Set .env element.
      *
-     * @param string $key
-     * @param string $value
+     * @param  string  $key
+     * @param  string  $value
      */
     private function set(string $key, string $value)
     {

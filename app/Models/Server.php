@@ -12,6 +12,7 @@
  * @author      Paco Orozco <paco@pacoorozco.info>
  * @copyright   2016 Paco Orozco
  * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ *
  * @link        https://github.com/pacoorozco/probind
  */
 
@@ -29,12 +30,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
 /**
  * Server model.
  *
- * @property int $id            The object unique id.
- * @property string $hostname      The hostname of this server. Will be used on NS records.
- * @property string $ip_address    The IP address of this server. Will be used for glue records.
- * @property ServerType $type          The type of this server. Could be 'master' or 'slave'.
- * @property bool $push_updates  This flag determines if this server must be pushed with zone files.
- * @property bool $ns_record     This flag determines if this server will be included as NS on zone files.
+ * @property int $id The object unique id.
+ * @property string $hostname The hostname of this server. Will be used on NS records.
+ * @property string $ip_address The IP address of this server. Will be used for glue records.
+ * @property ServerType $type The type of this server. Could be 'master' or 'slave'.
+ * @property bool $push_updates This flag determines if this server must be pushed with zone files.
+ * @property bool $ns_record This flag determines if this server will be included as NS on zone files.
  * @property bool active         This flags determines if this server is active or inactive.
  */
 class Server extends Model
