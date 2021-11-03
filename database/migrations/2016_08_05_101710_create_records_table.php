@@ -33,7 +33,7 @@ class CreateRecordsTable extends Migration
             $table->integer('ttl')->unsigned()->nullable();
             $table->string('type');
             $table->integer('priority')->nullable();
-            $table->string('data');
+            $table->text('data');
             $table->timestamps();
         });
     }
