@@ -10,7 +10,7 @@
             <tr>
                 <th>{{ __('zone/table.domain') }}</th>
                 <th>{{ __('zone/table.type') }}</th>
-                <th>{{ __('zone/table.master_server') }}</th>
+                <th>{{ __('zone/table.server') }}</th>
                 <th>{{ __('zone/table.records_count') }}</th>
                 <th>{{ __('zone/table.has_modifications') }}</th>
                 <th>{{ __('general.actions') }}</th>
@@ -20,7 +20,7 @@
             <tr>
                 <th>{{ __('zone/table.domain') }}</th>
                 <th>{{ __('zone/table.type') }}</th>
-                <th>{{ __('zone/table.master_server') }}</th>
+                <th>{{ __('zone/table.server') }}</th>
                 <th>{{ __('zone/table.records_count') }}</th>
                 <th>{{ __('zone/table.has_modifications') }}</th>
                 <th>{{ __('general.actions') }}</th>
