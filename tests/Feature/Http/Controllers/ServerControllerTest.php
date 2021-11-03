@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Enums\ServerType;
 use App\Models\Server;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
