@@ -3,7 +3,6 @@
 namespace App\Presenters;
 
 use App\Models\Server;
-use Illuminate\Support\HtmlString;
 use Laracodes\Presenter\Presenter;
 
 class ServerPresenter extends Presenter
