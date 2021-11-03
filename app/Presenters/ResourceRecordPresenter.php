@@ -10,6 +10,11 @@ class ResourceRecordPresenter extends Presenter
     /** @var ResourceRecord */
     protected $model;
 
+    public function preview(): string
+    {
+        return $this->asString();
+    }
+
     public function asString(): string
     {
         switch ($this->model->type) {
