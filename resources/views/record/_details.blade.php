@@ -46,6 +46,17 @@
         </div>
         <!-- ./ ttl -->
 
+        <!-- formatted representation -->
+        <div class="form-group">
+            {!! Form::label('preview', __('record/model.preview'), array('class' => 'control-label')) !!}
+            <div class="controls">
+                <pre>
+                    {{ $record->present()->preview() }}
+                </pre>
+            </div>
+        </div>
+        <!-- ./ formatted representation -->
+
     </div>
     <div class="box-footer">
         <a href="{{ route('zones.records.index', $zone) }}" class="btn btn-primary" role="button">
