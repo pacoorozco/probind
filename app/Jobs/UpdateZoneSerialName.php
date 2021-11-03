@@ -13,7 +13,7 @@ class UpdateZoneSerialName
 
     private bool $force;
 
-    public function __construct(Zone $zone, bool $force)
+    public function __construct(Zone $zone, bool $force = false)
     {
         $this->zone = $zone;
         $this->force = $force;

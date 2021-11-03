@@ -96,7 +96,7 @@ class ProBINDPushZones extends Command
             ->orderBy('type')
             ->get();
 
-        UpdateZoneSerialName::dispatchSync();
+        UpdateZoneSerialName::dispatchSync($zone);
 
         // Get all records
         $records = $zone->records()
