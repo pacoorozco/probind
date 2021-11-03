@@ -32,7 +32,7 @@
         <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
             {!! Form::label('type', __('server/model.type'), array('class' => 'control-label required')) !!}
             <div class="controls">
-                {!! Form::select('type', array('master' => __('server/model.types.master'), 'slave' => __('server/model.types.slave')), null, array('class' => 'form-control', 'required' => 'required')) !!}
+                {!! Form::select('type', \App\Enums\ServerType::asSelectArray(), null, array('class' => 'form-control', 'required' => 'required')) !!}
                 {{ $errors->first('type', '<span class="help-inline">:message</span>') }}
             </div>
         </div>

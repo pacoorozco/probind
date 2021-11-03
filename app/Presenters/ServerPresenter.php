@@ -14,4 +14,9 @@ class ServerPresenter extends Presenter
     {
         return sprintf("%-32s IN\tNS\t%s.", ' ', $this->model->hostname);
     }
+
+    public function type(): string
+    {
+        return $this->model->type->description;
+    }
 }

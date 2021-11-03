@@ -48,7 +48,14 @@ class ServerController extends Controller
 
     public function store(ServerCreateRequest $request): RedirectResponse
     {
-        Server::create($request->validated());
+        Server::create([
+            'hostname' => $request->hostname(),
+            'ip_address' => $request->ipAddress(),
+            'type' => $request->type(),
+            'ns_record' => $request->requiresNSRecord(),
+            'push_updates' => $request->requiresUpdatePushes(),
+            'active' => $request->enabled(),
+        ]);
 
         return redirect()->route('servers.index')
             ->with('success', __('server/messages.create.success'));
@@ -68,7 +75,14 @@ class ServerController extends Controller
 
     public function update(ServerUpdateRequest $request, Server $server): RedirectResponse
     {
-        $server->update($request->validated());
+        $server->update([
+            'hostname' => $request->hostname(),
+            'ip_address' => $request->ipAddress(),
+            'type' => $request->type(),
+            'ns_record' => $request->requiresNSRecord(),
+            'push_updates' => $request->requiresUpdatePushes(),
+            'active' => $request->enabled(),
+        ]);
 
         return redirect()->route('servers.index')
             ->with('success', __('server/messages.update.success'));
@@ -109,6 +123,9 @@ class ServerController extends Controller
             })
             ->editColumn('ns_record', function (Server $server) {
                 return trans_choice('general.boolean', intval($server->ns_record));
+            })
+            ->editColumn('type', function (Server $server) {
+                return $server->present()->type();
             })
             ->addColumn('actions', function (Server $server) {
                 return view('partials.actions_dd', [

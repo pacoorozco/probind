@@ -26,7 +26,7 @@
         <div class="form-group">
             {!! Form::label('type', __('server/model.type'), array('class' => 'control-label')) !!}
             <div class="controls">
-                {{ __('server/model.types.' . $server->type) }}
+                {{ $server->present()->type() }}
             </div>
         </div>
         <!-- ./ type -->
