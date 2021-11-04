@@ -13,16 +13,16 @@ class ZoneFactory extends Factory
     {
         return [
             'domain' => $this->faker->unique()->domainName() . '.',
-            'serial' => Zone::calculateNewSerialNumber(),
+            'serial' => '2020010100',
             'server' => $this->faker->optional()->ipv4(),
-            'has_modifications' => true,
+            'has_modifications' => $this->faker->boolean,
             'reverse_zone' => false,
-            'custom_settings' => false,
-            'refresh' => null,
-            'retry' => null,
-            'expire' => null,
-            'negative_ttl' => null,
-            'default_ttl' => null,
+            'custom_settings' => $this->faker->boolean,
+            'refresh' => $this->faker->numberBetween(3600, 86400),
+            'retry' => $this->faker->numberBetween(3600, 86400),
+            'expire' => $this->faker->numberBetween(3600, 86400),
+            'negative_ttl' => $this->faker->numberBetween(3600, 86400),
+            'default_ttl' => $this->faker->numberBetween(3600, 86400),
         ];
     }
 
