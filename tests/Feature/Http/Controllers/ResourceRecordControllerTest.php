@@ -82,6 +82,44 @@ class ResourceRecordControllerTest extends TestCase
     }
 
     /** @test */
+    public function show_method_should_return_proper_data(): void
+    {
+        /** @var Zone $zone */
+        $zone = Zone::factory()->primary()->create();
+
+        /** @var \App\Models\ResourceRecord $testResourceRecord */
+        $testResourceRecord = ResourceRecord::factory()->make();
+        $zone->records()->save($testResourceRecord);
+
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('zones.records.show', ['zone' => $zone, 'record' => $testResourceRecord]));
+
+        $response->assertSuccessful();
+        $response->assertViewIs('record.show');
+        $response->assertViewHas('record', $testResourceRecord);
+    }
+
+    /** @test */
+    public function edit_method_should_return_proper_data(): void
+    {
+        /** @var Zone $zone */
+        $zone = Zone::factory()->primary()->create();
+
+        /** @var \App\Models\ResourceRecord $testResourceRecord */
+        $testResourceRecord = ResourceRecord::factory()->make();
+        $zone->records()->save($testResourceRecord);
+
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('zones.records.edit', ['zone' => $zone, 'record' => $testResourceRecord]));
+
+        $response->assertSuccessful();
+        $response->assertViewIs('record.edit');
+        $response->assertViewHas('record', $testResourceRecord);
+    }
+
+    /** @test */
     public function update_method_should_modify_the_resource_record(): void
     {
         /** @var Zone $zone */
@@ -109,6 +147,25 @@ class ResourceRecordControllerTest extends TestCase
             'data' => $want->data,
             'ttl' => $want->ttl,
         ]);
+    }
+
+    /** @test */
+    public function delete_method_should_return_proper_data(): void
+    {
+        /** @var Zone $zone */
+        $zone = Zone::factory()->primary()->create();
+
+        /** @var \App\Models\ResourceRecord $testResourceRecord */
+        $testResourceRecord = ResourceRecord::factory()->make();
+        $zone->records()->save($testResourceRecord);
+
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('zones.records.delete', ['zone' => $zone, 'record' => $testResourceRecord]));
+
+        $response->assertSuccessful();
+        $response->assertViewIs('record.delete');
+        $response->assertViewHas('record', $testResourceRecord);
     }
 
     /** @test */

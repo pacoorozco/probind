@@ -18,26 +18,96 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
+use App\Enums\ZoneType;
+use BenSampo\Enum\Rules\EnumValue;
 
 abstract class ZoneRequest extends Request
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    protected function rules()
+    public function zoneType(): ZoneType
+    {
+        return ZoneType::fromValue($this->input('zone_type'));
+    }
+
+    public function serverAddress(): string
+    {
+        return $this->input('server', '');
+    }
+
+    public function customizedSettings(): bool
+    {
+        return (bool) $this->input('custom_settings');
+    }
+
+    public function refresh(): ?int
+    {
+        return (int) $this->input('refresh');
+    }
+
+    public function retry(): ?int
+    {
+        return (int) $this->input('retry');
+    }
+
+    public function expire(): ?int
+    {
+        return (int) $this->input('expire');
+    }
+
+    public function negativeTTL(): ?int
+    {
+        return (int) $this->input('negative_ttl');
+    }
+
+    public function defaultTTL(): ?int
+    {
+        return (int) $this->input('default_ttl');
+    }
+
+    protected function rules(): array
     {
         return [
-            'zone_type' => ['required', Rule::in(['primary-zone', 'secondary-zone'])],
-            'server' => ['sometimes', 'required', 'ip'],
-            'custom_settings' => ['sometimes', 'boolean'],
-            'refresh' => ['required_if:custom_settings,1', 'integer', 'min:0', 'max:2147483647'],
-            'retry' => ['required_if:custom_settings,1', 'integer', 'min:0', 'max:2147483647'],
-            'expire' => ['required_if:custom_settings,1', 'integer', 'min:0', 'max:2147483647'],
-            'negative_ttl' => ['required_if:custom_settings,1', 'integer', 'min:0', 'max:2147483647'],
-            'default_ttl' => ['required_if:custom_settings,1', 'integer', 'min:0', 'max:2147483647'],
+            'zone_type' => [
+                'required',
+                new EnumValue(ZoneType::class),
+            ],
+            'server' => [
+                'required_if:zone_type,' . ZoneType::Secondary,
+                'ip',
+            ],
+            'custom_settings' => [
+                'sometimes',
+                'boolean',
+            ],
+            'refresh' => [
+                'required_if:custom_settings,1',
+                'integer',
+                'min:0',
+                'max:2147483647',
+            ],
+            'retry' => [
+                'required_if:custom_settings,1',
+                'integer',
+                'min:0',
+                'max:2147483647',
+            ],
+            'expire' => [
+                'required_if:custom_settings,1',
+                'integer',
+                'min:0',
+                'max:2147483647',
+            ],
+            'negative_ttl' => [
+                'required_if:custom_settings,1',
+                'integer',
+                'min:0',
+                'max:2147483647',
+            ],
+            'default_ttl' => [
+                'required_if:custom_settings,1',
+                'integer',
+                'min:0',
+                'max:2147483647',
+            ],
         ];
     }
 }

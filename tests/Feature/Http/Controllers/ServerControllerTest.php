@@ -72,6 +72,21 @@ class ServerControllerTest extends TestCase
     }
 
     /** @test */
+    public function show_method_should_return_proper_data(): void
+    {
+        $testServer = Server::factory()
+            ->create();
+
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('servers.show', $testServer));
+
+        $response->assertSuccessful();
+        $response->assertViewIs('server.show');
+        $response->assertViewHas('server', $testServer);
+    }
+
+    /** @test */
     public function edit_method_should_return_proper_view(): void
     {
         $testServer = Server::factory()
@@ -121,6 +136,21 @@ class ServerControllerTest extends TestCase
             'push_updates' => $want->push_updates,
             'active' => $want->active,
         ]);
+    }
+
+    /** @test */
+    public function delete_method_should_return_proper_data(): void
+    {
+        $testServer = Server::factory()
+            ->create();
+
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('servers.delete', $testServer));
+
+        $response->assertSuccessful();
+        $response->assertViewIs('server.delete');
+        $response->assertViewHas('server', $testServer);
     }
 
     /** @test */
