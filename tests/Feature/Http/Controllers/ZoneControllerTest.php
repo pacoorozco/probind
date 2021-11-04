@@ -93,7 +93,6 @@ class ZoneControllerTest extends TestCase
                 'custom_settings' => false,
             ]);
 
-
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('zones.index'));
         $this->assertDatabaseHas('zones', [
@@ -115,7 +114,6 @@ class ZoneControllerTest extends TestCase
                 'domain' => $testZone->domain,
                 'server' => $testZone->server,
             ]);
-
 
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('zones.index'));
