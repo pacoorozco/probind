@@ -70,6 +70,21 @@ class UserControllerTest extends TestCase
     }
 
     /** @test */
+    public function show_method_should_return_proper_data(): void
+    {
+        $testUser = User::factory()
+            ->create();
+
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('users.show', $testUser));
+
+        $response->assertSuccessful();
+        $response->assertViewIs('user.show');
+        $response->assertViewHas('user', $testUser);
+    }
+
+    /** @test */
     public function edit_method_should_return_proper_view(): void
     {
         $testUser = User::factory()
@@ -119,6 +134,21 @@ class UserControllerTest extends TestCase
     }
 
     /** @test */
+    public function delete_method_should_return_proper_data(): void
+    {
+        $testUser = User::factory()
+            ->create();
+
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('users.delete', $testUser));
+
+        $response->assertSuccessful();
+        $response->assertViewIs('user.delete');
+        $response->assertViewHas('user', $testUser);
+    }
+
+    /** @test */
     public function destroy_method_should_return_success_and_delete_user(): void
     {
         $testUser = User::factory()
@@ -128,9 +158,26 @@ class UserControllerTest extends TestCase
             ->actingAs($this->user)
             ->delete(route('users.destroy', $testUser));
 
-        $response->assertRedirect(route('users.index'));
         $response->assertSessionHas('success');
+        $response->assertRedirect(route('users.index'));
         $this->assertDeleted($testUser);
+    }
+
+    /** @test */
+    public function destroy_method_should_return_error_when_deleting_myself(): void
+    {
+        $testUser = $this->user;
+
+        $response = $this
+            ->actingAs($this->user)
+            ->delete(route('users.destroy', $testUser));
+
+        $response->assertSessionHas('error');
+        $response->assertRedirect(route('users.index'));
+        $this->assertDatabaseHas('users', [
+            'username' => $testUser->username,
+            'email' => $testUser->email,
+        ]);
     }
 
     /** @test */
