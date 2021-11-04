@@ -122,7 +122,7 @@ class ZoneController extends Controller
 
         return $datatable->eloquent($zones)
             ->addColumn('type', function (Zone $zone) {
-                return __('zone/model.types.'.$zone->getTypeOfZone());
+                return __('zone/model.types.' . $zone->getTypeOfZone());
             })
             ->editColumn('has_modifications', function (Zone $zone) {
                 return $zone->present()->statusIcon;

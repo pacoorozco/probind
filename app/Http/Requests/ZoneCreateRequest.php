@@ -18,9 +18,7 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\ZoneType;
 use App\Rules\FullyQualifiedDomainName;
-use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Validation\Rule;
 
 class ZoneCreateRequest extends ZoneRequest
@@ -46,5 +44,4 @@ class ZoneCreateRequest extends ZoneRequest
     {
         return $this->input('domain');
     }
-
 }
