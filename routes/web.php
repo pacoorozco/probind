@@ -97,7 +97,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('servers.data');
 
     // Our special delete confirmation route - uses the show/details view.
-    Route::get('servers/{Server}/delete',
+    Route::get('servers/{server}/delete',
         [ServerController::class, 'delete'])
         ->name('servers.delete');
 
