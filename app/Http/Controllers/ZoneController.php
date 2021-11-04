@@ -17,8 +17,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Request;
+use App\Enums\ZoneType;
 use App\Http\Requests\ZoneCreateRequest;
+use App\Http\Requests\ZoneRequest;
 use App\Http\Requests\ZoneUpdateRequest;
 use App\Models\Zone;
 use Illuminate\Http\JsonResponse;
@@ -46,33 +47,35 @@ class ZoneController extends Controller
     public function store(ZoneCreateRequest $request): RedirectResponse
     {
         $zone = new Zone();
-        $zone->domain = $request->input('domain');
-        $this->fillZoneFromRequest($zone, $request);
+        $zone->domain = $request->domain();
+        $zone->reverse_zone = Zone::isReverseZoneName($zone->domain);
+
+        if ($request->zoneType() == ZoneType::Primary) {
+            $zone->server = null;
+            $this->fillCustomSettingsFromRequest($zone, $request);
+            $zone->serial = $zone->calculateNewSerialNumber();
+        } else {
+            $zone->server = $request->serverAddress();
+        }
+
+        $zone->has_modifications = true;
         $zone->save();
 
         return redirect()->route('zones.index')
             ->with('success', __('zone/messages.create.success'));
     }
 
-    private function fillZoneFromRequest(Zone $zone, Request $request): void
+    private function fillCustomSettingsFromRequest(Zone $zone, ZoneRequest $request): void
     {
-        $zone->reverse_zone = Zone::isReverseZoneName($zone->domain);
-        if ($request->input('zone_type') === 'secondary-zone') {
-            $zone->server = $request->input('server');
-        } else {
-            $zone->serial = Zone::generateSerialNumber();
-            $zone->setPendingChanges();
-
-            // deal with checkboxes
-            $zone->custom_settings = $request->has('custom_settings');
-
-            $zone->fill($request->only([
-                'refresh',
-                'retry',
-                'expire',
-                'negative_ttl',
-                'default_ttl',
-            ]));
+        $zone->custom_settings = $request->customizedSettings();
+        if ($request->customizedSettings() === true) {
+            $zone->fill([
+                'refresh' => $request->refresh(),
+                'retry' => $request->retry(),
+                'expire' => $request->expire(),
+                'negative_ttl' => $request->negativeTTL(),
+                'default_ttl' => $request->defaultTTL(),
+            ]);
         }
     }
 
@@ -90,14 +93,14 @@ class ZoneController extends Controller
 
     public function update(ZoneUpdateRequest $request, Zone $zone): RedirectResponse
     {
-        // if it's a Master zone, assign new Serial Number and flag pending changes.
         if ($zone->isPrimary()) {
-            $zone->getNewSerialNumber();
-            $zone->setPendingChanges();
+            $this->fillCustomSettingsFromRequest($zone, $request);
+            $zone->serial = $zone->calculateNewSerialNumber();
+        } else {
+            $zone->server = $request->serverAddress();
         }
 
-        $this->fillZoneFromRequest($zone, $request);
-
+        $zone->has_modifications = true;
         $zone->saveOrFail();
 
         return redirect()->route('zones.index')
@@ -119,7 +122,7 @@ class ZoneController extends Controller
 
         return $datatable->eloquent($zones)
             ->addColumn('type', function (Zone $zone) {
-                return __('zone/model.types.' . $zone->getTypeOfZone());
+                return __('zone/model.types.'.$zone->getTypeOfZone());
             })
             ->editColumn('has_modifications', function (Zone $zone) {
                 return $zone->present()->statusIcon;

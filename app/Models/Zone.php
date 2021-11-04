@@ -71,6 +71,7 @@ class Zone extends Model
         'reverse_zone',
         'custom_settings',
         'refresh',
+        'retry',
         'expire',
         'negative_ttl',
         'default_ttl',
@@ -80,6 +81,11 @@ class Zone extends Model
         'has_modifications' => 'boolean',
         'custom_settings' => 'boolean',
         'reverse_zone' => 'boolean',
+        'refresh' => 'integer',
+        'retry' => 'integer',
+        'expire' => 'integer',
+        'negative_ttl' => 'integer',
+        'default_ttl' => 'integer',
     ];
 
     public static function isValidZoneName(string $domain): bool
@@ -92,6 +98,11 @@ class Zone extends Model
     public static function isReverseZoneName(string $domain): bool
     {
         return Validator::reverseIpv4($domain) || Validator::reverseIpv6($domain);
+    }
+
+    public function isMasterZone(): bool
+    {
+        return is_null($this->server);
     }
 
     public function getActivitylogOptions(): LogOptions
@@ -110,41 +121,6 @@ class Zone extends Model
     public function records(): HasMany
     {
         return $this->hasMany(ResourceRecord::class);
-    }
-
-    public function getRefreshAttribute($value)
-    {
-        return (true === $this->custom_settings)
-            ? $value
-            : $this->refresh = setting()->get('zone_default_refresh');
-    }
-
-    public function getRetryAttribute($value)
-    {
-        return (true === $this->custom_settings)
-            ? $value
-            : $this->retry = setting()->get('zone_default_retry');
-    }
-
-    public function getExpireAttribute($value)
-    {
-        return (true === $this->custom_settings)
-            ? $value
-            : $this->expire = setting()->get('zone_default_expire');
-    }
-
-    public function getNegativeTtlAttribute($value)
-    {
-        return (true === $this->custom_settings)
-            ? $value
-            : $this->negative_ttl = setting()->get('zone_default_negative_ttl');
-    }
-
-    public function getDefaultTtlAttribute($value)
-    {
-        return (true === $this->custom_settings)
-            ? $value
-            : $this->default_ttl = setting()->get('zone_default_default_ttl');
     }
 
     public function getPrimaryNameServerAttribute(): string
@@ -185,15 +161,14 @@ class Zone extends Model
      * This generates a new serial, based on the often used format YYYYMMDDXX where XX is an ascending serial, allowing
      * up to 100 edits per day. After that the serial wraps into the next day and it still works.
      *
-     * @param  int  $currentSerialNumber
      * @return int
      */
-    public static function calculateNewSerialNumber(int $currentSerialNumber = 0): int
+    public function calculateNewSerialNumber(): int
     {
         $newSerialNumber = intval(Carbon::now()->format('Ymd') . '00');
 
-        return ($currentSerialNumber >= $newSerialNumber)
-            ? $currentSerialNumber + 1
+        return ($this->serial >= $newSerialNumber)
+            ? $this->serial + 1
             : $newSerialNumber;
     }
 

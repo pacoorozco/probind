@@ -12,7 +12,7 @@ class ZoneFactory extends Factory
     public function definition(): array
     {
         return [
-            'domain' => $this->faker->unique()->domainName() . '.',
+            'domain' => $this->faker->unique()->domainName().'.',
             'serial' => '2020010100',
             'server' => $this->faker->optional()->ipv4(),
             'has_modifications' => $this->faker->boolean,
@@ -39,7 +39,7 @@ class ZoneFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'server' =>  $this->faker->ipv4(),
+                'server' => $this->faker->ipv4(),
             ];
         });
     }

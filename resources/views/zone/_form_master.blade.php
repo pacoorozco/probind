@@ -12,7 +12,7 @@
     <div class="box-body">
 
         <!-- zone_type -->
-        {!! Form::hidden('zone_type', 'primary-zone') !!}
+        {!! Form::hidden('zone_type', \App\Enums\ZoneType::Primary) !!}
         <!-- ./zone_type -->
 
         <!-- domain -->
