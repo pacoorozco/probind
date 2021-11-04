@@ -5,7 +5,6 @@ namespace Tests\Feature\Http\Controllers;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Larapacks\Setting\Setting;
 use Tests\TestCase;
 
 class SettingsControllerTest extends TestCase
@@ -76,8 +75,7 @@ class SettingsControllerTest extends TestCase
         $response->assertRedirect(route('settings.index'));
 
         $currentSettings = setting()->all();
-        foreach ($want as $key => $expectedValue)
-        {
+        foreach ($want as $key => $expectedValue) {
             $this->assertEquals($expectedValue, $currentSettings[$key]);
         }
     }

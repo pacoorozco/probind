@@ -20,7 +20,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SettingsUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
-use Larapacks\Setting\Setting;
 
 class SettingsController extends Controller
 {
