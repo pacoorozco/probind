@@ -49,6 +49,9 @@ class ProBINDPushZones extends Command
                 ->pluck('domain')
                 ->all()
         );
+        if ($content !== '') {
+            $content .= "\n";
+        }
         $path = self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . 'deadlist';
         Storage::put($path, $content, 'private');
 
