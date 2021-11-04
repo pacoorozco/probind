@@ -12,8 +12,10 @@ ENV USER="probind"
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 # Install the PHP needed extensions
-RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
-    install-php-extensions gd gmp pdo_mysql zip
+RUN chmod uga+x /usr/local/bin/install-php-extensions && sync \
+    && install-php-extensions gd gmp pdo_mysql xdebug zip \
+    && echo "xdebug.mode=develop,coverage,debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host = host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

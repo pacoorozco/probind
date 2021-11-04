@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 We're bringing you a **major release**. The focus is on one much-desired feature: the [Laravel 8.x](https://laravel.com/docs/8.x) and [PHP 8](https://www.php.net/ChangeLog-8.php) adoption. This release comes with several breaking changes.
 
 ### Added
+- [Xdebug](https://xdebug.org/) extension in the `app` docker to enable remote test coverage creation.
 - [phpMyAdmin](https://www.phpmyadmin.net/) service for managing the database while developing. It will spawn using the Docker Compose.
 - Support for Laravel 8.x and PHP 8.x ([#121][i121])
 ### Changed
