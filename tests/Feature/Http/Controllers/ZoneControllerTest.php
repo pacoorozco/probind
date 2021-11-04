@@ -23,6 +23,21 @@ class ZoneControllerTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
         $this->user = $user;
+
+        setting()->set([
+            'zone_default_mname' => 'dns1.domain.local',
+            'zone_default_rname' => 'hostmaster@domain.local',
+            'zone_default_refresh' => '86400',
+            'zone_default_retry' => '7200',
+            'zone_default_expire' => '3628800',
+            'zone_default_negative_ttl' => '7200',
+            'zone_default_default_ttl' => '172800',
+
+            'ssh_default_user' => 'probinder',
+            'ssh_default_key' => '-----BEGIN OPENSSH PRIVATE KEY-----',
+            'ssh_default_port' => '22',
+            'ssh_default_remote_path' => '/home/probinder/data',
+        ]);
     }
 
     /** @test */
