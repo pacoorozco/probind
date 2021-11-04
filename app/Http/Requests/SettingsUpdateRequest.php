@@ -20,36 +20,126 @@ namespace App\Http\Requests;
 
 class SettingsUpdateRequest extends Request
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'zone_default_mname'        => 'required|string',
-            'zone_default_rname'        => 'required|email',
-            'zone_default_refresh'      => 'required|integer',
-            'zone_default_retry'        => 'required|integer',
-            'zone_default_expire'       => 'required|integer',
-            'zone_default_negative_ttl' => 'required|integer|min:0|max:2147483647',
-            'zone_default_default_ttl'  => 'required|integer|min:0|max:2147483647',
+            'zone_default_mname' => [
+                'required',
+                'string',
+            ],
+            'zone_default_rname' => [
+                'required',
+                'email',
+            ],
+            'zone_default_refresh' => [
+                'required',
+                'integer',
+                'min:0',
+                'max:2147483647',
+            ],
+            'zone_default_retry' => [
+                'required',
+                'integer',
+                'min:0',
+                'max:2147483647',
+            ],
+            'zone_default_expire' => [
+                'required',
+                'integer',
+                'min:0',
+                'max:2147483647',
+            ],
+            'zone_default_negative_ttl' => [
+                'required',
+                'integer',
+                'min:0',
+                'max:2147483647',
+            ],
+            'zone_default_default_ttl' => [
+                'required',
+                'integer',
+                'min:0',
+                'max:2147483647',
+            ],
 
-            'ssh_default_user'        => 'required|string',
-            'ssh_default_key'         => 'required|string',
-            'ssh_default_port'        => 'required|integer|min:1|max:65535',
-            'ssh_default_remote_path' => 'required|string',
+            'ssh_default_user' => [
+                'required',
+                'string',
+            ],
+            'ssh_default_key' => [
+                'required',
+                'string',
+            ],
+            'ssh_default_port' => [
+                'required',
+                'integer',
+                'min:1',
+                'max:65535',
+            ],
+            'ssh_default_remote_path' => [
+                'required',
+                'string',
+            ],
         ];
+    }
+
+    public function primaryServer(): string
+    {
+        return $this->input('zone_default_mname');
+    }
+
+    public function hostmasterEmail(): string
+    {
+        return $this->input('zone_default_rname');
+    }
+
+    public function defaultRefresh(): int
+    {
+        return $this->input('zone_default_refresh');
+    }
+
+    public function defaultRetry(): int
+    {
+        return $this->input('zone_default_retry');
+    }
+
+    public function defaultExpire(): int
+    {
+        return $this->input('zone_default_expire');
+    }
+
+    public function defaultNegativeTTL(): int
+    {
+        return $this->input('zone_default_negative_ttl');
+    }
+
+    public function defaultZoneTTL(): int
+    {
+        return $this->input('zone_default_default_ttl');
+    }
+
+    public function defaultSSHUser(): string
+    {
+        return $this->input('ssh_default_user');
+    }
+
+    public function defaultSSHKey(): string
+    {
+        return $this->input('ssh_default_key');
+    }
+
+    public function defaultSSHPort(): string
+    {
+        return $this->input('ssh_default_port');
+    }
+
+    public function defaultSSHRemotePath(): string
+    {
+        return $this->input('ssh_default_remote_path');
     }
 }

@@ -36,7 +36,20 @@ class SettingsController extends Controller
 
     public function update(SettingsUpdateRequest $request): RedirectResponse
     {
-        Setting::set($request->except('_token', '_method'));
+        setting()->set([
+            'zone_default_mname' => $request->primaryServer(),
+            'zone_default_rname' => $request->hostmasterEmail(),
+            'zone_default_refresh' => $request->defaultRefresh(),
+            'zone_default_retry' => $request->defaultRetry(),
+            'zone_default_expire' => $request->defaultExpire(),
+            'zone_default_negative_ttl' => $request->defaultNegativeTTL(),
+            'zone_default_default_ttl' => $request->defaultZoneTTL(),
+
+            'ssh_default_user' => $request->defaultSSHUser(),
+            'ssh_default_key' => $request->defaultSSHKey(),
+            'ssh_default_port' => $request->defaultSSHPort(),
+            'ssh_default_remote_path' => $request->defaultSSHRemotePath(),
+        ]);
 
         return redirect()->route('settings.index')
             ->with('success', __('settings/messages.update.success'));
