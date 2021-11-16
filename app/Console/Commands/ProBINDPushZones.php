@@ -21,9 +21,11 @@ namespace App\Console\Commands;
 use App\Jobs\UpdateZoneSerialName;
 use App\Models\Server;
 use App\Models\Zone;
+use App\Services\Formatters\BINDFormatter;
 use App\Services\SFTP\SFTPPusher;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use PacoOrozco\OpenSSH\PrivateKey;
@@ -44,22 +46,14 @@ class ProBINDPushZones extends Command
         // Generate a file containing zone's name that has been deleted
         $deletedZones = Zone::onlyTrashed()
             ->get();
-        $content = join("\n",
-            $deletedZones
-                ->pluck('domain')
-                ->all()
-        );
-        if ($content !== '') {
-            $content .= "\n";
-        }
-        $path = self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . 'deadlist';
-        Storage::put($path, $content, 'private');
+
+        $this->generateDeletedZonesFile($deletedZones);
 
         // Generate one file for zone with its zone definition
         $zonesToUpdate = Zone::withPendingChanges()
             ->get();
         foreach ($zonesToUpdate as $zone) {
-            $this->generateZoneFileForZone($zone);
+            $this->generateZoneFile($zone);
         }
 
         // Now push files to servers using SFTP
@@ -83,13 +77,21 @@ class ProBINDPushZones extends Command
         return 0;
     }
 
+    private function generateDeletedZonesFile(Collection $deletedZones): void
+    {
+        $content = BINDFormatter::deletedZones($deletedZones);
+
+        $path = self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . 'deadlist';
+        Storage::put($path, $content, 'private');
+    }
+
     /**
      * Creates a file with the zone definitions.
      *
      * @param  Zone  $zone
      * @return bool
      */
-    public function generateZoneFileForZone(Zone $zone): bool
+    public function generateZoneFile(Zone $zone): bool
     {
         // Get default settings, we will use to render view
         $defaults = setting()->all();
@@ -255,13 +257,4 @@ class ProBINDPushZones extends Command
         return $totalFiles === $pushedFiles;
     }
 
-    public function generateDeletedZonesContent(array $deletedZones): string
-    {
-        $content = [];
-        foreach ($deletedZones as $zone) {
-            $content[] = sprintf("%s\n", $zone->domain);
-        }
-
-        return join('', $content);
-    }
 }
