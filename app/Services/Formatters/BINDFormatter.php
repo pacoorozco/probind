@@ -18,6 +18,9 @@
 namespace App\Services\Formatters;
 
 
+use App\Models\Server;
+use App\Models\Zone;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 /**
@@ -27,10 +30,30 @@ use Illuminate\Support\Collection;
  */
 class BINDFormatter
 {
-    public static function deletedZones(Collection $deletedZones): string
+    public static function getDeletedZonesFileContent(Collection $deletedZones): string
     {
         return $deletedZones
             ->pluck('domain')
             ->join(PHP_EOL);
+    }
+
+    public static function getZoneFileContent(Zone $zone): string
+    {
+        // Get all Name Servers that had to be on NS records
+        $nameServers = Server::shouldBePresentAsNameserver()
+            ->get();
+
+        // Get all records
+        $records = $zone->records()
+            ->orderBy('type')
+            ->get();
+
+        // Create file content with a blade view
+        return view('templates.zone')
+            ->with('date', Carbon::now())
+            ->with('zone', $zone)
+            ->with('servers', $nameServers)
+            ->with('records', $records)
+            ->render();
     }
 }
