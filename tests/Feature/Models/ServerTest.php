@@ -46,4 +46,33 @@ class ServerTest extends TestCase
 
         $this->assertCount(2, Server::withPushCapability()->get());
     }
+
+    /** @test */
+    public function it_returns_servers_that_should_be_present_as_name_server()
+    {
+        // Two servers with push capability and active
+        $wantServers = Server::factory()->count(2)->create([
+            'ns_record' => true,
+            'active' => true,
+        ]);
+
+        // Other servers out of the scope
+        Server::factory()->count(2)->create([
+            'ns_record' => false,
+            'active' => true,
+        ]);
+        Server::factory()->count(2)->create([
+            'ns_record' => true,
+            'active' => false,
+        ]);
+
+        $servers = Server::shouldBePresentAsNameServer()
+            ->get();
+
+        $this->assertCount(2, $servers);
+        foreach ($wantServers as $want)
+        {
+            $this->assertTrue($servers->contains($want));
+        }
+    }
 }
