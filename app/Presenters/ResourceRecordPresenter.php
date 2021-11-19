@@ -3,7 +3,6 @@
 namespace App\Presenters;
 
 use App\Models\ResourceRecord;
-use Badcow\DNS\AlignedRdataFormatters;
 use Badcow\DNS\Rdata\TXT;
 use Laracodes\Presenter\Presenter;
 
@@ -88,8 +87,8 @@ class ResourceRecordPresenter extends Presenter
 
     private function formatTXTResourceRecord(): string
     {
-       $pp = new TXT();
-       $pp->fromText($this->model->data);
+        $pp = new TXT();
+        $pp->fromText($this->model->data);
 
         return sprintf(
             "%-40s %s\tIN\tTXT\t%s",

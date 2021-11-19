@@ -17,7 +17,6 @@
 
 namespace App\Services\Formatters;
 
-
 use App\Models\Server;
 use App\Models\Zone;
 use Illuminate\Support\Carbon;
