@@ -18,7 +18,6 @@
 
 namespace Tests\Feature\Services\Formatters;
 
-use App\Models\User;
 use App\Models\Zone;
 use App\Services\Formatters\BINDFormatter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
