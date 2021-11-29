@@ -58,4 +58,14 @@ class ResourceRecordFactory extends Factory
             ];
         });
     }
+
+    public function asTXTRecord(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => ResourceRecordType::TXT,
+                'data' => $this->faker->text,
+            ];
+        });
+    }
 }
