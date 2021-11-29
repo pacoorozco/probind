@@ -70,8 +70,7 @@ class ServerTest extends TestCase
             ->get();
 
         $this->assertCount(2, $servers);
-        foreach ($wantServers as $want)
-        {
+        foreach ($wantServers as $want) {
             $this->assertTrue($servers->contains($want));
         }
     }
