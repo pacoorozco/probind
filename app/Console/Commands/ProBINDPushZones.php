@@ -21,18 +21,23 @@ namespace App\Console\Commands;
 use App\Jobs\UpdateZoneSerialName;
 use App\Models\Server;
 use App\Models\Zone;
+use App\Services\Formatters\BINDFormatter;
 use App\Services\SFTP\SFTPPusher;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use PacoOrozco\OpenSSH\PrivateKey;
 
 class ProBINDPushZones extends Command
 {
+    const SUCCESS_CODE = 0;
+    const ERROR_PUSHING_FILES_CODE = 1;
+
     const BASEDIR = 'probind';
     const CONFIG_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'configuration';
     const ZONE_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'primary';
+
     protected $signature = 'probind:push';
     protected $description = 'Generate and push zone files to DNS servers';
 
@@ -44,29 +49,21 @@ class ProBINDPushZones extends Command
         // Generate a file containing zone's name that has been deleted
         $deletedZones = Zone::onlyTrashed()
             ->get();
-        $content = join("\n",
-            $deletedZones
-                ->pluck('domain')
-                ->all()
-        );
-        if ($content !== '') {
-            $content .= "\n";
-        }
-        $path = self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . 'deadlist';
-        Storage::put($path, $content, 'private');
+
+        $this->generateDeletedZonesFile($deletedZones);
 
         // Generate one file for zone with its zone definition
         $zonesToUpdate = Zone::withPendingChanges()
             ->get();
         foreach ($zonesToUpdate as $zone) {
-            $this->generateZoneFileForZone($zone);
+            $this->generateZoneFile($zone);
         }
 
         // Now push files to servers using SFTP
         if (false === $this->handleAllServers()) {
             $this->error('Push updates completed with errors');
 
-            return 1;
+            return self::ERROR_PUSHING_FILES_CODE;
         }
 
         // Clear pending changes on zones and clear deleted ones
@@ -80,7 +77,15 @@ class ProBINDPushZones extends Command
 
         $this->info('Push updates completed successfully.');
 
-        return 0;
+        return self::SUCCESS_CODE;
+    }
+
+    private function generateDeletedZonesFile(Collection $deletedZones): void
+    {
+        $content = BINDFormatter::getDeletedZonesFileContent($deletedZones);
+
+        $path = self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . 'deadlist';
+        Storage::put($path, $content, 'private');
     }
 
     /**
@@ -89,34 +94,15 @@ class ProBINDPushZones extends Command
      * @param  Zone  $zone
      * @return bool
      */
-    public function generateZoneFileForZone(Zone $zone): bool
+    public function generateZoneFile(Zone $zone): bool
     {
-        // Get default settings, we will use to render view
-        $defaults = setting()->all();
-
-        // Get all Name Servers that had to be on NS records
-        $nameServers = Server::where('ns_record', true)
-            ->orderBy('type')
-            ->get();
-
         UpdateZoneSerialName::dispatchSync();
 
-        // Get all records
-        $records = $zone->records()
-            ->orderBy('type')
-            ->get();
-
-        // Create file content with a blade view
-        $contents = view('templates.zone')
-            ->with('date', Carbon::now())
-            ->with('defaults', $defaults)
-            ->with('zone', $zone)
-            ->with('servers', $nameServers)
-            ->with('records', $records);
+        $content = BINDFormatter::getZoneFileContent($zone);
 
         $path = self::ZONE_BASEDIR . DIRECTORY_SEPARATOR . $zone->domain;
 
-        return Storage::append($path, $contents);
+        return Storage::append($path, $content);
     }
 
     public function handleAllServers(): bool
@@ -253,15 +239,5 @@ class ProBINDPushZones extends Command
         $pusher->disconnect();
         // Return true if all files has been pushed
         return $totalFiles === $pushedFiles;
-    }
-
-    public function generateDeletedZonesContent(array $deletedZones): string
-    {
-        $content = [];
-        foreach ($deletedZones as $zone) {
-            $content[] = sprintf("%s\n", $zone->domain);
-        }
-
-        return join('', $content);
     }
 }

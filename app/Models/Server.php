@@ -84,4 +84,11 @@ class Server extends Model
             ->where('push_updates', true)
             ->where('active', true);
     }
+
+    public function scopeShouldBePresentAsNameServer(Builder $query): Builder
+    {
+        return $query
+            ->where('ns_record', true)
+            ->where('active', true);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Presenters;
 
 use App\Models\ResourceRecord;
+use Badcow\DNS\Rdata\TXT;
 use Laracodes\Presenter\Presenter;
 
 class ResourceRecordPresenter extends Presenter
@@ -26,6 +27,8 @@ class ResourceRecordPresenter extends Presenter
                 return $this->formatSRVResourceRecord();
             case 'NAPTR':
                 return $this->formatNAPTRResourceRecord();
+            case 'TXT':
+                return $this->formatTXTResourceRecord();
             default:
                 // continue
         }
@@ -79,6 +82,19 @@ class ResourceRecordPresenter extends Presenter
             $this->model->ttl ?: '',
             $this->model->priority,
             $this->model->data
+        );
+    }
+
+    private function formatTXTResourceRecord(): string
+    {
+        $pp = new TXT();
+        $pp->fromText($this->model->data);
+
+        return sprintf(
+            "%-40s %s\tIN\tTXT\t%s",
+            $this->model->name,
+            $this->model->ttl ?: '',
+            $pp->toText(),
         );
     }
 }
