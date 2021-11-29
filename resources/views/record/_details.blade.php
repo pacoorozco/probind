@@ -51,7 +51,7 @@
             {!! Form::label('preview', __('record/model.preview'), array('class' => 'control-label')) !!}
             <div class="controls">
                 <pre>
-                    {{ $record->present()->preview() }}
+                    {{ $record->present()->asString() }}
                 </pre>
             </div>
         </div>
