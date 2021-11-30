@@ -5,6 +5,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 ## Unreleased
 We're bringing you a **major release**. The focus is on one much-desired feature: the [Laravel 8.x](https://laravel.com/docs/8.x) and [PHP 8](https://www.php.net/ChangeLog-8.php) adoption. This release comes with several breaking changes.
+### Changed
+- Bump `bensampo/laravel-enum` from `v3.4.1` to `v3.4.2`.
+- Bump `laravel/framework` from `v8.50.0` to `v8.73.2`.
+- Bump `laravel/ui` from `v3.3.1` to `v3.3.3`.
+- Bump `phpseclib/phpseclib` from `v3.0.11` to `v3.0.12`.
+- Bump `spatie/laravel-activitylog` from `v4.1.1` to `v4.3.1`.
+- Bump `yajra/laravel-datatables-oracle` from `v9.18.1` to `v9.18.2`.
+- Bump `doctrine/dbal` from `v3.1.1` to `v3.2.0`. ([#163][i163])
+- Bump `facade/ignition` from `v2.17.1` to `v2.17.2`.
+- Bump `phpunit/phpunit` from `v9.5.8` to `v9.5.10`.
+- Bump `fakerphp/faker` from `v1.15` to `v1.16`.
+### Fixed
+- 
+- Incorrect quoting of TXT records. Thanks [@gadall](https://github.com/gadall). ([#143][i143])
+
+[i163]: https://github.com/pacoorozco/probind/pull/163
+[i143]: https://github.com/pacoorozco/probind/issues/143
 
 ### Added
 - [Xdebug](https://xdebug.org/) extension in the `app` docker to enable remote test coverage creation.
