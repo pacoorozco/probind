@@ -36,7 +36,7 @@ class BINDFormatter
             ->join(PHP_EOL);
     }
 
-    public static function getZoneFileContent(Zone $zone): string
+    public static function getZoneFileContent(Zone $zone, Carbon $customDate = null): string
     {
         // Get all Name Servers that had to be on NS records
         $nameServers = Server::shouldBePresentAsNameserver()
@@ -49,7 +49,7 @@ class BINDFormatter
 
         // Create file content with a blade view
         return view('templates.zone')
-            ->with('date', Carbon::now())
+            ->with('date', $customDate ?? Carbon::now())
             ->with('zone', $zone)
             ->with('servers', $nameServers)
             ->with('records', $records)
