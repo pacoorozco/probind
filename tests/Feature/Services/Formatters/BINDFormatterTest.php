@@ -63,13 +63,11 @@ www                                      	IN	CNAME	services.example.com.
 
 ZONE;
 
-
     public function setUp(): void
     {
         parent::setUp();
 
         $this->setupAppSettings();
-
     }
 
     private function setupAppSettings(): void
