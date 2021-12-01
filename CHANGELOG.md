@@ -4,24 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
-We're bringing you a **major release**. The focus is on one much-desired feature: the [Laravel 8.x](https://laravel.com/docs/8.x) and [PHP 8](https://www.php.net/ChangeLog-8.php) adoption. This release comes with several breaking changes.
-### Changed
-- Bump `bensampo/laravel-enum` from `v3.4.1` to `v3.4.2`.
-- Bump `laravel/framework` from `v8.50.0` to `v8.73.2`.
-- Bump `laravel/ui` from `v3.3.1` to `v3.3.3`.
-- Bump `phpseclib/phpseclib` from `v3.0.11` to `v3.0.12`.
-- Bump `spatie/laravel-activitylog` from `v4.1.1` to `v4.3.1`.
-- Bump `yajra/laravel-datatables-oracle` from `v9.18.1` to `v9.18.2`.
-- Bump `doctrine/dbal` from `v3.1.1` to `v3.2.0`. ([#163][i163])
-- Bump `facade/ignition` from `v2.17.1` to `v2.17.2`.
-- Bump `phpunit/phpunit` from `v9.5.8` to `v9.5.10`.
-- Bump `fakerphp/faker` from `v1.15` to `v1.16`.
-### Fixed
-- 
-- Incorrect quoting of TXT records. Thanks [@gadall](https://github.com/gadall). ([#143][i143])
 
-[i163]: https://github.com/pacoorozco/probind/pull/163
-[i143]: https://github.com/pacoorozco/probind/issues/143
+## 1.0.0 - 2021-12-01
+We're bringing you a **major release**. The focus is on one much-desired feature: the [Laravel 8.x](https://laravel.com/docs/8.x) and [PHP 8](https://www.php.net/ChangeLog-8.php) adoption. This release comes with several breaking changes.
 
 ### Added
 - [Xdebug](https://xdebug.org/) extension in the `app` docker to enable remote test coverage creation.
@@ -36,10 +21,29 @@ We're bringing you a **major release**. The focus is on one much-desired feature
 - Some tables have changed: 
   - `server` instead of `master_server`
   - `primary` and `secondary` instead of `master` and `slave` [Github is replacing the word master to avoid slavery references](https://dev.to/rockykev/github-is-replacing-the-word-master-to-avoid-slavery-references-deal-with-it-86b)
+- Bump `bensampo/laravel-enum` from `v3.4.1` to `v3.4.2`.
+- Bump `laravel/framework` from `v8.50.0` to `v8.73.2`.
+- Bump `laravel/ui` from `v3.3.1` to `v3.3.3`.
+- Bump `phpseclib/phpseclib` from `v3.0.11` to `v3.0.12`.
+- Bump `spatie/laravel-activitylog` from `v4.1.1` to `v4.3.1`.
+- Bump `yajra/laravel-datatables-oracle` from `v9.18.1` to `v9.18.2`.
+- Bump `doctrine/dbal` from `v3.1.1` to `v3.2.0`. ([#163][i163])
+- Bump `facade/ignition` from `v2.17.1` to `v2.17.2`.
+- Bump `phpunit/phpunit` from `v9.5.8` to `v9.5.10`.
+- Bump `fakerphp/faker` from `v1.15` to `v1.16`.
+- ### Fixed
+- Make zone serial increment properly. ([#141][i141])
+- Inconsistency regarding final dot. ([#142][i142], [#145][i145])
+- Incorrect quoting of TXT records. Thanks [@gadall](https://github.com/gadall). ([#143][i143])
 ### Removed
 - Dev packages `barryvdh/laravel-debugbar` and `barryvdh/laravel-ide-helper`
 - Browser tests. This has reduced temporarily the test coverage.
 
+[i141]: https://github.com/pacoorozco/probind/pull/141
+[i145]: https://github.com/pacoorozco/probind/pull/145
+[i142]: https://github.com/pacoorozco/probind/issues/142
+[i163]: https://github.com/pacoorozco/probind/pull/163
+[i143]: https://github.com/pacoorozco/probind/issues/143
 [i121]: https://github.com/pacoorozco/probind/issues/121
 [i139]: https://github.com/pacoorozco/probind/issues/139
 
