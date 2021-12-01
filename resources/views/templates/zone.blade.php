@@ -8,7 +8,7 @@ $TTL {{ $zone->present()->default_ttl }}
 
 ; Name Servers of this zone.
 @foreach($servers as $server)
-{{ $server->getNSRecord() }}
+{{ $server->present()->asString() }}
 @endforeach
 
 ; Resource Records.

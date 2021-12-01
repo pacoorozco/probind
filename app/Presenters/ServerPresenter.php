@@ -12,7 +12,7 @@ class ServerPresenter extends Presenter
 
     public function asString(): string
     {
-        return sprintf("%-32s IN\tNS\t%s.", ' ', $this->model->hostname);
+        return sprintf("%-32s IN\tNS\t%s.", '@', $this->model->hostname);
     }
 
     public function type(): string
