@@ -26,24 +26,24 @@
         "badcow/dns": "^4.1.1",
         "bensampo/laravel-enum": "^3.4.2",
         "fideloper/proxy": "^4.4.1",
-        "fruitcake/laravel-cors": "^2.0.4",
+        "fruitcake/laravel-cors": "^2.0.5",
         "guilhermegonzaga/presenter": "^1.0.5",
         "larapacks/setting": "^3.0",
-        "laravel/framework": "^8.73.2",
-        "laravel/ui": "^3.3.3",
+        "laravel/framework": "^8.82.0",
+        "laravel/ui": "^3.4.2",
         "laravelcollective/html": "^6.2.1",
-        "pacoorozco/openssh": "^0.2.0",
-        "phpseclib/phpseclib": "^3.0.12",
-        "spatie/laravel-activitylog": "^4.3.1",
-        "yajra/laravel-datatables-oracle": "^9.18.2"
+        "pacoorozco/openssh": "^0.2.1",
+        "phpseclib/phpseclib": "^3.0.13",
+        "spatie/laravel-activitylog": "^4.4.0",
+        "yajra/laravel-datatables-oracle": "^9.19.0"
     },
     "require-dev": {
-        "facade/ignition": "^2.17.2",
-        "fakerphp/faker": "^1.16",
-        "doctrine/dbal": "^3.2.0",
-        "mockery/mockery": "^1.4.4",
-        "phpunit/phpunit": "^9.5.10",
-        "nunomaduro/collision": "^5.10.0"
+        "facade/ignition": "^2.17.4",
+        "fakerphp/faker": "^1.19",
+        "doctrine/dbal": "^3.3.1",
+        "mockery/mockery": "^1.5.0",
+        "phpunit/phpunit": "^9.5.13",
+        "nunomaduro/collision": "^5.11.0"
     },
     "autoload": {
         "psr-4": {
