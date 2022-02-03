@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
+### Changed
+- Bump `laravel/framework` to `v8.82.0`.
+- Bump `fruitcake/laravel-cors` to `v2.0.5`.
+- Bump `laravel/ui` to `v3.4.2`.
+- Bump `pacoorozco/openssh` to `v0.2.1`.
+- Bump `phpseclib/phpseclib` to `v3.0.13`.
+- Bump `spatie/laravel-activitylog` to `v4.4.0`.
+- Bump `yajra/laravel-datatables-oracle` to `v9.19.0`.
+- Update dev dependencies
+    - Bump `facade/ignition` to `v2.17.4`.
+    - Bump `fakerphp/faker` to `v1.19.0`.
+    - Bump `doctrine/dbal` to `v3.3.1`.
+    - Bump `mockery/mockery` to `v1.5.0`.
+    - Bump `nunomaduro/collision` to `v5.11.0`.
+    - Bump `phpunit/phpunit` to `v9.5.13`.
 
 ## 1.0.0 - 2021-12-01
 We're bringing you a **major release**. The focus is on one much-desired feature: the [Laravel 8.x](https://laravel.com/docs/8.x) and [PHP 8](https://www.php.net/ChangeLog-8.php) adoption. This release comes with several breaking changes.
