@@ -45,7 +45,7 @@ class ProBINDImportZone extends Command
 
         $createdRecordsCount = 0;
         foreach ($zoneData->getResourceRecords() as $record) {
-            if ($record instanceof SOA) {
+            if ($record->getType() == 'SOA') {
                 $zone->update([
                     'serial' => $record->getRdata()->getSerial(),
                     'refresh' => $record->getRdata()->getRefresh(),
