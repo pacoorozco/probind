@@ -17,6 +17,7 @@ final class ResourceRecordType extends Enum implements LocalizedEnum
     const PTR = 'PTR';
     const SRV = 'SRV';
     const TXT = 'TXT';
+    const SPF = 'SPF';
 
     public static function asArrayForReverseZone(): array
     {
