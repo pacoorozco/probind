@@ -12,7 +12,7 @@ class CreateZone
     use Dispatchable;
 
     private string      $domain;
-    private string      $server;
+    private string|null $server;
     private string|null $type;
     private bool        $custom_settings;
     private int         $refresh;
