@@ -8,7 +8,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 class CreateZone
 {
-
     use Dispatchable;
 
     private string      $domain;
@@ -29,7 +28,7 @@ class CreateZone
             ? ZoneType::Primary
             : ZoneType::Secondary;
 
-        $this->custom_settings = !empty($options['custom_settings']) && $options['custom_settings'];
+        $this->custom_settings = ! empty($options['custom_settings']) && $options['custom_settings'];
 
         if ($this->custom_settings === true) {
             $this->refresh = empty($options['refresh']) ? setting('zone_default_refresh') : (int) $options['refresh'];
