@@ -17,7 +17,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ZoneType;
 use App\Http\Requests\ZoneCreateRequest;
 use App\Http\Requests\ZoneRequest;
 use App\Http\Requests\ZoneUpdateRequest;
