@@ -21,7 +21,7 @@ class CreateZone
     private int         $negativeTTL;
     private int         $defaultTTL;
 
-    public function __construct(string $domain, ?string $server, array $options = [])
+    public function __construct(string $domain, string $server = null, array $options = [])
     {
         $this->domain = $domain;
         $this->server = $server;
@@ -29,7 +29,7 @@ class CreateZone
             ? ZoneType::Primary
             : ZoneType::Secondary;
 
-        $this->custom_settings = (bool) $options['custom_settings'];
+        $this->custom_settings = !empty($options['custom_settings']) && $options['custom_settings'];
 
         if ($this->custom_settings === true) {
             $this->refresh = empty($options['refresh']) ? setting('zone_default_refresh') : (int) $options['refresh'];
