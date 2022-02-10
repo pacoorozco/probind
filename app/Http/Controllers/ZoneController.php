@@ -17,10 +17,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ZoneType;
 use App\Http\Requests\ZoneCreateRequest;
 use App\Http\Requests\ZoneRequest;
 use App\Http\Requests\ZoneUpdateRequest;
+use App\Jobs\CreateZone;
 use App\Models\Zone;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -46,20 +46,18 @@ class ZoneController extends Controller
 
     public function store(ZoneCreateRequest $request): RedirectResponse
     {
-        $zone = new Zone();
-        $zone->domain = $request->domain();
-        $zone->reverse_zone = Zone::isReverseZoneName($zone->domain);
-
-        if ($request->zoneType() == ZoneType::Primary) {
-            $zone->server = null;
-            $this->fillCustomSettingsFromRequest($zone, $request);
-            $zone->serial = $zone->calculateNewSerialNumber();
-        } else {
-            $zone->server = $request->serverAddress();
-        }
-
-        $zone->has_modifications = true;
-        $zone->save();
+        CreateZone::dispatchSync(
+            $request->domain(),
+            $request->serverAddress(),
+            [
+                'custom_settings' => $request->customizedSettings(),
+                'refresh' => $request->refresh(),
+                'retry' => $request->retry(),
+                'expire' => $request->expire(),
+                'negative_ttl' => $request->negativeTTL(),
+                'default_ttl' => $request->defaultTTL(),
+            ]
+        );
 
         return redirect()->route('zones.index')
             ->with('success', __('zone/messages.create.success'));

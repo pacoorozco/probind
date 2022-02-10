@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\CreateZone;
 use App\Models\Zone;
 use Badcow\DNS\Parser;
 use Badcow\DNS\Rdata\SOA;
@@ -38,14 +39,11 @@ class ProBINDImportZone extends Command
         }
 
         /** @var Zone $zone */
-        $zone = Zone::create([
-            'domain' => $domain,
-            'reverse_zone' => Zone::isReverseZoneName($domain),
-        ]);
+        $zone = CreateZone::dispatchSync($domain);
 
         $createdRecordsCount = 0;
         foreach ($zoneData->getResourceRecords() as $record) {
-            if ($record instanceof SOA) {
+            if ($record->getRdata() instanceof SOA) {
                 $zone->update([
                     'serial' => $record->getRdata()->getSerial(),
                     'refresh' => $record->getRdata()->getRefresh(),
