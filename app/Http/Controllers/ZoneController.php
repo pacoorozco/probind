@@ -59,22 +59,6 @@ class ZoneController extends Controller
                 'default_ttl' => $request->defaultTTL(),
             ]
         );
-            /*
-        $zone = new Zone();
-        $zone->domain = $request->domain();
-        $zone->reverse_zone = Zone::isReverseZoneName($zone->domain);
-
-        if ($request->zoneType() == ZoneType::Primary) {
-            $zone->server = null;
-            $this->fillCustomSettingsFromRequest($zone, $request);
-            $zone->serial = $zone->calculateNewSerialNumber();
-        } else {
-            $zone->server = $request->serverAddress();
-        }
-
-        $zone->has_modifications = true;
-        $zone->save();
-            */
 
         return redirect()->route('zones.index')
             ->with('success', __('zone/messages.create.success'));
