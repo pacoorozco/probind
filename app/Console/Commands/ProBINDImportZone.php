@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\CreateZone;
 use App\Models\Zone;
 use Badcow\DNS\Parser;
 use Badcow\DNS\Rdata\SOA;
@@ -9,8 +10,8 @@ use Illuminate\Console\Command;
 
 class ProBINDImportZone extends Command
 {
-    const SUCCESS_CODE = 0;
-    const ERROR_PARSING_FILE_CODE = 1;
+    const SUCCESS_CODE             = 0;
+    const ERROR_PARSING_FILE_CODE  = 1;
     const ERROR_EXISTING_ZONE_CODE = 2;
 
     protected $signature = 'probind:import
@@ -38,14 +39,11 @@ class ProBINDImportZone extends Command
         }
 
         /** @var Zone $zone */
-        $zone = Zone::create([
-            'domain' => $domain,
-            'reverse_zone' => Zone::isReverseZoneName($domain),
-        ]);
+        $zone = CreateZone::dispatchSync($domain);
 
         $createdRecordsCount = 0;
         foreach ($zoneData->getResourceRecords() as $record) {
-            if ($record instanceof SOA) {
+            if ($record->getRdata() instanceof SOA) {
                 $zone->update([
                     'serial' => $record->getRdata()->getSerial(),
                     'refresh' => $record->getRdata()->getRefresh(),
@@ -65,15 +63,15 @@ class ProBINDImportZone extends Command
             $createdRecordsCount++;
         }
 
-        $this->info('A zone for ' . $domain . ' domain has been created. ' . $createdRecordsCount . ' records has been imported.');
-        activity()->log('Created zone <strong>' . $zone->domain . '</strong> by importing <strong>' . $createdRecordsCount . '</strong> records.');
+        $this->info('A zone for '.$domain.' domain has been created. '.$createdRecordsCount.' records has been imported.');
+        activity()->log('Created zone <strong>'.$zone->domain.'</strong> by importing <strong>'.$createdRecordsCount.'</strong> records.');
 
         return self::SUCCESS_CODE;
     }
 
     private function ensureFQDN(string $domain): string
     {
-        return (substr($domain, -1) != '.') ? $domain . '.' : $domain;
+        return (substr($domain, -1) != '.') ? $domain.'.' : $domain;
     }
 
     /**
@@ -81,6 +79,7 @@ class ProBINDImportZone extends Command
      *
      * @param  string  $domain
      * @param  string  $filename
+     *
      * @return \Badcow\DNS\Zone
      *
      * @throws \Badcow\DNS\Parser\ParseException
