@@ -93,7 +93,6 @@ class ZoneController extends Controller
     {
         if ($zone->isPrimary()) {
             $this->fillCustomSettingsFromRequest($zone, $request);
-            $zone->serial = $zone->calculateNewSerialNumber();
         } else {
             $zone->server = $request->serverAddress();
         }

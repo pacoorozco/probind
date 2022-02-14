@@ -18,7 +18,6 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\UpdateZoneSerialName;
 use App\Models\Server;
 use App\Models\Zone;
 use App\Services\Formatters\BINDFormatter;
@@ -96,7 +95,7 @@ class ProBINDPushZones extends Command
      */
     public function generateZoneFile(Zone $zone): bool
     {
-        UpdateZoneSerialName::dispatchSync();
+        $zone->increaseSerialNumber();
 
         $content = BINDFormatter::getZoneFileContent($zone);
 
