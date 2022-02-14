@@ -108,7 +108,7 @@ class Zone extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->setDescriptionForEvent(fn(string $eventName) => trans('zone/messages.activity.'.$eventName, [
+            ->setDescriptionForEvent(fn (string $eventName) => trans('zone/messages.activity.' . $eventName, [
                 'domain' => $this->domain,
             ]));
     }
@@ -163,7 +163,7 @@ class Zone extends Model
     public function increaseSerialNumber(bool $force = false): void
     {
         // If there's not pending changes, we should not increment the serial number.
-        if ($this->has_modifications && !$force) {
+        if ($this->has_modifications && ! $force) {
             return;
         }
 
@@ -183,7 +183,7 @@ class Zone extends Model
      */
     public function calculateNewSerialNumber(): int
     {
-        $newSerialNumber = intval(Carbon::now()->format('Ymd').'00');
+        $newSerialNumber = intval(Carbon::now()->format('Ymd') . '00');
 
         return ($this->serial >= $newSerialNumber)
             ? $this->serial + 1
