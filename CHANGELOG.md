@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
+### Fixed
+- Bulk update doesn't work. ([#181][i181])
+
+[i181]: https://github.com/pacoorozco/probind/issues/181
 
 ## 1.0.1 - 2022-02-03
 

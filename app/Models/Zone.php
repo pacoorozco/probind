@@ -108,7 +108,7 @@ class Zone extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->setDescriptionForEvent(fn (string $eventName) => trans('zone/messages.activity.' . $eventName, [
+            ->setDescriptionForEvent(fn(string $eventName) => trans('zone/messages.activity.'.$eventName, [
                 'domain' => $this->domain,
             ]));
     }
@@ -156,6 +156,24 @@ class Zone extends Model
     }
 
     /**
+     * Increase the Serial Number for this zone if it's needed.
+     *
+     * @param  bool  $force  Forces the increase, even when there isn't pending changes.
+     */
+    public function increaseSerialNumber(bool $force = false): void
+    {
+        // If there's not pending changes, we should not increment the serial number.
+        if ($this->has_modifications && !$force) {
+            return;
+        }
+
+        // Update serial and flag pending changes
+        $this->serial = $this->calculateNewSerialNumber();
+        $this->has_modifications = true; // Do not use setPendingChanges() to reduce one DB call.
+        $this->save();
+    }
+
+    /**
      * Calculates a new Serial Number for this zone.
      *
      * This generates a new serial, based on the often used format YYYYMMDDXX where XX is an ascending serial, allowing
@@ -165,7 +183,7 @@ class Zone extends Model
      */
     public function calculateNewSerialNumber(): int
     {
-        $newSerialNumber = intval(Carbon::now()->format('Ymd') . '00');
+        $newSerialNumber = intval(Carbon::now()->format('Ymd').'00');
 
         return ($this->serial >= $newSerialNumber)
             ? $this->serial + 1
