@@ -108,7 +108,7 @@ class ProBINDPushZones extends Command
             }
         }
 
-        return !$pushedWithErrors;
+        return ! $pushedWithErrors;
     }
 
     private function handleServer(Server $server): bool
@@ -174,6 +174,7 @@ class ProBINDPushZones extends Command
             $pusher->disconnect();
         } catch (Throwable $e) {
             $this->error('Error pushing files to ' . $server->hostname . ' - ' . $e->getMessage());
+
             return false;
         }
 

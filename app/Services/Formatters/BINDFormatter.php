@@ -20,7 +20,6 @@ namespace App\Services\Formatters;
 use App\Enums\ServerType;
 use App\Models\Server;
 use App\Models\Zone;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View;
 
@@ -51,7 +50,7 @@ class BINDFormatter
 
     private static function getTemplateNamesForServer(Server $server): array
     {
-        $defaultTemplateName = fn(ServerType $type) => $type == ServerType::Primary
+        $defaultTemplateName = fn (ServerType $type) => $type == ServerType::Primary
             ? 'bind-templates::defaults.primary-server'
             : 'bind-templates::defaults.secondary-server';
 
@@ -84,7 +83,7 @@ class BINDFormatter
     {
         return [
             'bind-templates::zones.' . str_replace('.', '_',
-                substr($zone->domain, 0, strrpos($zone->domain, "."))
+                substr($zone->domain, 0, strrpos($zone->domain, '.'))
             ),
             'bind-templates::defaults.zone',
         ];

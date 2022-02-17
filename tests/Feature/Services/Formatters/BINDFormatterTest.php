@@ -26,7 +26,6 @@ use App\Services\Formatters\BINDFormatter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use Spatie\TestTime\TestTime;
 use Tests\TestCase;
 
 class BINDFormatterTest extends TestCase
