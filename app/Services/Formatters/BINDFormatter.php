@@ -17,7 +17,6 @@
 
 namespace App\Services\Formatters;
 
-use App\Enums\ServerType;
 use App\Models\Server;
 use App\Models\Zone;
 use Illuminate\Support\Collection;
@@ -39,24 +38,23 @@ class BINDFormatter
 
     public static function getConfigurationFileContent(Server $server): string
     {
-        $zones = ($server->type == 'master')
+        $zones = $server->isPrimary()
             ? Zone::all()
-            : Zone::onlyMasterZones();
+            : Zone::primaryZones();
 
         return View::first(BINDFormatter::getTemplateNamesForServer($server))
             ->with('server', $server)
-            ->with('zones', $zones);
+            ->with('zones', $zones)
+            ->render();
     }
 
     private static function getTemplateNamesForServer(Server $server): array
     {
-        $defaultTemplateName = fn (ServerType $type) => $type == ServerType::Primary
-            ? 'bind-templates::defaults.primary-server'
-            : 'bind-templates::defaults.secondary-server';
-
         return [
             'bind-templates::servers.' . str_replace('.', '_', $server->hostname),
-            $defaultTemplateName($server->type),
+            $server->isPrimary()
+                ? 'bind-templates::defaults.primary-server'
+                : 'bind-templates::defaults.secondary-server',
         ];
     }
 

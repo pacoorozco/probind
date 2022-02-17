@@ -33,7 +33,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int $id The object unique id.
  * @property string $hostname The hostname of this server. Will be used on NS records.
  * @property string $ip_address The IP address of this server. Will be used for glue records.
- * @property ServerType $type The type of this server. Could be 'master' or 'slave'.
+ * @property ServerType $type The type of this server.
  * @property bool $push_updates This flag determines if this server must be pushed with zone files.
  * @property bool $ns_record This flag determines if this server will be included as NS on zone files.
  * @property bool active         This flags determines if this server is active or inactive.
@@ -76,6 +76,11 @@ class Server extends Model
     public function setHostnameAttribute(string $value): void
     {
         $this->attributes['hostname'] = strtolower($value);
+    }
+
+    public function isPrimary(): bool
+    {
+        return $this->type->is(ServerType::Primary);
     }
 
     public function scopeWithPushCapability(Builder $query): Builder
