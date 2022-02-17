@@ -337,7 +337,7 @@ EXPECTEDZONE;
             'active' => true,
         ]);
 
-        for ($i=1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $testResourceRecord = ResourceRecord::factory()->asPTRRecord()->make([
                 'name' => $i,
                 'data' => 'server' . $i . '.example.com.',
