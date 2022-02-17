@@ -4,9 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
+### Added
+- BIND configuration and zone files templating. It allows users to define how specific files are rendered. See [resources/bind-templates/README.md](./resources/bind-templates/README.md). ([#178][i178])
 ### Fixed
 - Bulk update doesn't work. ([#181][i181])
 
+[i178]: https://github.com/pacoorozco/probind/issues/178
 [i181]: https://github.com/pacoorozco/probind/issues/181
 
 ## 1.0.1 - 2022-02-03

@@ -17,10 +17,12 @@
 
 namespace App\Services\Formatters;
 
+use App\Enums\ServerType;
 use App\Models\Server;
 use App\Models\Zone;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\View;
 
 /**
  * BINDFormatter formats the data ensuring compatibility with the BIND format.
@@ -36,7 +38,30 @@ class BINDFormatter
             ->join(PHP_EOL);
     }
 
-    public static function getZoneFileContent(Zone $zone, Carbon $customDate = null): string
+    public static function getConfigurationFileContent(Server $server): string
+    {
+        $zones = ($server->type == 'master')
+            ? Zone::all()
+            : Zone::onlyMasterZones();
+
+        return View::first(BINDFormatter::getTemplateNamesForServer($server))
+            ->with('server', $server)
+            ->with('zones', $zones);
+    }
+
+    private static function getTemplateNamesForServer(Server $server): array
+    {
+        $defaultTemplateName = fn(ServerType $type) => $type == ServerType::Primary
+            ? 'bind-templates::defaults.primary-server'
+            : 'bind-templates::defaults.secondary-server';
+
+        return [
+            'bind-templates::servers.' . str_replace('.', '_', $server->hostname),
+            $defaultTemplateName($server->type),
+        ];
+    }
+
+    public static function getZoneFileContent(Zone $zone): string
     {
         // Get all Name Servers that had to be on NS records
         $nameServers = Server::shouldBePresentAsNameserver()
@@ -48,11 +73,20 @@ class BINDFormatter
             ->get();
 
         // Create file content with a blade view
-        return view('templates.zone')
-            ->with('date', $customDate ?? Carbon::now())
+        return View::first(BINDFormatter::getTemplateNamesForZone($zone))
             ->with('zone', $zone)
             ->with('servers', $nameServers)
             ->with('records', $records)
             ->render();
+    }
+
+    private static function getTemplateNamesForZone(Zone $zone): array
+    {
+        return [
+            'bind-templates::zones.' . str_replace('.', '_',
+                substr($zone->domain, 0, strrpos($zone->domain, "."))
+            ),
+            'bind-templates::defaults.zone',
+        ];
     }
 }

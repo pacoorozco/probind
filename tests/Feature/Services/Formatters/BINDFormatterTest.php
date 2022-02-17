@@ -24,8 +24,9 @@ use App\Models\Server;
 use App\Models\Zone;
 use App\Services\Formatters\BINDFormatter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
+use Spatie\TestTime\TestTime;
 use Tests\TestCase;
 
 class BINDFormatterTest extends TestCase
@@ -34,7 +35,7 @@ class BINDFormatterTest extends TestCase
 
     private string $expected = <<< 'ZONE'
 ;
-; This file has been automatically generated using ProBIND v3 on 2021-11-30 16:38:23.
+; This file has been automatically generated using ProBIND v3.
 
 $ORIGIN example.com.
 $TTL 172800
@@ -68,6 +69,9 @@ ZONE;
         parent::setUp();
 
         $this->setupAppSettings();
+
+        File::copy('tests/testData/bind-templates/custom-zone-template.blade.php',
+            'resources/bind-templates/zones/custom-domain_com.blade.php');
     }
 
     private function setupAppSettings(): void
@@ -86,6 +90,13 @@ ZONE;
             'ssh_default_port' => '22',
             'ssh_default_remote_path' => '/home/probinder/data',
         ]);
+    }
+
+    public function tearDown(): void
+    {
+        File::delete('resources/bind-templates/zones/custom-domain_com.blade.php');
+
+        parent::tearDown();
     }
 
     /** @test */
@@ -116,12 +127,11 @@ ZONE;
     }
 
     /** @test */
-    public function it_returns_a_formatted_zone_file()
+    public function it_returns_a_formatted_zone_file_using_the_default_template()
     {
         $testZone = $this->createTestZone();
-        $customDate = Carbon::create('2021', '11', '30', '16', '38', '23');
 
-        $content = BINDFormatter::getZoneFileContent($testZone, $customDate);
+        $content = BINDFormatter::getZoneFileContent($testZone);
 
         $this->assertEquals($this->expected, $content);
     }
@@ -207,5 +217,29 @@ ZONE;
         $testZone->records()->save($testResourceRecord);
 
         return $testZone;
+    }
+
+    /** @test */
+    public function it_returns_a_formatted_zone_file_using_a_custom_template()
+    {
+        $testZone = Zone::factory()->primary()->create([
+            'domain' => 'custom-domain.com.',
+            'serial' => '2020010100',
+            'custom_settings' => true,
+            'refresh' => 86400,
+            'retry' => 7200,
+            'expire' => 3628800,
+            'negative_ttl' => 7200,
+            'default_ttl' => 172800,
+        ]);
+
+        $expected = <<< 'EXPECTEDZONE'
+This is a custom template for zone: custom-domain.com.
+
+EXPECTEDZONE;
+
+        $content = BINDFormatter::getZoneFileContent($testZone);
+
+        $this->assertEquals($expected, $content);
     }
 }

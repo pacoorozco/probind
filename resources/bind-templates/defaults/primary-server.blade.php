@@ -1,7 +1,17 @@
-// Secondary DNS server - {{ $server->hostname }}
+{{--
+This `primary-server.blade.php` file is used to render the BIND configuration of primary servers.
+
+If you modify this template, it will be used to all primary servers, except if a more specific template exists.
+
+See the README file to know how to modify this template and how to create more specific templates.
+--}}
+
+// Primary DNS server - {{ $server->hostname }}
 
 // List of servers that can make transfer requests.
 acl "xfer" {
+    192.168.194.4;
+    192.168.2.203;
 };
 
 // List of trusted clients that can make revolve requests.
@@ -25,9 +35,9 @@ acl bogusnets {
 };
 
 options {
-    directory "/etc/mapes";
-    pid-file  "/etc/mapes/configuration/named.pid";
-    statistics-file "/etc/mapes/statistics/named.stats";
+    directory "/etc/bind";
+    pid-file  "/etc/bind/configuration/named.pid";
+    statistics-file "/etc/bind/statistics/named.stats";
     // In order to increase performance we disable these statistics
     zone-statistics no;
 
@@ -63,21 +73,26 @@ zone "0.0.127.IN-ADDR.ARPA" {
 
 // Zones not managed by proBIND. Edit the file directly.
 
-include "/etc/mapes/configuration/static-zones.conf";
+include "/etc/bind/configuration/static-zones.conf";
 
-// Zone managed by proBIND. Do not edit any of these files directly.
+// Zones are managed by proBIND. Do not edit any of these files directly.
 
 @foreach($zones as $zone)
 zone "{{ $zone->domain }}" {
-    type slave;
-    file "secondary/{{ $zone->domain }}";
-
-    masters {
-        {{ $master->ip_address }};
-    };
+    @if ($zone->isMasterZone())
+    type master;
+    file "primary/{{ $zone->domain }}";
 
     allow-query {
         any;
     };
+    @else
+    type slave;
+    file "secondary/{{ $zone->domain }}";
+
+    masters {
+        {{ $zone->master }};
+    };
+    @endif
 };
 @endforeach
