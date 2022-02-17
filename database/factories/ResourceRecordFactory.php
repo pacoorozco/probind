@@ -68,4 +68,15 @@ class ResourceRecordFactory extends Factory
             ];
         });
     }
+
+    public function asPTRRecord(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => $this->faker->numberBetween(1, 254),
+                'type' => ResourceRecordType::PTR,
+                'data' => $this->faker->domainWord() . '.' . $this->faker->domainName() . '.',
+            ];
+        });
+    }
 }

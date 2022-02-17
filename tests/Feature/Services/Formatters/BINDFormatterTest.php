@@ -32,7 +32,7 @@ class BINDFormatterTest extends TestCase
 {
     use RefreshDatabase;
 
-    private string $expected = <<< 'ZONE'
+    private string $expectedForwardZoneContent = <<< 'ZONE'
 ;
 ; This file has been automatically generated using ProBIND v3.
 
@@ -63,6 +63,34 @@ www                                      	IN	CNAME	services.example.com.
 
 ZONE;
 
+    private string $expectedReverseZoneContent = <<< 'REVERSEZONE'
+;
+; This file has been automatically generated using ProBIND v3.
+
+$ORIGIN 1.1.10.in-addr.arpa.
+$TTL 172800
+
+@                IN	SOA	dns1.example.com. postmaster.example.com. (
+                                         2020010100 ; Serial (aaaammddvv)
+                                         86400      ; Refresh
+                                         7200       ; Retry
+                                         3628800    ; Expire
+                                         7200       ; Negative TTL
+)
+
+; Name Servers of this zone.
+@                                IN	NS	dns1.example.com.
+@                                IN	NS	dns2.example.com.
+
+; Resource Records.
+1                                        	IN	PTR	server1.example.com.
+2                                        	IN	PTR	server2.example.com.
+3                                        	IN	PTR	server3.example.com.
+4                                        	IN	PTR	server4.example.com.
+5                                        	IN	PTR	server5.example.com.
+
+REVERSEZONE;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -71,6 +99,9 @@ ZONE;
 
         File::copy('tests/testData/bind-templates/custom-zone-template.blade.php',
             'resources/bind-templates/zones/custom-domain_com.blade.php');
+
+        File::copy('tests/testData/bind-templates/custom-zone-template.blade.php',
+            'resources/bind-templates/zones/1_168_192_in-addr_arpa.blade.php');
     }
 
     private function setupAppSettings(): void
@@ -94,6 +125,7 @@ ZONE;
     public function tearDown(): void
     {
         File::delete('resources/bind-templates/zones/custom-domain_com.blade.php');
+        File::delete('resources/bind-templates/zones/1_168_192_in-addr_arpa.blade.php');
 
         parent::tearDown();
     }
@@ -126,13 +158,71 @@ ZONE;
     }
 
     /** @test */
-    public function it_returns_a_formatted_zone_file_using_the_default_template()
+    public function it_returns_a_formatted_zone_file_of_a_forward_zone_using_the_default_template()
     {
         $testZone = $this->createTestZone();
 
         $content = BINDFormatter::getZoneFileContent($testZone);
 
-        $this->assertEquals($this->expected, $content);
+        $this->assertEquals($this->expectedForwardZoneContent, $content);
+    }
+
+    /** @test */
+    public function it_returns_a_formatted_zone_file_of_a_reverse_zone_using_the_default_template()
+    {
+        $testZone = $this->createReverseTestZone();
+
+        $content = BINDFormatter::getZoneFileContent($testZone);
+
+        $this->assertEquals($this->expectedReverseZoneContent, $content);
+    }
+
+    /** @test */
+    public function it_returns_a_formatted_zone_file_of_a_forward_zone_using_a_custom_template()
+    {
+        $testZone = Zone::factory()->primary()->create([
+            'domain' => 'custom-domain.com.',
+            'serial' => '2020010100',
+            'custom_settings' => true,
+            'refresh' => 86400,
+            'retry' => 7200,
+            'expire' => 3628800,
+            'negative_ttl' => 7200,
+            'default_ttl' => 172800,
+        ]);
+
+        $expected = <<< 'EXPECTEDZONE'
+This is a custom template for zone: custom-domain.com.
+
+EXPECTEDZONE;
+
+        $content = BINDFormatter::getZoneFileContent($testZone);
+
+        $this->assertEquals($expected, $content);
+    }
+
+    /** @test */
+    public function it_returns_a_formatted_zone_file_of_a_reverse_zone_using_a_custom_template()
+    {
+        $testZone = Zone::factory()->reverse()->primary()->create([
+            'domain' => '1.168.192.in-addr.arpa.',
+            'serial' => '2020010100',
+            'custom_settings' => true,
+            'refresh' => 86400,
+            'retry' => 7200,
+            'expire' => 3628800,
+            'negative_ttl' => 7200,
+            'default_ttl' => 172800,
+        ]);
+
+        $expected = <<< 'EXPECTEDZONE'
+This is a custom template for zone: 1.168.192.in-addr.arpa.
+
+EXPECTEDZONE;
+
+        $content = BINDFormatter::getZoneFileContent($testZone);
+
+        $this->assertEquals($expected, $content);
     }
 
     private function createTestZone(): Zone
@@ -218,11 +308,10 @@ ZONE;
         return $testZone;
     }
 
-    /** @test */
-    public function it_returns_a_formatted_zone_file_using_a_custom_template()
+    private function createReverseTestZone(): Zone
     {
-        $testZone = Zone::factory()->primary()->create([
-            'domain' => 'custom-domain.com.',
+        $testZone = Zone::factory()->reverse()->primary()->create([
+            'domain' => '1.1.10.in-addr.arpa.',
             'serial' => '2020010100',
             'custom_settings' => true,
             'refresh' => 86400,
@@ -232,13 +321,30 @@ ZONE;
             'default_ttl' => 172800,
         ]);
 
-        $expected = <<< 'EXPECTEDZONE'
-This is a custom template for zone: custom-domain.com.
+        Server::factory()->create([
+            'hostname' => 'dns1.example.com',
+            'ip_address' => '192.168.1.1',
+            'type' => ServerType::Primary,
+            'ns_record' => true,
+            'active' => true,
+        ]);
 
-EXPECTEDZONE;
+        Server::factory()->create([
+            'hostname' => 'dns2.example.com',
+            'ip_address' => '192.168.1.2',
+            'type' => ServerType::Secondary,
+            'ns_record' => true,
+            'active' => true,
+        ]);
 
-        $content = BINDFormatter::getZoneFileContent($testZone);
+        for ($i = 1; $i <= 5; $i++) {
+            $testResourceRecord = ResourceRecord::factory()->asPTRRecord()->make([
+                'name' => $i,
+                'data' => 'server' . $i . '.example.com.',
+            ]);
+            $testZone->records()->save($testResourceRecord);
+        }
 
-        $this->assertEquals($expected, $content);
+        return $testZone;
     }
 }
