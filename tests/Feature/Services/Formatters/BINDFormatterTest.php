@@ -91,6 +91,154 @@ $TTL 172800
 
 REVERSEZONE;
 
+    private string $expectedPrimaryServerConfigurationContent = <<< 'PRIMARYSERVERCONFIGURATION'
+// Primary DNS server - server1.local.
+
+// List of servers that can make transfer requests.
+acl "xfer" {
+    192.168.194.4;
+    192.168.2.203;
+};
+
+// List of trusted clients that can make revolve requests.
+acl "trusted" {
+    localhost;
+    10/8;
+    192.168/16;
+};
+
+// List of bogus clients that are used to do "spoofing attacks". See RFC5735.
+acl bogusnets {
+    0.0.0.0/8;
+    127.0.0.0/8;
+    169.254.0.0/16;
+    172.16.0.0/12;
+    192.0.0.0/24;
+    192.0.2.0/24;
+    192.168.0.0/16;
+    224.0.0.0/4;
+    240.0.0.0/4;
+};
+
+options {
+    directory "/etc/bind";
+    pid-file  "/etc/bind/configuration/named.pid";
+    statistics-file "/etc/bind/statistics/named.stats";
+    // In order to increase performance we disable these statistics
+    zone-statistics no;
+
+    // Increase zone transfer performance.
+    transfer-format many-answers;
+
+    // Maximum time to complete a successful zone transfer.
+    max-transfer-time-in 60;
+
+    // See RFC1035
+    auth-nxdomain no;
+
+    blackhole { bogusnets; };
+
+    allow-transfer { xfer; };
+
+    allow-query { trusted; };
+};
+
+zone "." {
+    type hint;
+    file "cache/cache";
+};
+
+zone "0.0.127.IN-ADDR.ARPA" {
+    type master;
+    file "primary/127.0.0";
+
+    allow-query {
+        any;
+    };
+};
+
+// Zones not managed by proBIND. Edit the file directly.
+
+include "/etc/bind/configuration/static-zones.conf";
+
+// Zones are managed by proBIND. Do not edit any of these files directly.
+
+
+PRIMARYSERVERCONFIGURATION;
+
+    private string $expectedSecondaryServerConfigurationContent = <<< 'SECONDARYSERVERCONFIGURATION'
+// Secondary DNS server - server1.local.
+
+// List of servers that can make transfer requests.
+acl "xfer" {
+};
+
+// List of trusted clients that can make revolve requests.
+acl "trusted" {
+    localhost;
+    10/8;
+    192.168/16;
+};
+
+// List of bogus clients that are used to do "spoofing attacks". See RFC5735.
+acl bogusnets {
+    0.0.0.0/8;
+    127.0.0.0/8;
+    169.254.0.0/16;
+    172.16.0.0/12;
+    192.0.0.0/24;
+    192.0.2.0/24;
+    192.168.0.0/16;
+    224.0.0.0/4;
+    240.0.0.0/4;
+};
+
+options {
+    directory "/etc/bind";
+    pid-file  "/etc/bind/configuration/named.pid";
+    statistics-file "/etc/bind/statistics/named.stats";
+    // In order to increase performance we disable these statistics
+    zone-statistics no;
+
+    // Increase zone transfer performance.
+    transfer-format many-answers;
+
+    // Maximum time to complete a successful zone transfer.
+    max-transfer-time-in 60;
+
+    // See RFC1035
+    auth-nxdomain no;
+
+    blackhole { bogusnets; };
+
+    allow-transfer { xfer; };
+
+    allow-query { trusted; };
+};
+
+zone "." {
+    type hint;
+    file "cache/cache";
+};
+
+zone "0.0.127.IN-ADDR.ARPA" {
+    type master;
+    file "primary/127.0.0";
+
+    allow-query {
+        any;
+    };
+};
+
+// Zones not managed by proBIND. Edit the file directly.
+
+include "/etc/bind/configuration/static-zones.conf";
+
+// Zones are managed by proBIND. Do not edit any of these files directly.
+
+
+SECONDARYSERVERCONFIGURATION;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -102,6 +250,9 @@ REVERSEZONE;
 
         File::copy('tests/testData/bind-templates/custom-zone-template.blade.php',
             'resources/bind-templates/zones/1_168_192_in-addr_arpa.blade.php');
+
+        File::copy('tests/testData/bind-templates/custom-server-template.blade.php',
+            'resources/bind-templates/servers/custom-server_local.blade.php');
     }
 
     private function setupAppSettings(): void
@@ -126,6 +277,7 @@ REVERSEZONE;
     {
         File::delete('resources/bind-templates/zones/custom-domain_com.blade.php');
         File::delete('resources/bind-templates/zones/1_168_192_in-addr_arpa.blade.php');
+        File::delete('resources/bind-templates/servers/custom-server_local.blade.php');
 
         parent::tearDown();
     }
@@ -177,6 +329,46 @@ REVERSEZONE;
         $this->assertEquals($this->expectedReverseZoneContent, $content);
     }
 
+    private function createReverseTestZone(): Zone
+    {
+        $testZone = Zone::factory()->reverse()->primary()->create([
+            'domain' => '1.1.10.in-addr.arpa.',
+            'serial' => '2020010100',
+            'custom_settings' => true,
+            'refresh' => 86400,
+            'retry' => 7200,
+            'expire' => 3628800,
+            'negative_ttl' => 7200,
+            'default_ttl' => 172800,
+        ]);
+
+        Server::factory()->create([
+            'hostname' => 'dns1.example.com',
+            'ip_address' => '192.168.1.1',
+            'type' => ServerType::Primary,
+            'ns_record' => true,
+            'active' => true,
+        ]);
+
+        Server::factory()->create([
+            'hostname' => 'dns2.example.com',
+            'ip_address' => '192.168.1.2',
+            'type' => ServerType::Secondary,
+            'ns_record' => true,
+            'active' => true,
+        ]);
+
+        for ($i = 1; $i <= 5; $i++) {
+            $testResourceRecord = ResourceRecord::factory()->asPTRRecord()->make([
+                'name' => $i,
+                'data' => 'server' . $i . '.example.com.',
+            ]);
+            $testZone->records()->save($testResourceRecord);
+        }
+
+        return $testZone;
+    }
+
     /** @test */
     public function it_returns_a_formatted_zone_file_of_a_forward_zone_using_a_custom_template()
     {
@@ -221,6 +413,52 @@ This is a custom template for zone: 1.168.192.in-addr.arpa.
 EXPECTEDZONE;
 
         $content = BINDFormatter::getZoneFileContent($testZone);
+
+        $this->assertEquals($expected, $content);
+    }
+
+    /** @test */
+    public function it_returns_a_formatted_configuration_file_of_a_primary_server_using_the_default_template()
+    {
+        /** @var Server $testServer */
+        $testServer = Server::factory()->create([
+            'hostname' => 'server1.local.',
+            'type' => ServerType::Primary,
+        ]);
+
+        $content = BINDFormatter::getConfigurationFileContent($testServer);
+
+        $this->assertEquals($this->expectedPrimaryServerConfigurationContent, $content);
+    }
+
+    /** @test */
+    public function it_returns_a_formatted_configuration_file_of_a_secondary_server_using_the_default_template()
+    {
+        /** @var Server $testServer */
+        $testServer = Server::factory()->create([
+            'hostname' => 'server1.local.',
+            'type' => ServerType::Secondary,
+        ]);
+
+        $content = BINDFormatter::getConfigurationFileContent($testServer);
+
+        $this->assertEquals($this->expectedSecondaryServerConfigurationContent, $content);
+    }
+
+    /** @test */
+    public function it_returns_a_formatted_configuration_file_using_a_custom_template()
+    {
+        /** @var Server $testServer */
+        $testServer = Server::factory()->create([
+            'hostname' => 'custom-server.local',
+        ]);
+
+        $expected = <<< 'EXPECTEDCONFIGURATION'
+This is a custom template for server: custom-server.local
+
+EXPECTEDCONFIGURATION;
+
+        $content = BINDFormatter::getConfigurationFileContent($testServer);
 
         $this->assertEquals($expected, $content);
     }
@@ -304,46 +542,6 @@ EXPECTEDZONE;
             'data' => '"v=spf1 ip4:192.0.2.0/24 ip4:198.51.100.123 a -all"',
         ]);
         $testZone->records()->save($testResourceRecord);
-
-        return $testZone;
-    }
-
-    private function createReverseTestZone(): Zone
-    {
-        $testZone = Zone::factory()->reverse()->primary()->create([
-            'domain' => '1.1.10.in-addr.arpa.',
-            'serial' => '2020010100',
-            'custom_settings' => true,
-            'refresh' => 86400,
-            'retry' => 7200,
-            'expire' => 3628800,
-            'negative_ttl' => 7200,
-            'default_ttl' => 172800,
-        ]);
-
-        Server::factory()->create([
-            'hostname' => 'dns1.example.com',
-            'ip_address' => '192.168.1.1',
-            'type' => ServerType::Primary,
-            'ns_record' => true,
-            'active' => true,
-        ]);
-
-        Server::factory()->create([
-            'hostname' => 'dns2.example.com',
-            'ip_address' => '192.168.1.2',
-            'type' => ServerType::Secondary,
-            'ns_record' => true,
-            'active' => true,
-        ]);
-
-        for ($i = 1; $i <= 5; $i++) {
-            $testResourceRecord = ResourceRecord::factory()->asPTRRecord()->make([
-                'name' => $i,
-                'data' => 'server' . $i . '.example.com.',
-            ]);
-            $testZone->records()->save($testResourceRecord);
-        }
 
         return $testZone;
     }
