@@ -29,7 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // bind-templates are used to render the BIND files (zone files, configurations...)
+        $this->app['view']->addNamespace('bind-templates', resource_path() . '/bind-templates');
     }
 
     /**
