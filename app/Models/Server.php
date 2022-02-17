@@ -67,7 +67,7 @@ class Server extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->setDescriptionForEvent(fn(string $eventName) => trans('server/messages.activity.' . $eventName, [
+            ->setDescriptionForEvent(fn (string $eventName) => trans('server/messages.activity.' . $eventName, [
                 'hostname' => $this->hostname,
                 'type' => $this->type,
             ]));
