@@ -89,6 +89,7 @@
         "exclude": [
             "/utils",
             "/.*",
+            "/docs",
             "!/.env.example",
             "webpack.mix.js",
             "package.json"
