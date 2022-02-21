@@ -1,5 +1,13 @@
-baseURL = 'http://example.org/'
+baseURL = 'https://probind.pacoorozco.info/'
 languageCode = 'en-us'
-title = 'ProBIND - Professional DNS management made easy'
+title = 'ProBIND - DNS management made easy'
 
 theme = "hugo-geekdoc"
+
+# Set source repository location. Used for 'Edit page' links.
+geekdocRepo = "https://github.com/pacoorozco/probind"
+
+# Enable 'Edit page' links. Requires 'GeekdocRepo' param and the path must point to the parent directory of
+# the 'content' folder.
+geekdocEditPath = "docs"
+
