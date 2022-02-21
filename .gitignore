@@ -30,3 +30,4 @@ _ide_helper_models.php
 
 # hugo build
 .hugo_build.lock
+/docs/public
