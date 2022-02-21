@@ -33,19 +33,6 @@ ProBIND is not the ultimate solution to DNS management. It fits the needs of tho
 
 See our [CHANGELOG](CHANGELOG.md) file in order to know what changes are implemented in every version.
 
-## Current release
-
-We are working on the 1.x version release which has the following features:
-
-- Based on Laravel 8.x
-- Updated all dependencies to support PHP 8
-- Improved performance (and maintenance)
-- Fixed a lot of bugs
-
-The 1.x version is almost ready, but we want to test it thoroughly.
-
-We encourage you to use the 1.x version and help us to test it.
-
 ## Requirements
 
 * PHP 8+ with `gmp` extension.
