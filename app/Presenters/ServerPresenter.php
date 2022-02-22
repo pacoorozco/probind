@@ -18,6 +18,7 @@ class ServerPresenter extends Presenter
     public function type(): string
     {
         $type = $this->model->type;
+
         return $type->description;
     }
 }
