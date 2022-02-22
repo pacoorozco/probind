@@ -19,9 +19,9 @@ namespace App\Http\Controllers;
 
 use App\Enums\ResourceRecordType;
 use App\Models\ResourceRecord;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
 
 class SearchController extends Controller
