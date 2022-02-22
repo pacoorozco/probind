@@ -18,6 +18,7 @@
 
 namespace Tests\Feature\Models;
 
+use App\Models\ResourceRecord;
 use App\Models\Zone;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -49,5 +50,26 @@ class ZoneTest extends TestCase
         Zone::factory()->count(3)->primary()->create();
 
         $this->assertCount(3, Zone::primaryZones()->get());
+    }
+
+    /** @test */
+    public function it_returns_zero_when_there_are_not_records_created()
+    {
+        $zone = Zone::factory()->create();
+
+        $this->assertEquals(0, $zone->recordsCount());
+    }
+
+    /** @test */
+    public function it_returns_number_of_resource_records()
+    {
+        $zone = Zone::factory()->create();
+
+        ResourceRecord::factory()
+            ->count(3)
+            ->for($zone)
+            ->create();
+
+        $this->assertEquals(3, $zone->recordsCount());
     }
 }

@@ -123,6 +123,11 @@ class Zone extends Model
         return $this->hasMany(ResourceRecord::class);
     }
 
+    public function recordsCount(): int
+    {
+        return $this->records()->count();
+    }
+
     public function getPrimaryNameServerAttribute(): string
     {
         return setting()->get('zone_default_mname');

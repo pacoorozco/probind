@@ -6,7 +6,7 @@ use App\Enums\ResourceRecordType;
 use App\Models\ResourceRecord;
 use Tests\TestCase;
 
-class ResourceRecordPresenter extends TestCase
+class ResourceRecordPresenterTest extends TestCase
 {
     /**
      * @test
