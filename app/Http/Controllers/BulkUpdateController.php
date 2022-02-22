@@ -37,7 +37,9 @@ class BulkUpdateController extends Controller
     {
         $zones = Zone::all();
         foreach ($zones as $zone) {
-            $zone->setPendingChanges();
+            $zone->save([
+                'has_modifications' => true,
+            ]);
         }
 
         return redirect()->route('home')
