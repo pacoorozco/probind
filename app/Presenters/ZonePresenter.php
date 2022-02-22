@@ -40,6 +40,8 @@ class ZonePresenter extends Presenter
 
     public function recordCount(): HtmlString
     {
+        $this->model->loadCount('records');
+
         return new HtmlString((string) __('zone/messages.resource_records', [
             'zone' => $this->model->domain,
             'number' => $this->model->records_count,

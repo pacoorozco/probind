@@ -37,6 +37,10 @@ class ImportZoneController extends Controller
     public function store(ImportZoneRequest $request): View
     {
         $filename = $request->zoneFile()->store('temp');
+        if (false == $filename) {
+            return view('tools.import_zone_result')
+                ->with('output', 'ERROR: Could not write temp file');
+        }
 
         Artisan::call('probind:import', [
             '--domain' => $request->domain(),

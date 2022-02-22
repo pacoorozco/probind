@@ -98,7 +98,12 @@ class ResourceRecordController extends Controller
 
     public function destroy(Zone $zone, ResourceRecord $record): RedirectResponse
     {
-        $zone = $record->zone()->first();
+        $zoneFromResource = $record->zone()->first();
+        if ($zone->isNot($zoneFromResource)) {
+            return redirect()->route('zones.records.index', ['zone' => $zone])
+                ->with('error', __('record/messages.delete.error'));
+        }
+
         $zone->has_modifications = true;
         $zone->save();
 
