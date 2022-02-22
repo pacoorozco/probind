@@ -1,7 +1,7 @@
 ---
 title: "Getting Started"
 date: 2022-02-21T15:01:29Z
-draft: true
+draft: false
 ---
 ## Requirements
 
