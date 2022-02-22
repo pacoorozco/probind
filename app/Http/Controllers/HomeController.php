@@ -33,18 +33,13 @@ class HomeController extends Controller
 
     public function __invoke(): View
     {
-        $serversCount = Server::all()->count();
-        $zonesCount = Zone::all()->count();
-        $resourceRecordsCount = ResourceRecord::all()->count();
-        $usersCount = User::all()->count();
-
         $activities = Activity::all()->sortByDesc('created_at')->sortByDesc('id')->take(10);
 
         return view('dashboard.index')
-            ->with('serversCount', $serversCount)
-            ->with('zonesCount', $zonesCount)
-            ->with('resourceRecordsCount', $resourceRecordsCount)
-            ->with('usersCount', $usersCount)
+            ->with('serversCount', Server::count())
+            ->with('zonesCount', Zone::count())
+            ->with('resourceRecordsCount', ResourceRecord::count())
+            ->with('usersCount', User::count())
             ->with('activities', $activities);
     }
 }
