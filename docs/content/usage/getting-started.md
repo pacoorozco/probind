@@ -3,9 +3,9 @@ title: "Getting Started"
 date: 2022-02-21T15:01:29Z
 draft: false
 ---
-## Requirements
+This page tells you how to get started with the ProBIND app, including installation and basic configuration.
 
-* [Docker](https://www.docker.com/)
+{{< toc >}}
 
 ## How to test ProBIND
 This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND needs. An application server, a web server, a database server.
