@@ -21,7 +21,7 @@ use App\Enums\ResourceRecordType;
 use App\Models\ResourceRecord;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
 
 class SearchController extends Controller
