@@ -47,7 +47,7 @@ class ResourceRecordController extends Controller
 
     public function store(Zone $zone, RecordCreateRequest $request): RedirectResponse
     {
-        $record = ResourceRecord::make([
+        $record = new ResourceRecord([
             'name' => $request->name(),
             'ttl' => $request->ttl(),
             'type' => $request->type(),

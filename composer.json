@@ -44,6 +44,7 @@
         "fakerphp/faker": "^1.19",
         "mockery/mockery": "^1.5.0",
         "nunomaduro/collision": "^5.11.0",
+        "nunomaduro/larastan": "^1.0",
         "phpunit/phpunit": "^9.5.13"
     },
     "autoload": {

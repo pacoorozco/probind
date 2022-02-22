@@ -39,7 +39,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int $id The object unique id.
  * @property string $domain The domain name that represents this zone.
  * @property int $serial The serial number of this zone.
- * @property string $server The IP address of the master server. If it's set to null, this zone is a primary zone.
+ * @property string|null $server The IP address of the master server. If it's set to null, this zone is a primary zone.
  * @property bool $reverse_zone This flag determines if this zone is a .IN-ADDR.ARPA. zone.
  * @property bool $custom_settings This flag determines if this zone has custom timers.
  * @property int $refresh Custom Refresh time value.
@@ -92,7 +92,7 @@ class Zone extends Model
     {
         $rule = new FullyQualifiedDomainName();
 
-        return $rule->passes(null, $domain);
+        return $rule->passes('domain', $domain);
     }
 
     public static function isReverseZoneName(string $domain): bool
@@ -121,6 +121,11 @@ class Zone extends Model
     public function records(): HasMany
     {
         return $this->hasMany(ResourceRecord::class);
+    }
+
+    public function recordsCount(): int
+    {
+        return $this->records()->count();
     }
 
     public function getPrimaryNameServerAttribute(): string

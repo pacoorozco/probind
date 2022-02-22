@@ -36,7 +36,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property ServerType $type The type of this server.
  * @property bool $push_updates This flag determines if this server must be pushed with zone files.
  * @property bool $ns_record This flag determines if this server will be included as NS on zone files.
- * @property bool active         This flags determines if this server is active or inactive.
+ * @property bool $active This flags determines if this server is active or inactive.
  */
 class Server extends Model
 {
