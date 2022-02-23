@@ -10,6 +10,7 @@ geekdocAnchor: false
 <!-- markdownlint-capture -->
 <!-- markdownlint-disable MD033 -->
 
+<span class="badge-placeholder">[![codecov](https://codecov.io/gh/pacoorozco/probind/branch/main/graph/badge.svg?token=QdsFi3KlTY)](https://codecov.io/gh/pacoorozco/probind)</span>
 <span class="badge-placeholder">[![Laravel Version](https://img.shields.io/badge/Laravel-8.x-purple.svg)](https://laravel.com/docs)</span>
 <span class="badge-placeholder">[![License](https://img.shields.io/github/license/pacoorozco/probind.svg)](LICENSE)</span>
 
