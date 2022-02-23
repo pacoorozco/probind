@@ -1,8 +1,6 @@
 # ProBIND - Professional DNS management made easy
 
 [![Testing with MySQL](https://github.com/pacoorozco/probind/actions/workflows/run-tests.yml/badge.svg)](https://github.com/pacoorozco/probind/actions/workflows/run-tests.yml)
-[![Scrutinizer](https://img.shields.io/scrutinizer/g/pacoorozco/probind.svg?style=flat-square)](https://scrutinizer-ci.com/g/pacoorozco/probind)
-[![Code Coverage](https://scrutinizer-ci.com/g/pacoorozco/probind/badges/coverage.png)](https://scrutinizer-ci.com/g/pacoorozco/probind)
 [![License](https://img.shields.io/github/license/pacoorozco/probind.svg)](LICENSE)
 [![Laravel Version](https://img.shields.io/badge/Laravel-8.x-purple.svg)](https://laravel.com/docs)
 [![GitHub release](https://img.shields.io/github/release/pacoorozco/probind.svg?style=flat-square)](https://github.com/pacoorozco/probind/releases)
