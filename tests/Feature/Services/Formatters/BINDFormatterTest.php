@@ -283,9 +283,10 @@ SECONDARYSERVERCONFIGURATION;
     }
 
     /** @test */
-    public function it_returns_the_deleted_zones_file_content()
+    public function it_returns_the_deleted_zones_file_content(): void
     {
-        $zones = Zone::factory()->count(3)->primary()->create();
+        Zone::factory()->count(3)->primary()->create();
+        $zones = Zone::all();
 
         $content = BINDFormatter::getDeletedZonesFileContent($zones);
 
@@ -300,7 +301,7 @@ SECONDARYSERVERCONFIGURATION;
     }
 
     /** @test */
-    public function it_returns_empty_deleted_zones_file_content_when_zones_are_empty()
+    public function it_returns_empty_deleted_zones_file_content_when_zones_are_empty(): void
     {
         $zones = new Collection();
 
@@ -310,7 +311,7 @@ SECONDARYSERVERCONFIGURATION;
     }
 
     /** @test */
-    public function it_returns_a_formatted_zone_file_of_a_forward_zone_using_the_default_template()
+    public function it_returns_a_formatted_zone_file_of_a_forward_zone_using_the_default_template(): void
     {
         $testZone = $this->createTestZone();
 
@@ -320,7 +321,7 @@ SECONDARYSERVERCONFIGURATION;
     }
 
     /** @test */
-    public function it_returns_a_formatted_zone_file_of_a_reverse_zone_using_the_default_template()
+    public function it_returns_a_formatted_zone_file_of_a_reverse_zone_using_the_default_template(): void
     {
         $testZone = $this->createReverseTestZone();
 
@@ -370,7 +371,7 @@ SECONDARYSERVERCONFIGURATION;
     }
 
     /** @test */
-    public function it_returns_a_formatted_zone_file_of_a_forward_zone_using_a_custom_template()
+    public function it_returns_a_formatted_zone_file_of_a_forward_zone_using_a_custom_template(): void
     {
         $testZone = Zone::factory()->primary()->create([
             'domain' => 'custom-domain.com.',
@@ -394,7 +395,7 @@ EXPECTEDZONE;
     }
 
     /** @test */
-    public function it_returns_a_formatted_zone_file_of_a_reverse_zone_using_a_custom_template()
+    public function it_returns_a_formatted_zone_file_of_a_reverse_zone_using_a_custom_template(): void
     {
         $testZone = Zone::factory()->reverse()->primary()->create([
             'domain' => '1.168.192.in-addr.arpa.',
@@ -418,7 +419,7 @@ EXPECTEDZONE;
     }
 
     /** @test */
-    public function it_returns_a_formatted_configuration_file_of_a_primary_server_using_the_default_template()
+    public function it_returns_a_formatted_configuration_file_of_a_primary_server_using_the_default_template(): void
     {
         /** @var Server $testServer */
         $testServer = Server::factory()->create([
@@ -432,7 +433,7 @@ EXPECTEDZONE;
     }
 
     /** @test */
-    public function it_returns_a_formatted_configuration_file_of_a_secondary_server_using_the_default_template()
+    public function it_returns_a_formatted_configuration_file_of_a_secondary_server_using_the_default_template(): void
     {
         /** @var Server $testServer */
         $testServer = Server::factory()->create([
@@ -446,7 +447,7 @@ EXPECTEDZONE;
     }
 
     /** @test */
-    public function it_returns_a_formatted_configuration_file_using_a_custom_template()
+    public function it_returns_a_formatted_configuration_file_using_a_custom_template(): void
     {
         /** @var Server $testServer */
         $testServer = Server::factory()->create([

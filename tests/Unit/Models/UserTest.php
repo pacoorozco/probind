@@ -27,7 +27,7 @@ class UserTest extends TestCase
      * @test
      * @dataProvider username()
      */
-    public function username_is_lowercase(string $testUsername, string $want)
+    public function username_is_lowercase(string $testUsername, string $want): void
     {
         /** @var User $user */
         $user = User::factory()->make([

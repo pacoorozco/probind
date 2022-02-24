@@ -17,31 +17,23 @@
  *
  */
 
-namespace App\Providers;
+namespace App\Presenters;
 
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\ServiceProvider;
+use App\Models\User;
+use Illuminate\Support\HtmlString;
+use Laracodes\Presenter\Presenter;
 
-class AppServiceProvider extends ServiceProvider
+class UserPresenter extends Presenter
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        // bind-templates are used to render the BIND files (zone files, configurations...)
-        View::addNamespace('bind-templates', resource_path() . '/bind-templates');
-    }
+    /** @var User */
+    protected $model;
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function activeAsBadge(): HtmlString
     {
-        //
+        if ($this->model->active) {
+            return new HtmlString('<span class="badge badge-success">' . trans('general.enabled') . '</span>');
+        }
+
+        return new HtmlString('<span class="badge badge-secondary">' . trans('general.disabled') . '</span>');
     }
 }

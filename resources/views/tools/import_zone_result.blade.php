@@ -28,6 +28,11 @@
 
 {{-- Content --}}
 @section('content')
+
+    <!-- Notifications -->
+    @include('partials.notifications')
+    <!-- ./ notifications -->
+
     <div class="box">
         <div class="box-header with-border">
             <h3 class="box-title">{{ __('tools/title.import_zone') }}</h3>

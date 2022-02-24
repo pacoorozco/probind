@@ -28,7 +28,7 @@ class ZoneTest extends TestCase
      * @test
      * @dataProvider domainNamesDataSet()
      */
-    public function domain_name_is_lowercase(string $testDomainName, string $want)
+    public function domain_name_is_lowercase(string $testDomainName, string $want): void
     {
         /** @var Zone $zone */
         $zone = Zone::factory()->make([
@@ -111,7 +111,7 @@ class ZoneTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_true_on_master_zones()
+    public function it_returns_true_on_master_zones(): void
     {
         /** @var Zone $zone */
         $zone = Zone::factory()->primary()->make();
@@ -120,7 +120,7 @@ class ZoneTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_false_on_secondary_zones()
+    public function it_returns_false_on_secondary_zones(): void
     {
         /** @var Zone $zone */
         $zone = Zone::factory()->secondary()->make();
@@ -129,7 +129,7 @@ class ZoneTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_proper_zone_type_on_primary_zones()
+    public function it_returns_proper_zone_type_on_primary_zones(): void
     {
         /** @var Zone $zone */
         $zone = Zone::factory()->primary()->make();
@@ -138,7 +138,7 @@ class ZoneTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_proper_zone_type_on_secondary_zones()
+    public function it_returns_proper_zone_type_on_secondary_zones(): void
     {
         /** @var Zone $zone */
         $zone = Zone::factory()->secondary()->make();

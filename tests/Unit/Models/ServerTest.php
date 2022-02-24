@@ -27,7 +27,7 @@ class ServerTest extends TestCase
      * @test
      * @dataProvider hostnames()
      */
-    public function hostname_is_lowercase(string $testHostname, string $want)
+    public function hostname_is_lowercase(string $testHostname, string $want): void
     {
         /** @var Server $server */
         $server = Server::factory()->make([

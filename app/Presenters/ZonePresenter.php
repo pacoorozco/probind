@@ -1,4 +1,21 @@
 <?php
+/*
+ * Copyright (c) 2016-2022 Paco Orozco <paco@pacoorozco.info>
+ *
+ * This file is part of ProBIND v3.
+ *
+ * ProBIND v3 is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or any later version.
+ *
+ * ProBIND v3 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with ProBIND v3. If not,
+ * see <https://www.gnu.org/licenses/>.
+ *
+ */
 
 namespace App\Presenters;
 
@@ -13,34 +30,34 @@ class ZonePresenter extends Presenter
 
     public function statusBadge(): HtmlString
     {
-        $badge = (true === $this->model->has_modifications)
-            ? '<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> ' . (string) __('zone/model.status_list.unsynced') . '</p>'
-            : '<p class="text-success"><i class="fa fa-check-circle"></i> ' . (string) __('zone/model.status_list.synced') . '</p>';
+        if ($this->model->has_modifications) {
+            return new HtmlString('<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> ' . trans('zone/model.status_list.unsynced') . '</p>');
+        }
 
-        return new HtmlString($badge);
+        return new HtmlString('<p class="text-success"><i class="fa fa-check-circle"></i> ' . trans('zone/model.status_list.synced') . '</p>');
     }
 
     public function statusIcon(): HtmlString
     {
-        $badge = (true === $this->model->has_modifications)
-            ? '<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> ' . (string) __('general.yes') . '</p>'
-            : '<p class="text-success"><i class="fa fa-check-circle"></i> ' . (string) __('general.no') . '</p>';
+        if ($this->model->has_modifications) {
+            return new HtmlString('<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> ' . trans('general.yes') . '</p>');
+        }
 
-        return new HtmlString($badge);
+        return new HtmlString('<p class="text-success"><i class="fa fa-check-circle"></i> ' . trans('general.no') . '</p>');
     }
 
     public function customSettings(): HtmlString
     {
-        $alert = (true === $this->model->custom_settings)
-            ? '<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> ' . (string) __('zone/messages.settings.custom') . '</p>'
-            : '<p class="text-primary"><i class="fa fa-info-circle"></i> ' . (string) __('zone/messages.settings.default') . '</p>';
+        if ($this->model->custom_settings) {
+            return new HtmlString('<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> ' . trans('zone/messages.settings.custom') . '</p>');
+        }
 
-        return new HtmlString($alert);
+        return new HtmlString('<p class="text-primary"><i class="fa fa-info-circle"></i> ' . trans('zone/messages.settings.default') . '</p>');
     }
 
     public function recordCount(): HtmlString
     {
-        return new HtmlString((string) __('zone/messages.resource_records', [
+        return new HtmlString(trans('zone/messages.resource_records', [
             'zone' => $this->model->domain,
             'number' => $this->model->recordsCount(),
         ]));
