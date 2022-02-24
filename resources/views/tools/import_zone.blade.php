@@ -30,6 +30,11 @@
 
 {{-- Content --}}
 @section('content')
+
+    <!-- Notifications -->
+    @include('partials.notifications')
+    <!-- ./ notifications -->
+
     <div class="box box-warning">
         <div class="box-header with-border">
             <h3 class="box-title">{{ __('tools/title.import_zone') }}</h3>
@@ -50,11 +55,11 @@
                 </div>
                 <!-- ./ domain -->
 
-                <div class="form-group {{ $errors->has('domain') ? 'has-error' : '' }}">
+                <div class="form-group {{ $errors->has('zonefile') ? 'has-error' : '' }}">
                     {!! Form::label('zonefile', __('tools/messages.zonefile'), array('class' => 'control-label required')) !!}
                     <div class="controls">
                         {!! Form::file('zonefile', array('required' => 'required')) !!}
-                        <span class="help-block">{{ $errors->first('domain', ':message') }}</span>
+                        <span class="help-block">{{ $errors->first('zonefile', ':message') }}</span>
                     </div>
                 </div>
 
