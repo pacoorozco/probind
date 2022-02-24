@@ -27,7 +27,7 @@ class ResourceRecordTest extends TestCase
      * @test
      * @dataProvider names()
      */
-    public function name_is_lowercase(string $testName, string $want)
+    public function name_is_lowercase(string $testName, string $want): void
     {
         /** @var ResourceRecord $rr */
         $rr = ResourceRecord::factory()->make([

@@ -53,12 +53,12 @@ class EnvironmentRepositoryTest extends TestCase
         }
     }
 
-    public function testEnvironmentRepositoryFileIsCreated()
+    public function testEnvironmentRepositoryFileIsCreated(): void
     {
         $this->assertFileExists($this->filename);
     }
 
-    public function testSetDatabaseSettingsFailure()
+    public function testSetDatabaseSettingsFailure(): void
     {
         // Missing two connection settings.
         $this->assertFalse($this->environmentRepository->SetDatabaseSetting([
@@ -67,7 +67,7 @@ class EnvironmentRepositoryTest extends TestCase
         ]));
     }
 
-    public function testSetDatabaseSettingsSuccess()
+    public function testSetDatabaseSettingsSuccess(): void
     {
         $expectedConnectionSettings = [
             'database' => 'database_value_test',
