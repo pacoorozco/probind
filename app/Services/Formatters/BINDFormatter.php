@@ -1,18 +1,20 @@
 <?php
 /*
- * SSH Access Manager - SSH keys management solution.
+ * Copyright (c) 2016-2022 Paco Orozco <paco@pacoorozco.info>
  *
- * Copyright (c) 2017 - 2021 by Paco Orozco <paco@pacoorozco.info>
+ * This file is part of ProBIND v3.
  *
- *  This file is part of some open source application.
+ * ProBIND v3 is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or any later version.
  *
- *  Licensed under GNU General Public License 3.0.
- *  Some rights reserved. See LICENSE, AUTHORS.
+ * ProBIND v3 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU General Public License for more details.
  *
- *  @author      Paco Orozco <paco@pacoorozco.info>
- *  @copyright   2017 - 2021 Paco Orozco
- *  @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
- *  @link        https://github.com/pacoorozco/ssham
+ * You should have received a copy of the GNU General Public License along with ProBIND v3. If not,
+ * see <https://www.gnu.org/licenses/>.
+ *
  */
 
 namespace App\Services\Formatters;
@@ -79,10 +81,12 @@ class BINDFormatter
 
     private static function getTemplateNamesForZone(Zone $zone): array
     {
+        $domain = str_ends_with($zone->domain, '.')
+            ? substr($zone->domain, 0, -1)
+            : $zone->domain;
+
         return [
-            'bind-templates::zones.' . str_replace('.', '_',
-                substr($zone->domain, 0, strrpos($zone->domain, '.'))
-            ),
+            'bind-templates::zones.' . str_replace('.', '_', $domain),
             'bind-templates::defaults.zone',
         ];
     }
