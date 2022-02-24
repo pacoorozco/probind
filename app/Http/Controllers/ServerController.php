@@ -19,7 +19,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Helper;
 use App\Http\Requests\ServerCreateRequest;
 use App\Http\Requests\ServerUpdateRequest;
 use App\Models\Server;

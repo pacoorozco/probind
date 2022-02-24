@@ -58,6 +58,7 @@ class ImportZoneRequest extends FormRequest
         if ($this->file('zonefile') instanceof UploadedFile) {
             return $this->file('zonefile');
         }
+
         return null;
     }
 }
