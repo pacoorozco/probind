@@ -26,7 +26,7 @@ class OnlyAjax
 {
     public function handle(Request $request, Closure $next): mixed
     {
-        if (!$request->ajax()) {
+        if (! $request->ajax()) {
             abort(403);
         }
 

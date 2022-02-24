@@ -40,7 +40,7 @@ class ImportZoneController extends Controller
     {
         // $filename could be false (if error) or null (if submitted file was wrong).
         $filename = $request->zoneFile()?->store('temp');
-        if (!is_string($filename)) {
+        if (! is_string($filename)) {
             return view('tools.import_zone_result')
                 ->with('output', 'ERROR: Could not write import the zone file');
         }

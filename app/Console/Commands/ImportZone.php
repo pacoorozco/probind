@@ -42,15 +42,17 @@ class ImportZone extends Command
     public function handle(): int
     {
         $domain = $this->option('domain');
-        if (!is_string($domain)) {
+        if (! is_string($domain)) {
             $this->error('--domain option is not valid.');
+
             return self::ERROR_INVALID_PARAMETER;
         }
         $domain = $this->ensureFQDN($domain);
 
         $filename = $this->option('file');
-        if (!is_string($filename)) {
+        if (! is_string($filename)) {
             $this->error('--file option is not valid.');
+
             return self::ERROR_INVALID_PARAMETER;
         }
 
@@ -101,7 +103,7 @@ class ImportZone extends Command
 
     private function ensureFQDN(string $domain): string
     {
-        return (!str_ends_with($domain, '.')) ? $domain . '.' : $domain;
+        return (! str_ends_with($domain, '.')) ? $domain . '.' : $domain;
     }
 
     /**
@@ -109,7 +111,6 @@ class ImportZone extends Command
      *
      * @param  string  $domain
      * @param  string  $filename
-     *
      * @return \Badcow\DNS\Zone
      *
      * @throws \Badcow\DNS\Parser\ParseException
@@ -120,6 +121,7 @@ class ImportZone extends Command
         if (false === $content) {
             throw new ParseException();
         }
+
         return Parser\Parser::parse($domain, $content);
     }
 }
