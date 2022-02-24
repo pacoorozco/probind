@@ -19,26 +19,14 @@
 
 namespace App\Presenters;
 
-use App\Models\Server;
+use App\Models\User;
 use Illuminate\Support\HtmlString;
 use Laracodes\Presenter\Presenter;
 
-class ServerPresenter extends Presenter
+class UserPresenter extends Presenter
 {
-    /** @var Server */
+    /** @var User */
     protected $model;
-
-    public function asString(): string
-    {
-        return sprintf("%-32s IN\tNS\t%s.", '@', $this->model->hostname);
-    }
-
-    public function type(): string
-    {
-        $type = $this->model->type;
-
-        return $type->description;
-    }
 
     public function activeAsBadge(): HtmlString
     {

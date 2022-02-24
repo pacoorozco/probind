@@ -1,26 +1,29 @@
 <?php
-/**
- * ProBIND v3 - Professional DNS management made easy.
+/*
+ * Copyright (c) 2016-2022 Paco Orozco <paco@pacoorozco.info>
  *
- * Copyright (c) 2016 by Paco Orozco <paco@pacoorozco.info>
+ * This file is part of ProBIND v3.
  *
- * This file is part of some open source application.
+ * ProBIND v3 is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or any later version.
  *
- * Licensed under GNU General Public License 3.0.
- * Some rights reserved. See LICENSE, AUTHORS.
+ * ProBIND v3 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU General Public License for more details.
  *
- * @author      Paco Orozco <paco@pacoorozco.info>
- * @copyright   2016 Paco Orozco
- * @license     GPL-3.0 <http://spdx.org/licenses/GPL-3.0>
+ * You should have received a copy of the GNU General Public License along with ProBIND v3. If not,
+ * see <https://www.gnu.org/licenses/>.
  *
- * @link        https://github.com/pacoorozco/probind
  */
 
 namespace App\Models;
 
+use App\Presenters\UserPresenter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laracodes\Presenter\Traits\Presentable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -39,6 +42,9 @@ class User extends Authenticatable
     use Notifiable;
     use LogsActivity;
     use HasFactory;
+    use Presentable;
+
+    protected string $presenter = UserPresenter::class;
 
     protected $table = 'users';
 
@@ -67,7 +73,7 @@ class User extends Authenticatable
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->setDescriptionForEvent(fn (string $eventName) => trans('user/messages.activity.' . $eventName, [
+            ->setDescriptionForEvent(fn(string $eventName) => trans('user/messages.activity.' . $eventName, [
                 'username' => $this->username,
             ]));
     }
