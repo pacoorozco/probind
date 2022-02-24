@@ -86,12 +86,11 @@ class EnvironmentRepository
      * ];
      *
      * @param  array  $connectionSettings
-     *
      * @return bool
      */
     public function setDatabaseSetting(array $connectionSettings): bool
     {
-        if (!Arr::has($connectionSettings, ['database', 'username', 'password', 'host'])) {
+        if (! Arr::has($connectionSettings, ['database', 'username', 'password', 'host'])) {
             return false;
         }
 

@@ -110,5 +110,4 @@ class ImportZoneTest extends TestCase
 
         $this->assertEquals(ImportZone::ERROR_INVALID_PARAMETER, $errorCode);
     }
-
 }
