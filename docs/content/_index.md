@@ -1,10 +1,14 @@
 ---
-title: "Documentation"
-date: 2022-02-21T15:00:14Z
-draft: false
+title: "ProBIND v3"
+keywords: ["dns", "dns management", "bind", "dns-management"]
+description: "ProBIND is a web application designed for managing the DNS zones for servers running the ISC BIND DNS software."
+weight: 200
+date: "2022-03-01"
+lastmod: "2022-03-01"
 geekdocNav: false
 geekdocAlign: center
 geekdocAnchor: false
+geekdocBreadcrumb: false
 ---
 
 <!-- markdownlint-capture -->
@@ -16,11 +20,11 @@ geekdocAnchor: false
 
 <!-- markdownlint-restore -->
 
-**ProBIND** is a web application designed for managing the DNS zones for servers running the [ISC BIND DNS](https://www.isc.org/downloads/bind/) software. 
+**ProBIND v3** is a web application designed for managing the DNS zones for servers running the [ISC BIND DNS](https://www.isc.org/downloads/bind/) software. 
 
 It works best for companies that need to manage a medium-sized pool of domains across a set of servers.
 
-{{< button size="large" relref="usage/getting-started/" >}}Getting Started {{< icon "gdoc_arrow_right_alt" >}}{{< /button >}}
+{{< button size="large" relref="guide/getting-started/" >}}Getting Started {{< icon "gdoc_arrow_right_alt" >}}{{< /button >}}
 
 ## Video overview
 
