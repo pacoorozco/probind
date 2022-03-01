@@ -24,7 +24,7 @@
     "require": {
         "php": "^8.0.2",
         "badcow/dns": "^4.1.1",
-        "bensampo/laravel-enum": "^3.4.2",
+        "bensampo/laravel-enum": "^4.2.0",
         "fideloper/proxy": "^4.4.1",
         "fruitcake/laravel-cors": "^2.0.5",
         "guilhermegonzaga/presenter": "^1.0.5",
