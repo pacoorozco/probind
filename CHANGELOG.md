@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 ## Unreleased
 ### Added
 - BIND configuration and zone files templating. It allows users to define how specific files are rendered. See [resources/bind-templates/README.md](./resources/bind-templates/README.md). ([#178][i178])
+### Changed
+- Bump `bensampo/laravel-enum` to 4.2.0.
+- Bump `laravelcollective/html` to 6.3.0.
+- Bump `guilhermegonzaga/presenter` to 1.0.6.
+- Update dev dependencies
+  - Bump `brianium/paratest` to 6.4.3.
+  - Bump `phpunit/phpunit` to 9.5.16.
 ### Fixed
 - Bulk update doesn't work. ([#181][i181])
 
