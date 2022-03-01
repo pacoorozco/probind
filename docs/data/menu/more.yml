@@ -1,0 +1,10 @@
+---
+more:
+  - name: Releases
+    ref: "https://github.com/pacoorozco/probind/releases"
+    external: true
+    icon: "gdoc_download"
+  - name: "View Source"
+    ref: "https://github.com/pacoorozco/probind"
+    external: true
+    icon: "gdoc_github"

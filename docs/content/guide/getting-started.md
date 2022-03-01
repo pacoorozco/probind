@@ -1,9 +1,11 @@
 ---
-title: "Getting Started"
-date: 2022-02-21T15:01:29Z
-draft: false
+title: "Getting started"
+description: "Quick start and guides for installing probind on your preferred operating system."
+weight: 100
+date: "2022-03-01"
+lastmod: "2022-03-01"
 ---
-This page tells you how to get started with the ProBIND app, including installation and basic configuration.
+This page tells you how to get started with the **ProBIND v3** app, including installation and basic configuration.
 
 {{< toc >}}
 
