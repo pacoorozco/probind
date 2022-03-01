@@ -2,6 +2,8 @@ name: PHPstan
 
 on:
   push:
+    branches:
+      - 'main'
     paths:
       - '**.php'
       - 'phpstan.neon'
@@ -10,13 +12,13 @@ on:
       - '**.php'
       - 'phpstan.neon'
 
-
 jobs:
   phpstan:
     name: phpstan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
