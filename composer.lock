@@ -885,21 +885,21 @@
         },
         {
             "name": "guilhermegonzaga/presenter",
-            "version": "1.0.5",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guilhermegonzaga/presenter.git",
-                "reference": "ca1c0d6b9dcbe854493afc0b9b566e940f69b524"
+                "reference": "26bdcd65b917f37bfc48b66b306ed4111a61e1d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guilhermegonzaga/presenter/zipball/ca1c0d6b9dcbe854493afc0b9b566e940f69b524",
-                "reference": "ca1c0d6b9dcbe854493afc0b9b566e940f69b524",
+                "url": "https://api.github.com/repos/guilhermegonzaga/presenter/zipball/26bdcd65b917f37bfc48b66b306ed4111a61e1d1",
+                "reference": "26bdcd65b917f37bfc48b66b306ed4111a61e1d1",
                 "shasum": ""
             },
             "require": {
-                "illuminate/database": "^5.0|^6.0|^7.0|^8.0",
-                "illuminate/support": "^5.0|^6.0|^7.0|^8.0",
+                "illuminate/database": "^5.0|^6.0|^7.0|^8.0|^9.0",
+                "illuminate/support": "^5.0|^6.0|^7.0|^8.0|^9.0",
                 "php": ">=5.4.0"
             },
             "require-dev": {
@@ -930,9 +930,9 @@
             ],
             "support": {
                 "issues": "https://github.com/guilhermegonzaga/presenter/issues",
-                "source": "https://github.com/guilhermegonzaga/presenter/tree/1.0.5"
+                "source": "https://github.com/guilhermegonzaga/presenter/tree/1.0.6"
             },
-            "time": "2020-09-18T00:07:58+00:00"
+            "time": "2022-02-11T13:30:20+00:00"
         },
         {
             "name": "hanneskod/classtools",
