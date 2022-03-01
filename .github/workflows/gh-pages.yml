@@ -6,7 +6,11 @@ on:
       - main
     paths:
       - 'docs/**'
-      - '.github/workflows/*.yml'
+      - '.github/workflows/gh-pages.yml'
+  pull_request:
+    paths:
+      - 'docs/**'
+      - '.github/workflows/gh-pages.yml'
 
 jobs:
   deploy:
