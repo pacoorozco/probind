@@ -26,7 +26,7 @@
         "badcow/dns": "^4.1.1",
         "bensampo/laravel-enum": "^4.2.0",
         "fideloper/proxy": "^4.4.1",
-        "fruitcake/laravel-cors": "^2.0.5",
+        "fruitcake/laravel-cors": "^3.0.0",
         "guilhermegonzaga/presenter": "^1.0.5",
         "larapacks/setting": "^3.0",
         "laravel/framework": "^8.82.0",
