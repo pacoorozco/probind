@@ -10,9 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 - Bump `bensampo/laravel-enum` to 4.2.0.
 - Bump `laravelcollective/html` to 6.3.0.
 - Bump `guilhermegonzaga/presenter` to 1.0.6.
-- Update dev dependencies
-    - Bump `brianium/paratest` to 6.4.3.
-    - Bump `phpunit/phpunit` to 9.5.16.
+- Bump `laravel/ui` to 3.4.5.
+- Bump `facade/ignition` to 2.17.5.
+- Bump `larapacks/setting` to 3.0.1.
+- Bump `fruitcake/laravel-cors` to 3.0.0.
 ### Fixed
 - Bulk update doesn't work. ([#181][i181])
 
