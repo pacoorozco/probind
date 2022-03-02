@@ -1051,25 +1051,25 @@
         },
         {
             "name": "larapacks/setting",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/larapacks/setting.git",
-                "reference": "bcc508761a5a4e5ddbdeb11ae4d8de7d01cf4d83"
+                "reference": "3f25c5b9a1a567664ac320c29b4419d9fac56829"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/larapacks/setting/zipball/bcc508761a5a4e5ddbdeb11ae4d8de7d01cf4d83",
-                "reference": "bcc508761a5a4e5ddbdeb11ae4d8de7d01cf4d83",
+                "url": "https://api.github.com/repos/larapacks/setting/zipball/3f25c5b9a1a567664ac320c29b4419d9fac56829",
+                "reference": "3f25c5b9a1a567664ac320c29b4419d9fac56829",
                 "shasum": ""
             },
             "require": {
-                "illuminate/database": "^6.0|^7.0|^8.0",
+                "illuminate/database": "^5.6|^6.0|^7.0|^8.0|^9.0",
                 "php": ">=7.2"
             },
             "require-dev": {
-                "orchestra/testbench": "~4.0|~5.0",
-                "phpunit/phpunit": "~8.0|~9.0"
+                "orchestra/testbench": "^3.7|^4.0|^5.0|^6.0|^7.0",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0"
             },
             "type": "project",
             "extra": {
@@ -1102,9 +1102,9 @@
             ],
             "support": {
                 "issues": "https://github.com/larapacks/setting/issues",
-                "source": "https://github.com/larapacks/setting/tree/v3.0.0"
+                "source": "https://github.com/larapacks/setting/tree/v3.0.1"
             },
-            "time": "2020-09-09T17:26:17+00:00"
+            "time": "2022-02-11T15:16:00+00:00"
         },
         {
             "name": "laravel/framework",
