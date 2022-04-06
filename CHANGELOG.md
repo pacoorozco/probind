@@ -4,16 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
+
+## 1.1.0 - 2022-04-06
+
 ### Added
 - BIND configuration and zone files templating. It allows users to define how specific files are rendered. See [resources/bind-templates/README.md](./resources/bind-templates/README.md). ([#178][i178])
 ### Changed
-- Bump `bensampo/laravel-enum` to 4.2.0.
-- Bump `laravelcollective/html` to 6.3.0.
-- Bump `guilhermegonzaga/presenter` to 1.0.6.
-- Bump `laravel/ui` to 3.4.5.
-- Bump `facade/ignition` to 2.17.5.
-- Bump `larapacks/setting` to 3.0.1.
-- Bump `fruitcake/laravel-cors` to 3.0.0.
+- Updated dependencies to fix security vulnerabilities.
 ### Fixed
 - Bulk update doesn't work. ([#181][i181])
 
