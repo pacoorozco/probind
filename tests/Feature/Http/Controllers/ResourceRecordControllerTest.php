@@ -184,7 +184,7 @@ class ResourceRecordControllerTest extends TestCase
 
         $response->assertRedirect(route('zones.records.index', $zone));
         $response->assertSessionHas('success');
-        $this->assertDeleted($testResourceRecord);
+        $this->assertModelMissing($testResourceRecord);
     }
 
     /** @test */

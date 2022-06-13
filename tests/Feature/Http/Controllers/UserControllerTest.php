@@ -160,7 +160,7 @@ class UserControllerTest extends TestCase
 
         $response->assertSessionHas('success');
         $response->assertRedirect(route('users.index'));
-        $this->assertDeleted($testUser);
+        $this->assertModelMissing($testUser);
     }
 
     /** @test */
