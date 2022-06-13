@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 ## Unreleased
 
+## 1.2.0 - 2022-06-13
+
+
 ### Changed
 - **Important**: This application has upgraded to [Laravel 9.x](https://laravel.com/docs). ([#248][i248])
 
