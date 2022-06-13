@@ -24,27 +24,26 @@
     "require": {
         "php": "^8.0.2",
         "badcow/dns": "^4.1.1",
-        "bensampo/laravel-enum": "^4.2.0",
-        "fideloper/proxy": "^4.4.1",
+        "bensampo/laravel-enum": "^5.3.0",
         "fruitcake/laravel-cors": "^3.0.0",
         "guilhermegonzaga/presenter": "^1.0.6",
         "larapacks/setting": "^3.0.1",
-        "laravel/framework": "^8.83.6",
+        "laravel/framework": "^9.16.0",
         "laravel/ui": "^3.4.5",
         "laravelcollective/html": "^6.3.0",
         "pacoorozco/openssh": "^0.2.1",
-        "phpseclib/phpseclib": "^3.0.13",
-        "spatie/laravel-activitylog": "^4.4.2",
-        "yajra/laravel-datatables-oracle": "^9.19.1"
+        "phpseclib/phpseclib": "^3.0.14",
+        "spatie/laravel-activitylog": "^4.5.3",
+        "yajra/laravel-datatables-oracle": "^10.0.7"
     },
     "require-dev": {
         "brianium/paratest": "^6.4.4",
-        "doctrine/dbal": "^3.3.4",
-        "facade/ignition": "^2.17.5",
-        "fakerphp/faker": "^1.19",
+        "doctrine/dbal": "^3.3.6",
+        "spatie/laravel-ignition": "^1.2.3",
+        "fakerphp/faker": "^1.19.0",
         "mockery/mockery": "^1.5.0",
-        "nunomaduro/collision": "^5.11.0",
-        "nunomaduro/larastan": "^1.0.3",
+        "nunomaduro/collision": "^6.2.0",
+        "nunomaduro/larastan": "^2.1.8",
         "phpunit/phpunit": "^9.5.20"
     },
     "autoload": {
