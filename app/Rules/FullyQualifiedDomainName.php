@@ -14,6 +14,10 @@ class FullyQualifiedDomainName implements Rule
 {
     public function passes($attribute, $value): bool
     {
+        if ('.' === $value) {
+            return false;
+        }
+
         return Validator::fullyQualifiedDomainName($value);
     }
 
