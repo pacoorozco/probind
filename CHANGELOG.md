@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 ## Unreleased
 
+### Changed
+- **Important**: This application has upgraded to [Laravel 9.x](https://laravel.com/docs). ([#248][i248])
+
+### Removed
+- Support for configuring environment variables for [Trusted Proxies](https://laravel.com/docs/9.x/requests#configuring-trusted-proxies). You can't configure it neither from the `.env` nor `trustedproxies.php`.
+
+[i248]: https://github.com/pacoorozco/probind/issues/248
+
 ## 1.1.0 - 2022-04-06
 
 ### Added
