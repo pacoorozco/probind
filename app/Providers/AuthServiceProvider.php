@@ -27,18 +27,20 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * The policy mappings for the application.
      *
-     * @var array
+     * Policies are discovered automatically using the Policy Auto-Discovery.
+     *
+     * @see https://laravel.com/docs/9.x/authorization#policy-auto-discovery
+     *
+     * @var array<class-string, class-string>
      */
-    protected $policies = [
-        'App\Models\Model' => 'App\Policies\ModelPolicy',
-    ];
+    protected $policies = [];
 
     /**
      * Register any authentication / authorization services.
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
 

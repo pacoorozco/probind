@@ -166,7 +166,7 @@ class ServerControllerTest extends TestCase
 
         $response->assertRedirect(route('servers.index'));
         $response->assertSessionHas('success');
-        $this->assertDeleted($testServer);
+        $this->assertModelMissing($testServer);
     }
 
     /** @test */
