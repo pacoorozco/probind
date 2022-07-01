@@ -31,7 +31,7 @@
         "laravel/framework": "^9.16.0",
         "laravel/ui": "^3.4.5",
         "laravelcollective/html": "^6.3.0",
-        "pacoorozco/openssh": "^0.2.1",
+        "pacoorozco/openssh": "^0.3.0",
         "phpseclib/phpseclib": "^3.0.14",
         "spatie/laravel-activitylog": "^4.5.3",
         "yajra/laravel-datatables-oracle": "^10.0.7"
