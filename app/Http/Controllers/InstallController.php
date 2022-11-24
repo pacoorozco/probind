@@ -69,11 +69,11 @@ class InstallController extends Controller
             Artisan::call('migrate:refresh');
             Artisan::call('db:seed');
         } catch (\Throwable $e) {
-            return redirect()->route('Installer::database')
+            return redirect()->route('install.database')
                 ->with('error', __('installer.database.error-message'));
         }
 
-        return redirect()->route('Installer::end');
+        return redirect()->route('install.end');
     }
 
     public function end(): View

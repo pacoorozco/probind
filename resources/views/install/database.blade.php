@@ -9,7 +9,7 @@
     @include('partials.notifications')
 
     <!-- start: DATABASE FORM -->
-    {!! Form::open(['route' => 'Installer::databaseSave']) !!}
+    {!! Form::open(['route' => 'install.databaseSave']) !!}
 
     <div class="box box-primary box-solid">
         <div class="box-header with-border">
