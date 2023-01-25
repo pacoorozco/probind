@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "badcow/dns",
-            "version": "v4.2.0",
+            "version": "v4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Badcow/DNS.git",
-                "reference": "ec2836944fe3ba9e085081c93753f0f21294ee08"
+                "reference": "75a7f0ebb9a22401a88df9c80863a12191841cae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Badcow/DNS/zipball/ec2836944fe3ba9e085081c93753f0f21294ee08",
-                "reference": "ec2836944fe3ba9e085081c93753f0f21294ee08",
+                "url": "https://api.github.com/repos/Badcow/DNS/zipball/75a7f0ebb9a22401a88df9c80863a12191841cae",
+                "reference": "75a7f0ebb9a22401a88df9c80863a12191841cae",
                 "shasum": ""
             },
             "require": {
@@ -49,9 +49,9 @@
             "description": "A PHP library for creating DNS zone files based on RFC1035",
             "support": {
                 "issues": "https://github.com/Badcow/DNS/issues",
-                "source": "https://github.com/Badcow/DNS/tree/v4.2.0"
+                "source": "https://github.com/Badcow/DNS/tree/v4.2.1"
             },
-            "time": "2022-04-27T10:53:13+00:00"
+            "time": "2022-11-12T01:08:46+00:00"
         },
         {
             "name": "bensampo/laravel-enum",
