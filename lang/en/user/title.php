@@ -18,16 +18,16 @@
 
 return [
 
-    'user_management'          => 'User Management',
+    'user_management' => 'User Management',
     'user_management_subtitle' => 'create and edit users',
 
-    'user_show'          => 'User Details',
+    'user_show' => 'User Details',
     'user_show_subtitle' => ':user',
 
-    'create_new'          => 'Create a New User',
+    'create_new' => 'Create a New User',
     'create_new_subtitle' => 'create a new user',
 
-    'user_edit'   => 'Edit User',
+    'user_edit' => 'Edit User',
     'user_delete' => 'Delete User',
 
 ];

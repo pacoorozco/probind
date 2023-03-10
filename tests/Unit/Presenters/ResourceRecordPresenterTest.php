@@ -10,6 +10,7 @@ class ResourceRecordPresenterTest extends TestCase
 {
     /**
      * @test
+     *
      * @dataProvider provideDataForResourceRecords()
      */
     public function it_formats_TXT_records_properly(string $recordName, string $recordData, string $want): void

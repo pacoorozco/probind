@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Enums\ResourceRecordType;
-use App\Models\ResourceRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ResourceRecordFactory extends Factory
@@ -41,7 +40,7 @@ class ResourceRecordFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'type' => ResourceRecordType::CNAME,
-                'data' => fake()->domainWord() . '.' . fake()->domainName() . '.',
+                'data' => fake()->domainWord().'.'.fake()->domainName().'.',
             ];
         });
     }
@@ -57,7 +56,7 @@ class ResourceRecordFactory extends Factory
                 'priority' => fake()->randomElement([10, 20, 30]),
                 'data' => sprintf('%d %s',
                     fake()->randomElement([10, 20, 30]),
-                    fake()->domainWord() . '.' . fake()->domainName() . '.'),
+                    fake()->domainWord().'.'.fake()->domainName().'.'),
             ];
         });
     }
@@ -96,7 +95,7 @@ class ResourceRecordFactory extends Factory
             return [
                 'name' => fake()->numberBetween(1, 254),
                 'type' => ResourceRecordType::PTR,
-                'data' => fake()->domainWord() . '.' . fake()->domainName() . '.',
+                'data' => fake()->domainWord().'.'.fake()->domainName().'.',
             ];
         });
     }

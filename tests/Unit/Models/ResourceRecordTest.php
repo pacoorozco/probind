@@ -25,6 +25,7 @@ class ResourceRecordTest extends TestCase
 {
     /**
      * @test
+     *
      * @dataProvider providesNames()
      */
     public function name_is_lowercase(string $testName, string $want): void

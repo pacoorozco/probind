@@ -31,28 +31,28 @@ class ZonePresenter extends Presenter
     public function statusBadge(): HtmlString
     {
         if ($this->model->has_modifications) {
-            return new HtmlString('<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> ' . trans('zone/model.status_list.unsynced') . '</p>');
+            return new HtmlString('<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> '.trans('zone/model.status_list.unsynced').'</p>');
         }
 
-        return new HtmlString('<p class="text-success"><i class="fa fa-check-circle"></i> ' . trans('zone/model.status_list.synced') . '</p>');
+        return new HtmlString('<p class="text-success"><i class="fa fa-check-circle"></i> '.trans('zone/model.status_list.synced').'</p>');
     }
 
     public function statusIcon(): HtmlString
     {
         if ($this->model->has_modifications) {
-            return new HtmlString('<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> ' . trans('general.yes') . '</p>');
+            return new HtmlString('<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> '.trans('general.yes').'</p>');
         }
 
-        return new HtmlString('<p class="text-success"><i class="fa fa-check-circle"></i> ' . trans('general.no') . '</p>');
+        return new HtmlString('<p class="text-success"><i class="fa fa-check-circle"></i> '.trans('general.no').'</p>');
     }
 
     public function customSettings(): HtmlString
     {
         if ($this->model->custom_settings) {
-            return new HtmlString('<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> ' . trans('zone/messages.settings.custom') . '</p>');
+            return new HtmlString('<p class="text-warning"><i class="fa fa-exclamation-triangle"></i> '.trans('zone/messages.settings.custom').'</p>');
         }
 
-        return new HtmlString('<p class="text-primary"><i class="fa fa-info-circle"></i> ' . trans('zone/messages.settings.default') . '</p>');
+        return new HtmlString('<p class="text-primary"><i class="fa fa-info-circle"></i> '.trans('zone/messages.settings.default').'</p>');
     }
 
     public function recordCount(): HtmlString

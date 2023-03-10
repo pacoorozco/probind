@@ -17,8 +17,8 @@
  */
 
 return [
-    'search_for_records'          => 'Search Records',
+    'search_for_records' => 'Search Records',
     'search_for_records_subtitle' => 'search records by criteria',
-    'search_criteria'             => 'Search Criteria',
-    'search_results'              => 'Search Results',
+    'search_criteria' => 'Search Criteria',
+    'search_results' => 'Search Results',
 ];

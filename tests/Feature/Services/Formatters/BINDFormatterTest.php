@@ -362,7 +362,7 @@ SECONDARYSERVERCONFIGURATION;
         for ($i = 1; $i <= 5; $i++) {
             $testResourceRecord = ResourceRecord::factory()->asPTRRecord()->make([
                 'name' => $i,
-                'data' => 'server' . $i . '.example.com.',
+                'data' => 'server'.$i.'.example.com.',
             ]);
             $testZone->records()->save($testResourceRecord);
         }

@@ -53,7 +53,7 @@ class BINDFormatter
     private static function getTemplateNamesForServer(Server $server): array
     {
         return [
-            'bind-templates::servers.' . str_replace('.', '_', $server->hostname),
+            'bind-templates::servers.'.str_replace('.', '_', $server->hostname),
             $server->isPrimary()
                 ? 'bind-templates::defaults.primary-server'
                 : 'bind-templates::defaults.secondary-server',
@@ -86,7 +86,7 @@ class BINDFormatter
             : $zone->domain;
 
         return [
-            'bind-templates::zones.' . str_replace('.', '_', $domain),
+            'bind-templates::zones.'.str_replace('.', '_', $domain),
             'bind-templates::defaults.zone',
         ];
     }

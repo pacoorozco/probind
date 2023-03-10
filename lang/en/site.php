@@ -18,18 +18,18 @@
 
 return [
     'navigation' => 'ADMIN NAVIGATION',
-    'dashboard'  => 'Dashboard',
-    'servers'    => 'Servers',
-    'zones'      => 'Zones',
-    'records'    => 'Records',
-    'search'     => 'Search Records',
+    'dashboard' => 'Dashboard',
+    'servers' => 'Servers',
+    'zones' => 'Zones',
+    'records' => 'Records',
+    'search' => 'Search Records',
 
-    'tools'        => 'Tools',
-    'bulk_update'  => 'Bulk Update',
+    'tools' => 'Tools',
+    'bulk_update' => 'Bulk Update',
     'push_updates' => 'Push Updates',
-    'import_zone'  => 'Import Zone',
+    'import_zone' => 'Import Zone',
 
-    'settings'  => 'Settings',
+    'settings' => 'Settings',
     'configure' => 'PROBIND CONFIGURATION',
-    'users'     => 'Users',
+    'users' => 'Users',
 ];

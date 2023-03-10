@@ -9,13 +9,21 @@ use Illuminate\Support\Arr;
 final class ResourceRecordType extends Enum implements LocalizedEnum
 {
     const A = 'A';
+
     const AAAA = 'AAAA';
+
     const CNAME = 'CNAME';
+
     const MX = 'MX';
+
     const NAPTR = 'NAPTR';
+
     const NS = 'NS';
+
     const PTR = 'PTR';
+
     const SRV = 'SRV';
+
     const TXT = 'TXT';
 
     public static function asArrayForReverseZone(): array

@@ -28,7 +28,7 @@
         "guilhermegonzaga/presenter": "^1.0.7",
         "larapacks/setting": "^3.0.2",
         "laravel/framework": "^10.3.2",
-        "laravel/ui": "^3.4.6",
+        "laravel/ui": "^4.2.1",
         "laravelcollective/html": "^6.4.0",
         "pacoorozco/openssh": "^0.5.0",
         "phpseclib/phpseclib": "^3.0.19",
@@ -43,6 +43,7 @@
         "mockery/mockery": "^1.5.1",
         "nunomaduro/collision": "^v7.1.0",
         "nunomaduro/larastan": "^2.4.1",
+        "laravel/pint": "^1.6.0",
         "phpunit/phpunit": "^10.0.14"
     },
     "autoload": {

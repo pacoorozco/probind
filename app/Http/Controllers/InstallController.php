@@ -50,10 +50,10 @@ class InstallController extends Controller
         // Set config for migrations and seeds
         $connection = config('database.default');
         config([
-            'database.connections.' . $connection . '.host' => $request->input('host'),
-            'database.connections.' . $connection . '.database' => $request->input('dbname'),
-            'database.connections.' . $connection . '.password' => $request->input('password'),
-            'database.connections.' . $connection . '.username' => $request->input('username'),
+            'database.connections.'.$connection.'.host' => $request->input('host'),
+            'database.connections.'.$connection.'.database' => $request->input('dbname'),
+            'database.connections.'.$connection.'.password' => $request->input('password'),
+            'database.connections.'.$connection.'.username' => $request->input('username'),
         ]);
 
         // Update .env file

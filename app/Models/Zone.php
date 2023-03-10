@@ -108,7 +108,7 @@ class Zone extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->setDescriptionForEvent(fn (string $eventName) => trans('zone/messages.activity.' . $eventName, [
+            ->setDescriptionForEvent(fn (string $eventName) => trans('zone/messages.activity.'.$eventName, [
                 'domain' => $this->domain,
             ]));
     }
@@ -183,12 +183,10 @@ class Zone extends Model
      *
      * This generates a new serial, based on the often used format YYYYMMDDXX where XX is an ascending serial, allowing
      * up to 100 edits per day. After that the serial wraps into the next day and it still works.
-     *
-     * @return int
      */
     public function calculateNewSerialNumber(): int
     {
-        $newSerialNumber = intval(Carbon::now()->format('Ymd') . '00');
+        $newSerialNumber = intval(Carbon::now()->format('Ymd').'00');
 
         return ($this->serial >= $newSerialNumber)
             ? $this->serial + 1

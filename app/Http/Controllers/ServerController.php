@@ -119,7 +119,7 @@ class ServerController extends Controller
             ->editColumn('hostname', function (Server $server) {
                 return $server->active
                     ? $server->present()->hostname
-                    : $server->present()->hostname . ' ' . $server->present()->activeAsBadge();
+                    : $server->present()->hostname.' '.$server->present()->activeAsBadge();
             })
             ->editColumn('push_updates', function (Server $server) {
                 return trans_choice('general.boolean', intval($server->push_updates));

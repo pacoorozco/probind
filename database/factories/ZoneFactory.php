@@ -15,7 +15,7 @@ class ZoneFactory extends Factory
     public function definition(): array
     {
         return [
-            'domain' => fake()->unique()->domainName() . '.',
+            'domain' => fake()->unique()->domainName().'.',
             'serial' => '2020010100',
             'server' => fake()->optional()->ipv4(),
             'has_modifications' => fake()->boolean,

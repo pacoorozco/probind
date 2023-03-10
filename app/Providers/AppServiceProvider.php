@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         // bind-templates are used to render the BIND files (zone files, configurations...)
-        View::addNamespace('bind-templates', resource_path() . '/bind-templates');
+        View::addNamespace('bind-templates', resource_path().'/bind-templates');
     }
 
     /**

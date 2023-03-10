@@ -11,13 +11,21 @@ class CreateZone
     use Dispatchable;
 
     private string      $domain;
+
     private string|null $server;
+
     private string|null $type;
+
     private bool        $custom_settings;
+
     private int         $refresh;
+
     private int         $retry;
+
     private int         $expire;
+
     private int         $negativeTTL;
+
     private int         $defaultTTL;
 
     public function __construct(string $domain, string $server = null, array $options = [])
