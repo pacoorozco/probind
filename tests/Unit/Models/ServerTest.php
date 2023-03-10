@@ -25,7 +25,7 @@ class ServerTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider hostnames()
+     * @dataProvider providesHostnames()
      */
     public function hostname_is_lowercase(string $testHostname, string $want): void
     {
@@ -37,7 +37,7 @@ class ServerTest extends TestCase
         $this->assertEquals($want, $server->hostname);
     }
 
-    public function hostnames(): array
+    public static function providesHostnames(): array
     {
         return [
             'lowercase hostname' => ['server01.local', 'server01.local'],

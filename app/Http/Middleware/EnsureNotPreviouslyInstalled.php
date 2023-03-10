@@ -21,11 +21,12 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 
 class EnsureNotPreviouslyInstalled
 {
-    public function handle(Request $request, Closure $next): mixed
+    public function handle(Request $request, Closure $next): Response
     {
         if ($this->alreadyInstalled()) {
             abort(404);
@@ -36,8 +37,6 @@ class EnsureNotPreviouslyInstalled
 
     /**
      * Determine if app was previously installed checking if file exists.
-     *
-     * @return bool
      */
     public function alreadyInstalled(): bool
     {

@@ -8,49 +8,64 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ResourceRecordFactory extends Factory
 {
-    protected $model = ResourceRecord::class;
-
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
         return [
-            'name' => $this->faker->domainWord(),
+            'name' => fake()->domainWord(),
             'type' => ResourceRecordType::A,
-            'data' => $this->faker->ipv4(),
+            'data' => fake()->ipv4(),
             'ttl' => null,
         ];
     }
 
-    public function asARecord(): Factory
+    /**
+     * Indicate that the model's type is an A record.
+     */
+    public function asARecord(): static
     {
         return $this->state(function (array $attributes) {
             return $attributes;
         });
     }
 
-    public function asCNAMERecord(): Factory
+    /**
+     * Indicate that the model's type is a CNAME record.
+     */
+    public function asCNAMERecord(): static
     {
         return $this->state(function (array $attributes) {
             return [
                 'type' => ResourceRecordType::CNAME,
-                'data' => $this->faker->domainWord() . '.' . $this->faker->domainName() . '.',
+                'data' => fake()->domainWord() . '.' . fake()->domainName() . '.',
             ];
         });
     }
 
-    public function asMXRecord(): Factory
+    /**
+     * Indicate that the model's type is a MX record.
+     */
+    public function asMXRecord(): static
     {
         return $this->state(function (array $attributes) {
             return [
                 'type' => ResourceRecordType::MX,
-                'priority' => $this->faker->randomElement([10, 20, 30]),
+                'priority' => fake()->randomElement([10, 20, 30]),
                 'data' => sprintf('%d %s',
-                    $this->faker->randomElement([10, 20, 30]),
-                    $this->faker->domainWord() . '.' . $this->faker->domainName() . '.'),
+                    fake()->randomElement([10, 20, 30]),
+                    fake()->domainWord() . '.' . fake()->domainName() . '.'),
             ];
         });
     }
 
-    public function asNSRecord(): Factory
+    /**
+     * Indicate that the model's type is a NS record.
+     */
+    public function asNSRecord(): static
     {
         return $this->state(function (array $attributes) {
             return [
@@ -59,23 +74,29 @@ class ResourceRecordFactory extends Factory
         });
     }
 
-    public function asTXTRecord(): Factory
+    /**
+     * Indicate that the model's type is a TXT record.
+     */
+    public function asTXTRecord(): static
     {
         return $this->state(function (array $attributes) {
             return [
                 'type' => ResourceRecordType::TXT,
-                'data' => $this->faker->text,
+                'data' => fake()->text,
             ];
         });
     }
 
-    public function asPTRRecord(): Factory
+    /**
+     * Indicate that the model's type is a PTR record.
+     */
+    public function asPTRRecord(): static
     {
         return $this->state(function (array $attributes) {
             return [
-                'name' => $this->faker->numberBetween(1, 254),
+                'name' => fake()->numberBetween(1, 254),
                 'type' => ResourceRecordType::PTR,
-                'data' => $this->faker->domainWord() . '.' . $this->faker->domainName() . '.',
+                'data' => fake()->domainWord() . '.' . fake()->domainName() . '.',
             ];
         });
     }

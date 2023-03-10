@@ -3,7 +3,7 @@
 [![Testing with MySQL](https://github.com/pacoorozco/probind/actions/workflows/run-tests.yml/badge.svg)](https://github.com/pacoorozco/probind/actions/workflows/run-tests.yml)
 [![codecov](https://codecov.io/gh/pacoorozco/probind/branch/main/graph/badge.svg?token=QdsFi3KlTY)](https://codecov.io/gh/pacoorozco/probind)
 [![License](https://img.shields.io/github/license/pacoorozco/probind.svg)](LICENSE)
-[![Laravel Version](https://img.shields.io/badge/Laravel-9.x-purple.svg)](https://laravel.com/docs)
+[![Laravel Version](https://img.shields.io/badge/Laravel-10.x-purple.svg)](https://laravel.com/docs)
 [![GitHub release](https://img.shields.io/github/release/pacoorozco/probind.svg?style=flat-square)](https://github.com/pacoorozco/probind/releases)
 
 [![probind: short presentation](https://img.youtube.com/vi/_iaZ3UG3zug/0.jpg)](http://www.youtube.com/watch?v=_iaZ3UG3zug)
@@ -34,7 +34,7 @@ See our [CHANGELOG](CHANGELOG.md) file in order to know what changes are impleme
 
 ## Requirements
 
-* PHP 8+ with `gmp` extension.
+* PHP 8.1+ with `gmp` extension.
 * A [supported relational database](https://laravel.com/docs) and corresponding PHP extension.
 * [Composer](https://getcomposer.org/download/).
 

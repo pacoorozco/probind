@@ -24,10 +24,8 @@ class TestingDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds for testing environment.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->call(SettingsTableSeeder::class);
     }

@@ -7,26 +7,32 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ZoneFactory extends Factory
 {
-    protected $model = Zone::class;
-
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
         return [
-            'domain' => $this->faker->unique()->domainName() . '.',
+            'domain' => fake()->unique()->domainName() . '.',
             'serial' => '2020010100',
-            'server' => $this->faker->optional()->ipv4(),
-            'has_modifications' => $this->faker->boolean,
+            'server' => fake()->optional()->ipv4(),
+            'has_modifications' => fake()->boolean,
             'reverse_zone' => false,
-            'custom_settings' => $this->faker->boolean,
-            'refresh' => $this->faker->numberBetween(3600, 86400),
-            'retry' => $this->faker->numberBetween(3600, 86400),
-            'expire' => $this->faker->numberBetween(3600, 86400),
-            'negative_ttl' => $this->faker->numberBetween(3600, 86400),
-            'default_ttl' => $this->faker->numberBetween(3600, 86400),
+            'custom_settings' => fake()->boolean,
+            'refresh' => fake()->numberBetween(3600, 86400),
+            'retry' => fake()->numberBetween(3600, 86400),
+            'expire' => fake()->numberBetween(3600, 86400),
+            'negative_ttl' => fake()->numberBetween(3600, 86400),
+            'default_ttl' => fake()->numberBetween(3600, 86400),
         ];
     }
 
-    public function primary(): Factory
+    /**
+     * Indicate that the model's type is a Primary Zone.
+     */
+    public function primary(): static
     {
         return $this->state(function (array $attributes) {
             return [
@@ -35,19 +41,25 @@ class ZoneFactory extends Factory
         });
     }
 
-    public function secondary(): Factory
+    /**
+     * Indicate that the model's type is a Secondary Zone.
+     */
+    public function secondary(): static
     {
         return $this->state(function (array $attributes) {
             return [
-                'server' => $this->faker->ipv4(),
+                'server' => fake()->ipv4(),
             ];
         });
     }
 
-    public function reverse(): Factory
+    /**
+     * Indicate that the model's type is a Reverse Zone.
+     */
+    public function reverse(): static
     {
         return $this->state(function (array $attributes) {
-            $ipAddressParts = explode('.', $this->faker->unique()->ipv4());
+            $ipAddressParts = explode('.', fake()->unique()->ipv4());
 
             return [
                 'domain' => "{$ipAddressParts[2]}.{$ipAddressParts[1]}.{$ipAddressParts[0]}.in-addr.arpa.",
