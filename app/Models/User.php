@@ -73,7 +73,7 @@ class User extends Authenticatable
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->setDescriptionForEvent(fn (string $eventName) => trans('user/messages.activity.' . $eventName, [
+            ->setDescriptionForEvent(fn (string $eventName) => trans('user/messages.activity.'.$eventName, [
                 'username' => $this->username,
             ]));
     }

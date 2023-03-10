@@ -18,18 +18,18 @@
 
 return [
 
-    'hostname'     => 'Hostname',
-    'ip_address'   => 'IP Address',
-    'type'         => 'Role',
-    'types'        => [
+    'hostname' => 'Hostname',
+    'ip_address' => 'IP Address',
+    'type' => 'Role',
+    'types' => [
         'master' => 'Primary',
-        'slave'  => 'Secondary',
+        'slave' => 'Secondary',
     ],
     'push_updates' => 'Push DNS changes to this server',
-    'ns_record'    => 'Include this server in NS record',
-    'directory'    => 'Path',
-    'template'     => 'Template',
-    'script'       => 'Script',
-    'active'       => 'Active',
+    'ns_record' => 'Include this server in NS record',
+    'directory' => 'Path',
+    'template' => 'Template',
+    'script' => 'Script',
+    'active' => 'Active',
 
 ];

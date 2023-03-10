@@ -18,10 +18,10 @@
 
 return [
 
-    'hostname'     => 'Hostname',
-    'ip_address'   => 'IP Address',
-    'type'         => 'Role',
+    'hostname' => 'Hostname',
+    'ip_address' => 'IP Address',
+    'type' => 'Role',
     'push_updates' => 'Push',
-    'ns_record'    => 'NS',
+    'ns_record' => 'NS',
 
 ];

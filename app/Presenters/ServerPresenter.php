@@ -43,9 +43,9 @@ class ServerPresenter extends Presenter
     public function activeAsBadge(): HtmlString
     {
         if ($this->model->active) {
-            return new HtmlString('<span class="badge badge-success">' . trans('general.enabled') . '</span>');
+            return new HtmlString('<span class="badge badge-success">'.trans('general.enabled').'</span>');
         }
 
-        return new HtmlString('<span class="badge badge-secondary">' . trans('general.disabled') . '</span>');
+        return new HtmlString('<span class="badge badge-secondary">'.trans('general.disabled').'</span>');
     }
 }

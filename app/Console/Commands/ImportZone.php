@@ -29,8 +29,11 @@ use Illuminate\Console\Command;
 class ImportZone extends Command
 {
     const SUCCESS_CODE = 0;
+
     const ERROR_PARSING_FILE_CODE = 1;
+
     const ERROR_EXISTING_ZONE_CODE = 2;
+
     const ERROR_INVALID_PARAMETER = 9;
 
     protected $signature = 'probind:import
@@ -83,6 +86,7 @@ class ImportZone extends Command
                     'expire' => $record->getRdata()->getExpire(),
                     'negative_ttl' => $record->getRdata()->getMinimum(),
                 ]);
+
                 continue;
             }
 
@@ -95,23 +99,20 @@ class ImportZone extends Command
             $createdRecordsCount++;
         }
 
-        $this->info('A zone for ' . $domain . ' domain has been created. ' . $createdRecordsCount . ' records has been imported.');
-        activity()->log('Created zone <strong>' . $zone->domain . '</strong> by importing <strong>' . $createdRecordsCount . '</strong> records.');
+        $this->info('A zone for '.$domain.' domain has been created. '.$createdRecordsCount.' records has been imported.');
+        activity()->log('Created zone <strong>'.$zone->domain.'</strong> by importing <strong>'.$createdRecordsCount.'</strong> records.');
 
         return self::SUCCESS_CODE;
     }
 
     private function ensureFQDN(string $domain): string
     {
-        return (! str_ends_with($domain, '.')) ? $domain . '.' : $domain;
+        return (! str_ends_with($domain, '.')) ? $domain.'.' : $domain;
     }
 
     /**
      * Parses a DNS zone file and returns its content.
      *
-     * @param  string  $domain
-     * @param  string  $filename
-     * @return \Badcow\DNS\Zone
      *
      * @throws \Badcow\DNS\Parser\ParseException
      */

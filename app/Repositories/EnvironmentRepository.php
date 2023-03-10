@@ -27,10 +27,12 @@ class EnvironmentRepository
      * @var string
      */
     private $envPath;
+
     /**
      * @var string
      */
     private $envExamplePath;
+
     /**
      * @var array
      */
@@ -51,8 +53,6 @@ class EnvironmentRepository
 
     /**
      * Get the content of the .env file.
-     *
-     * @return array
      */
     private function all(): array
     {
@@ -84,9 +84,6 @@ class EnvironmentRepository
      *  'password'  => 'secret',
      *  'host'      => 'localhost',
      * ];
-     *
-     * @param  array  $connectionSettings
-     * @return bool
      */
     public function setDatabaseSetting(array $connectionSettings): bool
     {
@@ -104,16 +101,13 @@ class EnvironmentRepository
 
     /**
      * Set .env element.
-     *
-     * @param  string  $key
-     * @param  string  $value
      */
     private function set(string $key, string $value): void
     {
         $this->env = array_map(function ($item) use ($key, $value) {
             if (strpos($item, $key) !== false) {
                 $start = strpos($item, '=') + 1;
-                $item = substr_replace($item, $value . "\n", $start);
+                $item = substr_replace($item, $value."\n", $start);
             }
 
             return $item;
@@ -123,8 +117,6 @@ class EnvironmentRepository
     /**
      * Save the edited content to the .env file.
      * Return false on error.
-     *
-     * @return bool
      */
     private function saveFile(): bool
     {

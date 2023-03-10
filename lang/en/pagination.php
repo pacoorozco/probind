@@ -30,6 +30,6 @@ return [
     */
 
     'previous' => '&laquo; Previous',
-    'next'     => 'Next &raquo;',
+    'next' => 'Next &raquo;',
 
 ];

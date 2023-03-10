@@ -17,19 +17,23 @@
  *
  */
 
-namespace App\Http\Middleware;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Closure;
-use Illuminate\Http\Request;
-
-class OnlyAjax
+return new class extends Migration
 {
-    public function handle(Request $request, Closure $next): mixed
+    public function up(): void
     {
-        if (! $request->ajax()) {
-            abort(403);
-        }
-
-        return $next($request);
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->index();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
     }
-}
+
+    public function down(): void
+    {
+        Schema::dropIfExists('password_reset_tokens');
+    }
+};

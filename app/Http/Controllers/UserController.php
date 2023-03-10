@@ -124,7 +124,7 @@ class UserController extends Controller
             ->editColumn('username', function (User $user) {
                 return $user->active
                     ? $user->present()->username
-                    : $user->present()->username . ' ' . $user->present()->activeAsBadge();
+                    : $user->present()->username.' '.$user->present()->activeAsBadge();
             })
             ->addColumn('actions', function (User $user) {
                 return view('partials.actions_dd')

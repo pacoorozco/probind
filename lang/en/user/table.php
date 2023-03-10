@@ -19,7 +19,7 @@
 return [
 
     'username' => 'Username',
-    'name'     => 'Name',
-    'email'    => 'Email',
+    'name' => 'Name',
+    'email' => 'Email',
 
 ];

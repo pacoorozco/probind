@@ -17,23 +17,18 @@
  *
  */
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace App\Http\Middleware;
 
-class CreatePasswordResetsTable extends Migration
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+class AjaxRequestOnly
 {
-    public function up(): void
+    public function handle(Request $request, Closure $next): JsonResponse
     {
-        Schema::create('password_resets', function (Blueprint $table) {
-            $table->string('email')->index();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
-    }
+        abort_unless($request->ajax(), 403);
 
-    public function down(): void
-    {
-        Schema::dropIfExists('password_resets');
+        return $next($request);
     }
 }

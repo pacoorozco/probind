@@ -17,30 +17,30 @@
  */
 
 return [
-    'domain'          => 'Zone name (FQDN)',
-    'serial'          => 'Serial',
-    'server'   => 'Primary DNS (server IP)',
-    'type'            => 'Type',
-    'types'           => [
+    'domain' => 'Zone name (FQDN)',
+    'serial' => 'Serial',
+    'server' => 'Primary DNS (server IP)',
+    'type' => 'Type',
+    'types' => [
         'master' => 'Primary',
-        'slave'  => 'Secondary',
+        'slave' => 'Secondary',
     ],
     'custom_settings' => 'Use specific settings for this zone',
     'copy_values_from_defaults' => 'Copy values from defaults',
 
-    'refresh'      => 'Refresh time (seconds)',
+    'refresh' => 'Refresh time (seconds)',
     'refresh_help' => 'Sets how often the zone should be synchronized from primary name server to secondary name server.',
 
-    'retry'      => 'Retry time (seconds)',
+    'retry' => 'Retry time (seconds)',
     'retry_help' => 'Sets how often secondary name servers try to synchronize the zone from primary name server if synchronization fails.',
 
-    'expire'      => 'Expiration (seconds)',
+    'expire' => 'Expiration (seconds)',
     'expire_help' => 'Means the period after which the zone expires on secondary name servers.',
 
-    'negative_ttl'      => 'Negative Answers TTL (seconds)',
+    'negative_ttl' => 'Negative Answers TTL (seconds)',
     'negative_ttl_help' => 'Specifies the time to live in the zone for caching negative answers on secondary servers.',
 
-    'default_ttl'      => 'Default TTL for records (seconds)',
+    'default_ttl' => 'Default TTL for records (seconds)',
     'default_ttl_help' => 'Specifies the time to live for all records in the zone that do not have an explicit TTL.',
 
     'created_at' => 'Created at',

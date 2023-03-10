@@ -21,17 +21,17 @@ return [
     'does_not_exist' => 'User does not exist.',
 
     'create' => [
-        'error'   => 'User was not created, please try again.',
+        'error' => 'User was not created, please try again.',
         'success' => 'User created successfully.',
     ],
 
     'update' => [
-        'error'   => 'User was not updated, please try again',
+        'error' => 'User was not updated, please try again',
         'success' => 'User updated successfully.',
     ],
 
     'delete' => [
-        'error'   => 'There was an issue deleting the user. Please try again.',
+        'error' => 'There was an issue deleting the user. Please try again.',
         'success' => 'The user was deleted successfully.',
         'invalid' => 'You can\'t delete yourself.',
     ],

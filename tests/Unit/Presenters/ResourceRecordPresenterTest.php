@@ -10,7 +10,8 @@ class ResourceRecordPresenterTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider provideDataForResourceRecords()
+     *
+     * @dataProvider provideDataForResourceRecords
      */
     public function it_formats_TXT_records_properly(string $recordName, string $recordData, string $want): void
     {
@@ -24,7 +25,7 @@ class ResourceRecordPresenterTest extends TestCase
         $this->assertEquals($want, $record->present()->asString());
     }
 
-    public function provideDataForResourceRecords(): array
+    public static function provideDataForResourceRecords(): array
     {
         return [
             'TXT w/ short data' => [

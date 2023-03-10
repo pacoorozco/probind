@@ -17,11 +17,11 @@
  */
 
 return [
-    'push_updates'          => 'Push Updates',
+    'push_updates' => 'Push Updates',
     'push_updates_subtitle' => 'send updates to servers',
     'pushing_updates' => 'Pushing Zone Updates to server',
 
-    'bulk_update'          => 'Bulk Update',
+    'bulk_update' => 'Bulk Update',
     'bulk_update_subtitle' => 'mark all zones with pending changes',
 
     'import_zone' => 'Import Zone',

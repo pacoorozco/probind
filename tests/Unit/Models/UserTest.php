@@ -25,7 +25,8 @@ class UserTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider username()
+     *
+     * @dataProvider providesUsernames
      */
     public function username_is_lowercase(string $testUsername, string $want): void
     {
@@ -37,7 +38,7 @@ class UserTest extends TestCase
         $this->assertEquals($want, $user->username);
     }
 
-    public function username(): array
+    public static function providesUsernames(): array
     {
         return [
             'lowercase username' => ['admin', 'admin'],

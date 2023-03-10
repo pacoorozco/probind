@@ -25,7 +25,8 @@ class ResourceRecordTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider names()
+     *
+     * @dataProvider providesNames
      */
     public function name_is_lowercase(string $testName, string $want): void
     {
@@ -37,7 +38,7 @@ class ResourceRecordTest extends TestCase
         $this->assertEquals($want, $rr->name);
     }
 
-    public function names(): array
+    public static function providesNames(): array
     {
         return [
             'lowercase name' => ['lowercase-name', 'lowercase-name'],

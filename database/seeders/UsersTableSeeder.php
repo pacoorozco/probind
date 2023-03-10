@@ -27,10 +27,10 @@ class UsersTableSeeder extends Seeder
     {
         // Create then admin user.
         User::factory()->create([
-            'username'       => 'admin',
-            'name'           => 'Administrator',
-            'email'          => 'admin@domain.local',
-            'password'       => bcrypt('secret'),
+            'username' => 'admin',
+            'name' => 'Administrator',
+            'email' => 'admin@domain.local',
+            'password' => bcrypt('secret'),
         ]);
 
         // Create other users.

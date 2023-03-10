@@ -18,11 +18,11 @@
 
 return [
 
-    'username'              => 'Username',
-    'name'                  => 'Name',
-    'email'                 => 'Email',
-    'active'                => 'Active',
-    'password'              => 'Password',
+    'username' => 'Username',
+    'name' => 'Name',
+    'email' => 'Email',
+    'active' => 'Active',
+    'password' => 'Password',
     'password_confirmation' => 'Password confirmation',
 
 ];

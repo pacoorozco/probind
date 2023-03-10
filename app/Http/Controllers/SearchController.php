@@ -50,9 +50,9 @@ class SearchController extends Controller
         // Get search criteria terms
         $searchTerms = [
             'domain' => $request->input('domain'),
-            'name'   => $request->input('name'),
-            'type'   => $request->input('type'),
-            'data'   => $request->input('data'),
+            'name' => $request->input('name'),
+            'type' => $request->input('type'),
+            'data' => $request->input('data'),
         ];
 
         // Do the search query.

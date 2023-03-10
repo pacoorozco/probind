@@ -22,8 +22,8 @@
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
 |
 */
 
@@ -38,8 +38,8 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SyncServersController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZoneController;
+use App\Http\Middleware\AjaxRequestOnly;
 use App\Http\Middleware\EnsureNotPreviouslyInstalled;
-use App\Http\Middleware\OnlyAjax;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -71,7 +71,7 @@ Route::middleware(['auth'])->group(function () {
      * ------------------------------------------.
      */
     // DataTables Ajax route.
-    Route::middleware(OnlyAjax::class)
+    Route::middleware(AjaxRequestOnly::class)
         ->get('users/data',
             [UserController::class, 'data'])
         ->name('users.data');
@@ -91,7 +91,7 @@ Route::middleware(['auth'])->group(function () {
      * ------------------------------------------.
      */
     // DataTables Ajax route.
-    Route::middleware(OnlyAjax::class)
+    Route::middleware(AjaxRequestOnly::class)
         ->get('servers/data',
             [ServerController::class, 'data'])
         ->name('servers.data');
@@ -111,7 +111,7 @@ Route::middleware(['auth'])->group(function () {
      * ------------------------------------------.
      */
     // DataTables Ajax route.
-    Route::middleware(OnlyAjax::class)
+    Route::middleware(AjaxRequestOnly::class)
         ->get('zones/data',
             [ZoneController::class, 'data'])
         ->name('zones.data');
@@ -126,7 +126,7 @@ Route::middleware(['auth'])->group(function () {
      * ------------------------------------------.
      */
     // DataTables Ajax route.
-    Route::middleware(OnlyAjax::class)
+    Route::middleware(AjaxRequestOnly::class)
         ->get('zones/{zone}/records/data',
             [ResourceRecordController::class, 'data'])
         ->name('zones.records.data');

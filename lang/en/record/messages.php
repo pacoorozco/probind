@@ -21,17 +21,17 @@ return [
     'does_not_exist' => 'ResourceRecord does not exist.',
 
     'create' => [
-        'error'   => 'ResourceRecord was not created, please try again.',
+        'error' => 'ResourceRecord was not created, please try again.',
         'success' => 'ResourceRecord created successfully.',
     ],
 
     'update' => [
-        'error'   => 'ResourceRecord was not updated, please try again',
+        'error' => 'ResourceRecord was not updated, please try again',
         'success' => 'ResourceRecord updated successfully.',
     ],
 
-    'delete'       => [
-        'error'   => 'There was an issue deleting the record. Please try again.',
+    'delete' => [
+        'error' => 'There was an issue deleting the record. Please try again.',
         'success' => 'The record was deleted successfully.',
     ],
     'records_help' => '

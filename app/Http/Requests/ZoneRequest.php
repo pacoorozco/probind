@@ -71,7 +71,7 @@ abstract class ZoneRequest extends Request
                 new EnumValue(ZoneType::class),
             ],
             'server' => [
-                'required_if:zone_type,' . ZoneType::Secondary,
+                'required_if:zone_type,'.ZoneType::Secondary,
                 'ip',
             ],
             'custom_settings' => [

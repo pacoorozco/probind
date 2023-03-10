@@ -26,7 +26,8 @@ class ZoneTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider domainNamesDataSet()
+     *
+     * @dataProvider providesDomainNames
      */
     public function domain_name_is_lowercase(string $testDomainName, string $want): void
     {
@@ -38,7 +39,7 @@ class ZoneTest extends TestCase
         $this->assertEquals($want, $zone->domain);
     }
 
-    public function domainNamesDataSet(): array
+    public static function providesDomainNames(): array
     {
         return [
             // 'name of the test case' => ['input', 'expected']
@@ -50,14 +51,15 @@ class ZoneTest extends TestCase
 
     /**
      * @test
-     * @dataProvider zoneNameDataSet()
+     *
+     * @dataProvider providesZoneName
      */
     public function validates_forward_zone_name(string $testZoneName, bool $want): void
     {
         $this->assertEquals($want, Zone::isValidZoneName($testZoneName));
     }
 
-    public function zoneNameDataSet(): array
+    public static function providesZoneName(): array
     {
         return [
             // 'name of the test case' => ['input', 'expected']
@@ -82,14 +84,15 @@ class ZoneTest extends TestCase
 
     /**
      * @test
-     * @dataProvider zoneReverseZoneDataSet()
+     *
+     * @dataProvider providesReverseZoneNames
      */
     public function validates_reverse_zone_name(string $testZoneName, bool $want): void
     {
         $this->assertEquals($want, Zone::isReverseZoneName($testZoneName));
     }
 
-    public function zoneReverseZoneDataSet(): array
+    public static function providesReverseZoneNames(): array
     {
         return [
             // 'name of the test case' => ['input', 'expected']
