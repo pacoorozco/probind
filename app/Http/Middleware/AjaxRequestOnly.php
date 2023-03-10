@@ -23,7 +23,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class OnlyAjax
+class AjaxRequestOnly
 {
     public function handle(Request $request, Closure $next): JsonResponse
     {
