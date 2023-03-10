@@ -26,7 +26,7 @@ class UserTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider providesUsernames()
+     * @dataProvider providesUsernames
      */
     public function username_is_lowercase(string $testUsername, string $want): void
     {

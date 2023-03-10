@@ -38,8 +38,8 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SyncServersController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZoneController;
-use App\Http\Middleware\EnsureNotPreviouslyInstalled;
 use App\Http\Middleware\AjaxRequestOnly;
+use App\Http\Middleware\EnsureNotPreviouslyInstalled;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 

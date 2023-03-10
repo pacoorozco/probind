@@ -27,7 +27,7 @@ class ZoneTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider providesDomainNames()
+     * @dataProvider providesDomainNames
      */
     public function domain_name_is_lowercase(string $testDomainName, string $want): void
     {
@@ -52,7 +52,7 @@ class ZoneTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider providesZoneName()
+     * @dataProvider providesZoneName
      */
     public function validates_forward_zone_name(string $testZoneName, bool $want): void
     {
@@ -85,7 +85,7 @@ class ZoneTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider providesReverseZoneNames()
+     * @dataProvider providesReverseZoneNames
      */
     public function validates_reverse_zone_name(string $testZoneName, bool $want): void
     {

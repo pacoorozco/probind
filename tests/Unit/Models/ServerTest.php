@@ -26,7 +26,7 @@ class ServerTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider providesHostnames()
+     * @dataProvider providesHostnames
      */
     public function hostname_is_lowercase(string $testHostname, string $want): void
     {
