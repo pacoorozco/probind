@@ -19,7 +19,7 @@ jobs:
       - name: Build project
         id: build_project
         env:
-          DIST_FILE: ./dist/ssham-dist-${{ steps.get_version.outputs.VERSION }}
+          DIST_FILE: ./dist/probind-dist-${{ steps.get_version.outputs.VERSION }}
         run: |
           composer archive --format=zip --file=$DIST_FILE
           echo ::set-output name=DIST_FILE::$DIST_FILE
