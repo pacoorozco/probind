@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>@yield('title', 'Administration Dashboard') :: ProBIND v3</title>
+    <title>@yield('title', 'Administration Dashboard') :: ProBIND3</title>
     <!-- start: META -->
-    <meta content="ProBIND v3: Professional DNS Management - Administration" name="description">
+    <meta content="ProBIND3: Professional DNS Management - Administration" name="description">
     <meta content="Paco Orozco" name="author">
     @yield('meta')
     <!-- end: META -->

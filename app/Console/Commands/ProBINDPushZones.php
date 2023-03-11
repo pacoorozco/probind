@@ -36,9 +36,9 @@ class ProBINDPushZones extends Command
 
     const BASEDIR = 'probind';
 
-    const CONFIG_BASEDIR = self::BASEDIR.DIRECTORY_SEPARATOR.'configuration';
+    const CONFIG_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'configuration';
 
-    const ZONE_BASEDIR = self::BASEDIR.DIRECTORY_SEPARATOR.'primary';
+    const ZONE_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'primary';
 
     protected $signature = 'probind:push';
 
@@ -77,7 +77,7 @@ class ProBINDPushZones extends Command
     private function preProcessDeletedZones(): void
     {
         $content = BINDFormatter::getDeletedZonesFileContent($this->deletedZones);
-        $path = self::CONFIG_BASEDIR.DIRECTORY_SEPARATOR.'deadlist';
+        $path = self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . 'deadlist';
         Storage::put($path, $content, 'private');
     }
 
@@ -92,7 +92,7 @@ class ProBINDPushZones extends Command
     {
         $zone->increaseSerialNumber();
         $content = BINDFormatter::getZoneFileContent($zone);
-        $path = self::ZONE_BASEDIR.DIRECTORY_SEPARATOR.$zone->domain;
+        $path = self::ZONE_BASEDIR . DIRECTORY_SEPARATOR . $zone->domain;
         Storage::append($path, $content);
     }
 
@@ -113,7 +113,7 @@ class ProBINDPushZones extends Command
             }
         }
 
-        return ! $pushedWithErrors;
+        return !$pushedWithErrors;
     }
 
     private function handleServer(Server $server): bool
@@ -123,12 +123,12 @@ class ProBINDPushZones extends Command
         // Create an array with files that need to be pushed to remote server
         $filesToPush = [
             [
-                'local' => self::CONFIG_BASEDIR.DIRECTORY_SEPARATOR.$server->hostname.'.conf',
-                'remote' => setting()->get('ssh_default_remote_path').'/configuration/named.conf',
+                'local' => self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . $server->hostname . '.conf',
+                'remote' => setting()->get('ssh_default_remote_path') . '/configuration/named.conf',
             ],
             [
-                'local' => self::CONFIG_BASEDIR.DIRECTORY_SEPARATOR.'deadlist',
-                'remote' => setting()->get('ssh_default_remote_path').'/configuration/deadlist',
+                'local' => self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . 'deadlist',
+                'remote' => setting()->get('ssh_default_remote_path') . '/configuration/deadlist',
             ],
         ];
 
@@ -138,7 +138,7 @@ class ProBINDPushZones extends Command
                 $filename = basename($file);
                 $filesToPush[] = [
                     'local' => $file,
-                    'remote' => setting()->get('ssh_default_remote_path').'/primary/'.$filename,
+                    'remote' => setting()->get('ssh_default_remote_path') . '/primary/' . $filename,
                 ];
             }
         }
@@ -148,14 +148,14 @@ class ProBINDPushZones extends Command
 
     private function generateConfigFileForServer(Server $server): void
     {
-        $path = self::CONFIG_BASEDIR.DIRECTORY_SEPARATOR.$server->hostname.'.conf';
+        $path = self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . $server->hostname . '.conf';
         $contents = BINDFormatter::getConfigurationFileContent($server);
         Storage::put($path, $contents, 'private');
     }
 
     private function pushFilesToServer(Server $server, array $filesToPush): bool
     {
-        $this->info('Connecting to '.setting()->get('ssh_default_user').'@'.$server->hostname.' ('.setting()->get('ssh_default_port').')...');
+        $this->info('Connecting to ' . setting()->get('ssh_default_user') . '@' . $server->hostname . ' (' . setting()->get('ssh_default_port') . ')...');
         try {
             // Get RSA private key in order to connect to servers
             $privateKey = PrivateKey::fromString(setting()->get('ssh_default_key'));
@@ -165,25 +165,25 @@ class ProBINDPushZones extends Command
                 setting()->get('ssh_default_port', 22)
             );
             $pusher->login(setting()->get('ssh_default_user'), $privateKey);
-            $this->info('Connected successfully to '.$server->hostname.'.');
+            $this->info('Connected successfully to ' . $server->hostname . '.');
 
             $totalFiles = count($filesToPush);
             $pushedFiles = 0;
 
             foreach ($filesToPush as $file) {
-                $this->info('Uploading file ['.$file['local'].' -> '.$file['remote'].'].');
+                $this->info('Uploading file [' . $file['local'] . ' -> ' . $file['remote'] . '].');
                 $pusher->pushFileTo($file['local'], $file['remote']);
                 $pushedFiles++;
             }
 
             $pusher->disconnect();
         } catch (Throwable $e) {
-            $this->error('Error pushing files to '.$server->hostname.' - '.$e->getMessage());
+            $this->error('Error pushing files to ' . $server->hostname . ' - ' . $e->getMessage());
 
             return false;
         }
 
-        $this->info('It has been pushed '.$pushedFiles.' of '.$totalFiles.' files to '.$server->hostname.'.');
+        $this->info('It has been pushed ' . $pushedFiles . ' of ' . $totalFiles . ' files to ' . $server->hostname . '.');
 
         // Return true if all files has been pushed
         return $totalFiles === $pushedFiles;

@@ -1,4 +1,4 @@
-# ProBIND - Professional DNS management made easy
+# ProBIND3 - DNS management made easy
 
 [![Testing with MySQL](https://github.com/pacoorozco/probind/actions/workflows/run-tests.yml/badge.svg)](https://github.com/pacoorozco/probind/actions/workflows/run-tests.yml)
 [![codecov](https://codecov.io/gh/pacoorozco/probind/branch/main/graph/badge.svg?token=QdsFi3KlTY)](https://codecov.io/gh/pacoorozco/probind)
@@ -10,23 +10,23 @@
  	
 ## Presentation
 
-**ProBIND** is a web application designed for managing the DNS zones for one or more servers running the [ISC BIND DNS server](https://www.isc.org/downloads/bind/) software. It works best for companies that need to manage a medium-sized pool of domains across a set of servers.
+**ProBIND3** is a web application designed for managing the DNS zones for one or more servers running the [ISC BIND DNS server](https://www.isc.org/downloads/bind/) software. It works best for companies that need to manage a medium-sized pool of domains across a set of servers.
 
-The application has been written using [Laravel framework](https://www.laravel.com/docs). It stores its data in a MySQL, Postgres database (see [Laravel Database Backend](https://www.laravel.com/docs)) and generates configuration files for BIND on-demand.
+The application has been written using [Laravel framework](https://laravel.com). It stores its data in a MySQL, Postgres database (see [Laravel Database Backend](https://laravel.com/docs)) and generates configuration files for BIND on-demand.
 
-### What ProBIND Is
+### What ProBIND3 Is
 
-**ProBIND** is meant to be a time-saving tool for busy administrators, aiding in managing the configuration of DNS zones across multiple servers. It is intended for use by those already familiar with the components of a DNS zone file and who understand DNS concepts and methods.
+**ProBIND3** is meant to be a time-saving tool for busy administrators, aiding in managing the configuration of DNS zones across multiple servers. It is intended for use by those already familiar with the components of a DNS zone file and who understand DNS concepts and methods.
 
 This software acts as a configuration repository to help keep zones well-maintained and has several helping tools to ensure that common DNS issues are minimized.
 
-### What ProBIND Is Not
+### What ProBIND3 Is Not
 
-Although ProBIND uses a database to store zone data, it is not a replacement backend for ISC BIND. ProBIND merely creates the proper zone files for use with the default configuration method of BIND. If you are looking for a live SQL backend for ISC BIND, this is not one.
+* Although ProBIND3 uses a database to store zone data, **it is not a replacement backend for ISC BIND**. ProBIND3 merely creates the proper zone files for use with the default configuration method of BIND. If you are looking for a live SQL backend for ISC BIND, this is not one.
 
-ProBIND is not a tool for those unfamiliar with DNS concepts. It assumes you know the differences between a CNAME and an A record. It also assumes you know about SOA records, what a lame server is, and what glue is.
+* ProBIND3 is not a tool for those unfamiliar with DNS concepts. It assumes you know the differences between a CNAME and an A record. It also assumes you know about SOA records, what a lame server is, and what glue is.
 
-ProBIND is not the ultimate solution to DNS management. It fits the needs of those who develop it, and it is hoped that others will also find it useful.
+* ProBIND3 is not the ultimate solution to DNS management. It fits the needs of those who develop it, and it is hoped that others will also find it useful.
 
 ## Changelog
 
@@ -38,8 +38,8 @@ See our [CHANGELOG](CHANGELOG.md) file in order to know what changes are impleme
 * A [supported relational database](https://laravel.com/docs) and corresponding PHP extension.
 * [Composer](https://getcomposer.org/download/).
 
-## How to test ProBIND
-This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND needs. An application server, a web server, a database server.
+## How to test ProBIND3
+This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND3 needs. An application server, a web server, a database server.
 
 Prior to this installation, you **need to have installed** this software:
 
@@ -81,13 +81,13 @@ Prior to this installation, you **need to have installed** this software:
     $ docker-compose exec app php artisan migrate:fresh --seed
    ```
     
-1. Go to `http://localhost/install` and finish **ProBIND** installation. Enjoy!
+1. Go to `http://localhost/install` and finish **ProBIND3** installation. Enjoy!
 
    > **NOTE**: Default credentials are `admin/secret`.
 
 ## Reporting issues
 
-If you have issues with **ProBIND**, you can report them with the [GitHub issues module](https://github.com/pacoorozco/probind/issues).
+If you have issues with **ProBIND3**, you can report them with the [GitHub issues module](https://github.com/pacoorozco/probind/issues).
 
 ## Contributing
 
@@ -95,7 +95,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## License
 
-**ProBIND** is released as free software under [GPLv3](http://www.gnu.org/licenses/gpl-3.0.html)
+**ProBIND3** is released as free software under [GPLv3](http://www.gnu.org/licenses/gpl-3.0.html)
 
 ## Authors
 
@@ -103,6 +103,6 @@ ProBIND was originally developed by Flemming S. Johansen as part of his duties a
 
 With both projects lying dormant for a number of years, Michael Johnson, Systems Administrator at PhD Computing, attempted to revive the [ProBIND project](https://sourceforge.net/projects/probind). The enhancements made in ProBIND2 were merged in and development were once again resumed.
 
-Later, in 2016, [Paco Orozco](http://pacoorozco.info) recoded all this application using [Laravel Framework](https://laravel.com/) to bring a new version of this software. It was named **ProBIND v3**.
+Later, in 2016, [Paco Orozco](http://pacoorozco.info) recoded all this application using [Laravel Framework](https://laravel.com/) to bring a new version of this software. It was named **ProBIND3**.
 
 See [AUTHORS](AUTHORS) for a complete list of contributors.

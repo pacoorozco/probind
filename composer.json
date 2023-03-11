@@ -1,6 +1,6 @@
 {
     "name": "pacoorozco/probind",
-    "description": "Professional DNS Management Application for ISC BIND servers.",
+    "description": "DNS Management Application for ISC BIND servers.",
     "keywords": [
         "dns",
         "dns management",

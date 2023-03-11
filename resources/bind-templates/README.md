@@ -1,7 +1,7 @@
-# proBIND templates
+# ProBIND3 templates
 This application uses templates to render the BIND configuration and zone files. 
 
-Templates are written using [Blade](https://laravel.com/docs/8.x/blade) templating engine.
+Templates are written using [Blade](https://laravel.com/docs) templating engine.
 
 ## Servers
 The default templates are located at `/resources/bind-templates/defaults`. 

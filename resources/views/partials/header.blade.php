@@ -3,9 +3,9 @@
     <!-- start: LOGO -->
     <a href="{{ route('home') }}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>pB</b>v3</span>
+        <span class="logo-mini"><b>pB</b>3</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>ProBIND</b> v3</span>
+        <span class="logo-lg"><b>ProBIND</b>3</span>
     </a>
     <!-- end: LOGO -->
 
