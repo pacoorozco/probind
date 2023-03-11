@@ -54,18 +54,6 @@ services:
       ports:
         - "3306:3306"
 
-### PHPMYADMIN: Database browser###########################################
-    phpmyadmin:
-      image: phpmyadmin/phpmyadmin
-      environment:
-        PMA_HOST: database
-        PMA_PORT: 3306
-        PMA_ARBITRARY: 1
-      ports:
-          - "8081:80"
-      depends_on:
-        - database
-
 ### DNS: DNS server ######################################################
     dns-server:
       build:
