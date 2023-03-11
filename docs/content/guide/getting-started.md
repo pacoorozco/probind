@@ -1,16 +1,16 @@
 ---
 title: "Getting started"
-description: "Quick start and guides for installing probind on your preferred operating system."
+description: "Quick start and guides for installing ProBIND3 on your preferred operating system."
 weight: 100
 date: "2022-03-01"
-lastmod: "2022-03-01"
+lastmod: "2023-03-11"
 ---
-This page tells you how to get started with the **ProBIND v3** app, including installation and basic configuration.
+This page tells you how to get started with the **ProBIND3** app, including installation and basic configuration.
 
 {{< toc >}}
 
-## How to test ProBIND
-This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND needs. An application server, a web server, a database server.
+## How to test ProBIND3
+This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND3 needs. An application server, a web server, a database server.
 
 1. Clone the repository locally
 
@@ -52,7 +52,7 @@ This will create several [Docker](https://www.docker.com/) containers to impleme
     docker-compose exec app php artisan migrate:fresh --seed
    ```
 
-7. Go to `http://localhost/install` and finish **ProBIND** installation. Enjoy!
+7. Go to `http://localhost/install` and finish **ProBIND3** installation. Enjoy!
 
    > **NOTE**: Default credentials are `admin/secret`.
 

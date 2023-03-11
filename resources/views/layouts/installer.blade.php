@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>@yield('title', 'Installer') :: ProBIND v3</title>
+    <title>@yield('title', 'Installer') :: ProBIND3</title>
     <!-- start: META -->
     <meta content="ProBIND v3: Professional DNS Management - Login" name="description">
     <meta content="Paco Orozco" name="author">
@@ -43,7 +43,7 @@
             <div class="row">
                 <div class="container col-md-6 col-md-offset-3">
                     <div class="register-logo">
-                        <a href="{{ route('home') }}"><b>ProBIND</b> v3</a>
+                        <a href="{{ route('home') }}"><b>ProBIND</b>3</a>
                     </div>
                     @yield('content')
                 </div>
