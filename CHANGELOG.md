@@ -5,6 +5,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 ## Unreleased
 
+## 1.3.0 - 2023-03-11
+
+> NOTE: This release has **non-backwards compatible** changes. It may include some changes in the database tables.
+
+### Changed
+- **Important**: The required minimum version of PHP is v8.1.
+- **Important**: This application has been upgraded to [Laravel 10.x](https://laravel.com/docs).
+- **Important**: Database schema has been modified in a **non-backwards compatible way**.
+    - The `password_resets` table renamed to `password_resets_tokens`.
+- Test running against a real database instead of memory (SQLite).
+
+### Removed
+- Unused `fuitcake/cors` dependency.
+
+
 ## 1.2.0 - 2022-06-13
 
 
