@@ -17,88 +17,175 @@
 
 namespace App\Services\SFTP;
 
-use App\Exceptions\PusherException;
-use PacoOrozco\OpenSSH\PrivateKey;
+use InvalidArgumentException;
+use phpseclib3\Crypt\Common\AsymmetricKey;
+use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Net\SFTP;
+use RuntimeException;
 
 class SFTPPusher
 {
-    protected SFTP $sftp;
 
-    public function __construct(string $hostname, int $port = 22, int $timeout = 10)
+    const FINGERPRINT_MD5 = 'md5';
+    const FINGERPRINT_SHA1 = 'sha1';
+
+    private string $hostname;
+    private int $port = 22;
+    private string $username;
+    private string|null $password = null;
+    private string|null $privateKeyPath = null;
+    private int $timeout = 10;
+    private bool $connected = false;
+    private SFTP $sftp;
+    private AsymmetricKey|null $privateKey = null;
+
+    public function to(string $hostname): self
     {
-        $this->sftp = new SFTP($hostname, $port, $timeout);
+        $this->hostname = $hostname;
+        return $this;
     }
 
-    /**
-     * Logs in the server using the provided credentials.
-     *
-     * @throws \App\Exceptions\PusherException
-     */
-    public function login(string $username, PrivateKey $privateKey): void
+    public function onPort(int $port): self
     {
-        if (false === $this->sftp->login($username, $privateKey)) {
-            throw new PusherException('Invalid credentials');
+        $this->port = $port;
+        return $this;
+    }
+
+    public function as(string $username): self
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+//         public function withPassword(string $password): self
+//         {
+//             $this->password = $password;
+//             return $this;
+//         }
+//
+//         public function withPrivateKeyFile(string $privateKeyPath): self
+//         {
+//             $this->privateKeyPath = $privateKeyPath;
+//             return $this;
+//         }
+
+    public function withPrivateKey(string $privateKey): self
+    {
+        $this->privateKey = PublicKeyLoader::load($privateKey);
+        return $this;
+    }
+
+    public function timeout(int $timeout): self
+    {
+        $this->timeout = $timeout;
+        return $this;
+    }
+
+    private function sanityCheck(): void
+    {
+        if (!$this->hostname) {
+            throw new InvalidArgumentException('Hostname not specified.');
+        }
+
+        if (!$this->username) {
+            throw new InvalidArgumentException('Username not specified.');
+        }
+
+        if (!$this->password && !$this->privateKeyPath && !$this->privateKey) {
+            throw new InvalidArgumentException('No password or private key specified.');
         }
     }
 
-    /**
-     * Pushes a file to the server, remote permission will be set if it's specified.
-     *
-     * @throws \App\Exceptions\PusherException
-     */
-    public function pushFileTo(string $localPath, string $remotePath, int $permission = 0700): void
+    public function connect(): self
     {
-        if (false === $this->sftp->put($remotePath, $localPath, SFTP::SOURCE_LOCAL_FILE)) {
-            throw new PusherException("Unable to push file {$localPath}");
+        $this->sanityCheck();
+
+        $this->sftp = new SFTP($this->hostname, $this->port, $this->timeout);
+
+        if ($this->privateKey) {
+            $authenticated = $this->sftp->login($this->username, $this->privateKey);
+            if (!$authenticated) {
+                throw new RuntimeException('Error authenticating with public-private key pair.');
+            }
         }
 
-        if (false === $this->sftp->chmod($permission, $remotePath)) {
-            throw new PusherException("Unable to push file {$localPath}");
+//            if ($this->privateKeyPath) {
+//                $key = new RSA();
+//                $key->loadKey(file_get_contents($this->privateKeyPath));
+//                $authenticated = $this->ssh->login($this->username, $key);
+//                if (!$authenticated) {
+//                    throw new RuntimeException('Error authenticating with public-private key pair.');
+//                }
+//            }
+//
+//            if ($this->password) {
+//                $authenticated = $this->ssh->login($this->username, $this->password);
+//                if (!$authenticated) {
+//                    throw new RuntimeException('Error authenticating with password.');
+//                }
+//            }
+
+        if ($this->timeout) {
+            $this->sftp->setTimeout($this->timeout);
         }
+
+        $this->connected = true;
+
+        return $this;
     }
 
-    /**
-     * Pushes the content to the server, remote permission will be set if it's specified.
-     *
-     * @throws \App\Exceptions\PusherException
-     */
-    public function pushDataTo(string $data, string $remotePath, int $permission = 0700): void
-    {
-        if (false === $this->sftp->put($remotePath, $data, SFTP::SOURCE_STRING)) {
-            throw new PusherException('Unable to put file');
-        }
-
-        if (false === $this->sftp->chmod($permission, $remotePath)) {
-            throw new PusherException('Unable to put file');
-        }
-    }
-
-    /**
-     * Executes a command in the remote server.
-     *
-     * @throws \App\Exceptions\PusherException
-     */
-    public function exec(string $command, bool $quietMode = true): void
-    {
-        if ($quietMode) {
-            $this->sftp->enableQuietMode();
-        }
-
-        if (! $this->sftp->exec($command)) {
-            throw new PusherException('Unable to exec command');
-        }
-
-        if ($quietMode) {
-            $this->sftp->disableQuietMode();
-        }
-    }
-
-    /**
-     * Disconnects from the server.
-     */
     public function disconnect(): void
     {
+        if (!$this->connected) {
+            throw new RuntimeException('Unable to disconnect. Not yet connected.');
+        }
+
         $this->sftp->disconnect();
+    }
+
+    public function fingerprint(string $type = self::FINGERPRINT_MD5): string
+    {
+        if (!$this->connected) {
+            throw new RuntimeException('Unable to get fingerprint when not connected.');
+        }
+
+        $hostKey = substr($this->sftp->getServerPublicHostKey(), 8);
+
+        switch ($type) {
+            case 'md5':
+                return strtoupper(md5($hostKey));
+
+            case 'sha1':
+                return strtoupper(sha1($hostKey));
+        }
+
+        throw new InvalidArgumentException('Invalid fingerprint type specified.');
+    }
+
+    public function upload(string $localPath, string $remotePath): bool
+    {
+        if (!$this->connected) {
+            throw new RuntimeException('Unable to upload file when not connected.');
+        }
+
+        if (!file_exists($localPath)) {
+            throw new InvalidArgumentException('The local file does not exist.');
+        }
+
+        return $this->sftp->put($remotePath, $localPath, SFTP::SOURCE_LOCAL_FILE);
+    }
+
+    public function download(string $remotePath, string $localPath): bool
+    {
+        if (!$this->connected) {
+            throw new RuntimeException('Unable to download file when not connected.');
+        }
+
+        return $this->sftp->get($remotePath, $localPath);
+    }
+
+    public function isConnected(): bool
+    {
+        return $this->connected;
     }
 }

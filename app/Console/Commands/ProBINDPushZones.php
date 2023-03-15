@@ -25,7 +25,6 @@ use App\Services\SFTP\SFTPPusher;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use PacoOrozco\OpenSSH\PrivateKey;
 use Throwable;
 
 class ProBINDPushZones extends Command
@@ -132,7 +131,7 @@ class ProBINDPushZones extends Command
             ],
         ];
 
-        if ($server->type == 'master') {
+        if ($server->isPrimary()) {
             $localFiles = Storage::files(self::ZONE_BASEDIR);
             foreach ($localFiles as $file) {
                 $filename = basename($file);
@@ -155,35 +154,32 @@ class ProBINDPushZones extends Command
 
     private function pushFilesToServer(Server $server, array $filesToPush): bool
     {
-        $this->info('Connecting to ' . setting()->get('ssh_default_user') . '@' . $server->hostname . ' (' . setting()->get('ssh_default_port') . ')...');
+        $this->info('Connecting to ' . setting()->get('ssh_default_user') . '@' . $server->hostname . ':' . setting()->get('ssh_default_port') . '...');
         try {
-            // Get RSA private key in order to connect to servers
-            $privateKey = PrivateKey::fromString(setting()->get('ssh_default_key'));
-
-            $pusher = new SFTPPusher(
-                $server->hostname,
-                setting()->get('ssh_default_port', 22)
-            );
-            $pusher->login(setting()->get('ssh_default_user'), $privateKey);
-            $this->info('Connected successfully to ' . $server->hostname . '.');
+            $pusher = (new SFTPPusher())
+                ->to($server->hostname)
+                ->onPort(setting()->get('ssh_default_port', 22))
+                ->as(setting()->get('ssh_default_user'))
+                ->withPrivateKey(setting()->get('ssh_default_key'))
+                ->connect();
 
             $totalFiles = count($filesToPush);
             $pushedFiles = 0;
 
             foreach ($filesToPush as $file) {
-                $this->info('Uploading file [' . $file['local'] . ' -> ' . $file['remote'] . '].');
-                $pusher->pushFileTo($file['local'], $file['remote']);
+                $this->info("Uploading file '{$file['local']}' to '{$file['remote']}'.");
+                $pusher->upload(Storage::path($file['local']), $file['remote']);
                 $pushedFiles++;
             }
 
             $pusher->disconnect();
         } catch (Throwable $e) {
-            $this->error('Error pushing files to ' . $server->hostname . ' - ' . $e->getMessage());
+            $this->error("Error: Pushing files to '$server->hostname'. Reason: {$e->getMessage()}");
 
             return false;
         }
 
-        $this->info('It has been pushed ' . $pushedFiles . ' of ' . $totalFiles . ' files to ' . $server->hostname . '.');
+        $this->info("Pushed $pushedFiles/$totalFiles files to $server->hostname.");
 
         // Return true if all files has been pushed
         return $totalFiles === $pushedFiles;
@@ -198,8 +194,10 @@ class ProBINDPushZones extends Command
 
     private function postProcessPendingZones(): void
     {
+        /** @var Zone $zone */
         foreach ($this->updatedZones as $zone) {
-            $zone->setPendingChanges(false);
+            $zone->has_modifications = false;
+            $zone->save();
         }
     }
 }
