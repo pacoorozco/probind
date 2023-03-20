@@ -21,7 +21,7 @@ namespace App\Console\Commands;
 use App\Models\Server;
 use App\Models\Zone;
 use App\Services\Formatters\BINDFormatter;
-use App\Services\SFTP\SFTPPusher;
+use App\Services\Pusher\PusherRegistry;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -156,19 +156,16 @@ class ProBINDPushZones extends Command
     {
         $this->info('Connecting to ' . setting()->get('ssh_default_user') . '@' . $server->hostname . ':' . setting()->get('ssh_default_port') . '...');
         try {
-            $pusher = (new SFTPPusher())
-                ->to($server->hostname)
-                ->onPort(setting()->get('ssh_default_port', 22))
-                ->as(setting()->get('ssh_default_user'))
-                ->withPrivateKey(setting()->get('ssh_default_key'))
-                ->connect();
+            $pusher = PusherRegistry::getInstance('sftp');
+
+            $pusher->connect($server);
 
             $totalFiles = count($filesToPush);
             $pushedFiles = 0;
 
             foreach ($filesToPush as $file) {
                 $this->info("Uploading file '{$file['local']}' to '{$file['remote']}'.");
-                $pusher->upload(Storage::path($file['local']), $file['remote']);
+                $pusher->sync(Storage::path($file['local']), $file['remote']);
                 $pushedFiles++;
             }
 
