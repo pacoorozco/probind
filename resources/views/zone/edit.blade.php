@@ -35,7 +35,7 @@
     @include('partials.notifications')
     <!-- ./ notifications -->
 
-    @if ($zone->isMasterZone())
+    @if ($zone->isPrimary())
         @include('zone._form_master')
     @else
         @include('zone._form_slave')

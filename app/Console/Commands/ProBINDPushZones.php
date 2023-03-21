@@ -190,9 +190,9 @@ class ProBINDPushZones extends Command
 
     private function postProcessPendingZones(): void
     {
+        /** @var Zone $zone */
         foreach ($this->updatedZones as $zone) {
-            $zone->has_modifications = false;
-            $zone->save();
+            $zone->unsetPendingChanges();
         }
     }
 }

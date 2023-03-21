@@ -20,6 +20,7 @@ namespace Tests\Unit\Models;
 
 use App\Enums\ZoneType;
 use App\Models\Zone;
+use Carbon\Carbon;
 use Tests\TestCase;
 
 class ZoneTest extends TestCase
@@ -114,7 +115,7 @@ class ZoneTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_true_on_master_zones(): void
+    public function it_returns_true_on_primary_zones(): void
     {
         /** @var Zone $zone */
         $zone = Zone::factory()->primary()->make();
@@ -147,5 +148,52 @@ class ZoneTest extends TestCase
         $zone = Zone::factory()->secondary()->make();
 
         $this->assertEquals(ZoneType::Secondary, $zone->getTypeOfZone());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider providesSerialNumberTestCases
+     */
+    public function it_should_calculate_the_serial_number(
+        string $date,
+        int $input,
+        int $expected,
+    ): void {
+        /** @var Zone $zone */
+        $zone = Zone::factory()->make([
+            'serial' => $input,
+        ]);
+
+        $this->travelTo(Carbon::createFromFormat('Y-m-d', $date));
+
+        $this->assertEquals($expected, $zone->calculateNewSerialNumber());
+    }
+
+    public static function providesSerialNumberTestCases(): \Generator
+    {
+        yield 'serial number was not changed today' => [
+            'date' => '2022-01-01',
+            'input' => 2019010100,
+            'expected' => 2022010100,
+        ];
+
+        yield 'serial number was changed only once today' => [
+            'date' => '2022-01-01',
+            'input' => 2022010100,
+            'expected' => 2022010101,
+        ];
+
+        yield 'serial number was changed several times today' => [
+            'date' => '2022-01-01',
+            'input' => 2022010109,
+            'expected' => 2022010110,
+        ];
+
+        yield 'serial number was changed 98 times today' => [
+            'date' => '2022-01-01',
+            'input' => 2022010199,
+            'expected' => 2022010200,
+        ];
     }
 }
