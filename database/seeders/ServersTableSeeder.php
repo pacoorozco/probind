@@ -28,7 +28,7 @@ class ServersTableSeeder extends Seeder
     {
         // Create a test server (see docker-composer.yml)
         Server::factory()->create([
-            'hostname' => 'dns-server',
+            'hostname' => 'sample-server',
             'ip_address' => '127.0.0.1',
             'type' => ServerType::Primary,
             'ns_record' => true,
