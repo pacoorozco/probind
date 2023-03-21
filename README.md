@@ -38,8 +38,11 @@ See our [CHANGELOG](CHANGELOG.md) file in order to know what changes are impleme
 * A [supported relational database](https://laravel.com/docs) and corresponding PHP extension.
 * [Composer](https://getcomposer.org/download/).
 
-## How to test ProBIND3
-This will create several [Docker](https://www.docker.com/) containers to implement all ProBIND3 needs. An application server, a web server, a database server.
+## How to run ProBIND3
+
+[Laravel Sail](https://laravel.com/docs/10.x/sail) is a light-weight command-line interface for interacting with
+Laravel's default Docker development environment. This will create several containers to implement the application needs. An
+Application server, a Database server and a Sample server (with SSH access).
 
 Prior to this installation, you **need to have installed** this software:
 
@@ -47,44 +50,46 @@ Prior to this installation, you **need to have installed** this software:
 
 1. Clone the repository locally
 
-    ```bash
-    $ git clone https://github.com/pacoorozco/probind.git probind
-    $ cd probind
+    ```
+    git clone https://github.com/pacoorozco/probind.git probind
+    cd probind
     ```
 
-1. Copy [`.env.example`](.env.example) to `.env`.
+2. Copy [`.env.example`](.env.example) to `.env`.
 
-    > **NOTE**: You don't need to touch anything from this file. It works with default settings.
+   > **NOTE**: You don't need to touch anything from this file. It works with default settings.
 
-1. Start all containers with [Docker Compose](https://docs.docker.com/compose/)
+3. Install PHP dependencies with:
 
-    > **NOTE**: You **must** export the `DOCKER_PROBIND_UID` variable if your user ID is different from `1000`. This will allow the docker to get permissions over your files.
+   > **NOTE**: You don't need to install neither _PHP_ nor _Composer_, we are going to use
+   a [Composer image](https://hub.docker.com/_/composer/) instead.
 
-    ```bash
-    $ export DOCKER_PROBIND_UID="$(id -u)"
-    $ docker-compose build
-    $ docker-compose up -d
     ```
-   
-1. Install dependencies with:
-
-    ```bash
-    $ docker-compose exec app composer install
+    docker run --rm \                  
+    --user "$(id -u):$(id -g)" \
+    --volume $(pwd):/var/www/html \
+    --workdir /var/www/html \
+    laravelsail/php81-composer:latest \
+    composer install --ignore-platform-reqs
     ```
 
-1. Seed database in order to play with some data
+4. Start all containers with the `sail` command.
 
-    > **NOTE**: Remove `--seed` if you don't want to seed sample data.
+    ```
+    ./vendor/bin/sail up -d
+    ```
 
-    ```bash
-    $ docker-compose exec app php artisan key:generate 
-    $ docker-compose exec app php artisan migrate:fresh --seed
-   ```
-    
-1. Go to `http://localhost/install` and finish **ProBIND3** installation. Enjoy!
+5. Seed database in order to play with some data
+
+    ```
+   sail artisan key:generate 
+   sail artisan migrate:fresh --seed
+    ```
+
+6. Point your browser to `http://localhost`. Enjoy!
 
    > **NOTE**: Default credentials are `admin/secret`.
-
+   
 ## Reporting issues
 
 If you have issues with **ProBIND3**, you can report them with the [GitHub issues module](https://github.com/pacoorozco/probind/issues).
