@@ -183,7 +183,7 @@ class Zone extends Model
      * This generates a new serial, based on the often used format YYYYMMDDXX where XX is an ascending serial, allowing
      * up to 100 edits per day. After that the serial wraps into the next day and it still works.
      */
-    public function calculateNewSerialNumber(): int
+    private function calculateNewSerialNumber(): int
     {
         $newSerialNumber = intval(Carbon::now()->format('Ymd').'00');
 

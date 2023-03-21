@@ -21,6 +21,7 @@ namespace Tests\Feature\Models;
 use App\Enums\ResourceRecordType;
 use App\Models\ResourceRecord;
 use App\Models\Zone;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -136,34 +137,54 @@ class ZoneTest extends TestCase
         $this->assertEquals(ResourceRecordType::asArrayForForwardZone(), $zone->getValidRecordTypesForThisZone());
     }
 
-    /** @test */
-    public function it_should_increase_serial_number_when_force_parameter_is_used()
+    /**
+     * @test
+     *
+     * @dataProvider  providesSerialNumberTestCases
+     */
+    public function it_should_increase_serial_number_when_force_parameter_is_used(
+        string $date,
+        int    $input,
+        int    $expected,
+    )
     {
         /** @var Zone $zone */
-        $zone = Zone::factory()->withoutPendingChanges()->create();
+        $zone = Zone::factory()->withoutPendingChanges()->create([
+            'serial' => $input,
+        ]);
 
-        $beforeSerial = $zone->serial;
+        $this->travelTo(Carbon::createFromFormat('Y-m-d', $date));
 
         $zone->increaseSerialNumber(true);
 
         $zone->refresh();
 
-        $this->assertNotEquals($beforeSerial, $zone->serial);
+        $this->assertEquals($expected, $zone->serial);
     }
 
-    /** @test */
-    public function it_should_increase_serial_number_when_it_has_pending_changes()
+    /**
+     * @test
+     *
+     * @dataProvider providesSerialNumberTestCases
+     */
+    public function it_should_increase_serial_number_when_it_has_pending_changes(
+        string $date,
+        int    $input,
+        int    $expected,
+    )
     {
         /** @var Zone $zone */
-        $zone = Zone::factory()->withPendingChanges()->create();
+        $zone = Zone::factory()->withPendingChanges()->create([
+            'serial' => $input,
+        ]);
 
-        $beforeSerial = $zone->serial;
+        $this->travelTo(Carbon::createFromFormat('Y-m-d', $date));
 
         $zone->increaseSerialNumber();
 
         $zone->refresh();
 
-        $this->assertNotEquals($beforeSerial, $zone->serial);
+        $this->assertEquals($expected, $zone->serial);
     }
 
     /** @test */
@@ -179,5 +200,32 @@ class ZoneTest extends TestCase
         $zone->refresh();
 
         $this->assertEquals($beforeSerial, $zone->serial);
+    }
+
+    public static function providesSerialNumberTestCases(): \Generator
+    {
+        yield 'serial number was not changed today' => [
+            'date' => '2022-01-01',
+            'input' => 2019010100,
+            'expected' => 2022010100,
+        ];
+
+        yield 'serial number was changed only once today' => [
+            'date' => '2022-01-01',
+            'input' => 2022010100,
+            'expected' => 2022010101,
+        ];
+
+        yield 'serial number was changed several times today' => [
+            'date' => '2022-01-01',
+            'input' => 2022010109,
+            'expected' => 2022010110,
+        ];
+
+        yield 'serial number was changed 98 times today' => [
+            'date' => '2022-01-01',
+            'input' => 2022010199,
+            'expected' => 2022010200,
+        ];
     }
 }
