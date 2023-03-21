@@ -21,11 +21,10 @@ namespace App\Console\Commands;
 use App\Models\Server;
 use App\Models\Zone;
 use App\Services\Formatters\BINDFormatter;
-use App\Services\SFTP\SFTPPusher;
+use App\Services\Pusher\SFTPPusher;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use PacoOrozco\OpenSSH\PrivateKey;
 use Throwable;
 
 class ProBINDPushZones extends Command
@@ -36,9 +35,9 @@ class ProBINDPushZones extends Command
 
     const BASEDIR = 'probind';
 
-    const CONFIG_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'configuration';
+    const CONFIG_BASEDIR = self::BASEDIR.DIRECTORY_SEPARATOR.'configuration';
 
-    const ZONE_BASEDIR = self::BASEDIR . DIRECTORY_SEPARATOR . 'primary';
+    const ZONE_BASEDIR = self::BASEDIR.DIRECTORY_SEPARATOR.'primary';
 
     protected $signature = 'probind:push';
 
@@ -59,7 +58,7 @@ class ProBINDPushZones extends Command
         $this->preProcessDeletedZones();
         $this->preProcessPendingZones();
 
-        // Now push files to servers using SFTP
+        // Now push files to servers using Pusher
         if (false === $this->handleAllServers()) {
             $this->error('Push updates completed with errors');
 
@@ -77,7 +76,7 @@ class ProBINDPushZones extends Command
     private function preProcessDeletedZones(): void
     {
         $content = BINDFormatter::getDeletedZonesFileContent($this->deletedZones);
-        $path = self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . 'deadlist';
+        $path = self::CONFIG_BASEDIR.DIRECTORY_SEPARATOR.'deadlist';
         Storage::put($path, $content, 'private');
     }
 
@@ -92,7 +91,7 @@ class ProBINDPushZones extends Command
     {
         $zone->increaseSerialNumber();
         $content = BINDFormatter::getZoneFileContent($zone);
-        $path = self::ZONE_BASEDIR . DIRECTORY_SEPARATOR . $zone->domain;
+        $path = self::ZONE_BASEDIR.DIRECTORY_SEPARATOR.$zone->domain;
         Storage::append($path, $content);
     }
 
@@ -113,7 +112,7 @@ class ProBINDPushZones extends Command
             }
         }
 
-        return !$pushedWithErrors;
+        return ! $pushedWithErrors;
     }
 
     private function handleServer(Server $server): bool
@@ -123,12 +122,12 @@ class ProBINDPushZones extends Command
         // Create an array with files that need to be pushed to remote server
         $filesToPush = [
             [
-                'local' => self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . $server->hostname . '.conf',
-                'remote' => setting()->get('ssh_default_remote_path') . '/configuration/named.conf',
+                'local' => self::CONFIG_BASEDIR.DIRECTORY_SEPARATOR.$server->hostname.'.conf',
+                'remote' => setting()->get('ssh_default_remote_path').'/configuration/named.conf',
             ],
             [
-                'local' => self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . 'deadlist',
-                'remote' => setting()->get('ssh_default_remote_path') . '/configuration/deadlist',
+                'local' => self::CONFIG_BASEDIR.DIRECTORY_SEPARATOR.'deadlist',
+                'remote' => setting()->get('ssh_default_remote_path').'/configuration/deadlist',
             ],
         ];
 
@@ -138,7 +137,7 @@ class ProBINDPushZones extends Command
                 $filename = basename($file);
                 $filesToPush[] = [
                     'local' => $file,
-                    'remote' => setting()->get('ssh_default_remote_path') . '/primary/' . $filename,
+                    'remote' => setting()->get('ssh_default_remote_path').'/primary/'.$filename,
                 ];
             }
         }
@@ -148,42 +147,35 @@ class ProBINDPushZones extends Command
 
     private function generateConfigFileForServer(Server $server): void
     {
-        $path = self::CONFIG_BASEDIR . DIRECTORY_SEPARATOR . $server->hostname . '.conf';
+        $path = self::CONFIG_BASEDIR.DIRECTORY_SEPARATOR.$server->hostname.'.conf';
         $contents = BINDFormatter::getConfigurationFileContent($server);
         Storage::put($path, $contents, 'private');
     }
 
     private function pushFilesToServer(Server $server, array $filesToPush): bool
     {
-        $this->info('Connecting to ' . setting()->get('ssh_default_user') . '@' . $server->hostname . ' (' . setting()->get('ssh_default_port') . ')...');
+        $this->info("Pushing files to {$server->hostname}...");
+
         try {
-            // Get RSA private key in order to connect to servers
-            $privateKey = PrivateKey::fromString(setting()->get('ssh_default_key'));
+            $pusher = new SFTPPusher();
+            $pusher->connect($server);
 
-            $pusher = new SFTPPusher(
-                $server->hostname,
-                setting()->get('ssh_default_port', 22)
-            );
-            $pusher->login(setting()->get('ssh_default_user'), $privateKey);
-            $this->info('Connected successfully to ' . $server->hostname . '.');
-
-            $totalFiles = count($filesToPush);
             $pushedFiles = 0;
 
             foreach ($filesToPush as $file) {
-                $this->info('Uploading file [' . $file['local'] . ' -> ' . $file['remote'] . '].');
-                $pusher->pushFileTo($file['local'], $file['remote']);
+                $this->info("Uploading file '{$file['local']}' to '{$file['remote']}'.");
+                $pusher->sync(Storage::path($file['local']), $file['remote']);
                 $pushedFiles++;
             }
 
             $pusher->disconnect();
-        } catch (Throwable $e) {
-            $this->error('Error pushing files to ' . $server->hostname . ' - ' . $e->getMessage());
+        } catch (Throwable $exception) {
+            $this->error("Error: {$exception->getMessage()}");
 
             return false;
         }
 
-        $this->info('It has been pushed ' . $pushedFiles . ' of ' . $totalFiles . ' files to ' . $server->hostname . '.');
+        $totalFiles = count($filesToPush);
 
         // Return true if all files has been pushed
         return $totalFiles === $pushedFiles;
@@ -199,7 +191,8 @@ class ProBINDPushZones extends Command
     private function postProcessPendingZones(): void
     {
         foreach ($this->updatedZones as $zone) {
-            $zone->setPendingChanges(false);
+            $zone->has_modifications = false;
+            $zone->save();
         }
     }
 }
