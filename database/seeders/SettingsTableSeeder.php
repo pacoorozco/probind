@@ -86,7 +86,7 @@ ePBOdQDy/CSPJNAAAACnBhY29AY2lncm8=
             /*
             * Port to use as SSH
             */
-            'ssh_default_port' => '22',
+            'ssh_default_port' => '2222',
 
             /*
              * This is the folder whre ProBIND will generate files on remote hosts.
