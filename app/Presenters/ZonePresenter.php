@@ -66,8 +66,8 @@ class ZonePresenter extends Presenter
     public function SOA(): string
     {
         $content = sprintf("%-16s IN\tSOA\t%s. %s. (\n", '@',
-            $this->model->primaryNameServer,
-            $this->model->hostmasterEmail
+            $this->model->primaryNameServer(),
+            $this->model->hostmasterEmail()
         );
         $content .= sprintf("%40s %-10d ; Serial (aaaammddvv)\n", ' ', $this->model->serial);
         $content .= sprintf("%40s %-10d ; Refresh\n", ' ', $this->refresh());

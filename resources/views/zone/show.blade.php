@@ -37,14 +37,14 @@
 
     <div class="row">
         <div class="col-md-8">
-            @if ($zone->isMasterZone())
+            @if ($zone->isPrimary())
                 @include('zone/_details_master')
             @else
                 @include('zone/_details_slave')
             @endif
         </div>
         <div class="col-md-4">
-            @includeWhen($zone->isMasterZone(), 'zone/_resource_records')
+            @includeWhen($zone->isPrimary(), 'zone/_resource_records')
             @include('zone/_delete')
         </div>
     </div>

@@ -67,4 +67,28 @@ class ZoneFactory extends Factory
             ];
         });
     }
+
+    /**
+     * Indicate that the model has pending changes.
+     */
+    public function withPendingChanges(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'has_modifications' => true,
+            ];
+        });
+    }
+
+    /**
+     * Indicate that the model has pending changes.
+     */
+    public function withoutPendingChanges(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'has_modifications' => false,
+            ];
+        });
+    }
 }

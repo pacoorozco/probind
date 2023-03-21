@@ -20,6 +20,7 @@ namespace Tests\Unit\Models;
 
 use App\Enums\ZoneType;
 use App\Models\Zone;
+use Carbon\Carbon;
 use Tests\TestCase;
 
 class ZoneTest extends TestCase
@@ -114,7 +115,7 @@ class ZoneTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_true_on_master_zones(): void
+    public function it_returns_true_on_primary_zones(): void
     {
         /** @var Zone $zone */
         $zone = Zone::factory()->primary()->make();

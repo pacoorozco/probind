@@ -79,7 +79,7 @@ include "/etc/bind/configuration/static-zones.conf";
 
 @foreach($zones as $zone)
 zone "{{ $zone->domain }}" {
-    @if ($zone->isMasterZone())
+    @if ($zone->isPrimary())
     type master;
     file "primary/{{ $zone->domain }}";
 

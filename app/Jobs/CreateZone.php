@@ -57,7 +57,6 @@ class CreateZone
         if ($this->type == ZoneType::Primary) {
             $zone->server = null;
             $this->fillCustomSettings($zone);
-            $zone->serial = $zone->calculateNewSerialNumber();
         }
 
         $zone->has_modifications = true;

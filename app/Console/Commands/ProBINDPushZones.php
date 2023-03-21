@@ -131,7 +131,7 @@ class ProBINDPushZones extends Command
             ],
         ];
 
-        if ($server->type == 'master') {
+        if ($server->isPrimary()) {
             $localFiles = Storage::files(self::ZONE_BASEDIR);
             foreach ($localFiles as $file) {
                 $filename = basename($file);
@@ -190,9 +190,9 @@ class ProBINDPushZones extends Command
 
     private function postProcessPendingZones(): void
     {
+        /** @var Zone $zone */
         foreach ($this->updatedZones as $zone) {
-            $zone->has_modifications = false;
-            $zone->save();
+            $zone->unsetPendingChanges();
         }
     }
 }

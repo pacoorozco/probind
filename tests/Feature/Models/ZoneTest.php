@@ -18,8 +18,10 @@
 
 namespace Tests\Feature\Models;
 
+use App\Enums\ResourceRecordType;
 use App\Models\ResourceRecord;
 use App\Models\Zone;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -71,5 +73,159 @@ class ZoneTest extends TestCase
             ->create();
 
         $this->assertEquals(3, $zone->recordsCount());
+    }
+
+    /** @test */
+    public function it_set_pending_changes()
+    {
+        /** @var Zone $zone */
+        $zone = Zone::factory()->create([
+            'has_modifications' => false,
+        ]);
+
+        $zone->setPendingChanges();
+
+        $this->assertTrue($zone->has_modifications);
+    }
+
+    /** @test */
+    public function it_unset_pending_changes()
+    {
+        /** @var Zone $zone */
+        $zone = Zone::factory()->create([
+            'has_modifications' => true,
+        ]);
+
+        $zone->unsetPendingChanges();
+
+        $this->assertFalse($zone->has_modifications);
+    }
+
+    /** @test */
+    public function it_should_return_a_default_record_type_for_a_reverse_zone()
+    {
+        /** @var Zone $zone */
+        $zone = Zone::factory()->reverse()->create();
+
+        $this->assertEquals('PTR', $zone->getDefaultRecordType());
+    }
+
+    /** @test */
+    public function it_should_return_a_default_record_type_for_a_forward_zone()
+    {
+        /** @var Zone $zone */
+        $zone = Zone::factory()->create();
+
+        $this->assertEquals('A', $zone->getDefaultRecordType());
+    }
+
+    /** @test */
+    public function it_should_return_valid_record_types_for_a_reverse_zone()
+    {
+        /** @var Zone $zone */
+        $zone = Zone::factory()->reverse()->create();
+
+        $this->assertEquals(ResourceRecordType::asArrayForReverseZone(), $zone->getValidRecordTypesForThisZone());
+    }
+
+    /** @test */
+    public function it_should_return_valid_record_types_for_a_forward_zone()
+    {
+        /** @var Zone $zone */
+        $zone = Zone::factory()->create();
+
+        $this->assertEquals(ResourceRecordType::asArrayForForwardZone(), $zone->getValidRecordTypesForThisZone());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider  providesSerialNumberTestCases
+     */
+    public function it_should_increase_serial_number_when_force_parameter_is_used(
+        string $date,
+        int    $input,
+        int    $expected,
+    )
+    {
+        /** @var Zone $zone */
+        $zone = Zone::factory()->withoutPendingChanges()->create([
+            'serial' => $input,
+        ]);
+
+        $this->travelTo(Carbon::createFromFormat('Y-m-d', $date));
+
+        $zone->increaseSerialNumber(true);
+
+        $zone->refresh();
+
+        $this->assertEquals($expected, $zone->serial);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider providesSerialNumberTestCases
+     */
+    public function it_should_increase_serial_number_when_it_has_pending_changes(
+        string $date,
+        int    $input,
+        int    $expected,
+    )
+    {
+        /** @var Zone $zone */
+        $zone = Zone::factory()->withPendingChanges()->create([
+            'serial' => $input,
+        ]);
+
+        $this->travelTo(Carbon::createFromFormat('Y-m-d', $date));
+
+        $zone->increaseSerialNumber();
+
+        $zone->refresh();
+
+        $this->assertEquals($expected, $zone->serial);
+    }
+
+    /** @test */
+    public function it_should_not_increase_serial_number_when_it_has_not_pending_changes()
+    {
+        /** @var Zone $zone */
+        $zone = Zone::factory()->withoutPendingChanges()->create();
+
+        $beforeSerial = $zone->serial;
+
+        $zone->increaseSerialNumber();
+
+        $zone->refresh();
+
+        $this->assertEquals($beforeSerial, $zone->serial);
+    }
+
+    public static function providesSerialNumberTestCases(): \Generator
+    {
+        yield 'serial number was not changed today' => [
+            'date' => '2022-01-01',
+            'input' => 2019010100,
+            'expected' => 2022010100,
+        ];
+
+        yield 'serial number was changed only once today' => [
+            'date' => '2022-01-01',
+            'input' => 2022010100,
+            'expected' => 2022010101,
+        ];
+
+        yield 'serial number was changed several times today' => [
+            'date' => '2022-01-01',
+            'input' => 2022010109,
+            'expected' => 2022010110,
+        ];
+
+        yield 'serial number was changed 98 times today' => [
+            'date' => '2022-01-01',
+            'input' => 2022010199,
+            'expected' => 2022010200,
+        ];
     }
 }

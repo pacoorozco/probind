@@ -22,6 +22,7 @@ use App\Rules\FullyQualifiedDomainName;
 use Badcow\DNS\Validator;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -47,8 +48,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int $expire Custom Expire time value.
  * @property int $negative_ttl Custom Negative TTL value.
  * @property int $default_ttl Custom TTL value.
- * @property string $primaryNameServer
- * @property string $hostmasterEmail
  * @property bool $has_modifications This flag determines if this zone has been pending changes to sync.
  *
  * @link https://www.ietf.org/rfc/rfc1035.txt
@@ -100,11 +99,6 @@ class Zone extends Model
         return Validator::reverseIpv4($domain) || Validator::reverseIpv6($domain);
     }
 
-    public function isMasterZone(): bool
-    {
-        return is_null($this->server);
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -113,9 +107,14 @@ class Zone extends Model
             ]));
     }
 
-    public function setDomainAttribute(string $value): void
+    /**
+     * Set domain attribute lowercase.
+     */
+    protected function domain(): Attribute
     {
-        $this->attributes['domain'] = strtolower($value);
+        return Attribute::make(
+            set: fn (string $value) => strtolower($value),
+        );
     }
 
     public function records(): HasMany
@@ -128,12 +127,12 @@ class Zone extends Model
         return $this->records()->count();
     }
 
-    public function getPrimaryNameServerAttribute(): string
+    public function primaryNameServer(): string
     {
         return setting()->get('zone_default_mname');
     }
 
-    public function getHostmasterEmailAttribute(): string
+    public function hostmasterEmail(): string
     {
         return strtr(setting()->get('zone_default_rname'), '@', '.');
     }
@@ -168,7 +167,7 @@ class Zone extends Model
     public function increaseSerialNumber(bool $force = false): void
     {
         // If there's not pending changes, we should not increment the serial number.
-        if ($this->has_modifications && ! $force) {
+        if (! $this->has_modifications && ! $force) {
             return;
         }
 
@@ -184,7 +183,7 @@ class Zone extends Model
      * This generates a new serial, based on the often used format YYYYMMDDXX where XX is an ascending serial, allowing
      * up to 100 edits per day. After that the serial wraps into the next day and it still works.
      */
-    public function calculateNewSerialNumber(): int
+    private function calculateNewSerialNumber(): int
     {
         $newSerialNumber = intval(Carbon::now()->format('Ymd').'00');
 
@@ -205,5 +204,17 @@ class Zone extends Model
         return $this->reverse_zone
             ? ResourceRecordType::asArrayForReverseZone()
             : ResourceRecordType::asArrayForForwardZone();
+    }
+
+    public function setPendingChanges(): void
+    {
+        $this->has_modifications = true;
+        $this->save();
+    }
+
+    public function unsetPendingChanges(): void
+    {
+        $this->has_modifications = false;
+        $this->save();
     }
 }
