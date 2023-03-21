@@ -40,9 +40,9 @@ class SFTPPusher implements PusherInterface
         }
     }
 
-    private function getSFTPClient(Server $server, SFTPClient $client): SFTPClient
+    private function getSFTPClient(Server $server): SFTPClient
     {
-        return $client
+        return app(SFTPClient::class)
             ->to($server->hostname)
             ->onPort(setting()->get('ssh_default_port', 22))
             ->as(setting()->get('ssh_default_user'))
