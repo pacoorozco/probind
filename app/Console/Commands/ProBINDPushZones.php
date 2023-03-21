@@ -131,7 +131,7 @@ class ProBINDPushZones extends Command
             ],
         ];
 
-        if ($server->type == 'master') {
+        if ($server->isPrimary()) {
             $localFiles = Storage::files(self::ZONE_BASEDIR);
             foreach ($localFiles as $file) {
                 $filename = basename($file);
