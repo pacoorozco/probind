@@ -21,7 +21,9 @@ namespace App\Console\Commands;
 use App\Models\Server;
 use App\Models\Zone;
 use App\Services\Formatters\BINDFormatter;
+use App\Services\Pusher\NoOpPusher;
 use App\Services\Pusher\PusherRegistry;
+use App\Services\Pusher\SFTPPusher;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -60,7 +62,7 @@ class ProBINDPushZones extends Command
 
         // Now push files to servers using SFTP
         if (false === $this->handleAllServers()) {
-            $this->error('Push updates completed with errors');
+            $this->error('Push updates completed with errors.');
 
             return self::ERROR_PUSHING_FILES_CODE;
         }
@@ -154,13 +156,17 @@ class ProBINDPushZones extends Command
 
     private function pushFilesToServer(Server $server, array $filesToPush): bool
     {
-        $this->info('Connecting to ' . setting()->get('ssh_default_user') . '@' . $server->hostname . ':' . setting()->get('ssh_default_port') . '...');
+        $this->info("Pushing files to {$server->hostname}...");
+
         try {
-            $pusher = PusherRegistry::getInstance('sftp');
+            // TODO: It should be part of the AppServiceProvider.
+            PusherRegistry::addPusher(new NoOpPusher());
+            PusherRegistry::addPusher(new SFTPPusher());
+
+            $pusher = PusherRegistry::getInstance($server->getPusher());
 
             $pusher->connect($server);
 
-            $totalFiles = count($filesToPush);
             $pushedFiles = 0;
 
             foreach ($filesToPush as $file) {
@@ -170,13 +176,13 @@ class ProBINDPushZones extends Command
             }
 
             $pusher->disconnect();
-        } catch (Throwable $e) {
-            $this->error("Error: Pushing files to '$server->hostname'. Reason: {$e->getMessage()}");
+        } catch (Throwable $exception) {
+            $this->error("Error: {$exception->getMessage()}");
 
             return false;
         }
 
-        $this->info("Pushed $pushedFiles/$totalFiles files to $server->hostname.");
+        $totalFiles = count($filesToPush);
 
         // Return true if all files has been pushed
         return $totalFiles === $pushedFiles;

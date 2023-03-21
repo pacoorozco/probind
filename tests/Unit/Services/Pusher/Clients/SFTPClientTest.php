@@ -28,12 +28,27 @@ class SFTPClientTest extends TestCase
     /**
      * @test
      */
+    public function it_should_fail_when_connecting_without_hostname(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Hostname not specified.');
+
+        (new SFTPClient('localhost'))
+            ->as('foo')
+            ->withPassword('s3cr3t')
+            ->connect();
+    }
+
+    /**
+     * @test
+     */
     public function it_should_fail_when_connecting_without_username(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Username not specified.');
 
         (new SFTPClient('localhost'))
+            ->to('localhost')
             ->withPassword('s3cr3t')
             ->connect();
     }
@@ -47,6 +62,7 @@ class SFTPClientTest extends TestCase
         $this->expectExceptionMessage('No password or private key specified.');
 
         (new SFTPClient('localhost'))
+            ->to('localhost')
             ->as('foo')
             ->connect();
     }

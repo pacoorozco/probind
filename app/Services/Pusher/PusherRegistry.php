@@ -29,7 +29,7 @@ class PusherRegistry
     private static array $pushers = [];
 
     /**
-     * Adds new logging channel to the registry
+     * Adds new pusher to the registry
      *
      * @param PusherInterface $pusher Instance of the pusher
      * @param string|null $name Name of the pusher channel ($pusher->getName() by default)

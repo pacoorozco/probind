@@ -19,6 +19,8 @@
 
 namespace App\Services\Pusher;
 
+use App\Models\Server;
+
 class NoOpPusher implements PusherInterface
 {
 
@@ -29,7 +31,7 @@ class NoOpPusher implements PusherInterface
         return self::NAME;
     }
 
-    public function connect(\App\Models\Server $server): void
+    public function connect(Server $server): void
     {
     }
 

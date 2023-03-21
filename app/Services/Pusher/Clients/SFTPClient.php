@@ -39,9 +39,10 @@ class SFTPClient
     private SFTP $sftp;
     private AsymmetricKey|string|null $credentials = null;
 
-    public function __construct(string $hostname)
+    public function to(string $hostname): self
     {
         $this->hostname = $hostname;
+        return $this;
     }
 
     public function as(string $username): self
@@ -117,6 +118,10 @@ class SFTPClient
 
     private function sanityCheck(): void
     {
+        if (empty($this->hostname)) {
+            throw new InvalidArgumentException('Hostname not specified.');
+        }
+
         if (empty($this->username)) {
             throw new InvalidArgumentException('Username not specified.');
         }

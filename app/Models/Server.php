@@ -96,4 +96,8 @@ class Server extends Model
             ->where('ns_record', true)
             ->where('active', true);
     }
+
+    public function getPusher(): string {
+        return 'sftp';
+    }
 }
