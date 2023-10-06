@@ -5,6 +5,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 ## Unreleased
 
+## 1.3.1 - 2023-10-06
+
+### Added
+- Laravel Sail dependency for development
+
+### Changed
+- Rename ProBIND v3 to ProBIND3
+- Bump `aglipanci/laravel-pint-action` from 2.1.0 to 2.3.0
+- Bump `yajra/laravel-datatables-oracle` from 10.3.1 to 10.7.0
+- Bump `laravel/framework` from 10.3.3 to 10.13.0
+- Bump `nunomaduro/collision` from 7.1.0 to 7.7.0
+- [CI] Bump `mockery/mockery` from 1.5.1 to 1.6.4
+- [CI] Bump `laravel/pint` from 1.6.0 to 1.10.0
+- [CI] Bump `phpunit/phpunit` from 10.0.15 to 10.2.6
+- [CI] Bump `codecov/codecov-action` from 3 to 4
+- [CI] Bump `brianium/paratest` from 7.1.0 to 7.2.7
+
+### Removed
+- Remove the PHPmyAdmin docker container
+
+
 ## 1.3.0 - 2023-03-11
 
 > NOTE: This release has **non-backwards compatible** changes. It may include some changes in the database tables.
