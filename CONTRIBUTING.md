@@ -1,5 +1,27 @@
 # Code contibution to this app
 
+## 🚀 Project Archival Announcement
+
+Dear ProBIND Community,
+
+After careful consideration, I've decided to archive this project due to time constraints and the challenges of maintaining it on my own. I want to express my gratitude to everyone who has contributed and supported ProBIND over the years.
+
+### ❗️ Why Archive?
+
+Maintaining ProBIND has been a rewarding journey, but the demands of my current commitments prevent me from giving it the attention it deserves.
+
+### 📢 Call for Contributors
+
+I believe in the potential of this community to carry the project forward. If you've benefited from ProBIND or have a passion for it, I invite you to consider contributing. While new issues and pull requests cannot be submitted directly to this repository, you can fork the project, make changes, and share your work.
+
+### 🙏 Thank You
+
+Thank you for your support and contributions in the past.
+
+Best regards, Paco Orozco
+
+---
+
 Contributions are **welcomed** and will be fully **credited** (see [AUTHORS](AUTHORS)).
 
 We accept contributions via Pull Requests on [GitHub Repository][github].
